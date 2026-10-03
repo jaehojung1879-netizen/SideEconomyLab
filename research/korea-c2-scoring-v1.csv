@@ -1,0 +1,13 @@
+candidate_id,candidate_name,economics_25,owner_fit_25,demand_distribution_20,asset_operations_15,competition_defensibility_10,ai_data_leverage_5,total_100,decision,next_lane,evidence_confidence
+OC-021,Industrial PPE / MRO vending,20,21,17,12,7,5,82,ADVANCE,TRANSACTION,MEDIUM
+OC-022,Narrow recurring B2B procurement operator,21,17,17,15,4,4,78,ADVANCE,TRANSACTION,MEDIUM
+OC-013,Instant photo / document printing kiosk,18,21,16,12,4,3,74,ADVANCE,LOCATION,HIGH
+OC-020,Specialty vending route,18,20,13,13,6,4,74,ADVANCE,LOCATION,MEDIUM_HIGH
+OC-030,Hosted experience / event asset rental,19,18,15,13,5,3,73,ADVANCE,TRANSACTION,MEDIUM_HIGH
+OC-008,Host-based luggage storage,20,16,17,14,3,3,73,ADVANCE,LOCATION,MEDIUM_HIGH
+OC-001,Public / office private booth,16,22,13,11,6,4,72,ADVANCE,LOCATION,MEDIUM
+OC-024,Custom manufacturing RFQ operator,18,14,18,14,2,5,71,RESERVE,TRANSACTION,HIGH
+OC-010,Sports-equipment rental locker,15,20,11,12,7,4,69,RESERVE,LOCATION,LOW_MEDIUM
+OC-018,Workplace micro-market,16,16,17,13,3,3,68,RESERVE,TRANSACTION,HIGH
+OC-016,Laundry locker route service,17,18,14,11,4,4,68,RESERVE,LOCATION,LOW_MEDIUM
+OC-026,3D / personalization micro-production,17,17,12,12,4,4,66,RESERVE,TRANSACTION,MEDIUM_HIGH
