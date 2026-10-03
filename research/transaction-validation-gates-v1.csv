@@ -1,0 +1,9 @@
+candidate_id,test_id,test_name,evidence_target,sample_size,pass_rule,fail_rule,capex_allowed,next_action
+OC-022,TV-MRO-01,buyer pain interviews,C3,15,">=8 monthly repeat buyers; >=5 real basket examples; >=5 non-price pain","thresholds not met after 15 qualified interviews",0,"collect 5 baskets"
+OC-022,TV-MRO-02,real basket sourcing,C3,5,">=3 baskets support >=15% gross margin after ordinary fulfillment OR explicit paid consolidation value",">=4/5 baskets commodity-only with no operational value",0,"send 3 trial proposals"
+OC-022,TV-MRO-03,paid procurement trial,C4,3,">=2 written intents and >=1 paid order","no written intent after 3 qualified proposals",0,"operate manually; measure repeat"
+OC-021,TV-PPE-01,issuance-control discovery,C3,15,">=5 sites report material issuance/stockout/control pain and >=2 discuss written equipment trial","buyers only want lower unit price / no issuance pain",0,"obtain equipment quotes"
+OC-021,TV-PPE-02,equipment economics,C3,3,">=2 written site intents; downside payback <=24m; <=2 unplanned weekday incidents/month expected","no two site intents or economics fail",0,"write pilot preregistration before any purchase"
+OC-030,TV-EVT-01,supplier terms,C2,3,">=3 comparable net quotes including logistics/support/cancellation","cannot establish outsourced fulfillment economics",0,"build one standardized buyer offer"
+OC-030,TV-EVT-02,buyer quote test,C3,20,">=4 dated quote requests; >=2 scope discussions; >=1 deposit/order; expected contribution >=150k/event","no real quote request after 20 qualified contacts OR contribution <100k/event",0,"fulfill first event by subcontract"
+OC-030,TV-EVT-03,ownership gate,C5,3,">=3 paid subcontracted events; repeated asset; <=18m base and <=24m downside payback","demand fragmented or owner logistics required",0,"only then evaluate asset purchase"

@@ -1,16 +1,20 @@
 {
   "project": "SideEconomyLab",
-  "version": "seoul-location-screen-v1",
-  "status": "LOCATION_SCREENING",
+  "version": "transaction-validation-v1",
+  "status": "TRANSACTION_VALIDATION_READY",
   "default_geography": "Seoul / Seoul metropolitan area",
-  "current_phase": "Corrected Seoul demand-fit screening for LOCATION lane",
-  "location_candidates": ["OC-013", "OC-020", "OC-008", "OC-001"],
-  "validated_run": 37110955356,
-  "source_quarter": "20262",
-  "joined_commercial_areas": 1650,
-  "key_finding": "Demand concentration is clear, but generic luggage storage is heavily supplied by public/subway infrastructure.",
-  "next_phase": {
-    "location_lane": "Supply-adjusted shortlist and host economics",
-    "transaction_lane": "Transaction validation protocols for OC-021, OC-022, OC-030"
-  }
+  "current_phase": "Move TRANSACTION lane from C2 evidence toward C3/C4 without capex",
+  "transaction_candidates": ["OC-021", "OC-022", "OC-030"],
+  "design": {
+    "mro_wedge": "Test OC-022 asset-light safety-consumables replenishment first; upgrade only proven sites to OC-021 controlled dispensing.",
+    "event_wedge": "Sell/subcontract OC-030 events before considering asset ownership."
+  },
+  "hard_rule": "No equipment purchase before real buyer evidence and pilot preregistration.",
+  "next_actions": [
+    "Verify employer outside-business/conflict rules before commercial outreach",
+    "Build 30-company public MRO lead list",
+    "Run 15 qualified MRO buyer interviews and collect up to 5 real baskets",
+    "Obtain 3 event supplier terms and test 20 qualified event buyers",
+    "Seek first paid order before any asset purchase"
+  ]
 }
