@@ -332,3 +332,17 @@ The project should prefer **proof of transaction over more scoring**.
 A candidate advances when someone with a real current need supplies operational data, requests a quote, signs trial intent or pays.
 
 Compliments, survey interest and "sounds useful" do not advance evidence confidence.
+
+
+## Public lead-data route
+
+For reproducible lead sourcing, the Korean Public Data Portal publishes the Korea Industrial Complex Corporation nationwide registered-factory dataset.
+
+Dataset:
+https://www.data.go.kr/data/15105482/fileData.do
+
+Published fields include company name, industrial-complex name, product and factory address. The portal reports 217,048 rows for the referenced nationwide file and states that directly identifying fields such as business-registration numbers are excluded.
+
+The first 30-company C3 list can therefore be built from public factory information only.
+
+No additional API key is required for a small manual shortlist. If lead generation is later automated through the portal's OpenAPI, add a separate data.go.kr service key as a GitHub secret rather than committing it.
