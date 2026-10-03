@@ -7,7 +7,6 @@ The project is intentionally broader than micro-assets or unmanned stores. It co
 ## Objective
 
 Identify, validate and operate at least one side business that:
-
 - can coexist with a demanding full-time job;
 - requires limited weekday interruption;
 - can start with controlled seed capital;
@@ -19,24 +18,7 @@ Identify, validate and operate at least one side business that:
 
 ## Research scope
 
-Potential archetypes include:
-
-- hosted or standalone micro-assets
-- rental assets
-- small-format spaces
-- route businesses
-- unattended retail / vending
-- self-service equipment
-- B2B recurring equipment or consumables
-- recurring procurement
-- niche commerce
-- recommerce / refurbishment
-- productized real-world services
-- execution-heavy marketplaces / brokerage
-- small-scale production
-- physical-digital hybrids
-- compact entertainment / experience
-- micro infrastructure / utility services
+Potential archetypes include hosted or standalone micro-assets, rental assets, small-format spaces, route businesses, unattended retail, B2B recurring equipment or procurement, niche commerce, recommerce, service operations, small-scale production, physical-digital hybrids and compact experiences.
 
 The repository does **not** assume that any one archetype is the answer.
 
@@ -55,7 +37,14 @@ The repository does **not** assume that any one archetype is the answer.
 
 ## Current phase
 
-Foundation only. No API integration, no Seoul data pipeline, no production app, no predictive model.
+Global opportunity discovery.
+
+Current artifacts:
+- `research/global-case-registry.csv` — 100+ observed deployment cases
+- `research/normalized-candidates-v1.csv` — 30 normalized business-model candidates
+- `research/global-opportunity-discovery-v1.md` — methodology and early structural findings
+
+No production API, Seoul data pipeline, predictive model, or pilot execution is authorized yet.
 
 See:
 - `docs/research-constitution.md`

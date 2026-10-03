@@ -1,9 +1,11 @@
 {
   "project": "SideEconomyLab",
-  "version": "foundation-v1",
+  "version": "global-opportunity-discovery-v1",
   "status": "DISCOVERY",
   "scope": "Broad side-economy business research; not limited to installation businesses",
   "default_geography": "Seoul / Seoul metropolitan area",
-  "current_phase": "Research foundation",
-  "next_phase": "Global and Korea opportunity discovery"
+  "current_phase": "Global opportunity discovery",
+  "current_case_count": 102,
+  "normalized_candidate_count": 30,
+  "next_phase": "Korea feasibility screen and first-pass scoring"
 }
