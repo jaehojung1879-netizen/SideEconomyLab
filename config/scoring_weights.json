@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "weights": {
+    "economics": 25,
+    "owner_fit": 25,
+    "demand_distribution": 20,
+    "asset_operations": 15,
+    "competition_defensibility": 10,
+    "ai_data_leverage": 5
+  },
+  "pilot_capital_krw": {
+    "preferred_min": 3000000,
+    "preferred_max": 7000000,
+    "normal_ceiling": 10000000
+  },
+  "owner_time": {
+    "target_hours_per_week_max": 5,
+    "weekday_interruptions": "minimize"
+  }
+}
