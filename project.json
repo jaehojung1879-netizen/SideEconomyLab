@@ -1,13 +1,14 @@
 {
   "project": "SideEconomyLab",
-  "version": "korea-feasibility-screen-v1",
-  "status": "SCREENING",
-  "scope": "Broad side-economy business research; not limited to installation businesses",
+  "version": "korea-c2-evidence-scoring-v1",
+  "status": "PRIORITIZATION",
   "default_geography": "Seoul / Seoul metropolitan area",
-  "current_phase": "Korea first-pilot hard-gate screen",
-  "input_candidate_count": 30,
-  "keep_count": 12,
-  "watch_count": 10,
-  "kill_first_pilot_count": 8,
-  "next_phase": "C2 evidence collection and 100-point scoring for 12 KEEP candidates"
+  "current_phase": "C2 evidence and provisional scoring",
+  "scored_candidate_count": 12,
+  "advance_count": 7,
+  "reserve_count": 5,
+  "next_phase": {
+    "location_lane": "Seoul location screening for OC-013, OC-020, OC-008, OC-001",
+    "transaction_lane": "Transaction validation protocols for OC-021, OC-022, OC-030"
+  }
 }
