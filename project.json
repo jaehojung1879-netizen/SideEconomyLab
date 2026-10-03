@@ -1,11 +1,13 @@
 {
   "project": "SideEconomyLab",
-  "version": "global-opportunity-discovery-v1",
-  "status": "DISCOVERY",
+  "version": "korea-feasibility-screen-v1",
+  "status": "SCREENING",
   "scope": "Broad side-economy business research; not limited to installation businesses",
   "default_geography": "Seoul / Seoul metropolitan area",
-  "current_phase": "Global opportunity discovery",
-  "current_case_count": 102,
-  "normalized_candidate_count": 30,
-  "next_phase": "Korea feasibility screen and first-pass scoring"
+  "current_phase": "Korea first-pilot hard-gate screen",
+  "input_candidate_count": 30,
+  "keep_count": 12,
+  "watch_count": 10,
+  "kill_first_pilot_count": 8,
+  "next_phase": "C2 evidence collection and 100-point scoring for 12 KEEP candidates"
 }
