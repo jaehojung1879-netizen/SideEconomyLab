@@ -1,14 +1,16 @@
 {
   "project": "SideEconomyLab",
-  "version": "korea-c2-evidence-scoring-v1",
-  "status": "PRIORITIZATION",
+  "version": "seoul-location-screen-v1",
+  "status": "LOCATION_SCREENING",
   "default_geography": "Seoul / Seoul metropolitan area",
-  "current_phase": "C2 evidence and provisional scoring",
-  "scored_candidate_count": 12,
-  "advance_count": 7,
-  "reserve_count": 5,
+  "current_phase": "Corrected Seoul demand-fit screening for LOCATION lane",
+  "location_candidates": ["OC-013", "OC-020", "OC-008", "OC-001"],
+  "validated_run": 37110955356,
+  "source_quarter": "20262",
+  "joined_commercial_areas": 1650,
+  "key_finding": "Demand concentration is clear, but generic luggage storage is heavily supplied by public/subway infrastructure.",
   "next_phase": {
-    "location_lane": "Seoul location screening for OC-013, OC-020, OC-008, OC-001",
+    "location_lane": "Supply-adjusted shortlist and host economics",
     "transaction_lane": "Transaction validation protocols for OC-021, OC-022, OC-030"
   }
 }
