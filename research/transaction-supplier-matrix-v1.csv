@@ -1,0 +1,7 @@
+candidate_id,party,role,public_price_or_fact,what_to_request,status,source_url
+OC-021/OC-022,SERVEONE,incumbent benchmark,"2,170+ customer operating experience; MRO integrated purchasing; broad SME-to-enterprise positioning","Do not contact for resale yet; use as benchmark for what generic offer already solves",BENCHMARK,https://www.serveone.co.kr/kr/purchasing-service/mro.do
+OC-021/OC-022,Korea e-Platform,incumbent benchmark,"Manufacturing-focused MRO procurement; broad industrial and safety categories","Benchmark delivery/process claims and category breadth",BENCHMARK,https://www.koreab2b.com/main/sub02/sub02_mro_2016.do
+OC-021/OC-022,Factory On,lead source,"Smart K-Factory says 200k+ factory records support factory search","Build first public 30-company lead list without bank data",READY,https://www.factoryon.go.kr/
+OC-030,SELPIC,event supplier,"1-day event kiosk from KRW 300k; setup/removal and remote monitoring advertised","Net/reseller price; Seoul logistics; branding; consumable cap; cancellation; SLA",TO_QUOTE,https://selpic.kr/events
+OC-030,Chiki,event supplier,"AI photo booth KRW 1.0m/day; transport setup removal consumables custom UI/frame remote support included","Partner price; lead time; reseller invoicing; cancellation; SLA",TO_QUOTE,https://chiki.ai/rental/ai-photo-booth
+OC-030,PhotoQ,event supplier,"Prior C2 evidence: published one-day kiosk rental roughly KRW 990k-1.32m by model","Refresh exact current quote and inclusions before use",TO_QUOTE,https://www.photoq.kr/www/kiosk_photo/photo2/rental
