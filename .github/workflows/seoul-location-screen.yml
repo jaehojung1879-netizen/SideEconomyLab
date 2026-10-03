@@ -1,0 +1,37 @@
+name: Seoul location screen
+
+on:
+  push:
+    branches:
+      - research/seoul-location-screen-v1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seoul-location-screen-v1
+  cancel-in-progress: true
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate API schemas
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: python pipeline/seoul_location_probe.py
+      - name: Build four-candidate demand-fit screen
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: python pipeline/seoul_location_screen.py
+      - name: Upload sanitized results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-location-screen
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 14
