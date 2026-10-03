@@ -1,0 +1,43 @@
+name: Seoul Open Data API smoke
+
+on:
+  push:
+    branches:
+      - data/seoul-open-data-api-v1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate SEOUL repository secret
+        shell: bash
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: |
+          if [ -z "$SEOUL" ]; then
+            echo "::error::Repository secret SEOUL is missing or empty."
+            exit 1
+          fi
+
+      - name: Call Seoul workplace-population API
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: |
+          python pipeline/seoul_open_data_smoke.py             --service VwsmSignguWrcPopltnW             --start 1             --end 5             --out artifacts/seoul-open-data-smoke.json
+
+      - name: Upload sanitized smoke-test result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-open-data-smoke
+          path: artifacts/seoul-open-data-smoke.json
+          if-no-files-found: error
+          retention-days: 7
