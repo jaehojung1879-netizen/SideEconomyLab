@@ -17,6 +17,11 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from datetime import datetime, timezone
+import sys
+import threading
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from candidate_registry import load_registry, location_candidates, definition_hash
 
 try:
     from pyproj import Transformer
@@ -29,55 +34,46 @@ if not REST_KEY:
 
 IN_PATH=Path("docs/data/seoul-opportunity-map.json")
 OUT_PATH=Path("docs/data/kakao-poi-layer.json")
-TOP_N=int(os.environ.get("KAKAO_POI_TOP_N","15"))
-RADIUS=int(os.environ.get("KAKAO_POI_RADIUS_M","800"))
+REGISTRY=load_registry()
+POLICY=REGISTRY['research_policy']
+TOP_N=max(1,min(int(os.environ.get("KAKAO_POI_TOP_N",str(POLICY['top_demand_areas']))),100))
+MODERATE_N=max(0,min(int(os.environ.get("KAKAO_POI_MODERATE_N",str(POLICY['moderate_sample_areas']))),40))
+RADIUS=POLICY['radius_m']
 WORKERS=max(1,min(int(os.environ.get("KAKAO_POI_WORKERS","4")),8))
+REQUEST_BUDGET=min(int(os.environ.get('KAKAO_REQUEST_BUDGET',str(POLICY['max_http_attempts']))),POLICY['max_http_attempts'])
+CANDIDATES={key:{'candidate_id':c['id'],'label':c['label'],'queries':c['competition']['queries']} for key,c in location_candidates(REGISTRY).items()}
+REQUEST_COUNT=0
+REQUEST_LOCK=threading.Lock()
 
-CANDIDATES={
-    "booth":{
-        "candidate_id":"OC-001",
-        "label":"Public / office private booth",
-        "queries":[
-            {"kind":"keyword","value":"공유오피스"},
-            {"kind":"keyword","value":"스터디카페"},
-            {"kind":"keyword","value":"회의실대여"},
-        ],
-    },
-    "photo":{
-        "candidate_id":"OC-013",
-        "label":"Photo / document kiosk",
-        "queries":[
-            {"kind":"keyword","value":"포토부스"},
-            {"kind":"keyword","value":"사진관"},
-            {"kind":"keyword","value":"인쇄소"},
-        ],
-    },
-    "vending":{
-        "candidate_id":"OC-020",
-        "label":"Specialty vending route",
-        "queries":[
-            {"kind":"category","value":"CS2","label":"편의점"},
-            {"kind":"keyword","value":"무인매장"},
-            {"kind":"keyword","value":"자판기"},
-        ],
-    },
-    "luggage":{
-        "candidate_id":"OC-008",
-        "label":"Host-based luggage storage",
-        "queries":[
-            {"kind":"keyword","value":"짐보관"},
-            {"kind":"keyword","value":"물품보관함"},
-            {"kind":"keyword","value":"셀프보관"},
-        ],
-    },
-}
+
+def selected_areas(areas, key):
+    ranked=sorted(areas,key=lambda a:(-float(a.get('scores',{}).get(key,0)),str(a['trdar_cd'])))
+    selected=ranked[:TOP_N]
+    used={a['trdar_cd'] for a in selected}
+    groups={}
+    for a in ranked:
+        score=float(a.get('scores',{}).get(key,0))
+        if a['trdar_cd'] not in used and POLICY['moderate_min']<=score<POLICY['moderate_max_exclusive']:
+            groups.setdefault(a.get('district') or '',[]).append(a)
+    for i in range(MODERATE_N):
+        districts=sorted(d for d,v in groups.items() if v)
+        if not districts:break
+        # Round-robin districts; within each district highest remaining demand.
+        district=districts[i % len(districts)]
+        selected.append(groups[district].pop(0))
+    return selected
 
 TRANSFORMER=Transformer.from_crs("EPSG:5181","EPSG:4326",always_xy=True)
 
 def request_json(url):
+    global REQUEST_COUNT
     last=None
     for attempt in range(3):
         try:
+            with REQUEST_LOCK:
+                if REQUEST_COUNT >= REQUEST_BUDGET:
+                    raise RuntimeError('Request budget exhausted')
+                REQUEST_COUNT += 1
             req=urllib.request.Request(
                 url,
                 headers={
@@ -143,6 +139,11 @@ def fetch_one(task):
         if not isinstance(data, dict) or not isinstance(data.get("meta"), dict) or not isinstance(data.get("documents"), list):
             raise ValueError("Malformed Kakao response")
         meta=data["meta"]
+        for field in ('total_count','pageable_count'):
+            if type(meta.get(field)) is not int or meta[field]<0:
+                raise ValueError('Malformed count')
+        if len(data['documents'])>15 or meta['total_count']<len(data['documents']):
+            raise ValueError('Inconsistent response')
         return {
             "key":key,
             "rank":rank,
@@ -150,7 +151,9 @@ def fetch_one(task):
             "kind":q["kind"],
             "total_count":int(meta.get("total_count") or 0),
             "pageable_count":int(meta.get("pageable_count") or 0),
-            "docs":[clean_doc(d,label) for d in (data.get("documents") or [])],
+            "docs":[clean_doc(d,label) for d in data['documents']],
+            "returned_count":len(data['documents']),
+            "truncated":meta['total_count']>len(data['documents']) or meta.get('is_end') is False,
             "error":None,
         }
     except Exception as exc:
@@ -166,6 +169,8 @@ def fetch_one(task):
         }
 
 def main():
+    global REQUEST_COUNT
+    REQUEST_COUNT=0
     payload=json.loads(IN_PATH.read_text(encoding="utf-8"))
     areas=payload.get("areas") or []
 
@@ -173,22 +178,22 @@ def main():
     tasks=[]
     coords={}
     for key,spec in CANDIDATES.items():
-        ranked=sorted(
-            areas,
-            key=lambda a:float((a.get("scores") or {}).get(key) or 0),
-            reverse=True,
-        )[:TOP_N]
+        ranked=selected_areas(areas,key)
         ranked_by_candidate[key]=ranked
         for rank,a in enumerate(ranked,1):
             x=float(a.get("x_epsg5181") or 0)
             y=float(a.get("y_epsg5181") or 0)
             if not x or not y:
-                continue
+                raise SystemExit("Invalid source center; previous snapshot preserved")
             lon,lat=TRANSFORMER.transform(x,y)
+            if not (math.isfinite(lat) and math.isfinite(lon) and 33<=lat<=39 and 124<=lon<=132):
+                raise SystemExit("Invalid source center; previous snapshot preserved")
             coords[(key,rank)]=(lon,lat)
             for q in spec["queries"]:
                 tasks.append((key,rank,a,q,lon,lat))
 
+    if not tasks or len(tasks)*3>REQUEST_BUDGET:
+        raise SystemExit('Collection exceeds retry-inclusive request budget; previous snapshot preserved')
     grouped={}
     error_count=0
     with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as pool:
@@ -202,6 +207,11 @@ def main():
         "radius_m":RADIUS,
         "top_n_areas_per_candidate":TOP_N,
         "worker_count":WORKERS,
+        "schema_version":2,
+        "collected_at":datetime.now(timezone.utc).date().isoformat(),
+        "sampling":{"top_demand":TOP_N,"moderate_per_candidate":MODERATE_N,"moderate_min":POLICY['moderate_min'],"moderate_max_exclusive":POLICY['moderate_max_exclusive'],"district_round_robin":True},
+        "http_attempt_count":REQUEST_COUNT,
+        "http_attempt_budget":REQUEST_BUDGET,
         "query_count":len(tasks),
         "query_error_count":error_count,
         "note":"Exploratory competitor/substitute proxy for research prioritization; keyword/category coverage is imperfect.",
@@ -223,6 +233,8 @@ def main():
                     "kind":res["kind"],
                     "total_count":res["total_count"],
                     "pageable_count":res["pageable_count"],
+                    "returned_count":res.get('returned_count',0),
+                    "truncated":res.get('truncated',False),
                 }
                 if res["error"]:
                     stat["error"]=res["error"]
@@ -257,11 +269,12 @@ def main():
             "candidate_id":spec["candidate_id"],
             "label":spec["label"],
             "queries":spec["queries"],
+            "definition_hash":definition_hash(location_candidates(REGISTRY)[key],RADIUS),
             "areas":area_rows,
         }
 
-    if not tasks or error_count == len(tasks):
-        raise SystemExit("No successful Kakao POI queries; previous snapshot preserved")
+    if error_count:
+        raise SystemExit(f'Incomplete Kakao replacement ({error_count} query errors); previous snapshot preserved')
     OUT_PATH.parent.mkdir(parents=True,exist_ok=True)
     temporary = OUT_PATH.with_suffix(".json.tmp")
     temporary.write_text(

@@ -2,6 +2,9 @@
 import csv, json, math, os, urllib.parse, urllib.request
 from collections import defaultdict
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from candidate_registry import load_registry, location_candidates
 
 KEY=os.environ.get("SEOUL","").strip()
 if not KEY:
@@ -153,20 +156,15 @@ def main():
         rr=rank01([num(x[field]) for x in rows])
         for i,v in enumerate(rr): rows[i]["r_"+field]=v
 
+    candidates = location_candidates()
     for x in rows:
-        # Demand-fit only. No direct incumbent-supply penalty yet.
-        x["score_photo"]=100*(.35*x["r_flow"]+.25*x["r_young_flow"]+.15*x["r_subway"]+.15*x["r_attractors"]+.10*x["r_afterwork_flow"])
-        x["score_vending"]=100*(.30*x["r_worker"]+.25*x["r_flow"]+.20*x["r_day_flow"]+.15*x["r_attractors"]+.10*x["r_subway"])
-        x["score_luggage"]=100*(.30*x["r_lodging"]+.20*x["r_subway"]+.15*x["r_rail"]+.25*x["r_flow"]+.10*x["r_attractors"])
-        x["score_booth"]=100*(.40*x["r_worker"]+.20*x["r_weekday_flow"]+.15*x["r_day_flow"]+.10*x["r_subway"]+.05*x["r_bank"]+.05*x["r_public_office"]+.05*x["r_attractors"])
+        # Canonical registry retains the exact v1 weights and operation order.
+        for key, candidate in candidates.items():
+            x['score_' + key] = 100 * sum(weight * x['r_' + field] for field, weight in candidate['weights'].items())
 
     base_fields=["trdar_cd","trdar_name","district","dong","worker","flow","young_flow","day_flow","afterwork_flow","attractors","lodging","subway","rail","bus_terminal"]
-    specs=[
-      ("OC-013","photo","score_photo"),
-      ("OC-020","vending","score_vending"),
-      ("OC-008","luggage","score_luggage"),
-      ("OC-001","booth","score_booth"),
-    ]
+    specs = [(c['id'], key, 'score_' + key) for key, c in candidates.items()]
+
     summary=[]
     for cid,label,sf in specs:
         top=sorted(rows,key=lambda x:x[sf],reverse=True)[:30]
@@ -222,12 +220,7 @@ def main():
               "university":round(num(x["university"])),
               "theater":round(num(x["theater"])),
               "department_store":round(num(x["department_store"])),
-              "scores":{
-                "photo":round(x["score_photo"],2),
-                "vending":round(x["score_vending"],2),
-                "luggage":round(x["score_luggage"],2),
-                "booth":round(x["score_booth"],2),
-              }
+              "scores":{key:round(x['score_' + key],2) for key in candidates}
             })
         gis_path.write_text(json.dumps({
           "periods":periods,

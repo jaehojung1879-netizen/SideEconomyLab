@@ -44,9 +44,9 @@ Current artifacts:
 - `research/normalized-candidates-v1.csv` — 30 normalized business-model candidates
 - `research/global-opportunity-discovery-v1.md` — methodology and early structural findings
 
-The LOCATION lane includes a static Seoul demand-fit / Kakao substitute GIS. This is research screening, not a revenue or ROI model. No equipment purchase or pilot execution is authorized.
+The LOCATION lane includes a static business opportunity intelligence GIS with separate demand, observed supply and research quadrants. This is research screening, not a revenue or ROI model. No equipment purchase or pilot execution is authorized.
 
-Open the [GIS workspace](https://jaehojung1879-netizen.github.io/SideEconomyLab/) for candidate/location exploration. Research history and methodology remain secondary. See `docs/gis-workspace-v2.md` for browser map deployment and site observations, and `docs/gis-v1.md` for the unchanged v1 data pipeline.
+Open the [GIS workspace](https://jaehojung1879-netizen.github.io/SideEconomyLab/) for candidate/location exploration. Research history and methodology remain secondary. See `docs/opportunity-intelligence-v3.md` for supply methodology/coverage and the canonical candidate registry; `docs/gis-workspace-v2.md` for browser map deployment and site observations, and `docs/gis-v1.md` for the unchanged v1 data pipeline.
 
 See:
 - `docs/research-constitution.md`

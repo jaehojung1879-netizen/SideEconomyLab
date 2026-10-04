@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "fields": {
+    "worker": "직장인구",
+    "flow": "유동인구",
+    "young_flow": "20–40대 유동",
+    "day_flow": "11–17시 유동",
+    "afterwork_flow": "17–21시 유동",
+    "weekday_flow": "평일 유동",
+    "attractors": "집객시설",
+    "subway": "지하철",
+    "lodging": "숙박시설",
+    "rail": "철도",
+    "bank": "은행",
+    "public_office": "공공기관",
+    "bus_terminal": "버스터미널",
+    "bus_stop": "버스정류장",
+    "university": "대학교",
+    "theater": "극장",
+    "department_store": "백화점"
+  },
+  "stages": [
+    "DISCOVERY",
+    "RESEARCH",
+    "LOCATION SCREEN",
+    "FIELD CHECK",
+    "TRANSACTION TEST",
+    "PAID EVIDENCE",
+    "PILOT"
+  ],
+  "research_policy": {
+    "version": "supply-proxy-v1",
+    "high_demand_min": 90,
+    "reference_min_areas": 10,
+    "lower_supply_comparator": "<= candidate measured-sample median",
+    "radius_m": 800,
+    "top_demand_areas": 40,
+    "moderate_sample_areas": 20,
+    "moderate_min": 65,
+    "moderate_max_exclusive": 85,
+    "query_result_limit": 15,
+    "max_http_attempts": 2160
+  },
+  "candidates": [
+    {
+      "key": "booth",
+      "id": "OC-001",
+      "label": "업무·통화용 독립 부스",
+      "weights": {
+        "worker": 0.4,
+        "weekday_flow": 0.2,
+        "day_flow": 0.15,
+        "subway": 0.1,
+        "bank": 0.05,
+        "public_office": 0.05,
+        "attractors": 0.05
+      },
+      "checks": [
+        "오피스·공유공간 담당자에게 부스 설치 가능 면적과 전력·환기를 확인",
+        "점심·오후 시간대 통화·집중 공간 부족과 기존 부스 이용 상황 확인",
+        "방음·소방·접근성, 관리 책임과 임대료·수익배분 조건 확인"
+      ],
+      "lane": "LOCATION",
+      "research_status": "LOCATION SCREEN",
+      "status_note": "공개 데이터 입지 탐색 단계 · 현장·유료 증거 미등록",
+      "metric_fields": [
+        "worker",
+        "flow",
+        "day_flow",
+        "subway"
+      ],
+      "competition": {
+        "queries": [
+          {
+            "kind": "keyword",
+            "value": "공유오피스"
+          },
+          {
+            "kind": "keyword",
+            "value": "스터디카페"
+          },
+          {
+            "kind": "keyword",
+            "value": "회의실대여"
+          }
+        ],
+        "direct_patterns": [
+          "방음부스",
+          "폰부스",
+          "통화부스",
+          "워크부스"
+        ],
+        "substitute_patterns": [
+          "공유오피스",
+          "스터디카페",
+          "스터디룸",
+          "회의실",
+          "공간대여"
+        ],
+        "context_definition": "직접·대체 패턴과 맞지 않는 결과는 문맥/관련성 미확인으로 제외",
+        "risk": "공유공간이 독립 부스의 실제 공급을 뜻하지 않음. 일반 카페·상호 키워드는 오탐 가능."
+      },
+      "next_actions": [
+        "보행 동선과 실제 경쟁 서비스를 현장에서 확인",
+        "가능한 건물·호스트 후보 3곳을 찾아 설치·관리 조건 확인",
+        "임대료·보증금·호스트 배분의 실제 견적/조건 기록",
+        "직접 경쟁형 POI의 서비스·운영시간·가격을 수동 확인"
+      ]
+    },
+    {
+      "key": "photo",
+      "id": "OC-013",
+      "label": "사진·문서 출력 키오스크",
+      "weights": {
+        "flow": 0.35,
+        "young_flow": 0.25,
+        "subway": 0.15,
+        "attractors": 0.15,
+        "afterwork_flow": 0.1
+      },
+      "checks": [
+        "사진·증명·출력 중 실제 필요한 서비스와 시간대를 먼저 구분",
+        "사진관·포토부스·인쇄소의 가격·대기시간·영업시간을 현장 확인",
+        "보행 동선·시야·전력·소모품 보충 및 개인정보 처리 조건 확인"
+      ],
+      "lane": "LOCATION",
+      "research_status": "LOCATION SCREEN",
+      "status_note": "공개 데이터 입지 탐색 단계 · 현장·유료 증거 미등록",
+      "metric_fields": [
+        "flow",
+        "young_flow",
+        "subway",
+        "attractors"
+      ],
+      "competition": {
+        "queries": [
+          {
+            "kind": "keyword",
+            "value": "포토부스"
+          },
+          {
+            "kind": "keyword",
+            "value": "사진관"
+          },
+          {
+            "kind": "keyword",
+            "value": "인쇄소"
+          }
+        ],
+        "direct_patterns": [
+          "포토부스",
+          "무인사진",
+          "셀프사진",
+          "셀프포토",
+          "포토이즘",
+          "인생네컷",
+          "하루필름",
+          "포토그레이",
+          "포토시그니처"
+        ],
+        "substitute_patterns": [
+          "사진관",
+          "스튜디오",
+          "인쇄",
+          "프린트",
+          "복사",
+          "출력"
+        ],
+        "context_definition": "직접·대체 패턴과 맞지 않는 결과는 문맥/관련성 미확인으로 제외",
+        "risk": "사진과 문서 출력은 서로 다른 수요. 촬영 스튜디오·인쇄업체가 즉시 이용 가능한 키오스크 대체재인지 확인."
+      },
+      "next_actions": [
+        "보행 동선과 실제 경쟁 서비스를 현장에서 확인",
+        "가능한 건물·호스트 후보 3곳을 찾아 설치·관리 조건 확인",
+        "임대료·보증금·호스트 배분의 실제 견적/조건 기록",
+        "직접 경쟁형 POI의 서비스·운영시간·가격을 수동 확인"
+      ]
+    },
+    {
+      "key": "vending",
+      "id": "OC-020",
+      "label": "특화 자판기",
+      "weights": {
+        "worker": 0.3,
+        "flow": 0.25,
+        "day_flow": 0.2,
+        "attractors": 0.15,
+        "subway": 0.1
+      },
+      "checks": [
+        "편의점으로 대체하기 어려운 구체적 상품과 반복 구매 상황 확인",
+        "호스트의 설치 허용·전력·관리 동선과 수익배분 조건 확인",
+        "보충·고장 대응 주기, 품목별 판매 요건과 폐기 비용 확인"
+      ],
+      "lane": "LOCATION",
+      "research_status": "LOCATION SCREEN",
+      "status_note": "공개 데이터 입지 탐색 단계 · 현장·유료 증거 미등록",
+      "metric_fields": [
+        "worker",
+        "flow",
+        "day_flow",
+        "subway"
+      ],
+      "competition": {
+        "queries": [
+          {
+            "kind": "category",
+            "value": "CS2",
+            "label": "편의점"
+          },
+          {
+            "kind": "keyword",
+            "value": "무인매장"
+          },
+          {
+            "kind": "keyword",
+            "value": "자판기"
+          }
+        ],
+        "direct_patterns": [
+          "자판기",
+          "무인매장",
+          "무인점포",
+          "무인상점"
+        ],
+        "substitute_patterns": [
+          "편의점"
+        ],
+        "context_definition": "직접·대체 패턴과 맞지 않는 결과는 문맥/관련성 미확인으로 제외",
+        "risk": "특화 상품이 미정이므로 직접 경쟁형 신호도 동일 상품 경쟁을 확정하지 않음. 편의점은 범용 대체재."
+      },
+      "next_actions": [
+        "보행 동선과 실제 경쟁 서비스를 현장에서 확인",
+        "가능한 건물·호스트 후보 3곳을 찾아 설치·관리 조건 확인",
+        "임대료·보증금·호스트 배분의 실제 견적/조건 기록",
+        "직접 경쟁형 POI의 서비스·운영시간·가격을 수동 확인"
+      ]
+    },
+    {
+      "key": "luggage",
+      "id": "OC-008",
+      "label": "제휴형 짐 보관",
+      "weights": {
+        "lodging": 0.3,
+        "subway": 0.2,
+        "rail": 0.15,
+        "flow": 0.25,
+        "attractors": 0.1
+      },
+      "checks": [
+        "역 보관함·T-Locker·T-Luggage의 실제 가격·크기·운영시간 확인",
+        "대형 짐·단체·야간 등 기존 공급이 못 받는 수요가 있는지 확인",
+        "제휴 호스트의 잉여 공간·보관 책임·보험·수익배분 조건 확인"
+      ],
+      "lane": "LOCATION",
+      "research_status": "LOCATION SCREEN",
+      "status_note": "공개 데이터 입지 탐색 단계 · 현장·유료 증거 미등록",
+      "metric_fields": [
+        "lodging",
+        "subway",
+        "rail",
+        "flow"
+      ],
+      "competition": {
+        "queries": [
+          {
+            "kind": "keyword",
+            "value": "짐보관"
+          },
+          {
+            "kind": "keyword",
+            "value": "물품보관함"
+          },
+          {
+            "kind": "keyword",
+            "value": "셀프보관"
+          }
+        ],
+        "direct_patterns": [
+          "짐보관",
+          "짐 보관",
+          "수하물",
+          "물품보관함",
+          "t-luggage",
+          "t-locker",
+          "티러기지",
+          "티로커",
+          "캐리어",
+          "러기지"
+        ],
+        "substitute_patterns": [
+          "락커",
+          "라커",
+          "보관소"
+        ],
+        "context_definition": "직접·대체 패턴과 맞지 않는 결과는 문맥/관련성 미확인으로 제외",
+        "risk": "셀프스토리지·이삿짐 창고는 여행 짐 보관과 달라 문맥 정보로 남김. 운영시간·대형 짐 수용·역 내부 시설 누락 가능."
+      },
+      "next_actions": [
+        "보행 동선과 실제 경쟁 서비스를 현장에서 확인",
+        "가능한 건물·호스트 후보 3곳을 찾아 설치·관리 조건 확인",
+        "임대료·보증금·호스트 배분의 실제 견적/조건 기록",
+        "직접 경쟁형 POI의 서비스·운영시간·가격을 수동 확인"
+      ]
+    },
+    {
+      "key": "mro",
+      "id": "OC-022",
+      "label": "안전 소모품 반복조달",
+      "lane": "TRANSACTION",
+      "research_status": "RESEARCH",
+      "status_note": "공개 리드·인터뷰·구매품목을 확인하는 연구 설계 · 달성 증거 미등록"
+    },
+    {
+      "key": "dispensing",
+      "id": "OC-021",
+      "label": "PPE / MRO 공급 장비",
+      "lane": "TRANSACTION",
+      "research_status": "RESEARCH",
+      "status_note": "OC-022 반복 수요 확인 후 장비 전환 검토 · 달성 증거 미등록"
+    },
+    {
+      "key": "events",
+      "id": "OC-030",
+      "label": "행사 경험·렌탈",
+      "lane": "TRANSACTION",
+      "research_status": "RESEARCH",
+      "status_note": "협력업체 조건·날짜가 있는 견적·첫 유료 주문 검증 설계 · 달성 증거 미등록"
+    }
+  ]
+}

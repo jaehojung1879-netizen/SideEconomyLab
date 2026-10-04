@@ -69,7 +69,7 @@ class PipelineTests(unittest.TestCase):
         source = json.loads((ROOT / 'docs/data/seoul-opportunity-map.json').read_text())
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'poi.json'
-            with patch.object(self.kakao, 'OUT_PATH', output), patch.object(self.kakao, 'TOP_N', 1):
+            with patch.object(self.kakao, 'OUT_PATH', output), patch.object(self.kakao, 'TOP_N', 1), patch.object(self.kakao, 'MODERATE_N', 0):
                 good = {'meta': {'total_count': 0, 'pageable_count': 0}, 'documents': []}
                 with patch.object(self.kakao, 'query_poi', return_value=good):
                     self.kakao.main()
@@ -85,9 +85,9 @@ class PipelineTests(unittest.TestCase):
                         raise RuntimeError('private-test-value')
                     return good
                 with patch.object(self.kakao, 'query_poi', side_effect=partial):
-                    self.kakao.main()
-                result = json.loads(output.read_text())
-                self.assertEqual(result['query_error_count'], 1)
+                    with self.assertRaises(SystemExit):
+                        self.kakao.main()
+                self.assertEqual(first, output.read_bytes())
                 self.assertNotIn('private-test-value', output.read_text())
 
     def test_seoul_latest_quarter_and_stable_export(self):

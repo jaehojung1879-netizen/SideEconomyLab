@@ -27,7 +27,7 @@ const OpportunityMap=(()=>{
     }
     pois(rows,radius){
       this.clear('poi');
-      rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="poi-marker"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).bindPopup(r.html).addTo(this.layers.poi));
+      rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="poi-marker '+(r.role||'context')+'"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).bindPopup(r.html).addTo(this.layers.poi));
       if(radius)L.circle(radius.position,{radius:radius.meters,renderer:this.renderer,interactive:false,color:'#7c4dff',weight:1,dashArray:'5,5',fillOpacity:.025}).addTo(this.layers.poi);
     }
     sites(rows){this.clear('sites');rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="site-marker"></div>',iconSize:[18,18],iconAnchor:[9,9]})}).bindPopup(r.html).addTo(this.layers.sites));}
@@ -54,7 +54,7 @@ const OpportunityMap=(()=>{
       this.overlay('demand',r.position,button,3);
     });}
     pois(rows,radius){this.clear('poi');rows.forEach(r=>{
-      const button=document.createElement('button');button.className='poi-marker';button.style.padding='0';button.setAttribute('aria-label',r.name);
+      const button=document.createElement('button');button.className='poi-marker '+(r.role||'context');button.style.padding='0';button.setAttribute('aria-label',r.name);
       button.onclick=()=>{if(this.popup)this.popup.setMap(null);this.popup=this.overlay('poi',r.position,r.html,10);};
       this.overlay('poi',r.position,button,5);
     });
