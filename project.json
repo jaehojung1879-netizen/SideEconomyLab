@@ -40,5 +40,16 @@
     "Run 15 qualified MRO buyer interviews and collect up to 5 real baskets",
     "Obtain 3 event supplier terms and test 20 qualified event buyers",
     "Seek first paid order before any asset purchase"
-  ]
+  ],
+  "validation_portfolio": {
+    "id": "candidate-validation-portfolio-v1",
+    "board": "docs/validation.html",
+    "state": "docs/data/candidate-validation-portfolio.json",
+    "assessment_status": "PROVISIONAL_PENDING_CURRENT_PUBLIC_C2_RECHECK",
+    "selected_candidate_ids": [
+      "OC-022",
+      "OC-030"
+    ],
+    "pilot_authorized": false
+  }
 }

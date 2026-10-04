@@ -1,0 +1,75 @@
+name: Verify candidate validation portfolio
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/validation.html'
+      - 'docs/assets/validation.*'
+      - 'docs/data/candidate-validation-portfolio*'
+      - 'docs/data/candidate-registry.json'
+      - 'pipeline/validation_portfolio.py'
+      - 'field/candidate-validation-instruments-v1.md'
+      - 'field/transaction-evidence-log-v1.csv'
+      - 'tests/test_validation_portfolio.py'
+      - 'tests/validation-browser.cjs'
+      - '.github/workflows/validation-portfolio-check.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'pipeline/validation_portfolio.py'
+      - 'field/candidate-validation-instruments-v1.md'
+      - 'field/transaction-evidence-log-v1.csv'
+      - 'tests/test_validation_portfolio.py'
+      - 'tests/validation-browser.cjs'
+      - '.github/workflows/validation-portfolio-check.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install validation dependencies outside checkout
+        run: |
+          python -m pip install jsonschema==4.26.0
+          npm install --prefix /tmp/portfolio-test playwright@1.58.2
+          /tmp/portfolio-test/node_modules/.bin/playwright install --with-deps chromium
+      - name: Evidence and integrity checks
+        run: |
+          python pipeline/validation_portfolio.py --check
+          python -m unittest discover -s tests -p test_validation_portfolio.py -v
+          node --check docs/assets/validation.js
+          python - <<'PY'
+          import json, jsonschema
+          schema = json.load(open('docs/data/candidate-validation-portfolio.schema.json'))
+          state = json.load(open('docs/data/candidate-validation-portfolio.json'))
+          jsonschema.Draft202012Validator.check_schema(schema)
+          jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker()).validate(state)
+          PY
+      - name: Static project Pages runtime
+        env:
+          NODE_PATH: /tmp/portfolio-test/node_modules
+        run: |
+          mkdir -p /tmp/gis-static
+          ln -s "$GITHUB_WORKSPACE/docs" /tmp/gis-static/SideEconomyLab
+          python -m http.server 8765 --bind 127.0.0.1 --directory /tmp/gis-static > /tmp/portfolio-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID"' EXIT
+          for attempt in $(seq 1 20); do
+            if curl -sf http://127.0.0.1:8765/SideEconomyLab/validation.html > /dev/null; then break; fi
+            sleep 0.2
+          done
+          node tests/validation-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation-portfolio-screenshots
+          path: /tmp/validation-browser
+          if-no-files-found: ignore
