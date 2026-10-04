@@ -1,0 +1,64 @@
+name: Verify static GIS
+on:
+  push:
+    branches: [main, feat/sideeconomy-gis-v1]
+    paths:
+      - 'docs/**'
+      - 'pipeline/seoul_location_screen.py'
+      - 'pipeline/kakao_competitor_layer.py'
+      - 'tests/**'
+      - '.github/workflows/gis-check.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'pipeline/seoul_location_screen.py'
+      - 'pipeline/kakao_competitor_layer.py'
+      - 'tests/**'
+      - '.github/workflows/gis-check.yml'
+permissions:
+  contents: read
+concurrency:
+  group: gis-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test dependencies
+        run: |
+          python -m pip install pyproj==3.7.2
+          npm install --prefix /tmp/gis-test playwright@1.58.2
+          /tmp/gis-test/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify offline pipeline and syntax
+        run: |
+          python -m unittest discover -s tests -v
+          python -m py_compile pipeline/seoul_location_screen.py pipeline/kakao_competitor_layer.py
+          node --check docs/assets/gis.js
+      - name: Verify project Pages runtime
+        env:
+          NODE_PATH: /tmp/gis-test/node_modules
+        run: |
+          mkdir -p /tmp/gis-static
+          ln -s "$GITHUB_WORKSPACE/docs" /tmp/gis-static/SideEconomyLab
+          python -m http.server 8765 --directory /tmp/gis-static > /tmp/gis-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID"' EXIT
+          for attempt in $(seq 1 20); do
+            if curl -sf http://127.0.0.1:8765/SideEconomyLab/gis.html > /dev/null; then break; fi
+            sleep 0.2
+          done
+          node tests/gis-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gis-browser-screenshots
+          path: /tmp/gis-browser
+          if-no-files-found: ignore

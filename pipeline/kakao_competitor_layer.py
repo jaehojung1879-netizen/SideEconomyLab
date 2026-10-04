@@ -10,6 +10,7 @@ four LOCATION-lane candidates. This is a research proxy, not a complete census.
 
 import concurrent.futures
 import json
+import math
 import os
 import time
 import urllib.error
@@ -114,16 +115,23 @@ def query_poi(q, lon, lat):
     return request_json(endpoint+"?"+urllib.parse.urlencode(params))
 
 def clean_doc(d, source_label):
+    lat, lng = float(d["y"]), float(d["x"])
+    if not (math.isfinite(lat) and math.isfinite(lng) and 33 <= lat <= 39 and 124 <= lng <= 132):
+        raise ValueError("Invalid POI coordinates")
+    place_url = str(d.get("place_url") or "")
+    parsed = urllib.parse.urlparse(place_url)
+    if parsed.scheme not in ("http", "https") or parsed.netloc != "place.map.kakao.com":
+        place_url = ""
     return {
         "id":str(d.get("id") or ""),
         "name":d.get("place_name") or "",
         "category":d.get("category_name") or "",
         "category_group_code":d.get("category_group_code") or "",
         "address":d.get("road_address_name") or d.get("address_name") or "",
-        "lat":float(d["y"]) if d.get("y") else None,
-        "lng":float(d["x"]) if d.get("x") else None,
+        "lat":lat,
+        "lng":lng,
         "distance_m":int(d["distance"]) if str(d.get("distance") or "").isdigit() else None,
-        "place_url":d.get("place_url") or "",
+        "place_url":place_url,
         "matched_by":source_label,
     }
 
@@ -132,7 +140,9 @@ def fetch_one(task):
     label=q.get("label") or q["value"]
     try:
         data=query_poi(q,lon,lat)
-        meta=data.get("meta") or {}
+        if not isinstance(data, dict) or not isinstance(data.get("meta"), dict) or not isinstance(data.get("documents"), list):
+            raise ValueError("Malformed Kakao response")
+        meta=data["meta"]
         return {
             "key":key,
             "rank":rank,
@@ -152,7 +162,7 @@ def fetch_one(task):
             "total_count":0,
             "pageable_count":0,
             "docs":[],
-            "error":f"{type(exc).__name__}: {str(exc)[:120]}",
+            "error":f"HTTP_{exc.code}" if isinstance(exc, urllib.error.HTTPError) else type(exc).__name__,
         }
 
 def main():
@@ -228,7 +238,7 @@ def main():
                         prev["matched_by"]=" / ".join(sorted(x for x in labels if x))
 
             pois=list(seen.values())
-            pois.sort(key=lambda z:(z["distance_m"] is None,z["distance_m"] or 999999,z["name"]))
+            pois.sort(key=lambda z:(z["distance_m"] is None,z["distance_m"] if z["distance_m"] is not None else 999999,z["name"]))
             area_rows.append({
                 "rank":rank,
                 "trdar_cd":a.get("trdar_cd"),
@@ -250,17 +260,19 @@ def main():
             "areas":area_rows,
         }
 
+    if not tasks or error_count == len(tasks):
+        raise SystemExit("No successful Kakao POI queries; previous snapshot preserved")
     OUT_PATH.parent.mkdir(parents=True,exist_ok=True)
-    OUT_PATH.write_text(
-        json.dumps(result,ensure_ascii=False,separators=(",",":")),
+    temporary = OUT_PATH.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(result,ensure_ascii=False,separators=(",",":"),allow_nan=False),
         encoding="utf-8",
     )
+    temporary.replace(OUT_PATH)
     print(
         f"KAKAO_POI_EXPORT {OUT_PATH} candidates={len(result['candidates'])} "
         f"top_n={TOP_N} radius={RADIUS} queries={len(tasks)} errors={error_count} workers={WORKERS}"
     )
-    if error_count == len(tasks):
-        raise SystemExit("All Kakao POI queries failed; check REST key / API availability")
 
 if __name__=="__main__":
     main()

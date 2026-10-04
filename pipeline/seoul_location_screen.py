@@ -19,8 +19,12 @@ def call(service,start,end,period=None):
     if period: parts.append(str(period))
     url="/".join(parts)+"/"
     req=urllib.request.Request(url,headers={"User-Agent":"SideEconomyLab/1.0"})
-    with urllib.request.urlopen(req,timeout=60) as r:
-        return json.loads(r.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req,timeout=60) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except Exception:
+        # The Seoul key is part of the URL: never propagate URL-bearing errors.
+        raise RuntimeError(f"Seoul request failed: {service} rows {start}-{end}") from None
 
 def root(payload,service):
     x=payload.get(service)
@@ -54,6 +58,8 @@ def fetch_all(service,period=None):
         r=root(call(service,start,end,period),service)
         if not r: raise RuntimeError(f"{service} failed at {start}")
         rows.extend(r.get("row") or [])
+    if total <= 0 or len(rows) != total:
+        raise RuntimeError(f"{service} incomplete response")
     return rows,total
 
 def num(x):

@@ -37,14 +37,16 @@ The repository does **not** assume that any one archetype is the answer.
 
 ## Current phase
 
-Global opportunity discovery.
+Parallel LOCATION GIS screening and TRANSACTION C3/C4 validation.
 
 Current artifacts:
 - `research/global-case-registry.csv` — 100+ observed deployment cases
 - `research/normalized-candidates-v1.csv` — 30 normalized business-model candidates
 - `research/global-opportunity-discovery-v1.md` — methodology and early structural findings
 
-No production API, Seoul data pipeline, predictive model, or pilot execution is authorized yet.
+The LOCATION lane includes a static Seoul demand-fit / Kakao substitute GIS. This is research screening, not a revenue or ROI model. No equipment purchase or pilot execution is authorized.
+
+See `docs/gis-v1.md` for data coverage, static preview, verification and future site observations.
 
 See:
 - `docs/research-constitution.md`

@@ -1,6 +1,6 @@
 # Pipeline
 
-No production pipeline in the foundation phase.
+The LOCATION lane exports public Seoul aggregates and sanitized Kakao Local POIs for the static GIS. Credentials remain in the server-side Action environment. See `docs/gis-v1.md`.
 
 Future code belongs here only when:
 - a public dataset needs repeated refresh;

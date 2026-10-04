@@ -10,7 +10,7 @@ body{overflow:hidden}
 .back{color:var(--text);text-decoration:none;font-size:14px}.back:hover{color:var(--accent)}
 .status{font-size:12px;color:var(--muted)}
 .shell{display:grid;grid-template-columns:350px 1fr;height:calc(100vh - 78px)}
-.side{overflow:auto;padding:18px;background:var(--panel);border-right:1px solid var(--line)}
+.side{min-height:0;overflow:auto;padding:18px;background:var(--panel);border-right:1px solid var(--line)}
 .side section{padding:0 0 18px;margin:0 0 18px;border-bottom:1px solid var(--line)}
 label,.section-title{display:block;font-size:12px;font-weight:700;color:#c9d5e2;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
 select,input[type=search]{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px 9px;font-size:13px;outline:none}
@@ -45,7 +45,7 @@ input[type=range]{width:100%}
 .legend div{font-size:12px;color:#cbd6e1;margin:5px 0}
 .dot,.poi-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
 .s95{background:#ef476f}.s90{background:#ff9f1c}.s80{background:#ffd166}.slow{background:#3a86ff}.poi-dot{background:var(--poi);box-shadow:0 0 0 2px rgba(124,77,255,.18)}
-.map-wrap,#map{width:100%;height:100%}.map-wrap{position:relative}
+.map-wrap,#map{width:100%;height:100%;min-width:0}.map-wrap{position:relative}
 .map-badge{position:absolute;z-index:500;right:12px;top:12px;background:rgba(11,15,20,.88);color:#dbe6f0;border:1px solid var(--line);padding:7px 9px;border-radius:999px;font-size:11px;backdrop-filter:blur(6px)}
 .leaflet-container{background:#dfe5ea}
 .popup h3{margin:0 0 4px;font-size:14px}.popup .meta{color:#666;font-size:11px;margin-bottom:8px}
@@ -55,6 +55,6 @@ input[type=range]{width:100%}
 .poi-popup h4{margin:0 0 4px;font-size:13px}.poi-popup .meta{font-size:10px;color:#777;margin-bottom:5px}.poi-popup a{font-size:11px}
 @media(max-width:800px){
   body{overflow:auto}.topbar{height:auto;min-height:70px;grid-template-columns:auto 1fr;padding:12px}.status{display:none}
-  .shell{display:block;height:auto}.side{border-right:0;border-bottom:1px solid var(--line);max-height:none}
-  .map-wrap,#map{height:68vh}.map-badge{top:8px;right:8px}
+  .shell{display:flex;flex-direction:column;height:calc(100dvh - 70px);min-height:540px}.side{flex:0 0 45%;border-right:0;border-bottom:1px solid var(--line)}
+  .map-wrap{flex:1;min-height:280px}#map{height:100%}.map-badge{top:8px;right:8px}
 }
