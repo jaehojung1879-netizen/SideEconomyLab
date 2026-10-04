@@ -1,7 +1,7 @@
 name: Verify static GIS
 on:
   push:
-    branches: [main, feat/sideeconomy-gis-v1]
+    branches: [main]
     paths:
       - 'docs/**'
       - 'pipeline/seoul_location_screen.py'

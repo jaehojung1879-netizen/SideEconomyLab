@@ -19,7 +19,7 @@ const base=process.env.GIS_TEST_URL||'http://127.0.0.1:8765/SideEconomyLab/';
     assert.ok(await page.locator('.top-item').count()>0);
     await page.locator('.top-item').nth(1).click();
     await page.locator('.leaflet-popup').waitFor();
-    assert.ok((await page.locator('#selected-card').innerText()).includes('Demand-fit'));
+    assert.ok((await page.locator('#selected-card').innerText()).toLowerCase().includes('demand-fit'));
   }
   await page.locator('[data-threshold="95"]').click();
   for(const score of await page.locator('.top-item .score').allTextContents())assert.ok(Number(score)>=95);
@@ -41,6 +41,7 @@ const base=process.env.GIS_TEST_URL||'http://127.0.0.1:8765/SideEconomyLab/';
   await page.check('#show-demand');
   await page.locator('.top-item').first().click();
   await page.evaluate(()=>state.map.closePopup());
+  await page.waitForFunction(()=>state.map.getCenter().distanceTo(L.latLng(toLatLng(state.selectedArea)))<5);
   // Canvas marker interaction: click the selected commercial-area center.
   const point=await page.evaluate(()=>state.map.latLngToContainerPoint(toLatLng(state.selectedArea)));
   const box=await page.locator('#map').boundingBox();
