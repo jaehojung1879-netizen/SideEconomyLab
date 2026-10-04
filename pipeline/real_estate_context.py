@@ -143,6 +143,14 @@ def parse_reb(raw, codes_raw, metric, period):
     return value
 
 
+def geography_identity(demand):
+    """Pinned published center-point identity, not proof of polygon equivalence."""
+    fields = ('trdar_cd', 'trdar_name', 'district', 'dong', 'x_epsg5181', 'y_epsg5181')
+    areas = sorted(({key: area[key] for key in fields} for area in demand['areas']),
+                   key=lambda area: area['trdar_cd'])
+    return sha(encoded({'coordinate_system': demand['coordinate_system'], 'areas': areas}))
+
+
 def build(snapshot=None, demand_path=ROOT / 'docs/data/seoul-opportunity-map.json', as_of=None):
     snapshot = Path(snapshot) if snapshot else active_snapshot()
     manifest_bytes = (snapshot / 'manifest.json').read_bytes()
@@ -164,11 +172,18 @@ def build(snapshot=None, demand_path=ROOT / 'docs/data/seoul-opportunity-map.jso
     areas = demand['areas']
     if not areas or len({a['trdar_cd'] for a in areas}) != len(areas) or any(a['district'] not in SEOUL_DISTRICTS for a in areas):
         raise ValueError('unproven Seoul target geography')
+    audit = json.loads((ROOT / 'config/real-estate-geography-v1.json').read_bytes())
+    if (type(demand.get('area_count')) is not int or demand['area_count'] != len(areas)
+            or len(areas) != audit['target_area_count']
+            or demand.get('coordinate_system') != audit['coordinate_system']):
+        raise ValueError('target geography count or coordinate system changed; new audit required')
     stores, store_meta = parse_stores(raw['seoul-stores-2025.zip'])
     # IDs alone are insufficient: names must also match. No implicit aliases.
     matched = [a for a in areas if a['trdar_cd'] in stores and stores[a['trdar_cd']]['name'] == a['trdar_name']]
     if len(matched) / len(areas) < .99 or set(stores) != {a['trdar_cd'] for a in areas}:
         raise ValueError('store geography changed; new audit required')
+    if geography_identity(demand) != audit['geography_hash']:
+        raise ValueError('audited area names, districts or center points changed; new audit required')
     store_freshness = freshness(store_meta['period'], as_of)
     observations = []
     for area in sorted(areas, key=lambda a: a['trdar_cd']):
