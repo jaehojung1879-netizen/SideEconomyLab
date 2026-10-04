@@ -9,9 +9,13 @@ on:
       - main
       - feat/sideeconomy-gis-v1
       - feat/gis-workspace-v2
+      - research/opportunity-intelligence-gis-v3
     paths:
       - pipeline/seoul_location_screen.py
       - pipeline/kakao_competitor_layer.py
+      - pipeline/candidate_registry.py
+      - pipeline/opportunity_intelligence.py
+      - docs/data/candidate-registry.json
       - docs/gis.html
       - docs/assets/gis.js
       - docs/assets/gis.css
@@ -43,8 +47,6 @@ jobs:
             NEED=true
           elif [ "${{ github.event_name }}" != "push" ]; then
             NEED=true
-          elif git diff --name-only HEAD^ HEAD | grep -q '^pipeline/seoul_location_screen.py$'; then
-            NEED=true
           fi
           echo "demand=${NEED}" >> "$GITHUB_OUTPUT"
           echo "Demand refresh: ${NEED}"
@@ -62,15 +64,20 @@ jobs:
       - name: Build Kakao competition / substitute layer
         env:
           KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
-          KAKAO_POI_TOP_N: "15"
+          KAKAO_POI_TOP_N: "40"
+          KAKAO_POI_MODERATE_N: "20"
+          KAKAO_REQUEST_BUDGET: "2160"
           KAKAO_POI_RADIUS_M: "800"
         run: python -u pipeline/kakao_competitor_layer.py
+
+      - name: Derive reproducible competition evidence
+        run: python pipeline/opportunity_intelligence.py
 
       - name: Commit refreshed GIS datasets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/seoul-opportunity-map.json docs/data/kakao-poi-layer.json
+          git add docs/data/seoul-opportunity-map.json docs/data/kakao-poi-layer.json docs/data/opportunity-intelligence.json
           if git diff --cached --quiet; then
             echo "No GIS data changes to commit"
             exit 0

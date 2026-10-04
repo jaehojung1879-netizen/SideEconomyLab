@@ -16,7 +16,25 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   assert.equal(await page.evaluate(()=>state.adapter.provider),'leaflet');
   await page.waitForFunction(()=>document.querySelectorAll('.leaflet-tile-loaded').length>0);
   const desktop=await page.locator('#map').boundingBox();assert.ok(desktop.width>1600/2);
-  const initialName=await page.locator('.selected-title').innerText();
+  assert.equal(await page.locator('#candidate option').count(),4);
+  assert.ok(await page.evaluate(()=>state.evidence&&evidenceCandidate().measured_count>=15));
+  const median=await page.evaluate(()=>evidenceCandidate().reference_median);if(median!==null)assert.ok((await page.locator('#selected-card').innerText()).includes(String(median)+'개'));
+  await page.locator('#filter-panel').evaluate(e=>e.open=true);
+  for(const mode of ['supply','quadrant','demand']){
+    await page.selectOption('#map-mode',mode);assert.equal(await page.evaluate(()=>state.mode),mode);
+    assert.ok((await page.locator('#map-legend').innerText()).length>0);
+  }
+  await page.selectOption('#supply-filter','UNMEASURED');
+  assert.ok(await page.evaluate(()=>state.visible.every(x=>supplyFor(x.a).relevant_count===null&&supplyFor(x.a).quadrant==='E')));
+  assert.ok(!(await page.locator('.supply-section').innerText()).includes('관련 POI (직접형 + 대체형)\n0'));
+  await page.selectOption('#supply-filter','MEASURED');assert.ok(await page.evaluate(()=>state.visible.every(x=>supplyFor(x.a).status==='MEASURED')));
+  await page.selectOption('#sort-order','supply');assert.ok(await page.evaluate(()=>state.visible.every((x,i)=>!i||supplyFor(state.visible[i-1].a).relevant_count<=supplyFor(x.a).relevant_count)));
+  await page.selectOption('#sort-order','whitespace');assert.ok(await page.evaluate(()=>state.visible.every(x=>['A','C'].includes(supplyFor(x.a).quadrant))));
+  await page.selectOption('#sort-order','demand');await page.selectOption('#supply-filter','all');
+  await page.selectOption('#district-filter','강남구');assert.ok(await page.evaluate(()=>state.visible.every(x=>x.a.district==='강남구')));await page.selectOption('#district-filter','');
+  for(const quadrant of ['A','B','C','D','E']){await page.selectOption('#quadrant-filter',quadrant);assert.ok(await page.evaluate(()=>state.visible.every(x=>supplyFor(x.a).quadrant===state.quadrant)));}
+  await page.selectOption('#quadrant-filter','all');await page.click('[data-threshold="85"]');
+
   for(const candidate of ['photo','vending','luggage','booth']){
     await page.selectOption('#candidate',candidate);
     const code=await page.locator('.top-item').nth(1).getAttribute('data-code');await page.locator('.top-item').nth(1).click();
@@ -48,7 +66,9 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.locator('.poi-marker').first().click();await page.locator('.leaflet-popup').last().waitFor();
   await page.click('[data-dialog="method-dialog"]');assert.ok(await page.locator('#method-dialog').isVisible());await page.locator('#method-dialog [data-close-dialog]').click();
   await page.click('[data-dialog="transaction-dialog"]');for(const c of ['OC-021','OC-022','OC-030'])assert.ok((await page.locator('#transaction-dialog').innerText()).includes(c));await page.locator('#transaction-dialog [data-close-dialog]').click();
+  await page.locator('#navigator').evaluate(e=>{e.scrollTop=0;});await page.locator('.filter-content').evaluate(e=>{e.scrollTop=0;});await page.waitForTimeout(300);
   await page.screenshot({path:'/tmp/gis-browser/desktop.png'});
+  await page.selectOption('#map-mode','quadrant');await page.screenshot({path:'/tmp/gis-browser/quadrants.png'});await page.selectOption('#map-mode','demand');
   await page.setViewportSize({width:390,height:844});await page.reload();await page.locator('.top-item').first().waitFor({state:'attached'});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));const mobile=await page.locator('#map').boundingBox();assert.ok(mobile.y<160&&mobile.height>500);
   await page.screenshot({path:'/tmp/gis-browser/mobile-map.png'});
@@ -65,10 +85,12 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.route('**/data/map-runtime.json',r=>r.fulfill({json:{schema_version:1,preferred_basemap:'kakao',browser_app_key:'a'.repeat(32),allowed_origins:{}}}));
   await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);await page.selectOption('#candidate','photo');assert.ok(await page.evaluate(()=>state.visible.length)>0);await page.unrouteAll();
   errors.length=0;
+  // Stale derived evidence must never produce zero supply or quadrants.
+  await page.route('**/data/opportunity-intelligence.json',r=>r.fulfill({json:{schema_version:1,source_hash:'mismatched',candidates:{}}}));await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);assert.equal(await page.evaluate(()=>state.evidence),null);assert.equal(await page.evaluate(()=>supplyFor(state.selectedArea).relevant_count),null);await page.unrouteAll();
   // Synthetic observed site only in the test, never in committed business data.
   const a=await page.evaluate(()=>state.data.areas[0]);const position=await page.evaluate(a=>toLatLng(a),a);
   const synthetic={schema_version:1,sites:[{site_id:'fixture-only',candidate_id:'OC-001',name:'Synthetic QA site',lat:position[0],lng:position[1],commercial_area_id:a.trdar_cd,rent:null,deposit:null},{site_id:'invalid',candidate_id:'OC-001',lat:null,lng:null}]};
-  await page.route('**/data/site-observations.json',r=>r.fulfill({json:synthetic}));await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);assert.equal(await page.locator('.site-marker').count(),1);await page.selectOption('#candidate','photo');assert.equal(await page.locator('.site-marker').count(),0);await page.unrouteAll();
+  await page.route('**/data/site-observations.json',r=>r.fulfill({json:synthetic}));await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);assert.equal(await page.locator('.site-marker').count(),1);await page.evaluate(code=>selectArea(state.data.areas.find(a=>a.trdar_cd===code),{openSheet:false}),a.trdar_cd);const sitePanel=await page.locator('.site-info').innerText();assert.ok(sitePanel.includes('Synthetic QA site'));assert.ok(sitePanel.includes('임대료 미확인'));assert.ok(sitePanel.includes('수익배분 UNKNOWN'));await page.selectOption('#candidate','photo');assert.equal(await page.locator('.site-marker').count(),0);await page.unrouteAll();
   // Native Kakao renderer contract, using explicit fake SDK and dummy key.
   await page.setViewportSize({width:1600,height:1000});
   const config={schema_version:1,preferred_basemap:'kakao',browser_app_key:'a'.repeat(32),allowed_origins:[new URL(base).origin]};
@@ -78,6 +100,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.locator('.demand-marker').nth(2).click();assert.ok((await page.locator('#selected-card').innerText()).includes('FIELD CHECK'));
   for(const candidate of ['photo','vending','luggage','booth']){await page.selectOption('#candidate',candidate);assert.ok(await page.locator('.demand-marker').count()>0);assert.ok(await page.locator('.poi-marker').count()>0);}
   await page.uncheck('#show-demand');assert.equal(await page.locator('button.demand-marker').count(),0);await page.check('#show-demand');assert.ok(await page.locator('button.demand-marker').count()>0);
+  for(const mode of ['quadrant','supply','demand']){await page.selectOption('#map-mode',mode);assert.ok(await page.locator('button.demand-marker').count()>0);}
   await page.unroute('https://dapi.kakao.com/v2/maps/sdk.js?*');await page.route('https://dapi.kakao.com/v2/maps/sdk.js?*',r=>r.fulfill({contentType:'application/javascript',body:'/* synthetic SDK rejection: no Kakao globals */'}));
   await page.reload();await page.waitForFunction(()=>state.adapter?.provider==='leaflet');assert.ok(await page.evaluate(()=>state.visible.length)>0);await page.unrouteAll();
   assert.deepEqual(errors,[],'site and native renderer runtime has no console/page errors');
