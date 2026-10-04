@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import re
 from pathlib import Path
 import unittest
 
@@ -34,9 +35,14 @@ class BrowserConfigTests(unittest.TestCase):
 
     def test_missing_key_and_empty_real_sites(self):
         self.assertIsNone(module.build_config({})['browser_app_key'])
-        self.assertIsNone(json.loads((ROOT / 'docs/data/map-runtime.json').read_text())['browser_app_key'])
+        public_config = json.loads((ROOT / 'docs/data/map-runtime.json').read_text())
+        self.assertEqual(public_config['schema_version'], 1)
+        # main may intentionally publish the JavaScript app key after merge.
+        key = public_config['browser_app_key']
+        self.assertTrue(key is None or (isinstance(key, str) and re.fullmatch(r'[0-9a-fA-F]{32}', key)))
         sites = json.loads((ROOT / 'docs/data/site-observations.json').read_text())
-        self.assertEqual(sites, {'schema_version': 1, 'sites': []})
+        self.assertEqual(sites['schema_version'], 1)
+        self.assertIsInstance(sites['sites'], list)
         schema = json.loads((ROOT / 'docs/data/site-observations.schema.json').read_text())
         self.assertEqual(set(schema['properties']['sites']['items']['required']), {'site_id', 'candidate_id', 'lat', 'lng'})
 

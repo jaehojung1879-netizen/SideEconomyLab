@@ -41,6 +41,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   assert.ok(await page.evaluate(()=>state.adapter.layers.demand.getLayers().length)>0);
   // Select a different real area through a real Leaflet canvas hit target.
   const target=await page.evaluate(()=>{const a=state.visible[2].a;state.adapter.focus(toLatLng(a));return {code:a.trdar_cd,point:state.adapter.project(toLatLng(a))};});
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const mapBox=await page.locator('#map').boundingBox();await page.mouse.click(mapBox.x+target.point.x,mapBox.y+target.point.y);
   assert.equal(await page.evaluate(()=>state.selectedArea.trdar_cd),target.code);
   for(const u of await page.locator('.poi-list a').evaluateAll(es=>es.map(e=>e.href)))assert.equal(new URL(u).hostname,'place.map.kakao.com');

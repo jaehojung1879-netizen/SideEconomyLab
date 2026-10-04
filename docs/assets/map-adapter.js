@@ -28,7 +28,7 @@ const OpportunityMap=(()=>{
     pois(rows,radius){
       this.clear('poi');
       rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="poi-marker"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).bindPopup(r.html).addTo(this.layers.poi));
-      if(radius)L.circle(radius.position,{radius:radius.meters,color:'#7c4dff',weight:1,dashArray:'5,5',fillOpacity:.025}).addTo(this.layers.poi);
+      if(radius)L.circle(radius.position,{radius:radius.meters,renderer:this.renderer,interactive:false,color:'#7c4dff',weight:1,dashArray:'5,5',fillOpacity:.025}).addTo(this.layers.poi);
     }
     sites(rows){this.clear('sites');rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="site-marker"></div>',iconSize:[18,18],iconAnchor:[9,9]})}).bindPopup(r.html).addTo(this.layers.sites));}
     selected(position){this.clear('selection');if(position)L.circleMarker(position,{radius:11,color:'#1a3955',fill:false,weight:3,interactive:false,renderer:this.renderer}).addTo(this.layers.selection);}
