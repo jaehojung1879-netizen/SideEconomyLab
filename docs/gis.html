@@ -27,12 +27,20 @@
         <option value="vending">OC-020 · Specialty vending route</option>
         <option value="luggage">OC-008 · Host-based luggage storage</option>
       </select>
-      <p class="note">현재 점수는 수요 적합도(demand-fit)만 반영합니다. 임대료·직접 경쟁·host 조건은 아직 미반영입니다.</p>
+      <p class="note">상권 점수는 수요 적합도(demand-fit), Kakao 레이어는 주변 경쟁·대체재의 탐색용 proxy입니다.</p>
+    </section>
+
+    <section>
+      <label for="area-search">상권 찾기</label>
+      <div class="search-row">
+        <input id="area-search" type="search" autocomplete="off" placeholder="상권·구·동 검색">
+        <button id="search-clear" type="button">초기화</button>
+      </div>
     </section>
 
     <section>
       <div class="row-between">
-        <label for="threshold">최소 점수</label>
+        <label for="threshold">최소 수요점수</label>
         <strong id="threshold-value">85</strong>
       </div>
       <input id="threshold" type="range" min="0" max="100" step="1" value="85">
@@ -44,10 +52,22 @@
       </div>
     </section>
 
+    <section>
+      <div class="section-title">지도 레이어</div>
+      <label class="check-line"><input id="show-demand" type="checkbox" checked> 수요 적합도 상권</label>
+      <label class="check-line"><input id="show-poi" type="checkbox" checked> Kakao 경쟁·대체재</label>
+      <p class="note">경쟁·대체재는 후보별 수요 상위 15개 상권, 중심 반경 800m만 수집합니다.</p>
+    </section>
+
     <section class="stats">
       <div><span>표시 상권</span><strong id="visible-count">—</strong></div>
       <div><span>전체 상권</span><strong id="area-count">—</strong></div>
       <div><span>데이터 분기</span><strong id="period">—</strong></div>
+    </section>
+
+    <section id="selected-section">
+      <div class="section-title">선택 상권</div>
+      <div id="selected-card" class="selected-card muted-card">지도나 상위 입지를 선택하세요.</div>
     </section>
 
     <section>
@@ -56,22 +76,25 @@
     </section>
 
     <section class="legend">
-      <div class="section-title">점수 범례</div>
+      <div class="section-title">수요점수 범례</div>
       <div><i class="dot s95"></i> 95–100</div>
       <div><i class="dot s90"></i> 90–95</div>
       <div><i class="dot s80"></i> 80–90</div>
       <div><i class="dot slow"></i> 80 미만</div>
+      <div><i class="poi-dot"></i> Kakao 경쟁·대체재 POI</div>
     </section>
 
     <section class="method">
       <div class="section-title">해석 주의</div>
-      <p>점수는 매출·ROI 예측이 아닙니다. 직장인구, 유동인구, 집객시설 등을 이용한 연구 우선순위 지표입니다.</p>
-      <p>다음 단계에서 경쟁점포, host 비용, 임대료, 실제 후보지와 현장검증 레이어를 추가합니다.</p>
+      <p><strong>수요점수 ≠ 매출·ROI 예측.</strong> 직장인구, 유동인구, 집객시설 등을 이용한 연구 우선순위 지표입니다.</p>
+      <p><strong>Kakao POI 수 ≠ 완전한 경쟁점포 수.</strong> 키워드·카테고리 검색 기반의 비교용 proxy입니다.</p>
+      <p>후속 단계에서 실제 host 조건, 임대료, 현장방문, 견적 및 유료거래 증거를 별도 레이어로 추가합니다.</p>
     </section>
   </aside>
 
   <section class="map-wrap">
     <div id="map"></div>
+    <div class="map-badge" id="map-badge">Demand + Kakao POI</div>
   </section>
 </main>
 
