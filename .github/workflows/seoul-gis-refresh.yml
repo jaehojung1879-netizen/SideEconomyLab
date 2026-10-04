@@ -31,11 +31,28 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
+          fetch-depth: 2
+
+      - name: Decide demand refresh
+        id: refresh
+        shell: bash
+        run: |
+          NEED=false
+          if [ ! -f docs/data/seoul-opportunity-map.json ]; then
+            NEED=true
+          elif [ "${{ github.event_name }}" != "push" ]; then
+            NEED=true
+          elif git diff --name-only HEAD^ HEAD | grep -q '^pipeline/seoul_location_screen.py$'; then
+            NEED=true
+          fi
+          echo "demand=${NEED}" >> "$GITHUB_OUTPUT"
+          echo "Demand refresh: ${NEED}"
 
       - name: Install GIS dependency
         run: python -m pip install --disable-pip-version-check pyproj==3.7.2
 
       - name: Build public Seoul demand-fit dataset
+        if: steps.refresh.outputs.demand == 'true'
         env:
           SEOUL: ${{ secrets.SEOUL }}
           GIS_OUTPUT: docs/data/seoul-opportunity-map.json
