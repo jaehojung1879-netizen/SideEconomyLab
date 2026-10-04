@@ -35,8 +35,11 @@ li{margin:5px 0}
 .step:last-child{border-bottom:0}
 .status{font-weight:700}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.gis-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:12px}
+.gis-frame{width:100%;height:620px;border:1px solid var(--line);border-radius:13px;background:#0b0f14}
+.gis-open{white-space:nowrap;font-size:13px}
 footer{margin-top:26px;color:var(--muted);font-size:12px}
-@media(max-width:800px){.span-3,.span-4,.span-5,.span-6,.span-7,.span-8,.span-12{grid-column:span 12}h1{font-size:32px}.step{grid-template-columns:1fr}}
+@media(max-width:800px){.span-3,.span-4,.span-5,.span-6,.span-7,.span-8,.span-12{grid-column:span 12}h1{font-size:32px}.step{grid-template-columns:1fr}.gis-head{align-items:flex-start;flex-direction:column}.gis-frame{height:720px}}
 </style>
 </head>
 <body>
@@ -45,7 +48,7 @@ footer{margin-top:26px;color:var(--muted);font-size:12px}
     <div class="kicker">SideEconomyLab / Project Dashboard</div>
     <h1>본업을 유지하면서<br>독립적인 Side Economy를 만든다.</h1>
     <p class="muted">설치형 사업에 한정하지 않고, 물리자산·렌탈·공간·B2B 반복거래·서비스 운영·소형 생산·하이브리드 모델을 동일한 기준으로 검증한다.</p>
-    <p class="small muted">Last refreshed: 2026-10-04 · main through PR #6 · PR #7 draft</p>
+    <p class="small muted">Last refreshed: 2026-10-04 · research through PR #8 · PR #9 GIS draft</p>
   </section>
 
   <div class="grid">
@@ -109,7 +112,7 @@ footer{margin-top:26px;color:var(--muted);font-size:12px}
 
     <div class="card span-6">
       <h2>TRANSACTION lane</h2>
-      <p class="muted">PR #7 Draft: 장비 구매 없이 먼저 돈이 오가는지 검증.</p>
+      <p class="muted">PR #7 merged: 장비 구매 없이 먼저 돈이 오가는지 검증.</p>
       <h3>MRO / PPE</h3>
       <p>OC-022를 먼저 수동형 <strong>Safety Consumables Replenishment Desk</strong>로 테스트. 실제 basket과 반복구매 pain이 확인된 고객만 OC-021 dispensing으로 승격.</p>
       <h3 style="margin-top:14px">Event asset</h3>
@@ -125,14 +128,16 @@ footer{margin-top:26px;color:var(--muted);font-size:12px}
         <div class="step"><div class="status good">PR #4 MERGED</div><div>Korea hard-gate — 30 → KEEP 12 / WATCH 10 / KILL 8.</div></div>
         <div class="step"><div class="status good">PR #5 MERGED</div><div>Korean C2 evidence + provisional scoring — 12 → ADVANCE 7.</div></div>
         <div class="step"><div class="status good">PR #6 MERGED</div><div>서울 location screen — 1,650 상권 비교. quarter join bug 수정, supply-side falsification 시작.</div></div>
-        <div class="step"><div class="status warn">PR #7 DRAFT</div><div>Transaction validation — MRO/PPE와 event asset을 “sell before capex” 원칙으로 C3/C4 증거까지 이동하는 프로토콜.</div></div>
+        <div class="step"><div class="status good">PR #7 MERGED</div><div>Transaction validation — MRO/PPE와 event asset을 “sell before capex” 원칙으로 C3/C4 증거까지 이동하는 프로토콜.</div></div>
+        <div class="step"><div class="status good">PR #8 MERGED</div><div>Project dashboard — 연구 funnel, 후보, lane, next action을 한 페이지에 정리.</div></div>
+        <div class="step"><div class="status warn">PR #9 DRAFT</div><div>Seoul Opportunity GIS — 서울 1,650 상권 demand-fit + Kakao 경쟁·대체재 POI를 지도에서 공동 탐색.</div></div>
       </div>
     </div>
 
     <div class="card span-8">
       <h2>다음에 할 일</h2>
       <ol>
-        <li><strong>PR #7 검토 후 확정.</strong> 현재 프로토콜은 mergeable이지만 Draft 상태.</li>
+        <li><strong>PR #9 GIS 검증.</strong> demand-fit과 Kakao 경쟁·대체재 레이어가 실제 입지 판단에 유용한지 확인.</li>
         <li><strong>MRO public lead 30개.</strong> 공장 공개데이터만 사용하고 은행 고객/내부정보는 사용하지 않는다.</li>
         <li><strong>15개 qualified buyer interview + 5개 real basket.</strong> 가격이 아니라 stockout·발주·재고관리 pain이 존재하는지 확인.</li>
         <li><strong>Event supplier term 3개 + buyer 20개.</strong> 실제 dated quote request와 첫 deposit/order를 노린다.</li>
@@ -148,9 +153,20 @@ footer{margin-top:26px;color:var(--muted);font-size:12px}
     </div>
 
     <div class="card span-12">
+      <div class="gis-head">
+        <div>
+          <h2 style="margin-bottom:4px">서울 사업기회 GIS</h2>
+          <p class="muted">LOCATION lane의 수요 적합도와 Kakao 경쟁·대체재를 같은 화면에서 본다. 지도 자체는 탐색도구이며 ROI 예측은 아니다.</p>
+        </div>
+        <a class="gis-open" href="./gis.html" target="_blank" rel="noopener">전체화면 GIS →</a>
+      </div>
+      <iframe class="gis-frame" src="./gis.html" title="SideEconomyLab Seoul GIS" loading="lazy"></iframe>
+    </div>
+
+    <div class="card span-12">
       <h2>Repository</h2>
       <p><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab">jaehojung1879-netizen/SideEconomyLab</a></p>
-      <p><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/pull/7">Current Draft PR #7 — transaction validation v1</a></p>
+      <p><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/pull/9">Current Draft PR #9 — Seoul opportunity GIS v1</a></p>
     </div>
   </div>
 

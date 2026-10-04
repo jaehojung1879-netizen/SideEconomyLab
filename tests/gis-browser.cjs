@@ -1,0 +1,83 @@
+// Run against a real HTTP server mounted at the GitHub project Pages prefix.
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const base=process.env.GIS_TEST_URL||'http://127.0.0.1:8765/SideEconomyLab/';
+let activePage;
+fs.mkdirSync('/tmp/gis-browser',{recursive:true});
+(async()=>{
+  const browser=await chromium.launch({headless:true});
+  const page=await browser.newPage({viewport:{width:1365,height:900}});
+  activePage=page;
+  const errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)errors.push(`${r.status()} ${r.url()}`);});
+  await page.goto(base+'gis.html');
+  await page.locator('.top-item').first().waitFor();
+  assert.equal(await page.locator('#area-count').innerText(),'1,650');
+  await page.waitForFunction(()=>document.querySelectorAll('.leaflet-tile-loaded').length>0);
+  assert.ok(await page.locator('.poi-marker').count()>0);
+  for(const candidate of ['photo','vending','luggage','booth']){
+    await page.selectOption('#candidate',candidate);
+    assert.ok(await page.locator('.top-item').count()>0);
+    await page.locator('.top-item').nth(1).click();
+    await page.locator('.leaflet-popup').last().waitFor();
+    assert.ok((await page.locator('#selected-card').innerText()).toLowerCase().includes('demand-fit'));
+  }
+  await page.locator('[data-threshold="95"]').click();
+  for(const score of await page.locator('.top-item .score').allTextContents())assert.ok(Number(score)>=95);
+  await page.fill('#area-search','__no_matching_area__');
+  assert.equal(await page.locator('#visible-count').innerText(),'0');
+  assert.equal(await page.locator('.top-item').count(),0);
+  assert.equal(await page.locator('.poi-marker').count(),0);
+  assert.ok((await page.locator('#top-list').innerText()).includes('조건에 맞는'));
+  await page.click('#search-clear');
+  await page.locator('[data-threshold="0"]').click();
+  await page.fill('#area-search','강남');
+  assert.ok(await page.locator('.top-item').count()>0);
+  await page.click('#search-clear');
+  await page.uncheck('#show-poi');
+  assert.equal(await page.locator('.poi-marker').count(),0);
+  await page.check('#show-poi');
+  assert.ok(await page.locator('.poi-marker').count()>0);
+  await page.uncheck('#show-demand');
+  await page.check('#show-demand');
+  await page.locator('.top-item').first().click();
+  await page.evaluate(()=>{state.map.closePopup();});
+  await page.waitForFunction(()=>state.map.getCenter().distanceTo(L.latLng(toLatLng(state.selectedArea)))<5);
+  // Canvas marker interaction: click the selected commercial-area center.
+  const point=await page.evaluate(()=>state.map.latLngToContainerPoint(toLatLng(state.selectedArea)));
+  const box=await page.locator('#map').boundingBox();
+  await page.mouse.click(box.x+point.x,box.y+point.y);
+  await page.locator('.leaflet-popup').last().waitFor();
+  for(const url of await page.locator('#selected-card .poi-list a').evaluateAll(es=>es.map(e=>e.href)))assert.equal(new URL(url).hostname,'place.map.kakao.com');
+  fs.mkdirSync('/tmp/gis-browser',{recursive:true});
+  await page.screenshot({path:'/tmp/gis-browser/desktop.png'});
+  await page.setViewportSize({width:390,height:844});
+  await page.reload();
+  await page.locator('.top-item').first().waitFor();
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no mobile horizontal overflow');
+  const mobile=await page.locator('#map').boundingBox();
+  assert.ok(mobile.y<844&&mobile.height>=280,'mobile map visible without scrolling long sidebar');
+  await page.screenshot({path:'/tmp/gis-browser/mobile.png'});
+  await page.goto(base+'index.html');
+  const frame=page.frameLocator('iframe');
+  await page.locator('iframe').scrollIntoViewIfNeeded();
+  await frame.locator('.top-item').first().waitFor();
+  assert.ok(await frame.locator('.poi-marker').count()>0);
+  assert.deepEqual(errors,[]);
+  // Optional POI failure must not break the demand layer.
+  await page.route('**/data/kakao-poi-layer.json',route=>route.fulfill({status:404,body:''}));
+  await page.goto(base+'gis.html');
+  await page.locator('.top-item').first().waitFor();
+  assert.ok((await page.locator('#selected-card').innerText()).includes('POI 데이터를 불러오지'));
+  await page.unrouteAll();
+  await page.route('**/data/seoul-opportunity-map.json',route=>route.fulfill({json:{areas:[]}}));
+  await page.reload();
+  await page.waitForFunction(()=>document.querySelector('#data-status').textContent==='GIS 데이터 생성 필요');
+  await browser.close();
+  console.log('PASS: project Pages paths, Leaflet/tiles, all candidates, search, filters, toggles, canvas markers, detail/POI links, embedded GIS, mobile, missing datasets');
+})().catch(async e=>{
+  if(activePage) await activePage.screenshot({path:'/tmp/gis-browser/failure.png'}).catch(()=>{});
+  console.error(e);process.exit(1);
+});
