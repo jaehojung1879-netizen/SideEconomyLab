@@ -136,4 +136,4 @@ baseline hashes는 수요·POI·파생 공급·부동산·registry·기존 GIS a
 - JSON Schema Draft2020-12 자체/instance 검증과 새 JavaScript syntax 통과. 새 페이지의 실제 Chromium(system 151) 실행은 candidate 7개·선정2·예산·lane filter·후보 선택·source anchor·mobile overflow·Pages local paths·404/invalid lane 안전 실패를 통과. system Chromium 검증을 CI pinned Chromium 설치 완료로 간주하지 않는다.
 - pinned Playwright 1.58.2 Chromium 다운로드/기존 GIS CDN·타일이 network 403으로 차단되어 **기존 GIS 전체 browser suite는 미완료**. 신규 독립 CI workflow를 추가했고 실제 GitHub Actions 실행 여부는 PR 생성/네트워크 복구 후 확인해야 한다. local 새 페이지 검증과 hosted Pages 배포는 별개다.
 - public supplier current content 0건, quotes/interviews/intent/paid evidence 0건. 새 파일의 credential-pattern scan과 local source/instrument paths 확인; 외부 URL 내용/HTTP 유효성·현재 법적/보험 조건은 미확인.
-- GitHub API도 proxy 403으로 차단되어 이 시점에 Draft PR 생성은 미확인이다. commit/branch 제출과 PR number는 최종 handoff에서 실제 결과만 보고한다. API가 복구되면 동일 branch의 기존 PR 존재를 먼저 검사하고 없을 때만 Draft 한 개를 생성한다. merge/ready 전환은 하지 않는다.
+- GitHub REST의 repo read는 proxy 403이었지만 실제 PR용 GraphQL 경로는 동작했다. 동일 branch의 기존 PR이 없음을 확인한 뒤 **Draft PR #13**만 생성하고 OPEN/isDraft=true를 확인했다. merge/ready 전환은 하지 않는다. Git read/write와 PR GraphQL의 성공을 다른 REST/API/공급자 사이트 접근 성공으로 일반화하지 않는다.

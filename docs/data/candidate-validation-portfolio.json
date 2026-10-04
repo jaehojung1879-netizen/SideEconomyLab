@@ -1868,11 +1868,6 @@
       "operation": "기존 GIS 전체 브라우저 테스트",
       "status": "BLOCKED_NETWORK_403",
       "action": "지도 CDN/타일/Playwright 다운로드 도메인 적용 후 CI pinned Chromium 재검증"
-    },
-    {
-      "operation": "GitHub Draft PR 생성",
-      "status": "BLOCKED_NETWORK_403",
-      "action": "api.github.com 접근/인증 확인 뒤 정확히 1개 Draft PR 생성"
     }
   ],
   "integrity_baseline": {
