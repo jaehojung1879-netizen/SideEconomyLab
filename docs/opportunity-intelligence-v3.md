@@ -57,3 +57,16 @@ The existing Kakao/Leaflet map adapter, public JavaScript-key configuration, sec
 `candidate-registry.json` is shared by the UI, Seoul score generation, REST query collection and supply derivation. A future LOCATION candidate defines key/id/label/lane, weights over available source features, metric fields, competition queries/rules, checks, next actions and research status. The app needs no new hardcoded selector/branches. Publish a refreshed demand score column and explicitly revisit request budget, relevance evidence and the supported-ID enum in the existing site schema. New underlying source features still require a legitimate data integration; configuration cannot invent them. The three TRANSACTION candidates stay in the compact overall stage view, without map pins or claims of completed paid milestones.
 
 The existing optional site schema is preserved. A confirmed site links `commercial_area_id` to area analysis; unlinked sites remain candidate pins. Panel terms show observed date/source, host, share, rent/deposit, area and notes. Null remains unknown. Area → actual site → field visit → quote → paid/pilot evidence is the next collection sequence; no site, rent, paid event or pilot is fabricated here.
+
+## Validated committed coverage (2026-10-04 UTC)
+
+Complete live refresh: 720 planned requests, 720 actual HTTP attempts, zero query errors. Each candidate has 60 measured areas (40 top-demand + 20 moderate); 240 candidate–area observations cover **131 distinct commercial areas**. Each candidate still has 1,590 unmeasured areas. These are coverage counts, not competitors or site/pilot evidence.
+
+| Candidate | Measured | Reference median relevant POIs | A | B | C | D | E/pending |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| OC-001 | 60 | 23.5 | 7 | 26 | 8 | 4 | 15 |
+| OC-013 | 60 | 30.0 | 1 | 23 | 7 | 6 | 23 |
+| OC-020 | 60 | 15.0 | 0 | 12 | 0 | 3 | 45 |
+| OC-008 | 60 | 2.0 | 1 | 5 | 31 | 23 | 0 |
+
+The zero A/C counts for specialty vending are an honest consequence of result caps, not a finding that no whitespace exists. Define the specialty product and verify convenience-store/unmanned-shop substitution before expanding pagination or changing relevance rules. Table values describe this committed snapshot and must be recomputed after a refresh.

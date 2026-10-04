@@ -32,11 +32,11 @@ class PipelineTests(unittest.TestCase):
         for area in demand['areas']:
             self.assertEqual(set(area['scores']), set(self.kakao.CANDIDATES))
             self.assertTrue(all(0 <= v <= 100 for v in area['scores'].values()))
-        for candidate in poi['candidates'].values():
+        for key,candidate in poi['candidates'].items():
             for area in candidate['areas']:
                 self.assertIn(area['trdar_cd'], codes)
                 self.assertEqual(area['unique_poi_count'], len(area['pois']))
-                self.assertEqual(len(area['query_stats']), 3)
+                self.assertEqual(len(area['query_stats']),len(self.kakao.CANDIDATES[key]['queries']))
                 for p in area['pois']:
                     self.assertTrue(33 <= p['lat'] <= 39 and 124 <= p['lng'] <= 132)
                     self.assertTrue(p['place_url'].startswith(('http://place.map.kakao.com/', 'https://place.map.kakao.com/')))
