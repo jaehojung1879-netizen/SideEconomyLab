@@ -1,16 +1,35 @@
 {
   "project": "SideEconomyLab",
-  "version": "transaction-validation-v1",
-  "status": "TRANSACTION_VALIDATION_READY",
+  "version": "seoul-opportunity-gis-v1",
+  "status": "PARALLEL_VALIDATION",
   "default_geography": "Seoul / Seoul metropolitan area",
-  "current_phase": "Move TRANSACTION lane from C2 evidence toward C3/C4 without capex",
-  "transaction_candidates": ["OC-021", "OC-022", "OC-030"],
-  "design": {
-    "mro_wedge": "Test OC-022 asset-light safety-consumables replenishment first; upgrade only proven sites to OC-021 controlled dispensing.",
-    "event_wedge": "Sell/subcontract OC-030 events before considering asset ownership."
+  "current_phase": "Parallel LOCATION GIS screening and TRANSACTION C3/C4 validation",
+  "location_lane": {
+    "candidates": [
+      "OC-001",
+      "OC-008",
+      "OC-013",
+      "OC-020"
+    ],
+    "demand_dataset": "Seoul Open Data commercial-area worker / floating population / attractor facilities",
+    "area_count": 1650,
+    "competition_layer": "Kakao Local REST proxy around top 15 demand-fit areas per candidate",
+    "warning": "Demand-fit and POI density are research-priority signals, not ROI forecasts."
+  },
+  "transaction_lane": {
+    "candidates": [
+      "OC-021",
+      "OC-022",
+      "OC-030"
+    ],
+    "design": {
+      "mro_wedge": "Test OC-022 asset-light safety-consumables replenishment first; upgrade only proven sites to OC-021 controlled dispensing.",
+      "event_wedge": "Sell/subcontract OC-030 events before considering asset ownership."
+    }
   },
   "hard_rule": "No equipment purchase before real buyer evidence and pilot preregistration.",
   "next_actions": [
+    "Validate GIS usefulness and add supply/host economics to the LOCATION lane",
     "Verify employer outside-business/conflict rules before commercial outreach",
     "Build 30-company public MRO lead list",
     "Run 15 qualified MRO buyer interviews and collect up to 5 real baskets",
