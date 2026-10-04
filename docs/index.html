@@ -62,6 +62,8 @@
   <p><strong>Kakao POI는 점포 전수조사가 아닙니다.</strong> 사업별 고수요 상위 40곳 + 65–85점 지역 표본 최대 20곳, 중심 800m, 검색별 가까운 15개 결과를 중복 제거합니다. 검색 전체 건수와 지도에 수집된 고유 POI 수는 다릅니다. 미조사는 경쟁이 없다는 뜻이 아닙니다.</p>
   <p>임대료·보증금·수익배분·공실·이용률·비용·법적 제약은 아직 점수에 포함되지 않습니다. 실제 후보지는 직접 확인한 기록만 추가합니다.</p>
   <p><strong>사분면은 연구 방향입니다.</strong> 고수요는 기존 수요점수 90점 이상, 낮은 관측공급은 같은 후보 조사 표본의 관련 POI 중앙값 이하입니다. 실패·미측정·결과 제한으로 낮은 공급을 입증할 수 없는 곳은 E로 보류합니다. 종합 기회점수·ROI를 만들지 않습니다.</p>
+  <p><strong>부동산 통계는 시장 맥락입니다.</strong> 서울 전체 소규모 상가 임대료·공실률은 상권별 값이나 사이트 견적이 아닙니다. 점포·개폐업 집계는 관측 분기와 상권 ID·이름 연결을 표시하며, 180일이 지난 관측은 STALE로 표시합니다. 수요점수·사분면·정렬에 반영하지 않습니다.</p>
+  <p><a href="./real-estate-context-foundation-v1.md">부동산 소스 감사·공간 단위·한계</a> · <a href="./data/real-estate-source-audit.json">기계 판독 소스 감사</a></p>
   <details><summary>후보별 가중치·검색·오탐 위험</summary><div id="method-weights"></div></details>
   <div class="method-links"><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/main/docs/opportunity-intelligence-v3.md" target="_blank" rel="noopener">경쟁 프록시·사분면 연구</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/main/docs/gis-v1.md" target="_blank" rel="noopener">데이터 구조·운영</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/main/docs/gis-workspace-v2.md" target="_blank" rel="noopener">지도 설정·후보지 확장</a><a href="./research.html">연구 기록</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/main/docs/research-constitution.md" target="_blank" rel="noopener">연구헌법</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab" target="_blank" rel="noopener">저장소</a></div>
 </dialog>
@@ -74,5 +76,5 @@
 <noscript>지도 탐색에는 JavaScript가 필요합니다. <a href="./research.html">연구 기록 보기</a></noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
-<script src="./assets/map-adapter.js"></script><script src="./assets/gis.js"></script>
+<script src="./assets/map-adapter.js"></script><script src="./assets/real-estate.js"></script><script src="./assets/gis.js"></script>
 </body></html>

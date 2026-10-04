@@ -1,6 +1,6 @@
 {
   "project": "SideEconomyLab",
-  "version": "opportunity-intelligence-gis-v3",
+  "version": "real-estate-context-foundation-v1",
   "status": "PARALLEL_VALIDATION",
   "default_geography": "Seoul / Seoul metropolitan area",
   "current_phase": "Parallel LOCATION GIS screening and TRANSACTION C3/C4 validation",
@@ -17,7 +17,9 @@
     "warning": "Demand-fit and POI density are research-priority signals, not ROI forecasts.",
     "workspace": "Map-first candidate / location / decision workspace; Kakao JavaScript map with safe fallback",
     "registry": "docs/data/candidate-registry.json",
-    "evidence_layer": "Separate demand / observed supply quadrants / unknown site economics / operability / validation; no overall opportunity score"
+    "evidence_layer": "Separate demand / observed supply quadrants / unknown site economics / operability / validation; no overall opportunity score",
+    "real_estate_context": "Separate source-resolution market rent/vacancy and stale area store/churn context; no site-rent imputation or score",
+    "real_estate_source_audit": "docs/data/real-estate-source-audit.json"
   },
   "transaction_lane": {
     "candidates": [

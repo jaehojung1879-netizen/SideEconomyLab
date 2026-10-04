@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future shortlist-only public building evidence; not site economics or permission",
+  "type": "object",
+  "required": ["schema_version", "buildings"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "buildings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["building_id", "source", "observed_at", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "building_id": {"type": "string", "minLength": 1, "description": "Verified building PK with provider/system version; not an inferred host"},
+          "source": {"type": "string", "description": "Official public source reference, never credentials or owner contact data"},
+          "source_snapshot_hash": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+          "observed_at": {"type": "string", "format": "date-time"},
+          "registry_updated_at": {"type": ["string", "null"]},
+          "status": {"enum": ["AVAILABLE", "UNAVAILABLE", "NOT_COLLECTED", "STALE", "INCOMPATIBLE_GEOGRAPHY", "SOURCE_ERROR"]},
+          "site_id": {"type": ["string", "null"], "description": "Existing verified site-observation identity, optional"},
+          "commercial_area_id": {"type": ["string", "null"]},
+          "mapping_method": {"enum": ["verified_address", "point_in_polygon", "polygon_intersection", "not_mapped"]},
+          "address": {"type": ["string", "null"]},
+          "legal_parcel_id": {"type": ["string", "null"]},
+          "lat": {"type": ["number", "null"], "minimum": 33, "maximum": 39},
+          "lng": {"type": ["number", "null"], "minimum": 124, "maximum": 132},
+          "primary_use": {"type": ["string", "null"]},
+          "detail_use": {"type": ["string", "null"]},
+          "gross_area_sqm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+          "floor": {"type": ["string", "null"]},
+          "floor_area_sqm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+          "approval_date": {"type": ["string", "null"]},
+          "structure": {"type": ["string", "null"]},
+          "limitations": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}
