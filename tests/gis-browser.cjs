@@ -43,7 +43,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.uncheck('#show-demand');
   await page.check('#show-demand');
   await page.locator('.top-item').first().click();
-  await page.evaluate(()=>state.map.closePopup());
+  await page.evaluate(()=>{state.map.closePopup();});
   await page.waitForFunction(()=>state.map.getCenter().distanceTo(L.latLng(toLatLng(state.selectedArea)))<5);
   // Canvas marker interaction: click the selected commercial-area center.
   const point=await page.evaluate(()=>state.map.latLngToContainerPoint(toLatLng(state.selectedArea)));
