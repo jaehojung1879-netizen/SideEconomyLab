@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -93,6 +94,19 @@ class IntelligenceTests(unittest.TestCase):
             self.assertTrue(all(65<=a['scores'][key]<85 for a in selected[40:]))
             samples.append(len(selected)*len(m.CANDIDATES[key]['queries']))
         self.assertEqual(sum(samples),720);self.assertLessEqual(sum(samples)*3,m.REQUEST_BUDGET)
+
+    def test_collection_order_is_not_demand_rank(self):
+        spec=importlib.util.spec_from_file_location('rank_collector',ROOT/'pipeline/kakao_competitor_layer.py');m=importlib.util.module_from_spec(spec)
+        with patch.dict(os.environ,{'KAKAO_REST_API_KEY':'offline-test'}):spec.loader.exec_module(m)
+        with tempfile.TemporaryDirectory() as tmp:
+            out=Path(tmp)/'snapshot.json'
+            with patch.object(m,'OUT_PATH',out),patch.object(m,'query_poi',return_value={'meta':{'total_count':0,'pageable_count':0},'documents':[]}):m.main()
+            result=json.loads(out.read_text())
+            for c in result['candidates'].values():
+                a=c['areas'][40]
+                self.assertEqual(a['collection_order'],41)
+                self.assertEqual(a['sampling_band'],'moderate_sample')
+                self.assertGreater(a['rank'],40)
 
 
 if __name__=='__main__':unittest.main()

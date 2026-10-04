@@ -175,9 +175,17 @@ def main():
     areas=payload.get("areas") or []
 
     ranked_by_candidate={}
+    demand_ranks={}
     tasks=[]
     coords={}
     for key,spec in CANDIDATES.items():
+        ordered=sorted(areas,key=lambda a:(-float(a.get('scores',{}).get(key,0)),str(a['trdar_cd'])))
+        ranks={};position=1;previous=None
+        for i,a in enumerate(ordered):
+            score=a.get('scores',{}).get(key,0)
+            if i and score!=previous:position=i+1
+            ranks[str(a['trdar_cd'])]=position;previous=score
+        demand_ranks[key]=ranks
         ranked=selected_areas(areas,key)
         ranked_by_candidate[key]=ranked
         for rank,a in enumerate(ranked,1):
@@ -252,7 +260,9 @@ def main():
             pois=list(seen.values())
             pois.sort(key=lambda z:(z["distance_m"] is None,z["distance_m"] if z["distance_m"] is not None else 999999,z["name"]))
             area_rows.append({
-                "rank":rank,
+                "rank":demand_ranks[key][str(a['trdar_cd'])],
+                "collection_order":rank,
+                "sampling_band":"demand_top" if rank<=TOP_N else "moderate_sample",
                 "trdar_cd":a.get("trdar_cd"),
                 "trdar_name":a.get("trdar_name"),
                 "district":a.get("district"),

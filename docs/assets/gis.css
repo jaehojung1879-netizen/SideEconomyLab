@@ -15,3 +15,4 @@ h2{font-size:13px;margin:0}.ranking-header,.panel-heading{display:flex;justify-c
 @media(min-width:801px){.filter-content{max-height:280px;overflow:auto;padding-right:3px}.navigator .filters{margin-bottom:10px}}
 
 .quadrant-tag{color:#b7c2cd}.quadrant-tag[data-quadrant=A]{color:#60d3b4}.quadrant-tag[data-quadrant=B]{color:#ff8298}.quadrant-tag[data-quadrant=C]{color:#92cec7}.quadrant-tag[data-quadrant=D]{color:#c9adf3}.poi-marker.context{background:#78818b}.poi-marker.direct_proxy{background:#c93d64}.poi-marker.substitute_proxy{background:#7c4dff}
+.poi-details summary{font-size:11px;color:#b9d5e7;cursor:pointer;margin-top:9px}

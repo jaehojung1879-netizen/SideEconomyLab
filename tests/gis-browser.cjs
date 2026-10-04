@@ -18,6 +18,8 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   const desktop=await page.locator('#map').boundingBox();assert.ok(desktop.width>1600/2);
   assert.equal(await page.locator('#candidate option').count(),4);
   assert.ok(await page.evaluate(()=>state.evidence&&evidenceCandidate().measured_count>=15));
+  const median=await page.evaluate(()=>evidenceCandidate().reference_median);if(median!==null)assert.ok((await page.locator('#selected-card').innerText()).includes(String(median)+'개'));
+  await page.locator('#filter-panel').evaluate(e=>e.open=true);
   for(const mode of ['supply','quadrant','demand']){
     await page.selectOption('#map-mode',mode);assert.equal(await page.evaluate(()=>state.mode),mode);
     assert.ok((await page.locator('#map-legend').innerText()).length>0);
@@ -64,7 +66,9 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.locator('.poi-marker').first().click();await page.locator('.leaflet-popup').last().waitFor();
   await page.click('[data-dialog="method-dialog"]');assert.ok(await page.locator('#method-dialog').isVisible());await page.locator('#method-dialog [data-close-dialog]').click();
   await page.click('[data-dialog="transaction-dialog"]');for(const c of ['OC-021','OC-022','OC-030'])assert.ok((await page.locator('#transaction-dialog').innerText()).includes(c));await page.locator('#transaction-dialog [data-close-dialog]').click();
+  await page.locator('#navigator').evaluate(e=>{e.scrollTop=0;});await page.locator('.filter-content').evaluate(e=>{e.scrollTop=0;});await page.waitForTimeout(300);
   await page.screenshot({path:'/tmp/gis-browser/desktop.png'});
+  await page.selectOption('#map-mode','quadrant');await page.screenshot({path:'/tmp/gis-browser/quadrants.png'});await page.selectOption('#map-mode','demand');
   await page.setViewportSize({width:390,height:844});await page.reload();await page.locator('.top-item').first().waitFor({state:'attached'});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));const mobile=await page.locator('#map').boundingBox();assert.ok(mobile.y<160&&mobile.height>500);
   await page.screenshot({path:'/tmp/gis-browser/mobile-map.png'});
