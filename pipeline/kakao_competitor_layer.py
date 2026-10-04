@@ -4,15 +4,15 @@
 The Kakao REST key is read only from the Action environment and is never
 written to output. The output contains public place-search results only.
 
-Scope is deliberately limited to the top demand-fit commercial areas for
-the four LOCATION-lane candidates to control API usage and avoid implying
-that every Seoul area has supply-side coverage.
+Coverage is deliberately limited to top demand-fit commercial areas for the
+four LOCATION-lane candidates. This is a research proxy, not a complete census.
 """
 
+import concurrent.futures
 import json
-import math
 import os
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -30,6 +30,7 @@ IN_PATH=Path("docs/data/seoul-opportunity-map.json")
 OUT_PATH=Path("docs/data/kakao-poi-layer.json")
 TOP_N=int(os.environ.get("KAKAO_POI_TOP_N","15"))
 RADIUS=int(os.environ.get("KAKAO_POI_RADIUS_M","800"))
+WORKERS=max(1,min(int(os.environ.get("KAKAO_POI_WORKERS","4")),8))
 
 CANDIDATES={
     "booth":{
@@ -73,15 +74,27 @@ CANDIDATES={
 TRANSFORMER=Transformer.from_crs("EPSG:5181","EPSG:4326",always_xy=True)
 
 def request_json(url):
-    req=urllib.request.Request(
-        url,
-        headers={
-            "Authorization":f"KakaoAK {REST_KEY}",
-            "User-Agent":"SideEconomyLab/1.0",
-        },
-    )
-    with urllib.request.urlopen(req,timeout=30) as res:
-        return json.loads(res.read().decode("utf-8"))
+    last=None
+    for attempt in range(3):
+        try:
+            req=urllib.request.Request(
+                url,
+                headers={
+                    "Authorization":f"KakaoAK {REST_KEY}",
+                    "User-Agent":"SideEconomyLab/1.0",
+                },
+            )
+            with urllib.request.urlopen(req,timeout=15) as res:
+                return json.loads(res.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            last=exc
+            if exc.code not in (429,500,502,503,504):
+                raise
+        except Exception as exc:
+            last=exc
+        if attempt < 2:
+            time.sleep(0.5*(2**attempt))
+    raise last
 
 def query_poi(q, lon, lat):
     params={
@@ -98,8 +111,7 @@ def query_poi(q, lon, lat):
     else:
         params["query"]=q["value"]
         endpoint="https://dapi.kakao.com/v2/local/search/keyword.json"
-    url=endpoint+"?"+urllib.parse.urlencode(params)
-    return request_json(url)
+    return request_json(endpoint+"?"+urllib.parse.urlencode(params))
 
 def clean_doc(d, source_label):
     return {
@@ -115,61 +127,106 @@ def clean_doc(d, source_label):
         "matched_by":source_label,
     }
 
+def fetch_one(task):
+    key, rank, area, q, lon, lat = task
+    label=q.get("label") or q["value"]
+    try:
+        data=query_poi(q,lon,lat)
+        meta=data.get("meta") or {}
+        return {
+            "key":key,
+            "rank":rank,
+            "query":label,
+            "kind":q["kind"],
+            "total_count":int(meta.get("total_count") or 0),
+            "pageable_count":int(meta.get("pageable_count") or 0),
+            "docs":[clean_doc(d,label) for d in (data.get("documents") or [])],
+            "error":None,
+        }
+    except Exception as exc:
+        return {
+            "key":key,
+            "rank":rank,
+            "query":label,
+            "kind":q["kind"],
+            "total_count":0,
+            "pageable_count":0,
+            "docs":[],
+            "error":f"{type(exc).__name__}: {str(exc)[:120]}",
+        }
+
 def main():
     payload=json.loads(IN_PATH.read_text(encoding="utf-8"))
     areas=payload.get("areas") or []
-    result={
-        "generated_from":"Kakao Local REST API",
-        "radius_m":RADIUS,
-        "top_n_areas_per_candidate":TOP_N,
-        "note":"Exploratory competitor/substitute proxy for research prioritization; keyword/category coverage is imperfect.",
-        "candidates":{},
-    }
 
+    ranked_by_candidate={}
+    tasks=[]
+    coords={}
     for key,spec in CANDIDATES.items():
         ranked=sorted(
             areas,
             key=lambda a:float((a.get("scores") or {}).get(key) or 0),
             reverse=True,
         )[:TOP_N]
-        area_rows=[]
+        ranked_by_candidate[key]=ranked
         for rank,a in enumerate(ranked,1):
             x=float(a.get("x_epsg5181") or 0)
             y=float(a.get("y_epsg5181") or 0)
             if not x or not y:
                 continue
             lon,lat=TRANSFORMER.transform(x,y)
+            coords[(key,rank)]=(lon,lat)
+            for q in spec["queries"]:
+                tasks.append((key,rank,a,q,lon,lat))
+
+    grouped={}
+    error_count=0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as pool:
+        for res in pool.map(fetch_one,tasks):
+            grouped.setdefault((res["key"],res["rank"]),[]).append(res)
+            if res["error"]:
+                error_count+=1
+
+    result={
+        "generated_from":"Kakao Local REST API",
+        "radius_m":RADIUS,
+        "top_n_areas_per_candidate":TOP_N,
+        "worker_count":WORKERS,
+        "query_count":len(tasks),
+        "query_error_count":error_count,
+        "note":"Exploratory competitor/substitute proxy for research prioritization; keyword/category coverage is imperfect.",
+        "candidates":{},
+    }
+
+    for key,spec in CANDIDATES.items():
+        area_rows=[]
+        for rank,a in enumerate(ranked_by_candidate[key],1):
+            coord=coords.get((key,rank))
+            if not coord:
+                continue
+            lon,lat=coord
             seen={}
             query_stats=[]
-            for q in spec["queries"]:
-                label=q.get("label") or q["value"]
-                try:
-                    data=query_poi(q,lon,lat)
-                    meta=data.get("meta") or {}
-                    docs=data.get("documents") or []
-                    query_stats.append({
-                        "query":label,
-                        "kind":q["kind"],
-                        "total_count":int(meta.get("total_count") or 0),
-                        "pageable_count":int(meta.get("pageable_count") or 0),
-                    })
-                    for d in docs:
-                        item=clean_doc(d,label)
-                        dedup=item["id"] or f'{item["name"]}|{item["lat"]}|{item["lng"]}'
-                        if dedup not in seen:
-                            seen[dedup]=item
-                        else:
-                            prev=seen[dedup]
-                            labels=set((prev.get("matched_by") or "").split(" / "))
-                            labels.add(label)
-                            prev["matched_by"]=" / ".join(sorted(x for x in labels if x))
-                except Exception as exc:
-                    query_stats.append({
-                        "query":label,
-                        "kind":q["kind"],
-                        "error":type(exc).__name__,
-                    })
-                time.sleep(0.08)
+            for res in sorted(grouped.get((key,rank),[]),key=lambda z:z["query"]):
+                stat={
+                    "query":res["query"],
+                    "kind":res["kind"],
+                    "total_count":res["total_count"],
+                    "pageable_count":res["pageable_count"],
+                }
+                if res["error"]:
+                    stat["error"]=res["error"]
+                query_stats.append(stat)
+                for item in res["docs"]:
+                    dedup=item["id"] or f'{item["name"]}|{item["lat"]}|{item["lng"]}'
+                    if dedup not in seen:
+                        seen[dedup]=item
+                    else:
+                        prev=seen[dedup]
+                        labels=set((prev.get("matched_by") or "").split(" / "))
+                        labels.add(item["matched_by"])
+                        prev["matched_by"]=" / ".join(sorted(x for x in labels if x))
+
             pois=list(seen.values())
             pois.sort(key=lambda z:(z["distance_m"] is None,z["distance_m"] or 999999,z["name"]))
             area_rows.append({
@@ -185,6 +242,7 @@ def main():
                 "query_stats":query_stats,
                 "pois":pois,
             })
+
         result["candidates"][key]={
             "candidate_id":spec["candidate_id"],
             "label":spec["label"],
@@ -197,7 +255,12 @@ def main():
         json.dumps(result,ensure_ascii=False,separators=(",",":")),
         encoding="utf-8",
     )
-    print(f"KAKAO_POI_EXPORT {OUT_PATH} candidates={len(result['candidates'])} top_n={TOP_N} radius={RADIUS}")
+    print(
+        f"KAKAO_POI_EXPORT {OUT_PATH} candidates={len(result['candidates'])} "
+        f"top_n={TOP_N} radius={RADIUS} queries={len(tasks)} errors={error_count} workers={WORKERS}"
+    )
+    if error_count == len(tasks):
+        raise SystemExit("All Kakao POI queries failed; check REST key / API availability")
 
 if __name__=="__main__":
     main()
