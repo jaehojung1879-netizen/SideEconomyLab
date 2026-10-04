@@ -1,0 +1,49 @@
+name: Refresh Seoul opportunity GIS
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 18 * * 0"
+  push:
+    branches:
+      - feat/sideeconomy-gis-v1
+    paths:
+      - pipeline/seoul_location_screen.py
+      - docs/gis.html
+      - docs/assets/gis.js
+      - docs/assets/gis.css
+      - .github/workflows/seoul-gis-refresh.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seoul-opportunity-gis
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Build public GIS dataset
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+          GIS_OUTPUT: docs/data/seoul-opportunity-map.json
+        run: python -u pipeline/seoul_location_screen.py
+
+      - name: Commit refreshed GIS dataset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/seoul-opportunity-map.json
+          if git diff --cached --quiet; then
+            echo "No GIS data changes to commit"
+            exit 0
+          fi
+          git commit -m "data: refresh Seoul opportunity GIS"
+          git push
