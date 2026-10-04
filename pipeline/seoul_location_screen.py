@@ -184,5 +184,54 @@ def main():
       "warning":"research prioritization only; not revenue/ROI prediction"
     },ensure_ascii=False,indent=2),encoding="utf-8")
 
+    # Optional static-site export for the GIS dashboard. This contains only
+    # public Seoul commercial-area aggregates and derived research scores.
+    gis_output=(os.environ.get("GIS_OUTPUT") or "").strip()
+    if gis_output:
+        gis_path=Path(gis_output)
+        gis_path.parent.mkdir(parents=True,exist_ok=True)
+        gis_rows=[]
+        for x in rows:
+            gis_rows.append({
+              "trdar_cd":x["trdar_cd"],
+              "trdar_name":x["trdar_name"],
+              "district":x["district"],
+              "dong":x["dong"],
+              "x_epsg5181":num(x["x_epsg5181"]),
+              "y_epsg5181":num(x["y_epsg5181"]),
+              "worker":round(num(x["worker"])),
+              "flow":round(num(x["flow"])),
+              "young_flow":round(num(x["young_flow"])),
+              "day_flow":round(num(x["day_flow"])),
+              "afterwork_flow":round(num(x["afterwork_flow"])),
+              "weekday_flow":round(num(x["weekday_flow"])),
+              "attractors":round(num(x["attractors"])),
+              "lodging":round(num(x["lodging"])),
+              "subway":round(num(x["subway"])),
+              "rail":round(num(x["rail"])),
+              "bus_terminal":round(num(x["bus_terminal"])),
+              "bus_stop":round(num(x["bus_stop"])),
+              "bank":round(num(x["bank"])),
+              "public_office":round(num(x["public_office"])),
+              "university":round(num(x["university"])),
+              "theater":round(num(x["theater"])),
+              "department_store":round(num(x["department_store"])),
+              "scores":{
+                "photo":round(x["score_photo"],2),
+                "vending":round(x["score_vending"],2),
+                "luggage":round(x["score_luggage"],2),
+                "booth":round(x["score_booth"],2),
+              }
+            })
+        gis_path.write_text(json.dumps({
+          "periods":periods,
+          "area_count":len(gis_rows),
+          "coordinate_system":"EPSG:5181",
+          "method":"stage-1 percentile-weighted demand-fit screen; no direct incumbent-supply or rent penalty",
+          "warning":"research prioritization only; not revenue/ROI prediction",
+          "areas":gis_rows,
+        },ensure_ascii=False,separators=(",",":")),encoding="utf-8")
+        print(f"GIS_EXPORT {gis_path} rows={len(gis_rows)}")
+
 if __name__=="__main__":
     main()
