@@ -6,6 +6,7 @@ on:
     - cron: "17 18 * * 0"
   push:
     branches:
+      - main
       - feat/sideeconomy-gis-v1
     paths:
       - pipeline/seoul_location_screen.py
