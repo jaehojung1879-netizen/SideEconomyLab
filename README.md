@@ -46,7 +46,7 @@ Current artifacts:
 
 The LOCATION lane includes a static business opportunity intelligence GIS with separate demand, observed supply and research quadrants. This is research screening, not a revenue or ROI model. No equipment purchase or pilot execution is authorized.
 
-Open the [GIS workspace](https://jaehojung1879-netizen.github.io/SideEconomyLab/) for candidate/location exploration. Research history and methodology remain secondary. See `docs/opportunity-intelligence-v3.md` for supply methodology/coverage and the canonical candidate registry; `docs/gis-workspace-v2.md` for browser map deployment and site observations, and `docs/gis-v1.md` for the unchanged v1 data pipeline.
+Open the [GIS workspace](https://jaehojung1879-netizen.github.io/SideEconomyLab/) for candidate/location exploration. Research history and methodology remain secondary. See `docs/real-estate-context-foundation-v1.md` for audited real-estate context (market statistics never substitute for site terms); `docs/opportunity-intelligence-v3.md` for supply methodology/coverage and the canonical candidate registry; `docs/gis-workspace-v2.md` for browser map deployment and site observations, and `docs/gis-v1.md` for the unchanged v1 data pipeline.
 
 See:
 - `docs/research-constitution.md`

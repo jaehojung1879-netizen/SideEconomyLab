@@ -17,6 +17,14 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.waitForFunction(()=>document.querySelectorAll('.leaflet-tile-loaded').length>0);
   const desktop=await page.locator('#map').boundingBox();assert.ok(desktop.width>1600/2);
   assert.equal(await page.locator('#candidate option').count(),4);
+  assert.equal(await page.evaluate(()=>state.realEstate.status),'AVAILABLE');
+  const estate=await page.locator('.real-estate-section').innerText();
+  for(const text of ['서울 전체','2026 Q2','52.8','6.4%','CONTEXT_ONLY','NOT_COLLECTED'])assert.ok(estate.includes(text));
+  await page.locator('.real-estate-section summary').click();
+  assert.ok((await page.locator('.real-estate-section').innerText()).includes('2025 Q4'));
+  assert.ok((await page.locator('.real-estate-section').innerText()).includes('오래된 관측'));
+  await page.locator('.real-estate-section').scrollIntoViewIfNeeded();await page.screenshot({path:'/tmp/gis-browser/real-estate-panel.png'});
+  await page.locator('.real-estate-section summary').click();await page.locator('#intelligence').evaluate(e=>e.scrollTop=0);
   assert.ok(await page.evaluate(()=>state.evidence&&evidenceCandidate().measured_count>=15));
   const median=await page.evaluate(()=>evidenceCandidate().reference_median);if(median!==null)assert.ok((await page.locator('#selected-card').innerText()).includes(String(median)+'개'));
   await page.locator('#filter-panel').evaluate(e=>e.open=true);
@@ -46,6 +54,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
     });
     assert.ok(Math.abs(synchronized.score-synchronized.reconstructed)<.02,'unchanged scoring explanation');
     assert.ok(panel.includes(synchronized.candidate));assert.ok(panel.includes('#'+synchronized.rank));
+    assert.ok(panel.includes('서울 전체'));assert.ok(panel.includes('52.8'));assert.ok(panel.includes('SITE ECONOMICS'));
     assert.ok(await page.locator('.poi-marker').count()>0);
   }
   await page.click('[data-threshold="95"]');
@@ -85,6 +94,24 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.route('**/data/map-runtime.json',r=>r.fulfill({json:{schema_version:1,preferred_basemap:'kakao',browser_app_key:'a'.repeat(32),allowed_origins:{}}}));
   await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);await page.selectOption('#candidate','photo');assert.ok(await page.evaluate(()=>state.visible.length)>0);await page.unrouteAll();
   errors.length=0;
+  // Optional real-estate context must never change the v3 analytical state.
+  await page.setViewportSize({width:1600,height:1000});await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);
+  const unchanged=await page.evaluate(()=>({scores:state.data.areas.map(a=>a.scores),quadrants:state.evidence.candidates.booth.areas.map(a=>a.quadrant)}));
+  await page.route('**/data/real-estate-context.json',r=>r.fulfill({status:404,body:''}));
+  await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);
+  assert.equal(await page.evaluate(()=>state.realEstate.status),'UNAVAILABLE');
+  assert.ok((await page.locator('.real-estate-section').innerText()).includes('이용 불가'));
+  assert.deepEqual(await page.evaluate(()=>({scores:state.data.areas.map(a=>a.scores),quadrants:state.evidence.candidates.booth.areas.map(a=>a.quadrant)})),unchanged);await page.unrouteAll();
+  errors.length=0; // Deliberate404 may produce Chromium's network diagnostic.
+  await page.route('**/data/real-estate-context.json',r=>r.fulfill({json:{schema_version:1,areas:[],markets:[]}}));
+  await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);assert.equal(await page.evaluate(()=>state.realEstate.status),'SOURCE_ERROR');await page.unrouteAll();
+  const contextFixture=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/real-estate-context.json'),'utf8'));
+  await page.route('**/data/real-estate-context.json',r=>r.fulfill({json:{...contextFixture,demand_hash:'mismatched'}}));
+  await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);assert.equal(await page.evaluate(()=>state.realEstate.status),'INCOMPATIBLE_GEOGRAPHY');assert.ok((await page.locator('.real-estate-section').innerText()).includes('공간 연결 보류'));await page.unrouteAll();
+  await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);
+  await page.evaluate(()=>selectArea(state.data.areas.find(a=>a.trdar_cd==='3110379'),{openSheet:false}));
+  await page.locator('.real-estate-section summary').click();assert.ok((await page.locator('.real-estate-section').innerText()).includes('점포·개폐업 UNKNOWN'));
+  errors.length=0;
   // Stale derived evidence must never produce zero supply or quadrants.
   await page.route('**/data/opportunity-intelligence.json',r=>r.fulfill({json:{schema_version:1,source_hash:'mismatched',candidates:{}}}));await page.reload();await page.waitForFunction(()=>state.data&&state.adapter);assert.equal(await page.evaluate(()=>state.evidence),null);assert.equal(await page.evaluate(()=>supplyFor(state.selectedArea).relevant_count),null);await page.unrouteAll();
   // Synthetic observed site only in the test, never in committed business data.
@@ -105,5 +132,5 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.reload();await page.waitForFunction(()=>state.adapter?.provider==='leaflet');assert.ok(await page.evaluate(()=>state.visible.length)>0);await page.unrouteAll();
   assert.deepEqual(errors,[],'site and native renderer runtime has no console/page errors');
   await page.route('**/data/seoul-opportunity-map.json',r=>r.fulfill({json:{areas:[]}}));await page.reload();await page.waitForFunction(()=>document.querySelector('#data-status').textContent==='수요 데이터를 불러오지 못했습니다.');
-  await browser.close();console.log('PASS: real static /SideEconomyLab/ workspace and Leaflet runtime; synchronized decisions/rankings; mobile sheets; optional data; synthetic Kakao SDK contract and denied-SDK fallback (not live Kakao acceptance).');
+  await browser.close();console.log('PASS: real static /SideEconomyLab/ workspace and Leaflet runtime; synchronized decisions/rankings; mobile sheets; optional context/source errors/geography; synthetic Kakao SDK contract and denied-SDK fallback (not live Kakao acceptance).');
 })().catch(async error=>{if(activePage)await activePage.screenshot({path:'/tmp/gis-browser/failure.png'}).catch(()=>{});console.error(error);process.exit(1);});

@@ -4,6 +4,7 @@ const SITE_URL='./data/site-observations.json';
 const CONFIG_URL='./data/map-runtime.json';
 const REGISTRY_URL='./data/candidate-registry.json';
 const INTELLIGENCE_URL='./data/opportunity-intelligence.json';
+const REAL_ESTATE_URL='./data/real-estate-context.json';
 let FIELDS={},CANDIDATES={},registry=null;
 const QUADRANTS={A:'고수요 · 낮은 관측공급',B:'고수요 · 높은 관측공급',C:'90점 미만 · 낮은 관측공급',D:'90점 미만 · 높은 관측공급',E:'미측정 / 판정 보류'};
 const QUADRANT_COLORS={A:'#00856a',B:'#d24d67',C:'#36a99c',D:'#8b65ba',E:'#8894a2'};
@@ -79,7 +80,8 @@ function renderSelected(){
     <section class="decision-section"><h3><span class="kind">DERIVED SIGNAL</span>RESEARCH QUADRANT</h3><b class="quadrant-label" style="border-color:${QUADRANT_COLORS[evidence.quadrant]}">${evidence.quadrant} · ${QUADRANTS[evidence.quadrant]}</b><p>고수요 ≥ ${state.evidence?.high_demand_min??90}점 · 낮은 관측공급 ≤ 후보별 조사 표본 중앙값 ${esc(cohort?.reference_median??'—')}개 (${fmt(cohort?.reference_count)}곳). 서울 전체 공급 기준이 아닙니다.</p><p>${evidence.quadrant==='E'?esc({'incomplete collection':'검색 실패·정의 불일치 또는 유효하지 않은 관측입니다.','insufficient or invariant reference':'10곳 미만이거나 관측 개수가 같아 비교 기준이 없습니다.','capped results cannot establish lower observed supply':'검색 결과가 제한되어 낮은 공급 판정을 보류합니다.'}[evidence.quadrant_reason]||'공급 미측정 또는 원본과 일치하는 분석이 없습니다.'):['A','C'].includes(evidence.quadrant)?'상대적으로 적은 관측공급: 공백 가능성을 현장에서 검증할 연구 목록입니다.':'많은 관측공급: 직접 경쟁인지, 수요 집적/보완 서비스인지 현장에서 구분하세요.'}</p><p class="caution">Kakao 검색 프록시 · 전수조사 아님. ${esc(candidate.competition.risk)}</p></section>
     <section class="decision-section"><h3><span class="kind">DERIVED SIGNAL</span>왜 살펴볼 만한가</h3><ul>${signalRows}</ul><p>가중 수요 신호입니다. 경쟁·비용을 반영한 사업성 판단은 아직 아닙니다.</p></section>
     <section class="decision-section"><h3><span class="kind">DATA</span>수요 원자료</h3><div class="metrics">${metricFields.map(f=>`<div><span>${FIELDS[f]}</span><b>${fmt(a[f])}</b></div>`).join('')}</div><p>서울 공개 상권 집계 · 분기와 원자료 정의는 데이터·방법 참조.</p></section>
-    <section class="decision-section"><h3><span class="kind">UNKNOWN / DATA</span>SITE ECONOMICS · 실제 조건</h3><p>${localSites.length?'아래 후보지에 관측된 조건만 표시합니다. 누락은 UNKNOWN입니다.':'UNKNOWN · 임대료·보증금·호스트 수익배분·실제 가용 공간 미확인'}</p><p>전환율·이용률·운영 비용 미확인 · 종합 기회점수 없음</p></section>
+    ${RealEstateContext.render(a,state.realEstate)}
+    <section class="decision-section"><h3><span class="kind">UNKNOWN / DATA</span>SITE ECONOMICS · 실제 조건</h3><p>${localSites.length?'아래 후보지에 관측된 조건만 표시합니다. 누락은 UNKNOWN입니다.':'UNKNOWN · 임대료·보증금·관리비·호스트 수익배분·실제 가용 공간 미확인'}</p><p>전환율·이용률·운영 비용 미확인 · 종합 기회점수 없음</p></section>
     <section class="decision-section"><h3><span class="kind">UNKNOWN / FIELD CHECK</span>OPERABILITY · 운영 가능성</h3><p>전력·환기·접근·보충 동선·설치 허용·호스트 책임·법적 제약은 현장에서 확인해야 합니다.</p></section>
     <section class="decision-section"><h3><span class="kind">DATA / UNKNOWN</span>VALIDATION · 검증 증거</h3><p>후보 설계 단계: ${esc(candidate.research_status)}. 현장 인터뷰·견적·유료거래·파일럿 증거는 별도 기록으로 확인해야 합니다.</p></section>
     <section class="decision-section"><h3><span class="kind">FIELD CHECK</span>다음 현장 확인</h3><ol>${[...candidate.next_actions,...candidate.checks].map(c=>`<li>${c}</li>`).join('')}</ol><a class="area-link" href="https://map.kakao.com/link/map/${encodeURIComponent(a.trdar_name)},${toLatLng(a).join(',')}" target="_blank" rel="noopener">카카오맵에서 주변 살펴보기 ↗</a></section>
@@ -134,11 +136,11 @@ function render(){
 }
 function setSheet(sheet){const current=document.body.dataset.sheet;const next=sheet==='close'||current===sheet?'':sheet;document.body.dataset.sheet=next;if(next==='filters')$('filter-panel').open=true;document.querySelectorAll('.mobile-tabs button').forEach(b=>b.setAttribute('aria-expanded',String(b.dataset.sheet===next)));}
 async function fetchJson(url,required=false){try{
-  const r=await fetch(url,{cache:'no-cache'});if(!r.ok)throw new Error('Dataset unavailable');const bytes=await r.arrayBuffer();const value=JSON.parse(new TextDecoder().decode(bytes));
+  const r=await fetch(url,{cache:'no-cache'});if(!r.ok){if(url===REAL_ESTATE_URL&&[404,410].includes(r.status))return null;throw new Error('Dataset unavailable');}const bytes=await r.arrayBuffer();const value=JSON.parse(new TextDecoder().decode(bytes));
   if([DATA_URL,POI_URL,REGISTRY_URL].includes(url)&&value&&typeof value==='object'){
     const digest=await crypto.subtle.digest('SHA-256',bytes);Object.defineProperty(value,'_contentHash',{value:Array.from(new Uint8Array(digest)).map(x=>x.toString(16).padStart(2,'0')).join('')});
   }return value;
-}catch{if(required)throw new Error('Demand dataset unavailable');return null;}}
+}catch{if(required)throw new Error('Demand dataset unavailable');return url===REAL_ESTATE_URL?{source_error:true}:null;}}
 function bindControls(){
   $('candidate').onchange=e=>{state.candidate=e.target.value;state.selectedArea=null;state.limit=30;render();};
   $('area-search').oninput=e=>{state.query=e.target.value;state.limit=30;render();};
@@ -163,7 +165,7 @@ async function init(){
   const configPromise=fetchJson(CONFIG_URL);
   const mapPromise=configPromise.then(config=>OpportunityMap.create($('map'),config));
   try{
-    const [data,poi,sites,adapter,config,evidence]=await Promise.all([fetchJson(DATA_URL,true),fetchJson(POI_URL),fetchJson(SITE_URL),mapPromise,fetchJson(REGISTRY_URL,true),fetchJson(INTELLIGENCE_URL)]);
+    const [data,poi,sites,adapter,config,evidence,realEstate]=await Promise.all([fetchJson(DATA_URL,true),fetchJson(POI_URL),fetchJson(SITE_URL),mapPromise,fetchJson(REGISTRY_URL,true),fetchJson(INTELLIGENCE_URL),fetchJson(REAL_ESTATE_URL)]);
     if(!Array.isArray(data?.areas)||!data.areas.length)throw new Error('Invalid dataset');
     if(config?.schema_version!==1||!Array.isArray(config.candidates))throw new Error('Invalid registry');
     registry=config;FIELDS=config.fields;CANDIDATES=Object.fromEntries(config.candidates.filter(c=>c.lane==='LOCATION').map(c=>[c.key,c]));
@@ -176,6 +178,7 @@ async function init(){
     $('district-filter').innerHTML='<option value="">모든 구</option>'+[...new Set(data.areas.map(a=>a.district))].sort().map(d=>`<option>${esc(d)}</option>`).join('');
     state.evidence=evidence?.schema_version===1&&evidence.source_hash===poi?._contentHash&&evidence.demand_hash===data._contentHash&&evidence.registry_hash===config._contentHash?evidence:null;
     state.data=data;state.poiData=poi;state.sites=usableSites(sites);state.adapter=adapter;
+    state.realEstate=RealEstateContext.prepare(realEstate,data);
     buildPercentiles();
     $('map-badge').textContent=adapter.provider==='kakao'?'Kakao 지도':'기본 지도 사용 중';
     const periods=data.periods||{};

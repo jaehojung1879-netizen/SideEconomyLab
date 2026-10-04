@@ -1,0 +1,67 @@
+{
+  "files": {
+    "reb-rent-codes.json": "7f5bfb3d9490c6902672d5e7e9d1f70b7cb6678d734c72e676f6d7e4830e090b",
+    "reb-rent.json": "421d832f2b803c747358991dcfbe4b232075ec13f552ecf6a627803c6a9034fc",
+    "reb-vacancy-codes.json": "d3d1de29c43f1443a72634ad8f2655e575afeb965fd8862dc678b87009608b0c",
+    "reb-vacancy.json": "e9dbde84b8b2c472967f06ec60a332edb9fb906ee26cee9eba9ee96acb9ea460",
+    "seoul-stores-2025.zip": "133bfc6ce79e13ee5b289490e4667dfba46a0af5d0d71df360a0d324e030a4e6"
+  },
+  "reb_period": "202602",
+  "retrieval_urls": {
+    "reb-rent-codes.json": {
+      "post": {
+        "statblId": "T248223134698125"
+      },
+      "url": "https://www.reb.or.kr/r-one/portal/openapi/selectOpenApiItmCd.do"
+    },
+    "reb-rent.json": {
+      "url": "https://www.reb.or.kr/r-one/openapi/SttsApiTblData.do?STATBL_ID=T248223134698125&DTACYCLE_CD=QY&CLS_ID=500002&ITM_ID=100001&START_WRTTIME=202602&END_WRTTIME=202602&Type=json"
+    },
+    "reb-vacancy-codes.json": {
+      "post": {
+        "statblId": "T241833134686576"
+      },
+      "url": "https://www.reb.or.kr/r-one/portal/openapi/selectOpenApiItmCd.do"
+    },
+    "reb-vacancy.json": {
+      "url": "https://www.reb.or.kr/r-one/openapi/SttsApiTblData.do?STATBL_ID=T241833134686576&DTACYCLE_CD=QY&CLS_ID=500002&ITM_ID=100001&START_WRTTIME=202602&END_WRTTIME=202602&Type=json"
+    },
+    "seoul-stores-2025.zip": {
+      "post": {
+        "infId": "OA-15577",
+        "infSeq": "3",
+        "seq": "20",
+        "seqNo": ""
+      },
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false"
+    }
+  },
+  "retrieved_at": "2026-10-04T15:04:13.233306Z",
+  "schema_version": 1,
+  "snapshot_id": "2026-10-04",
+  "sources": {
+    "reb-small-retail": {
+      "dataset": "상업용부동산 임대동향조사 · 소규모 상가 · 서울 전체",
+      "geography": "Seoul city / small retail survey; NOT a district, commercial area or site",
+      "license": "Public statistical tables; R-ONE service terms apply; attribute 한국부동산원. Related public-data catalog states unrestricted use. No blanket microdata redistribution assumption.",
+      "limitations": "Sample survey; 1F converted market rent with deposit conversion, excluding VAT/management fees. Small-retail market context does not establish host share, asking rent or installability. RSE not collected.",
+      "observation_period": "20262",
+      "provider": "한국부동산원",
+      "retrieval_method": "unauthenticated documented sample API, exact quarter/region/item; each response declares one total row; classification-code catalog POST",
+      "transformation": "retain source numeric precision; UI rounds one decimal; no ratios, imputation or score",
+      "url": "https://www.reb.or.kr/r-one/portal/stat/easyStatPage/T248223134698125.do",
+      "vacancy_url": "https://www.reb.or.kr/r-one/portal/stat/easyStatPage/T241833134686576.do"
+    },
+    "seoul-stores": {
+      "dataset": "서울시 상권분석서비스(점포-상권), OA-15577",
+      "geography": "published legacy commercial-area ID; code AND name validated against committed GIS",
+      "license": "공공누리 1유형 (출처표시, 상업적 이용·변경 가능)",
+      "limitations": "Not commercial premises/available spaces; past quarterly activity, no causal health judgement. Polygon equality and new standard-unit crosswalk unproven.",
+      "observation_period": "20254",
+      "provider": "서울신용보증재단 / 서울특별시",
+      "retrieval_method": "official public 2025 ZIP, POST file seq20",
+      "transformation": "sum whole-store / opened / closed counts over distinct service categories in latest file quarter; do not average category rates",
+      "url": "https://data.seoul.go.kr/dataList/OA-15577/A/1/datasetView.do"
+    }
+  }
+}
