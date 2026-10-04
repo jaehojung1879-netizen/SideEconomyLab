@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SideEconomyLab GIS</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="./assets/gis.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="back" href="./index.html">← Dashboard</a>
+  <div>
+    <div class="eyebrow">SIDEEconomyLab / GIS</div>
+    <h1>서울 사업기회 지도</h1>
+  </div>
+  <div class="status" id="data-status">데이터 로딩 중</div>
+</header>
+
+<main class="shell">
+  <aside class="side">
+    <section>
+      <label for="candidate">사업 후보</label>
+      <select id="candidate">
+        <option value="booth">OC-001 · Public / office private booth</option>
+        <option value="photo">OC-013 · Photo / document kiosk</option>
+        <option value="vending">OC-020 · Specialty vending route</option>
+        <option value="luggage">OC-008 · Host-based luggage storage</option>
+      </select>
+      <p class="note">현재 점수는 수요 적합도(demand-fit)만 반영합니다. 임대료·직접 경쟁·host 조건은 아직 미반영입니다.</p>
+    </section>
+
+    <section>
+      <div class="row-between">
+        <label for="threshold">최소 점수</label>
+        <strong id="threshold-value">85</strong>
+      </div>
+      <input id="threshold" type="range" min="0" max="100" step="1" value="85">
+      <div class="quick">
+        <button data-threshold="95">95+</button>
+        <button data-threshold="90">90+</button>
+        <button data-threshold="85">85+</button>
+        <button data-threshold="0">전체</button>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div><span>표시 상권</span><strong id="visible-count">—</strong></div>
+      <div><span>전체 상권</span><strong id="area-count">—</strong></div>
+      <div><span>데이터 분기</span><strong id="period">—</strong></div>
+    </section>
+
+    <section>
+      <div class="section-title">상위 입지</div>
+      <div id="top-list" class="top-list"></div>
+    </section>
+
+    <section class="legend">
+      <div class="section-title">점수 범례</div>
+      <div><i class="dot s95"></i> 95–100</div>
+      <div><i class="dot s90"></i> 90–95</div>
+      <div><i class="dot s80"></i> 80–90</div>
+      <div><i class="dot slow"></i> 80 미만</div>
+    </section>
+
+    <section class="method">
+      <div class="section-title">해석 주의</div>
+      <p>점수는 매출·ROI 예측이 아닙니다. 직장인구, 유동인구, 집객시설 등을 이용한 연구 우선순위 지표입니다.</p>
+      <p>다음 단계에서 경쟁점포, host 비용, 임대료, 실제 후보지와 현장검증 레이어를 추가합니다.</p>
+    </section>
+  </aside>
+
+  <section class="map-wrap">
+    <div id="map"></div>
+  </section>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
+<script src="./assets/gis.js"></script>
+</body>
+</html>
