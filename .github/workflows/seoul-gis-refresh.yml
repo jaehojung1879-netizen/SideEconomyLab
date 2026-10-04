@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - feat/sideeconomy-gis-v1
+      - feat/gis-workspace-v2
     paths:
       - pipeline/seoul_location_screen.py
       - pipeline/kakao_competitor_layer.py

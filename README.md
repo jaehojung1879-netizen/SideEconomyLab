@@ -46,7 +46,7 @@ Current artifacts:
 
 The LOCATION lane includes a static Seoul demand-fit / Kakao substitute GIS. This is research screening, not a revenue or ROI model. No equipment purchase or pilot execution is authorized.
 
-See `docs/gis-v1.md` for data coverage, static preview, verification and future site observations.
+Open the [GIS workspace](https://jaehojung1879-netizen.github.io/SideEconomyLab/) for candidate/location exploration. Research history and methodology remain secondary. See `docs/gis-workspace-v2.md` for browser map deployment and site observations, and `docs/gis-v1.md` for the unchanged v1 data pipeline.
 
 See:
 - `docs/research-constitution.md`

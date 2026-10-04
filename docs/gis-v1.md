@@ -1,6 +1,6 @@
 # Seoul opportunity GIS v1
 
-Architecture: public/open data → GitHub Actions → sanitized JSON → static Leaflet/OpenStreetMap UI. No browser API key is required.
+Architecture: public/open data → GitHub Actions → sanitized JSON → static Leaflet/OpenStreetMap UI. The v1 data pipeline is unchanged. The v2 map renderer can use a browser JavaScript app key; see `gis-workspace-v2.md`.
 
 ## Data and interpretation
 
@@ -12,9 +12,9 @@ Architecture: public/open data → GitHub Actions → sanitized JSON → static 
 
 ## Refresh and deployment
 
-`seoul-gis-refresh.yml` reuses committed demand data for ordinary UI pushes. Demand-script changes, missing demand data, schedules and manual runs refresh Seoul source history and filter each service to its latest quarter. Kakao uses four bounded workers and at most three attempts per request (transient HTTP failures only; authentication failures are not retried). Stable inputs produce stable JSON; no generated timestamps are injected. Generated-data paths do not trigger the refresh workflow, preventing commit loops. Concurrency is isolated per branch.
+`seoul-gis-refresh.yml` reuses committed demand data for ordinary UI pushes. Demand-script changes, missing demand data, schedules and manual runs refresh Seoul source history and filter each service to its latest quarter. Kakao uses four bounded workers and at most three attempts per request (transient HTTP / transport / decoding failures; authentication HTTP failures are not retried). Stable inputs produce stable JSON; no generated timestamps are injected. Generated-data paths do not trigger the refresh workflow, preventing commit loops. Concurrency is isolated per branch.
 
-The existing GitHub Pages deployment builds **main /docs**. A successful production deployment cannot preview this unmerged feature branch. The verified deployment run `37165703208` builds `/github/workspace/./docs` and publishes `https://jaehojung1879-netizen.github.io/SideEconomyLab/`. The feature's `gis.html` is absent from main at the v1 handoff, so its production URL returns no PR preview until merged. Production source / visibility are unchanged.
+The existing GitHub Pages deployment builds **main /docs**. PR #9 was merged at `6bff3e79e36e00a3f411aee627b3c5486b8d20a8`; its GIS is now in main. Unmerged follow-up branches are verified separately and cannot replace the production deployment. The Pages source / repository visibility remain unchanged.
 
 To preview with the exact project Pages path model:
 
@@ -26,7 +26,7 @@ python -m http.server 8765 --directory /tmp/gis-static
 # http://127.0.0.1:8765/SideEconomyLab/gis.html
 ```
 
-`gis-check.yml` runs credential-free pipeline regressions and real Chromium checks against that server: candidates, filters, search/empty results, demand/POI toggles, canvas markers, details, POI links, embedded dashboard, mobile layout and missing datasets. Screenshots are uploaded as workflow artifacts. It also checks real Leaflet assets / OSM tile loading. External CDNs and OSM availability are runtime dependencies.
+`gis-check.yml` runs credential-free pipeline regressions and real Chromium checks against that server: candidates, filters, search/empty results, demand/POI toggles, canvas markers, details, POI links, map-first landing page, mobile layout and missing datasets. Screenshots are uploaded as workflow artifacts. It also checks real Leaflet assets / OSM tile loading. External SDK/CDNs and basemap availability are runtime dependencies; v2 uses Kakao when configured, with Leaflet/OSM fallback.
 
 ## Next layer: observed candidate sites
 

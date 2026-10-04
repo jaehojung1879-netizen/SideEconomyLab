@@ -1,178 +1,76 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SideEconomyLab — Project Dashboard</title>
-<style>
-:root{--bg:#0b0f14;--panel:#121923;--muted:#91a0b3;--text:#edf3f8;--line:#243142;--accent:#75d3ff;--good:#72e6a6;--warn:#ffd166;--soft:#192230}
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b0f14,#0e141c);color:var(--text);line-height:1.5}
-.wrap{max-width:1180px;margin:0 auto;padding:34px 22px 70px}
-.hero{padding:28px 0 18px}
-.kicker{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12px}
-h1{font-size:40px;line-height:1.1;margin:8px 0 10px}
-h2{font-size:22px;margin:0 0 14px}
-h3{font-size:16px;margin:0 0 10px}
-p{margin:0 0 10px}
-.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:16px}
-.card{background:rgba(18,25,35,.96);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 14px 34px rgba(0,0,0,.18)}
-.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
-.metric{font-size:30px;font-weight:800;margin-top:4px}.small{font-size:13px}
-.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-size:12px;margin-right:6px}
-.good{color:var(--good)}.warn{color:var(--warn)}
-.funnel{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
-.funnel .n{font-size:26px;font-weight:800}.arrow{color:var(--muted)}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{padding:10px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{color:#b9c6d4;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
-.score{font-weight:800}
-ul{margin:8px 0 0;padding-left:20px}
-li{margin:5px 0}
-.timeline{display:grid;gap:9px}
-.step{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
-.step:last-child{border-bottom:0}
-.status{font-weight:700}
-a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
-.gis-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:12px}
-.gis-frame{width:100%;height:620px;border:1px solid var(--line);border-radius:13px;background:#0b0f14}
-.gis-open{white-space:nowrap;font-size:13px}
-footer{margin-top:26px;color:var(--muted);font-size:12px}
-@media(max-width:800px){.span-3,.span-4,.span-5,.span-6,.span-7,.span-8,.span-12{grid-column:span 12}h1{font-size:32px}.step{grid-template-columns:1fr}.gis-head{align-items:flex-start;flex-direction:column}.gis-frame{height:720px}}
-</style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="서울 사업 후보의 수요 신호, 주변 경쟁·대체재와 현장 확인 과제를 함께 살펴보는 GIS 작업공간.">
+<title>SideEconomyLab · 사업기회 GIS</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="./assets/gis.css">
 </head>
 <body>
-<div class="wrap">
-  <section class="hero">
-    <div class="kicker">SideEconomyLab / Project Dashboard</div>
-    <h1>본업을 유지하면서<br>독립적인 Side Economy를 만든다.</h1>
-    <p class="muted">설치형 사업에 한정하지 않고, 물리자산·렌탈·공간·B2B 반복거래·서비스 운영·소형 생산·하이브리드 모델을 동일한 기준으로 검증한다.</p>
-    <p class="small muted">Last refreshed: 2026-10-04 · research through PR #8 · PR #9 GIS draft</p>
-  </section>
-
-  <div class="grid">
-    <div class="card span-3"><div class="small muted">글로벌 사례</div><div class="metric">102</div><div class="small">실제 배치/운영 사례</div></div>
-    <div class="card span-3"><div class="small muted">정규화 후보</div><div class="metric">30</div><div class="small">사업모델 클러스터</div></div>
-    <div class="card span-3"><div class="small muted">한국 Hard Gate 통과</div><div class="metric">12</div><div class="small">KEEP 후보</div></div>
-    <div class="card span-3"><div class="small muted">C2 이후 ADVANCE</div><div class="metric">7</div><div class="small">현장 검증 우선순위</div></div>
-
-    <div class="card span-12">
-      <h2>연구 Funnel</h2>
-      <div class="funnel">
-        <span><span class="n">102</span> 글로벌 사례</span><span class="arrow">→</span>
-        <span><span class="n">30</span> 모델</span><span class="arrow">→</span>
-        <span><span class="n">12</span> KEEP</span><span class="arrow">→</span>
-        <span><span class="n">7</span> ADVANCE</span><span class="arrow">→</span>
-        <span><span class="n">2 lanes</span> LOCATION / TRANSACTION</span><span class="arrow">→</span>
-        <span class="good"><strong>첫 실제 거래</strong></span>
-      </div>
-    </div>
-
-    <div class="card span-7">
-      <h2>현재 ADVANCE 7</h2>
-      <table>
-        <thead><tr><th>ID</th><th>후보</th><th>점수</th><th>Lane</th></tr></thead>
-        <tbody>
-          <tr><td>OC-021</td><td>Industrial PPE / MRO vending</td><td class="score">82</td><td>TRANSACTION</td></tr>
-          <tr><td>OC-022</td><td>Narrow recurring B2B procurement</td><td class="score">78</td><td>TRANSACTION</td></tr>
-          <tr><td>OC-013</td><td>Instant photo / document printing kiosk</td><td class="score">74</td><td>LOCATION</td></tr>
-          <tr><td>OC-020</td><td>Specialty vending route</td><td class="score">74</td><td>LOCATION</td></tr>
-          <tr><td>OC-030</td><td>Hosted experience / event asset rental</td><td class="score">73</td><td>TRANSACTION</td></tr>
-          <tr><td>OC-008</td><td>Host-based luggage storage</td><td class="score">73</td><td>LOCATION</td></tr>
-          <tr><td>OC-001</td><td>Public / office private booth</td><td class="score">72</td><td>LOCATION</td></tr>
-        </tbody>
-      </table>
-      <p class="small muted">점수는 ROI 예측이 아니라 연구 우선순위 점수다.</p>
-    </div>
-
-    <div class="card span-5">
-      <h2>핵심 원칙</h2>
-      <p><span class="badge">Economics 25</span><span class="badge">Owner Fit 25</span></p>
-      <p><span class="badge">Demand 20</span><span class="badge">Ops 15</span></p>
-      <p><span class="badge">Defensibility 10</span><span class="badge">AI/Data 5</span></p>
-      <ul>
-        <li>AI는 사업의 이유가 아니라 운영 레버리지다.</li>
-        <li>평일 긴급 호출은 수익률만큼 강하게 벌점.</li>
-        <li>장비를 사기 전에 거래 또는 입지를 검증.</li>
-        <li>첫 Pilot 선호자본 300~700만원, 통상 상한 약 1,000만원.</li>
-        <li>실제 결제 증거가 desk research보다 강하다.</li>
-      </ul>
-    </div>
-
-    <div class="card span-6">
-      <h2>LOCATION lane</h2>
-      <p class="muted">서울 상권 1,650개를 최신 분기 기준으로 demand-fit screening.</p>
-      <h3>반복적으로 강한 권역</h3>
-      <p>명동·남대문·북창·다동·무교 / 종로·청계 / 강남역 / 잠실 / 선릉·역삼 / 동대문</p>
-      <h3 style="margin-top:14px">중요한 반증</h3>
-      <p><strong>Generic luggage storage는 약화.</strong> 수요가 높은 역일수록 T-Locker/T-Luggage 등 기존 공급도 강해 demand score만으로는 whitespace가 아니다.</p>
-      <p class="small muted">다음: 공급·경쟁·host 조건·rent/revenue share를 붙인 supply-adjusted shortlist.</p>
-    </div>
-
-    <div class="card span-6">
-      <h2>TRANSACTION lane</h2>
-      <p class="muted">PR #7 merged: 장비 구매 없이 먼저 돈이 오가는지 검증.</p>
-      <h3>MRO / PPE</h3>
-      <p>OC-022를 먼저 수동형 <strong>Safety Consumables Replenishment Desk</strong>로 테스트. 실제 basket과 반복구매 pain이 확인된 고객만 OC-021 dispensing으로 승격.</p>
-      <h3 style="margin-top:14px">Event asset</h3>
-      <p>OC-030은 장비를 사지 않고 3개 supplier term 확보 → 20명 buyer test → 첫 주문은 subcontract → 3건 유료행사 뒤 ownership 검토.</p>
-    </div>
-
-    <div class="card span-12">
-      <h2>현재까지의 이력</h2>
-      <div class="timeline">
-        <div class="step"><div class="status good">PR #1 MERGED</div><div>Foundation v1 — 연구헌법, 18 archetypes, 100점 scoring, registry, field/pilot template.</div></div>
-        <div class="step"><div class="status good">PR #2 MERGED</div><div>Global discovery — 102 사례 → 30 normalized models.</div></div>
-        <div class="step"><div class="status good">PR #3 MERGED</div><div>서울 Open Data API — secret <code>SEOUL</code> 연동 및 live smoke test 성공.</div></div>
-        <div class="step"><div class="status good">PR #4 MERGED</div><div>Korea hard-gate — 30 → KEEP 12 / WATCH 10 / KILL 8.</div></div>
-        <div class="step"><div class="status good">PR #5 MERGED</div><div>Korean C2 evidence + provisional scoring — 12 → ADVANCE 7.</div></div>
-        <div class="step"><div class="status good">PR #6 MERGED</div><div>서울 location screen — 1,650 상권 비교. quarter join bug 수정, supply-side falsification 시작.</div></div>
-        <div class="step"><div class="status good">PR #7 MERGED</div><div>Transaction validation — MRO/PPE와 event asset을 “sell before capex” 원칙으로 C3/C4 증거까지 이동하는 프로토콜.</div></div>
-        <div class="step"><div class="status good">PR #8 MERGED</div><div>Project dashboard — 연구 funnel, 후보, lane, next action을 한 페이지에 정리.</div></div>
-        <div class="step"><div class="status warn">PR #9 DRAFT</div><div>Seoul Opportunity GIS — 서울 1,650 상권 demand-fit + Kakao 경쟁·대체재 POI를 지도에서 공동 탐색.</div></div>
-      </div>
-    </div>
-
-    <div class="card span-8">
-      <h2>다음에 할 일</h2>
-      <ol>
-        <li><strong>PR #9 GIS 검증.</strong> demand-fit과 Kakao 경쟁·대체재 레이어가 실제 입지 판단에 유용한지 확인.</li>
-        <li><strong>MRO public lead 30개.</strong> 공장 공개데이터만 사용하고 은행 고객/내부정보는 사용하지 않는다.</li>
-        <li><strong>15개 qualified buyer interview + 5개 real basket.</strong> 가격이 아니라 stockout·발주·재고관리 pain이 존재하는지 확인.</li>
-        <li><strong>Event supplier term 3개 + buyer 20개.</strong> 실제 dated quote request와 첫 deposit/order를 노린다.</li>
-        <li><strong>LOCATION lane supply-adjusted shortlist.</strong> 상위 수요지 중 경쟁·host 비용이 낮은 2선 입지를 찾는다.</li>
-        <li><strong>첫 유료 거래 전 장비 구매 없음.</strong></li>
-      </ol>
-    </div>
-
-    <div class="card span-4">
-      <h2>현재 판단</h2>
-      <p><strong>“더 조사할 단계”에서 “실제 돈을 받아볼 단계”로 넘어가는 중.</strong></p>
-      <p class="muted">다음 성과지표는 더 높은 점수가 아니라 C3/C4 증거 — real basket, quote request, written trial intent, deposit, paid order.</p>
-    </div>
-
-    <div class="card span-12">
-      <div class="gis-head">
-        <div>
-          <h2 style="margin-bottom:4px">서울 사업기회 GIS</h2>
-          <p class="muted">LOCATION lane의 수요 적합도와 Kakao 경쟁·대체재를 같은 화면에서 본다. 지도 자체는 탐색도구이며 ROI 예측은 아니다.</p>
-        </div>
-        <a class="gis-open" href="./gis.html" target="_blank" rel="noopener">전체화면 GIS →</a>
-      </div>
-      <iframe class="gis-frame" src="./gis.html" title="SideEconomyLab Seoul GIS" loading="lazy"></iframe>
-    </div>
-
-    <div class="card span-12">
-      <h2>Repository</h2>
-      <p><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab">jaehojung1879-netizen/SideEconomyLab</a></p>
-      <p><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/pull/9">Current Draft PR #9 — Seoul opportunity GIS v1</a></p>
-    </div>
+<header class="topbar">
+  <a class="brand" href="./index.html"><span>SideEconomyLab</span><h1>사업기회 GIS</h1></a>
+  <div class="primary-controls">
+    <div><label for="candidate">사업 후보</label><select id="candidate">
+      <option value="booth">OC-001 · 업무·통화용 독립 부스</option>
+      <option value="photo">OC-013 · 사진·문서 출력 키오스크</option>
+      <option value="vending">OC-020 · 특화 자판기</option>
+      <option value="luggage">OC-008 · 제휴형 짐 보관</option>
+    </select></div>
+    <div><label for="area-search">상권 · 구 · 동</label><div class="search-row"><input id="area-search" type="search" placeholder="어디를 살펴볼까요?" autocomplete="off"><button id="search-clear" title="검색 초기화" aria-label="검색 초기화">×</button></div></div>
   </div>
-
-  <footer>
-    SideEconomyLab · project dashboard v1 · This page summarizes research status; it is not an investment or business guarantee.
-  </footer>
-</div>
-</body>
-</html>
+  <nav class="header-actions"><button data-dialog="method-dialog">데이터·방법</button><button data-dialog="transaction-dialog">다른 사업 후보</button></nav>
+</header>
+<main class="workspace">
+  <aside class="navigator" id="navigator" aria-label="입지 탐색">
+    <div class="mobile-panel-title"><strong>입지 탐색</strong><button data-sheet="close" aria-label="패널 닫기">×</button></div>
+    <details class="filters" id="filter-panel" open>
+      <summary>필터 · 레이어</summary>
+      <div class="filter-content">
+        <div class="row-between"><label for="threshold">최소 수요점수</label><strong id="threshold-value">85</strong></div>
+        <input id="threshold" type="range" min="0" max="100" step="1" value="85">
+        <div class="quick"><button data-threshold="95">95+</button><button data-threshold="90">90+</button><button data-threshold="85">85+</button><button data-threshold="0">전체</button></div>
+        <label class="check-line"><input id="show-demand" type="checkbox" checked> 상권 수요 신호</label>
+        <label class="check-line"><input id="show-poi" type="checkbox" checked> 선택 상권 경쟁·대체재</label>
+        <label class="check-line"><input id="show-sites" type="checkbox" checked> 실제 후보지 <span id="site-count">0</span></label>
+      </div>
+    </details>
+    <div class="ranking-header"><h2>탐색 우선 입지</h2><span><b id="visible-count">—</b> / <span id="area-count">—</span></span></div>
+    <p class="navigator-note">서울 내 수요점수 순 · 임대료·경쟁을 차감한 순위가 아닙니다.</p>
+    <div id="top-list" class="top-list" aria-live="polite"></div>
+    <button id="load-more" class="load-more" hidden>입지 더 보기</button>
+  </aside>
+  <section class="map-wrap" aria-label="서울 입지 지도">
+    <div id="map"></div>
+    <div class="map-top"><span id="map-badge">지도 준비 중</span><button id="seoul-view">서울 전체</button></div>
+    <div class="map-legend"><span><i style="background:#ef476f"></i>95+</span><span><i style="background:#ff9f1c"></i>90+</span><span><i style="background:#ffd166"></i>80+</span><span><i style="background:#3a86ff"></i>80 미만</span><span><i style="background:#7c4dff"></i>주변 POI</span><span><i style="background:#0b8f72"></i>실제 후보지</span></div>
+    <div id="data-status" class="data-status" role="status">데이터 로딩 중</div>
+  </section>
+  <aside class="intelligence" id="intelligence" aria-label="선택 상권 분석">
+    <div class="panel-heading"><h2>선택 상권 분석</h2><button data-sheet="close" class="mobile-close" aria-label="분석 닫기">×</button></div>
+    <div id="selected-card" aria-live="polite">지도나 입지 목록에서 상권을 선택하세요.</div>
+  </aside>
+</main>
+<nav class="mobile-tabs" aria-label="지도 패널"><button data-sheet="rank" aria-expanded="false">입지 목록</button><button data-sheet="filters" aria-expanded="false">필터·레이어</button><button data-sheet="decision" aria-expanded="false">선택 분석</button></nav>
+<dialog id="method-dialog" aria-labelledby="method-title">
+  <div class="dialog-heading"><h2 id="method-title">데이터·방법</h2><button data-close-dialog aria-label="데이터·방법 닫기">×</button></div>
+  <p><strong>수요점수 ≠ 매출·ROI 예측.</strong> 서울 상권의 직장인구·유동인구·집객시설 백분위 순위를 사업별로 가중합한 0–100점 탐색 지표입니다.</p>
+  <p id="source-periods"></p><p>상권 경계가 아닌 중심점을 표시합니다. 설명은 공개 집계의 순위와 기존 가중치를 이용한 파생 신호입니다. 소스 누락값이 0으로 반영될 수 있으므로 현장에서 확인해야 합니다.</p>
+  <p><strong>Kakao POI는 점포 전수조사가 아닙니다.</strong> 사업별 상위 15개 상권 중심 800m, 검색별 가까운 15개 결과를 중복 제거합니다. 검색 전체 건수와 지도에 수집된 고유 POI 수는 다릅니다. 미조사는 경쟁이 없다는 뜻이 아닙니다.</p>
+  <p>임대료·보증금·수익배분·공실·이용률·비용·법적 제약은 아직 점수에 포함되지 않습니다. 실제 후보지는 직접 확인한 기록만 추가합니다.</p>
+  <details><summary>후보별 가중치</summary><div id="method-weights"></div></details>
+  <div class="method-links"><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/main/docs/gis-v1.md" target="_blank" rel="noopener">데이터 구조·운영</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/main/docs/gis-workspace-v2.md" target="_blank" rel="noopener">지도 설정·후보지 확장</a><a href="./research.html">연구 기록</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/main/docs/research-constitution.md" target="_blank" rel="noopener">연구헌법</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab" target="_blank" rel="noopener">저장소</a></div>
+</dialog>
+<dialog id="transaction-dialog" aria-labelledby="transaction-title">
+  <div class="dialog-heading"><h2 id="transaction-title">거래 검증 후보</h2><button data-close-dialog aria-label="다른 사업 후보 닫기">×</button></div>
+  <p>지도 입지와 별도로, 실제 발주·견적·유료거래 증거를 검증합니다. 거래 실적이나 설치 장소를 가정하지 않습니다.</p>
+  <article><b>OC-022 · 안전 소모품 반복조달</b><p>공개 리드·인터뷰·실제 구매품목과 발주 불편을 확인하는 단계. 장비 없이 수동형 공급부터 검증.</p></article>
+  <article><b>OC-021 · PPE / MRO 공급 장비</b><p>OC-022에서 반복 수요가 확인된 고객에 한해 통제형 공급 장비로 전환 검토. 장비 구매 전 검증.</p></article>
+  <article><b>OC-030 · 행사 경험·렌탈</b><p>공급업체 조건과 날짜가 있는 견적 요청·첫 주문 검증. 첫 행사는 보유 장비 없이 협력업체를 활용하는 설계.</p></article>
+  <a href="./research.html">전체 연구·검증 계획 보기 →</a>
+</dialog>
+<noscript>지도 탐색에는 JavaScript가 필요합니다. <a href="./research.html">연구 기록 보기</a></noscript>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
+<script src="./assets/map-adapter.js"></script><script src="./assets/gis.js"></script>
+</body></html>

@@ -1,6 +1,6 @@
 {
   "project": "SideEconomyLab",
-  "version": "seoul-opportunity-gis-v1",
+  "version": "gis-workspace-v2",
   "status": "PARALLEL_VALIDATION",
   "default_geography": "Seoul / Seoul metropolitan area",
   "current_phase": "Parallel LOCATION GIS screening and TRANSACTION C3/C4 validation",
@@ -14,7 +14,8 @@
     "demand_dataset": "Seoul Open Data commercial-area worker / floating population / attractor facilities",
     "area_count": 1650,
     "competition_layer": "Kakao Local REST proxy around top 15 demand-fit areas per candidate",
-    "warning": "Demand-fit and POI density are research-priority signals, not ROI forecasts."
+    "warning": "Demand-fit and POI density are research-priority signals, not ROI forecasts.",
+    "workspace": "Map-first candidate / location / decision workspace; Kakao JavaScript map with safe fallback"
   },
   "transaction_lane": {
     "candidates": [
