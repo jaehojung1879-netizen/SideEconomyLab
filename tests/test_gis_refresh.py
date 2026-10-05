@@ -17,7 +17,7 @@ import real_estate_context as context
 class RefreshTests(unittest.TestCase):
     def fixture(self, folder):
         root = Path(folder)
-        for name in ('pipeline', 'docs', 'tests', 'config', 'field', 'research', 'data/real-estate-context', '.github/workflows'):
+        for name in ('pipeline', 'docs', 'tests', 'config', 'field', 'research', 'data/real-estate-context', 'data/decision-intelligence', '.github/workflows'):
             (root / name).mkdir(parents=True, exist_ok=True)
         for name in (*refresh.OUTPUTS, 'docs/data/candidate-registry.json', 'config/real-estate-geography-v1.json'):
             dest = root / name

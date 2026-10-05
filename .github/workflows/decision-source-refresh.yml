@@ -1,0 +1,53 @@
+name: Refresh decision intelligence evidence
+on:
+  workflow_dispatch:
+    inputs:
+      audit_only:
+        description: 'Audit R-ONE/metadata only; retain original store retrieval dates'
+        type: boolean
+        default: false
+      commit_bundle:
+        description: 'Commit the validated bundle; false runs authenticated validation without publishing'
+        type: boolean
+        default: true
+permissions:
+  contents: write
+concurrency:
+  group: decision-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Stage complete targeted official-source bundle
+        env:
+          DATA_GO: ${{ secrets.DATA_GO }}
+          R_ONE: ${{ secrets.R_ONE }}
+        run: |
+          if [ '${{ inputs.audit_only }}' = 'true' ]; then
+            python pipeline/decision_collect.py --audit-only
+          else
+            python pipeline/decision_collect.py
+          fi
+      - name: Validate immutable source and exact public derivation
+        run: python pipeline/decision_bundle.py
+      - name: Commit only complete sanitized bundle if upstream HEAD is unchanged
+        if: ${{ inputs.commit_bundle != false }}
+        run: |
+          BEFORE_HEAD=$(git rev-parse HEAD)
+          git fetch origin "${{ github.ref_name }}"
+          test "$BEFORE_HEAD" = "$(git rev-parse FETCH_HEAD)" || { echo 'Upstream changed; no generated-data commit. Rerun.'; exit 1; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/decision-intelligence docs/data/decision-evidence.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: refresh validated decision intelligence source bundle'
+          git push origin HEAD:${{ github.ref_name }}

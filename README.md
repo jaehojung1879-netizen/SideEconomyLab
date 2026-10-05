@@ -61,3 +61,7 @@ The next decision is which candidates deserve real-world validation effort, rath
 ## Business Configuration & Economics Workbench v1
 
 The GIS now offers **사업 구성·경제성**: source-backed child variants/configurations, reverse break-even and site-cost thresholds, variant competition proxies and 2–4 scenario comparisons. Site terms and analyst judgments stay in a browser-local PRIVATE workspace with JSON backup. [Method, formulas and privacy](docs/business-workbench-v1.md). The calculator does not forecast demand or change the candidate-validation frontier; no purchase or pilot is authorized.
+
+## Decision Intelligence v1
+
+The GIS now opens with business cash/cost envelopes, reverse economics, conditional sensitivity and explicit decision gates. See [the decision guide](docs/decision-intelligence-v1.md) for evidence labels, private comparable inputs, source coverage and the outstanding R-ONE authentication requirement.

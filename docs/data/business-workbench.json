@@ -146,6 +146,17 @@
       "response_sha256": null,
       "excerpt": "국내 반복 MRO 통합 구매 서비스 모델",
       "repository_reference": "research/korea-feasibility-source-notes-v1.md"
+    },
+    {
+      "source_id": "WB-DI-S01",
+      "url": "https://www.shinsunginc.kr/m/product_list.html?xcode=005&type=X&page=2",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "c6b25a6c866ec34f98ce74d95de783d564a0d9f98b98d0f293179d4fcfe20a9f",
+      "excerpt": "멀티 자판기(냉장, 키오스크 장착, 스낵/음료/어메니티/일회용품 판매가능) 7,900,000원. 스마트 자판기 MMV & 키오스크 - 전시품(3일 전시), 멀티모듈 밴딩머신 & 키오스크 13,000,000원. 장비 호가이며 VAT·면적·설치·SKU 적합성은 별도 확인.",
+      "capture_method": "Bounded public HTTPS GET in Actions; reviewed catalog excerpt; original response hash and immutable sanitized snapshot retained.",
+      "repository_reference": "research/workbench-source-excerpts/WB-DI-S01.json"
     }
   ],
   "variants": [
@@ -970,6 +981,140 @@
           "이벤트"
         ]
       }
+    },
+    {
+      "variant_id": "VEND-SNACK",
+      "parent_candidate_id": "OC-020",
+      "label": "밀봉 간식 판매",
+      "customer_job": "구내·시설에서 가까운 밀봉 간식 구매",
+      "payer": "소비자",
+      "revenue_unit": "상품 1개",
+      "economic_model": "UNIT_SALE",
+      "equipment_service_class": "냉장 멀티 자판기 + 결제 키오스크",
+      "typical_host_archetype": "기존 시설 내 호스트 설치",
+      "direct_competition_taxonomy": [
+        "스낵자판기",
+        "과자자판기"
+      ],
+      "substitute_taxonomy": [
+        "편의점",
+        "슈퍼",
+        "마트",
+        "매점"
+      ],
+      "required_site_attributes": [
+        "전력·보충 동선·판매 SKU/결제 적합성·호스트 허가"
+      ],
+      "capex_components": [
+        "판매기",
+        "결제",
+        "설치",
+        "재고"
+      ],
+      "opex_components": [
+        "매입",
+        "전력",
+        "폐기",
+        "보충"
+      ],
+      "revenue_variables": [
+        "unit_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "유통기한·식품 표시·파손·보충",
+        "냉장 필요 SKU는 온도 기록·장애 대응"
+      ],
+      "legal_regulatory_unknowns": [
+        "식품 판매·표시·위생·전기·호스트 허가; 주류 제외"
+      ],
+      "source_ids": [
+        "WB-DI-S01"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "스낵자판기",
+          "과자자판기"
+        ],
+        "substitute": [
+          "편의점",
+          "슈퍼",
+          "마트",
+          "매점"
+        ]
+      }
+    },
+    {
+      "variant_id": "VEND-AMENITY",
+      "parent_candidate_id": "OC-020",
+      "label": "여행·시설 일회용 필수품 판매",
+      "customer_job": "잊은 세면·위생 일회용품을 시설에서 즉시 구매",
+      "payer": "소비자",
+      "revenue_unit": "상품 1개",
+      "economic_model": "UNIT_SALE",
+      "equipment_service_class": "냉장 멀티 자판기 + 결제 키오스크",
+      "typical_host_archetype": "기존 시설 내 호스트 설치",
+      "direct_competition_taxonomy": [
+        "어메니티자판기",
+        "생필품자판기"
+      ],
+      "substitute_taxonomy": [
+        "편의점",
+        "다이소",
+        "생활용품",
+        "약국"
+      ],
+      "required_site_attributes": [
+        "전력·보충 동선·판매 SKU/결제 적합성·호스트 허가"
+      ],
+      "capex_components": [
+        "판매기",
+        "결제",
+        "설치",
+        "재고"
+      ],
+      "opex_components": [
+        "매입",
+        "전력",
+        "폐기",
+        "보충"
+      ],
+      "revenue_variables": [
+        "unit_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "정품·표시·도난·재고 보충",
+        "의약품·담배·주류·의료기기 제외"
+      ],
+      "legal_regulatory_unknowns": [
+        "화장품/생활화학제품 표시·판매 범위·호스트 허가"
+      ],
+      "source_ids": [
+        "WB-DI-S01"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "어메니티자판기",
+          "생필품자판기"
+        ],
+        "substitute": [
+          "편의점",
+          "다이소",
+          "생활용품",
+          "약국"
+        ]
+      }
     }
   ],
   "configurations": [
@@ -1743,6 +1888,76 @@
       "limitations": [
         "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
       ]
+    },
+    {
+      "configuration_id": "C-MULTI-790",
+      "vendor": "신성아이앤씨",
+      "model": "냉장 멀티 자판기 + 키오스크",
+      "variant_ids": [
+        "VEND-SNACK",
+        "VEND-AMENITY"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 7900000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": "냉장/냉동 분류; 소비전력 UNKNOWN",
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-DI-S01"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "SKU_AND_SITE_REQUIRE_QUOTE",
+      "limitations": [
+        "공개 장비 호가; VAT·시설·설치·운영 총액 아님",
+        "직접 판매 SKU·유통기한·결제·AS·구매 가능 재고를 견적에서 확인"
+      ]
+    },
+    {
+      "configuration_id": "C-MULTI-MMV",
+      "vendor": "신성아이앤씨",
+      "model": "MMV + 키오스크 전시품 (3일 전시)",
+      "variant_ids": [
+        "VEND-SNACK",
+        "VEND-AMENITY"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 13000000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": "냉장/냉동 분류; 소비전력 UNKNOWN",
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-DI-S01"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "SKU_AND_SITE_REQUIRE_QUOTE",
+      "limitations": [
+        "공개 장비 호가; VAT·시설·설치·운영 총액 아님",
+        "직접 판매 SKU·유통기한·결제·AS·구매 가능 재고를 견적에서 확인"
+      ]
     }
   ],
   "excluded_forms": [
@@ -1751,12 +1966,12 @@
       "reason": "이 접근 가능한 국내 자료는 캡슐 커피이며 장난감 가챠 배포/규격 근거가 아님. toy SKU/배포 검증 후 추가."
     },
     {
-      "form": "generic amenity/specialty vending",
-      "reason": "구체 상품/job·판매 조건 미정; 기계 종류만으로 변형 생성하지 않음."
-    },
-    {
       "form": "ID photo capture",
       "reason": "증명사진 출력 기능은 촬영/규격 보증 서비스가 아님."
+    },
+    {
+      "form": "unspecified specialty/character goods vending",
+      "reason": "SKU·판매 조건 근거 없음. 스낵과 일회용 필수품만 새 국내 공급자 근거로 분리; toy gacha는 계속 보류."
     }
   ],
   "additional_source": {

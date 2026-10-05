@@ -1,0 +1,12 @@
+{
+  "source_id": "WB-DI-S01",
+  "url": "https://www.shinsunginc.kr/m/product_list.html?xcode=005&type=X&page=2",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "c6b25a6c866ec34f98ce74d95de783d564a0d9f98b98d0f293179d4fcfe20a9f",
+  "excerpt": "멀티 자판기(냉장, 키오스크 장착, 스낵/음료/어메니티/일회용품 판매가능) 7,900,000원. 스마트 자판기 MMV & 키오스크 - 전시품(3일 전시), 멀티모듈 밴딩머신 & 키오스크 13,000,000원. 장비 호가이며 VAT·면적·설치·SKU 적합성은 별도 확인.",
+  "capture_method": "Bounded public HTTPS GET in Actions; reviewed catalog excerpt; original response hash and immutable sanitized snapshot retained.",
+  "repository_reference": "research/workbench-source-excerpts/WB-DI-S01.json",
+  "snapshot_reference": "data/decision-intelligence/2026-10-05-0f2d620f691b/source.json.gz"
+}

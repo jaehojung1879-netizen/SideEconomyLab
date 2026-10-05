@@ -72,7 +72,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   const mapBox=await page.locator('#map').boundingBox();await page.mouse.click(mapBox.x+target.point.x,mapBox.y+target.point.y);
   assert.equal(await page.evaluate(()=>state.selectedArea.trdar_cd),target.code);
   for(const u of await page.locator('.poi-list a').evaluateAll(es=>es.map(e=>e.href)))assert.equal(new URL(u).hostname,'place.map.kakao.com');
-  await page.locator('.poi-marker').first().click();await page.locator('.leaflet-popup').last().waitFor();
+  await page.evaluate(()=>{for(const el of document.querySelectorAll('.poi-marker')){const r=el.getBoundingClientRect();if(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===el){el.dataset.gisExposed='true';break;}}});await page.locator('[data-gis-exposed=true]').hover();await page.locator('.leaflet-tooltip').last().waitFor();await page.keyboard.press('Escape');await page.waitForFunction(()=>document.querySelectorAll('.leaflet-tooltip').length===0);assert.equal(await page.locator('.leaflet-tooltip').count(),0);
   await page.click('[data-dialog="method-dialog"]');assert.ok(await page.locator('#method-dialog').isVisible());await page.locator('#method-dialog [data-close-dialog]').click();
   await page.click('[data-dialog="transaction-dialog"]');for(const c of ['OC-021','OC-022','OC-030'])assert.ok((await page.locator('#transaction-dialog').innerText()).includes(c));await page.locator('#transaction-dialog [data-close-dialog]').click();
   await page.locator('#navigator').evaluate(e=>{e.scrollTop=0;});await page.locator('.filter-content').evaluate(e=>{e.scrollTop=0;});await page.waitForTimeout(300);
@@ -126,6 +126,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.goto(base);await page.waitForFunction(()=>state.adapter?.provider==='kakao');assert.equal(await page.locator('#map').getAttribute('data-synthetic-kakao'),'true');assert.ok(await page.locator('.demand-marker').count()>0);
   await page.locator('.demand-marker').nth(2).click();assert.ok((await page.locator('#selected-card').innerText()).includes('FIELD CHECK'));
   for(const candidate of ['photo','vending','luggage','booth']){await page.selectOption('#candidate',candidate);assert.ok(await page.locator('.demand-marker').count()>0);assert.ok(await page.locator('.poi-marker').count()>0);}
+  await page.locator('#filter-panel').evaluate(e=>e.open=true);
   await page.uncheck('#show-demand');assert.equal(await page.locator('button.demand-marker').count(),0);await page.check('#show-demand');assert.ok(await page.locator('button.demand-marker').count()>0);
   for(const mode of ['quadrant','supply','demand']){await page.selectOption('#map-mode',mode);assert.ok(await page.locator('button.demand-marker').count()>0);}
   await page.unroute('https://dapi.kakao.com/v2/maps/sdk.js?*');await page.route('https://dapi.kakao.com/v2/maps/sdk.js?*',r=>r.fulfill({contentType:'application/javascript',body:'/* synthetic SDK rejection: no Kakao globals */'}));
