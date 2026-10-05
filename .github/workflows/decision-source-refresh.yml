@@ -1,9 +1,6 @@
 name: Refresh decision intelligence evidence
 on:
   workflow_dispatch:
-  push:
-    branches: [feat/decision-intelligence-v1]
-    paths: ['pipeline/public_api_client.py', 'pipeline/decision_sources.py', '.github/workflows/decision-source-refresh.yml']
 permissions:
   contents: write
 concurrency:
@@ -12,29 +9,30 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Audit authenticated official operations with the exact secret contract
+      - name: Stage complete targeted official-source bundle
         env:
           DATA_GO: ${{ secrets.DATA_GO }}
           R_ONE: ${{ secrets.R_ONE }}
-        run: python pipeline/decision_sources.py --probe --output /tmp/decision-source-audit
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sanitized-decision-source-audit
-          path: /tmp/decision-source-audit
-          retention-days: 3
-      - name: Preserve sanitized audit for review
+        run: python pipeline/decision_collect.py
+      - name: Validate immutable source and exact public derivation
+        run: python pipeline/decision_bundle.py
+      - name: Commit only complete sanitized bundle if upstream HEAD is unchanged
         run: |
-          mkdir -p data/decision-intelligence
-          cp /tmp/decision-source-audit/probe.json data/decision-intelligence/source-audit.json
+          BEFORE_HEAD=$(git rev-parse HEAD)
+          git fetch origin "${{ github.ref_name }}"
+          test "$BEFORE_HEAD" = "$(git rev-parse FETCH_HEAD)" || { echo 'Upstream changed; no generated-data commit. Rerun.'; exit 1; }
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/decision-intelligence/source-audit.json
+          git add data/decision-intelligence docs/data/decision-evidence.json
           git diff --cached --quiet && exit 0
-          git commit -m 'data: preserve sanitized decision source audit'
+          git commit -m 'data: refresh validated decision intelligence source bundle'
           git push origin HEAD:${{ github.ref_name }}
