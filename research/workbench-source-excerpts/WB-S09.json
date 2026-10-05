@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S09",
+  "url": "https://www.shinsunginc.kr/m/product_list.html?xcode=005&type=X",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "f5292da23105204b511d01b5800c1fcc6f2a563f4d8b303486c97004c8ee8014",
+  "excerpt": "슬림형 음료 자판기 (냉장, 카드단말기 장착, 캔/패트 판매가능) - 전국내륙 6,600,000원. 메일빈 M500 무인카페 커피머신-렌탈(48개월) 701,712원; 월 여부/보증금/포함 범위 확인 필요. M500 2026 신제품 26,400,000원. 카페퍼플먼트 X500 FULL SET 19,250,000원. 캡슐 커피 머신과 장난감 가챠를 구별.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

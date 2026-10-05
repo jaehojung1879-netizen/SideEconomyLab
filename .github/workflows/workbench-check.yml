@@ -1,0 +1,64 @@
+name: Verify business workbench
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**', 'research/workbench-*', 'research/workbench-source-excerpts/**', 'tests/**', '.github/workflows/workbench-check.yml']
+  pull_request:
+    paths: ['docs/**', 'research/workbench-*', 'research/workbench-source-excerpts/**', 'tests/**', '.github/workflows/workbench-check.yml']
+permissions:
+  contents: read
+concurrency:
+  group: workbench-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install verification dependencies outside checkout
+        run: |
+          python -m pip install pyproj==3.7.2 jsonschema==4.26.0
+          npm install --prefix /tmp/workbench-test playwright@1.58.2 leaflet@1.9.4 proj4@2.11.0
+          /tmp/workbench-test/node_modules/.bin/playwright install --with-deps chromium
+      - name: Economics, provenance, privacy and preserved GIS integrity
+        run: |
+          node --check docs/assets/economics.js
+          node --check docs/assets/business-workspace.js
+          node --check docs/assets/workbench.js
+          node tests/workbench-models.cjs
+          python -m unittest discover -s tests -p test_business_workbench.py -v
+          python pipeline/gis_refresh.py --check
+          python pipeline/validation_portfolio.py --check
+          python - <<'PY'
+          import json, jsonschema
+          schema = json.load(open('docs/data/business-workbench.schema.json'))
+          jsonschema.Draft202012Validator.check_schema(schema)
+          jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker()).validate(json.load(open('docs/data/business-workbench.json')))
+          PY
+      - name: Scenario workspace browser and mobile
+        env:
+          NODE_PATH: /tmp/workbench-test/node_modules
+        run: |
+          mkdir -p /tmp/gis-static
+          ln -s "$GITHUB_WORKSPACE/docs" /tmp/gis-static/SideEconomyLab
+          python -m http.server 8765 --bind 127.0.0.1 --directory /tmp/gis-static > /tmp/workbench-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID"' EXIT
+          for attempt in $(seq 1 20); do
+            if curl -sf http://127.0.0.1:8765/SideEconomyLab/index.html > /dev/null; then break; fi
+            sleep 0.2
+          done
+          node tests/workbench-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: business-workbench-screenshots
+          path: /tmp/workbench-browser
+          if-no-files-found: ignore

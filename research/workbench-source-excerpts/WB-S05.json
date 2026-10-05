@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S05",
+  "url": "https://chiki.ai/rental/ai-photo-booth",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "cba46bfc3a582663fa988da9841f16335dc3a2a34afdd7195e26f13200bbb4cc",
+  "excerpt": "1일 100만원 · 서울·대구·부산 기준 · 부가세 별도. 운송·설치·철거; 용지 무제한; 브랜드 맞춤 화면·프레임; AI 서버·원격 지원 포함. 외 지역 운송비 추가. 일정 1일 연장 35만원; 최초 1일 가격과 구별.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

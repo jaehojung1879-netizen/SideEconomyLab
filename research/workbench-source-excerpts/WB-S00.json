@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S00",
+  "url": "https://muzone.co.kr/",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "9a3dc1bdc04d33adf8ae4573a2aa291bb62d0c03822e56fdb5581fc02b8304f5",
+  "excerpt": "뮤존 노래방 방음부스 일반형 4,630,000원 / 5,730,000원; 고급형 5,480,000원 / 6,750,000원; 뮤존플러스 업소용 8,030,000원 / 9,280,000원; K-존 방음부스 개인 사무실 가정용 2,650,000원 / 3,081,400원. 낮은 노출가격을 호가로 기록. 비교가격·옵션·VAT·설치 범위는 별도 확인.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

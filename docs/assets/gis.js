@@ -74,7 +74,7 @@ function renderSelected(){
   const signalRows=signals(a).slice(0,3).map(s=>`<li>${FIELDS[s.field]} · 서울 백분위 <b>${Math.round(s.percentile*100)}</b><div class="signal-detail">기존 점수 비중 ${Math.round(s.weight*100)}% · 공개 집계 ${fmt(a[s.field])}</div></li>`).join('');
   const metricFields=candidate.metric_fields;
   const localSites=state.sites.filter(s=>s.candidate_id===candidate.id&&String(s.commercial_area_id)===String(a.trdar_cd));
-  host.innerHTML=`<div class="selected-title">${esc(a.trdar_name)}</div><div class="selected-sub">${esc(a.district)} ${esc(a.dong)} · ${esc(a.trdar_cd)}<br>${candidate.id} · ${candidate.label}</div>
+  host.innerHTML=`<button class="wb-map-create" onclick="window.dispatchEvent(new Event('sideeconomy:create-scenario'))">이 지도 위치로 PRIVATE 시나리오 구성</button><div class="selected-title">${esc(a.trdar_name)}</div><div class="selected-sub">${esc(a.district)} ${esc(a.dong)} · ${esc(a.trdar_cd)}<br>${candidate.id} · ${candidate.label}</div>
     <div class="score-card"><div><span>수요 적합도</span><b>${currentScore(a).toFixed(1)}</b><small>100점 기준</small></div><div><span>서울 내 수요 순위</span><b>#${rank}</b><small>/ ${fmt(state.data.areas.length)} · 동점 동일 순위</small></div></div>
     <section class="decision-section supply-section"><h3><span class="kind">DATA / DERIVED</span>OBSERVED SUPPLY · 관측공급</h3>${!state.poiData?'<p>POI 데이터를 불러오지 못했습니다. 수요 지도는 이용할 수 있습니다.</p>':''}<p>${evidence.status==='MEASURED'?'조사됨':evidence.status==='PARTIAL'?'불완전 조사 · 비교 제외':'미측정 / 분석 미검증'}</p><div class="metrics"><div><span>관련 POI (직접형 + 대체형)</span><b>${fmt(evidence.relevant_count)}</b></div><div><span>가장 가까운 관련 POI</span><b>${evidence.nearest_m==null?'관측 없음/미상':fmt(evidence.nearest_m)+'m'}</b></div><div><span>200m / 400m / 800m</span><b>${[200,400,800].map(m=>fmt(evidence.within_m?.[m])).join(' / ')}</b></div><div><span>직접형 / 대체형</span><b>${fmt(evidence.direct_proxy_count)} / ${fmt(evidence.substitute_proxy_count)}</b></div></div><p>원시 ${fmt(evidence.raw_poi_count)} · 문맥/미확인 ${fmt(evidence.context_count)} · 검색 실패 ${fmt(evidence.query_errors)}건</p>${evidence.truncated?'<p class="caution">검색 결과 제한 있음 · 낮은 공급 판정은 보류합니다.</p>':''}<details class="poi-details"><summary>검색별 건수·가까운 관련 POI</summary><div class="poi-chips">${tags}</div><div class="poi-list">${links||'<p>0개 관측과 미측정은 다릅니다. 경쟁 부재를 증명하지 않습니다.</p>'}</div></details></section>
     <section class="decision-section"><h3><span class="kind">DERIVED SIGNAL</span>RESEARCH QUADRANT</h3><b class="quadrant-label" style="border-color:${QUADRANT_COLORS[evidence.quadrant]}">${evidence.quadrant} · ${QUADRANTS[evidence.quadrant]}</b><p>고수요 ≥ ${state.evidence?.high_demand_min??90}점 · 낮은 관측공급 ≤ 후보별 조사 표본 중앙값 ${esc(cohort?.reference_median??'—')}개 (${fmt(cohort?.reference_count)}곳). 서울 전체 공급 기준이 아닙니다.</p><p>${evidence.quadrant==='E'?esc({'incomplete collection':'검색 실패·정의 불일치 또는 유효하지 않은 관측입니다.','insufficient or invariant reference':'10곳 미만이거나 관측 개수가 같아 비교 기준이 없습니다.','capped results cannot establish lower observed supply':'검색 결과가 제한되어 낮은 공급 판정을 보류합니다.'}[evidence.quadrant_reason]||'공급 미측정 또는 원본과 일치하는 분석이 없습니다.'):['A','C'].includes(evidence.quadrant)?'상대적으로 적은 관측공급: 공백 가능성을 현장에서 검증할 연구 목록입니다.':'많은 관측공급: 직접 경쟁인지, 수요 집적/보완 서비스인지 현장에서 구분하세요.'}</p><p class="caution">Kakao 검색 프록시 · 전수조사 아님. ${esc(candidate.competition.risk)}</p></section>
@@ -105,6 +105,7 @@ function renderSites(){
 function selectArea(a,{pan=true,openSheet=true}={}){
   state.selectedArea=a;if(a&&pan)state.adapter.focus(toLatLng(a));
   renderSelected();renderPoi();state.adapter.selected(a?toLatLng(a):null);
+  window.dispatchEvent(new CustomEvent('sideeconomy:area-selected',{detail:{area:a,position:a?toLatLng(a):null,candidate_id:CANDIDATES[state.candidate].id,poiLayer:state.poiData}}));
   document.querySelectorAll('.top-item').forEach(b=>b.classList.toggle('active',a&&b.dataset.code===String(a.trdar_cd)));
   if(openSheet&&matchMedia('(max-width:800px)').matches&&document.body.dataset.sheet!=='decision')setSheet('decision');
 }
@@ -187,4 +188,5 @@ async function init(){
     render();new ResizeObserver(()=>adapter.resize()).observe($('map'));
   }catch{state.adapter=await mapPromise.catch(()=>null);$('data-status').textContent='수요 데이터를 불러오지 못했습니다.';$('top-list').innerHTML='<p class="empty-state">데이터를 준비하지 못했습니다. 잠시 후 다시 열어 주세요.</p>';}
 }
+window.addEventListener('sideeconomy:choose-family',e=>{if(CANDIDATES[e.detail]&&state.data&&state.adapter){state.candidate=e.detail;$('candidate').value=e.detail;state.selectedArea=null;render();}});
 init();

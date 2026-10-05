@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S01",
+  "url": "https://www.selpic.kr/kiosks",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "17048bfdbc446c29a430cf112b765ce7bd8bfe71c3d5942c70d9ea42139ad9e0",
+  "excerpt": "모델별 제원 · 가격; 가격은 VAT 포함. SM05 베이직 견적 문의; SM05 듀얼 7,700,000원; SM06 스테이션 5,500,000원; SM08 프리미엄 9,900,000원; SM09/데스크 견적 문의. 규격 W×H×D: 54×120×35cm, 54×120×35cm, 36×64×64cm, 56.5×179×69.9cm, 58×167×69.7cm. SM08 A4 지원. 전원 220V · UTP/WiFi. 설치·배송 견적 문의. 구매·렌탈·무료 설치 상담.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

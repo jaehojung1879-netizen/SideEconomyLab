@@ -1,0 +1,1776 @@
+{
+  "schema_version": 1,
+  "catalog_id": "business-workbench-v1",
+  "curated_at": "2026-10-05",
+  "freshness_days": 30,
+  "sources": [
+    {
+      "source_id": "WB-S00",
+      "url": "https://muzone.co.kr/",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "9a3dc1bdc04d33adf8ae4573a2aa291bb62d0c03822e56fdb5581fc02b8304f5",
+      "excerpt": "뮤존 노래방 방음부스 일반형 4,630,000원 / 5,730,000원; 고급형 5,480,000원 / 6,750,000원; 뮤존플러스 업소용 8,030,000원 / 9,280,000원; K-존 방음부스 개인 사무실 가정용 2,650,000원 / 3,081,400원. 낮은 노출가격을 호가로 기록. 비교가격·옵션·VAT·설치 범위는 별도 확인.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S00.json"
+    },
+    {
+      "source_id": "WB-S01",
+      "url": "https://www.selpic.kr/kiosks",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "17048bfdbc446c29a430cf112b765ce7bd8bfe71c3d5942c70d9ea42139ad9e0",
+      "excerpt": "모델별 제원 · 가격; 가격은 VAT 포함. SM05 베이직 견적 문의; SM05 듀얼 7,700,000원; SM06 스테이션 5,500,000원; SM08 프리미엄 9,900,000원; SM09/데스크 견적 문의. 규격 W×H×D: 54×120×35cm, 54×120×35cm, 36×64×64cm, 56.5×179×69.9cm, 58×167×69.7cm. SM08 A4 지원. 전원 220V · UTP/WiFi. 설치·배송 견적 문의. 구매·렌탈·무료 설치 상담.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S01.json"
+    },
+    {
+      "source_id": "WB-S02",
+      "url": "https://selpic.kr/service",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "bdb8edcb681d7e667368f47422f31ecc524281bd1b79dd22fd98ebff9f31d346",
+      "excerpt": "4×6 사진 1,000원~. 사진 출력의 시작 소매가; 문서·증명 촬영 요금 아님.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S02.json"
+    },
+    {
+      "source_id": "WB-S03",
+      "url": "https://selpic.kr/events",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "644f137b290884f5da7151e2be6b60f110abbeddd6bc6ba9edde09326756ade1",
+      "excerpt": "1일 30만원~ · 키오스크 1대 기준. 맞춤 프레임 제작부터 설치·철수, 원격 모니터링. 파트너 순가격과 정확한 범위 미확인.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S03.json"
+    },
+    {
+      "source_id": "WB-S04",
+      "url": "https://chiki.ai/product",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "8810c9ae013584e7ae072eb28cdd9b79a23f9302a9edb2f561139b1b78885e9c",
+      "excerpt": "부가세 별도. 운송·설치비 별도 견적. 컴팩트 600만원부터 H1500 W450 D580mm; 오리지널 700만원부터 H2000 W800 D550mm; 시그니처 900만원부터 H2000 W1400 D800mm. 기기·소프트웨어 라이선스 포함. 소프트웨어 운영비·추가 커스텀 비용 별도.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S04.json"
+    },
+    {
+      "source_id": "WB-S05",
+      "url": "https://chiki.ai/rental/ai-photo-booth",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "cba46bfc3a582663fa988da9841f16335dc3a2a34afdd7195e26f13200bbb4cc",
+      "excerpt": "1일 100만원 · 서울·대구·부산 기준 · 부가세 별도. 운송·설치·철거; 용지 무제한; 브랜드 맞춤 화면·프레임; AI 서버·원격 지원 포함. 외 지역 운송비 추가. 일정 1일 연장 35만원; 최초 1일 가격과 구별.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S05.json"
+    },
+    {
+      "source_id": "WB-S06",
+      "url": "https://radicalstorage.com/ko_kr/luggage-storage/seoul",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "05f826c278979c15426694f380f4fc19d6c084d98359377ad3e170152c74942f",
+      "excerpt": "서울 짐 보관소 ₩5100부터 | 70개 지점. 제휴 호텔·상점; 짐 1개/일 ₩5,100. 호스트 순수취액·플랫폼 수수료·실제 볼륨 미확인.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S06.json"
+    },
+    {
+      "source_id": "WB-S07",
+      "url": "https://www.shinsunginc.kr/m/product.html?branduid=11274896&xcode=005&mcode=001&type=X",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "53c67f5158f8363e242fde9602276cb2b2a29beec6e5cdf3264c5dcab1aba79f",
+      "excerpt": "오픈형 냉장자판기 쇼케이스 무인판매기 - 5단 (중고); 3,800,000원 / 2,500,000원. 배송비 (무료) 표시. 재고·실거래·VAT·설치·AS·재판매 회수 미확인.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S07.json"
+    },
+    {
+      "source_id": "WB-S08",
+      "url": "https://www.data.go.kr/data/15012005/openapi.do",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "OFFICIAL_API_DOCUMENTATION",
+      "response_sha256": "42241be0f10d8d483a23386b4146494e2b4751052622bbb743cc1141077a6303",
+      "excerpt": "소상공인시장진흥공단_상가(상권)정보_API. REST, JSON+XML, 전국, 반경조회/영역별조회. 제공항목 상가업소번호·상호명·주소·상권업종명·표준산업분류명·경도·위도. 비용 무료, 업데이트 주기 실시간 표기. 수정일 2026-08-14. 활용신청 및 서비스키 필요. 분류의 점포 존재는 세부 서비스 일치·가동 확인 아님.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S08.json"
+    },
+    {
+      "source_id": "WB-S09",
+      "url": "https://www.shinsunginc.kr/m/product_list.html?xcode=005&type=X",
+      "observed_at": "2026-10-05",
+      "access_status": "HTTP_200_PUBLIC_CONTENT",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "response_sha256": "f5292da23105204b511d01b5800c1fcc6f2a563f4d8b303486c97004c8ee8014",
+      "excerpt": "슬림형 음료 자판기 (냉장, 카드단말기 장착, 캔/패트 판매가능) - 전국내륙 6,600,000원. 메일빈 M500 무인카페 커피머신-렌탈(48개월) 701,712원; 월 여부/보증금/포함 범위 확인 필요. M500 2026 신제품 26,400,000원. 카페퍼플먼트 X500 FULL SET 19,250,000원. 캡슐 커피 머신과 장난감 가챠를 구별.",
+      "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test",
+      "repository_reference": "research/workbench-source-excerpts/WB-S09.json"
+    },
+    {
+      "source_id": "WB-LOCKER",
+      "url": "https://korean.visitseoul.net/attractions/Luggage-Lounge-Anguk-Locker/KOPy2nopb",
+      "observed_at": "2026-10-03",
+      "access_status": "INHERITED_NOT_CURRENTLY_VERIFIED",
+      "attempted_at": "2026-10-05",
+      "evidence_quality": "INHERITED_REPOSITORY_C2",
+      "response_sha256": null,
+      "excerpt": "국내 무인 짐보관·카드 키오스크·사이즈별 락커 배포",
+      "repository_reference": "research/korea-feasibility-source-notes-v1.md"
+    },
+    {
+      "source_id": "WB-PRINT",
+      "url": "https://english.visitseoul.net/entertainment/printcafe/ENPz0djo8",
+      "observed_at": "2026-10-03",
+      "access_status": "INHERITED_NOT_CURRENTLY_VERIFIED",
+      "attempted_at": "2026-10-05",
+      "evidence_quality": "INHERITED_REPOSITORY_C2",
+      "response_sha256": null,
+      "excerpt": "서울 24시간 셀프 문서 출력/복사/팩스/스캔 배포",
+      "repository_reference": "research/korea-feasibility-source-notes-v1.md"
+    },
+    {
+      "source_id": "WB-MRO",
+      "url": "https://www.serveone.co.kr/kr/purchasing-service/mro.do",
+      "observed_at": "2026-10-03",
+      "access_status": "INHERITED_NOT_CURRENTLY_VERIFIED",
+      "attempted_at": "2026-10-05",
+      "evidence_quality": "INHERITED_REPOSITORY_C2",
+      "response_sha256": null,
+      "excerpt": "국내 반복 MRO 통합 구매 서비스 모델",
+      "repository_reference": "research/korea-feasibility-source-notes-v1.md"
+    }
+  ],
+  "variants": [
+    {
+      "variant_id": "BOOTH-CALL",
+      "parent_candidate_id": "OC-001",
+      "label": "업무·통화 시간제 부스",
+      "customer_job": "독립된 통화·업무 공간",
+      "payer": "개인 이용자",
+      "revenue_unit": "점유 분",
+      "economic_model": "TIME",
+      "equipment_service_class": "상업 통화 부스 + 결제/환기",
+      "typical_host_archetype": "오피스·공유공간",
+      "direct_competition_taxonomy": [
+        "통화부스",
+        "폰부스",
+        "전화부스"
+      ],
+      "substitute_taxonomy": [
+        "회의실",
+        "공유오피스"
+      ],
+      "required_site_attributes": [
+        "소방·환기·차음·접근성·전력"
+      ],
+      "capex_components": [
+        "상업부스",
+        "결제기",
+        "환기",
+        "설치"
+      ],
+      "opex_components": [
+        "청소",
+        "전력",
+        "지원",
+        "임대/호스트"
+      ],
+      "revenue_variables": [
+        "price_per_minute",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "잠금·환기 장애 즉시 대응 책임"
+      ],
+      "legal_regulatory_unknowns": [
+        "건물 용도·소방·상업 사용·기기 안전"
+      ],
+      "source_ids": [
+        "WB-S00"
+      ],
+      "deployment_evidence": "COMMERCIAL_SERVICE_UNPROVEN",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "통화부스",
+          "폰부스",
+          "전화부스"
+        ],
+        "substitute": [
+          "회의실",
+          "공유오피스"
+        ]
+      }
+    },
+    {
+      "variant_id": "BOOTH-FOCUS",
+      "parent_candidate_id": "OC-001",
+      "label": "집중·연습 방음 공간",
+      "customer_job": "조용한 개인 집중/연습",
+      "payer": "개인 이용자",
+      "revenue_unit": "점유 분",
+      "economic_model": "TIME",
+      "equipment_service_class": "일반 방음 부스; 상업 서비스 전용 미확인",
+      "typical_host_archetype": "예약 공간",
+      "direct_competition_taxonomy": [
+        "방음부스",
+        "개인연습실"
+      ],
+      "substitute_taxonomy": [
+        "스터디카페",
+        "독서실",
+        "회의실",
+        "연습실"
+      ],
+      "required_site_attributes": [
+        "차음·환기·출입·민원"
+      ],
+      "capex_components": [
+        "부스",
+        "시설",
+        "설치"
+      ],
+      "opex_components": [
+        "청소",
+        "전력",
+        "지원"
+      ],
+      "revenue_variables": [
+        "price_per_minute",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "가정용 장비의 상업 전용 적합성 별도 확인"
+      ],
+      "legal_regulatory_unknowns": [
+        "건물 용도·소방·방음 민원"
+      ],
+      "source_ids": [
+        "WB-S00"
+      ],
+      "deployment_evidence": "COMMERCIAL_SERVICE_UNPROVEN",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "방음부스",
+          "개인연습실"
+        ],
+        "substitute": [
+          "스터디카페",
+          "독서실",
+          "회의실",
+          "연습실"
+        ]
+      }
+    },
+    {
+      "variant_id": "BOOTH-SING",
+      "parent_candidate_id": "OC-001",
+      "label": "소형 노래 부스",
+      "customer_job": "짧은 노래 체험",
+      "payer": "개인 이용자",
+      "revenue_unit": "점유 분",
+      "economic_model": "TIME",
+      "equipment_service_class": "노래방 방음/음향 부스",
+      "typical_host_archetype": "오락·리테일",
+      "direct_competition_taxonomy": [
+        "코인노래",
+        "노래방",
+        "노래부스"
+      ],
+      "substitute_taxonomy": [
+        "노래연습장"
+      ],
+      "required_site_attributes": [
+        "차음·환기·영업 가능 건물"
+      ],
+      "capex_components": [
+        "부스",
+        "음향",
+        "결제",
+        "설치"
+      ],
+      "opex_components": [
+        "콘텐츠",
+        "청소",
+        "전력",
+        "AS"
+      ],
+      "revenue_variables": [
+        "price_per_minute",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "저녁·주말 장애 대응·소음"
+      ],
+      "legal_regulatory_unknowns": [
+        "노래연습장 신고·청소년·소방·저작권"
+      ],
+      "source_ids": [
+        "WB-S00"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "코인노래",
+          "노래방",
+          "노래부스"
+        ],
+        "substitute": [
+          "노래연습장"
+        ]
+      }
+    },
+    {
+      "variant_id": "PHOTO-PRINT",
+      "parent_candidate_id": "OC-013",
+      "label": "휴대폰 사진 인화",
+      "customer_job": "보유 사진을 즉석 실물로",
+      "payer": "사진 소유자",
+      "revenue_unit": "인화 거래",
+      "economic_model": "TRANSACTION",
+      "equipment_service_class": "염료승화 사진 출력 키오스크",
+      "typical_host_archetype": "카페·조리원·사진관",
+      "direct_competition_taxonomy": [
+        "사진인화",
+        "셀픽",
+        "포토프린트"
+      ],
+      "substitute_taxonomy": [
+        "사진관",
+        "포토부스"
+      ],
+      "required_site_attributes": [
+        "전력·통신·보충 공간"
+      ],
+      "capex_components": [
+        "키오스크",
+        "설치",
+        "초기 소모품"
+      ],
+      "opex_components": [
+        "용지/리본",
+        "결제",
+        "소프트웨어",
+        "AS"
+      ],
+      "revenue_variables": [
+        "service_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "보충·프린터 오류·데이터 삭제"
+      ],
+      "legal_regulatory_unknowns": [
+        "개인정보·저작권"
+      ],
+      "source_ids": [
+        "WB-S01",
+        "WB-S02"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED",
+        "HOST_PLACEMENT"
+      ],
+      "competition_rules": {
+        "direct": [
+          "사진인화",
+          "셀픽",
+          "포토프린트"
+        ],
+        "substitute": [
+          "사진관",
+          "포토부스"
+        ]
+      }
+    },
+    {
+      "variant_id": "PHOTO-ID-OUTPUT",
+      "parent_candidate_id": "OC-013",
+      "label": "증명사진 파일 출력",
+      "customer_job": "준비된 증명사진 파일 출력; 촬영 제외",
+      "payer": "파일 소유자",
+      "revenue_unit": "출력 거래",
+      "economic_model": "TRANSACTION",
+      "equipment_service_class": "증명사진 출력 지원 키오스크",
+      "typical_host_archetype": "사진관·학교 주변",
+      "direct_competition_taxonomy": [
+        "증명사진"
+      ],
+      "substitute_taxonomy": [
+        "사진관",
+        "사진인화"
+      ],
+      "required_site_attributes": [
+        "출력 규격·색상·전력·통신"
+      ],
+      "capex_components": [
+        "지원 장비",
+        "설치"
+      ],
+      "opex_components": [
+        "소모품",
+        "결제",
+        "지원"
+      ],
+      "revenue_variables": [
+        "service_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "촬영 서비스와 파일 출력을 구별"
+      ],
+      "legal_regulatory_unknowns": [
+        "개인정보·제출 규격 수용 여부"
+      ],
+      "source_ids": [
+        "WB-S01"
+      ],
+      "deployment_evidence": "FEATURE_COMPATIBILITY_REQUIRES_QUOTE",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "증명사진"
+        ],
+        "substitute": [
+          "사진관",
+          "사진인화"
+        ]
+      }
+    },
+    {
+      "variant_id": "DOCUMENT-PRINT",
+      "parent_candidate_id": "OC-013",
+      "label": "문서 셀프 출력",
+      "customer_job": "A4 문서 출력",
+      "payer": "문서 소유자",
+      "revenue_unit": "출력 거래",
+      "economic_model": "TRANSACTION",
+      "equipment_service_class": "A4 지원 복합/문서 키오스크",
+      "typical_host_archetype": "대학·오피스·사진관",
+      "direct_competition_taxonomy": [
+        "프린트카페",
+        "문서출력",
+        "복사"
+      ],
+      "substitute_taxonomy": [
+        "문구",
+        "도서관",
+        "인쇄"
+      ],
+      "required_site_attributes": [
+        "전력·통신·보안·용지"
+      ],
+      "capex_components": [
+        "문서 프린터",
+        "설치"
+      ],
+      "opex_components": [
+        "토너/용지",
+        "결제",
+        "소프트웨어"
+      ],
+      "revenue_variables": [
+        "service_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "자료 즉시 삭제·오류 대응"
+      ],
+      "legal_regulatory_unknowns": [
+        "개인정보·저작권"
+      ],
+      "source_ids": [
+        "WB-S01",
+        "WB-PRINT"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "프린트카페",
+          "문서출력",
+          "복사"
+        ],
+        "substitute": [
+          "문구",
+          "도서관",
+          "인쇄"
+        ]
+      }
+    },
+    {
+      "variant_id": "VEND-BEVERAGE",
+      "parent_candidate_id": "OC-020",
+      "label": "밀봉 음료 판매",
+      "customer_job": "가까운 곳에서 밀봉 음료 구매",
+      "payer": "소비자",
+      "revenue_unit": "상품 1개",
+      "economic_model": "UNIT_SALE",
+      "equipment_service_class": "캔/PET 냉장 판매기",
+      "typical_host_archetype": "사내·시설·리테일",
+      "direct_competition_taxonomy": [
+        "음료자판기",
+        "음료 자판기"
+      ],
+      "substitute_taxonomy": [
+        "편의점",
+        "슈퍼",
+        "마트"
+      ],
+      "required_site_attributes": [
+        "전력·냉장·동선·보충"
+      ],
+      "capex_components": [
+        "판매기",
+        "결제",
+        "설치",
+        "재고"
+      ],
+      "opex_components": [
+        "매입",
+        "전력",
+        "폐기",
+        "보충"
+      ],
+      "revenue_variables": [
+        "unit_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "냉장·유통기한·주간 보충"
+      ],
+      "legal_regulatory_unknowns": [
+        "식품 판매·전기·호스트 허가; 주류 제외"
+      ],
+      "source_ids": [
+        "WB-S07",
+        "WB-S09"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "음료자판기",
+          "음료 자판기"
+        ],
+        "substitute": [
+          "편의점",
+          "슈퍼",
+          "마트"
+        ]
+      }
+    },
+    {
+      "variant_id": "VEND-COFFEE",
+      "parent_candidate_id": "OC-020",
+      "label": "즉석 커피 판매",
+      "customer_job": "현장에서 커피 한 잔",
+      "payer": "소비자",
+      "revenue_unit": "컵 1개",
+      "economic_model": "UNIT_SALE",
+      "equipment_service_class": "원두/캡슐 커피머신 + 판매 시스템",
+      "typical_host_archetype": "사내·상가 내",
+      "direct_competition_taxonomy": [
+        "커피자판기",
+        "무인카페"
+      ],
+      "substitute_taxonomy": [
+        "카페",
+        "커피",
+        "편의점"
+      ],
+      "required_site_attributes": [
+        "급수·배수·전력·위생·청소"
+      ],
+      "capex_components": [
+        "커피머신",
+        "배관",
+        "결제",
+        "설치"
+      ],
+      "opex_components": [
+        "원두/캡슐",
+        "컵",
+        "청소",
+        "급수",
+        "AS"
+      ],
+      "revenue_variables": [
+        "unit_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "위생·청소·고장 출동·48개월 약정 검토"
+      ],
+      "legal_regulatory_unknowns": [
+        "식품위생·영업신고·상수/배수"
+      ],
+      "source_ids": [
+        "WB-S09"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "커피자판기",
+          "무인카페"
+        ],
+        "substitute": [
+          "카페",
+          "커피",
+          "편의점"
+        ]
+      }
+    },
+    {
+      "variant_id": "LUGGAGE-HOST",
+      "parent_candidate_id": "OC-008",
+      "label": "기존 직원 호스트 짐보관",
+      "customer_job": "방문 시간까지 가방 보관",
+      "payer": "여행객",
+      "revenue_unit": "가방 1일",
+      "economic_model": "STORAGE",
+      "equipment_service_class": "직원 인수인계·태깅 서비스",
+      "typical_host_archetype": "호텔·기존 상점",
+      "direct_competition_taxonomy": [
+        "짐보관",
+        "수하물",
+        "러기지",
+        "luggage"
+      ],
+      "substitute_taxonomy": [
+        "물품보관",
+        "락커",
+        "locker"
+      ],
+      "required_site_attributes": [
+        "보안 공간·인수 직원·영업시간"
+      ],
+      "capex_components": [
+        "보안/태그",
+        "보험 준비"
+      ],
+      "opex_components": [
+        "호스트 노동",
+        "플랫폼",
+        "보험"
+      ],
+      "revenue_variables": [
+        "price_per_bag_day",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "기존 직원 인계·야간·배상 책임"
+      ],
+      "legal_regulatory_unknowns": [
+        "보험·분실·배상·개인정보"
+      ],
+      "source_ids": [
+        "WB-S06"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "HOST_PLACEMENT",
+        "SUBCONTRACTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "짐보관",
+          "수하물",
+          "러기지",
+          "luggage"
+        ],
+        "substitute": [
+          "물품보관",
+          "락커",
+          "locker"
+        ]
+      }
+    },
+    {
+      "variant_id": "LUGGAGE-LOCKER",
+      "parent_candidate_id": "OC-008",
+      "label": "스마트 락커 짐보관",
+      "customer_job": "직원 없이 칸 단위 보관",
+      "payer": "여행객",
+      "revenue_unit": "칸 1일",
+      "economic_model": "STORAGE",
+      "equipment_service_class": "원격 잠금·결제 락커",
+      "typical_host_archetype": "관광·환승 시설",
+      "direct_competition_taxonomy": [
+        "물품보관",
+        "락커",
+        "locker"
+      ],
+      "substitute_taxonomy": [
+        "짐보관",
+        "수하물",
+        "luggage"
+      ],
+      "required_site_attributes": [
+        "보안·전력·통신·설치 허가"
+      ],
+      "capex_components": [
+        "락커",
+        "통신/잠금",
+        "설치"
+      ],
+      "opex_components": [
+        "소프트웨어",
+        "AS",
+        "보험",
+        "전력"
+      ],
+      "revenue_variables": [
+        "price_per_bag_day",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "분실·개방 장애·즉시 출동 책임"
+      ],
+      "legal_regulatory_unknowns": [
+        "소방·보험·공공시설/호스트 허가"
+      ],
+      "source_ids": [
+        "WB-LOCKER"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "OWNED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "물품보관",
+          "락커",
+          "locker"
+        ],
+        "substitute": [
+          "짐보관",
+          "수하물",
+          "luggage"
+        ]
+      }
+    },
+    {
+      "variant_id": "LUGGAGE-OVERFLOW",
+      "parent_candidate_id": "OC-008",
+      "label": "대형·단체 overflow 보관",
+      "customer_job": "기존 락커에 안 들어가는 짐",
+      "payer": "단체/여행객",
+      "revenue_unit": "가방 1일",
+      "economic_model": "STORAGE",
+      "equipment_service_class": "직원 관리·대형 짐 인수 서비스",
+      "typical_host_archetype": "기존 직원·보안 창고",
+      "direct_competition_taxonomy": [
+        "대형짐",
+        "단체짐"
+      ],
+      "substitute_taxonomy": [
+        "짐보관",
+        "물품보관",
+        "luggage"
+      ],
+      "required_site_attributes": [
+        "대형 짐 공간·인계 직원"
+      ],
+      "capex_components": [
+        "보안",
+        "인수 태그"
+      ],
+      "opex_components": [
+        "호스트 노동",
+        "보험",
+        "이동"
+      ],
+      "revenue_variables": [
+        "price_per_bag_day",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "거절된 실수요 확인 전 운영 형태 가설"
+      ],
+      "legal_regulatory_unknowns": [
+        "배상·보험·하역·보관 허가"
+      ],
+      "source_ids": [
+        "WB-S06"
+      ],
+      "deployment_evidence": "HYPOTHESIS_NOT_DEPLOYMENT_PROOF",
+      "commercial_models": [
+        "HOST_PLACEMENT",
+        "SUBCONTRACTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "대형짐",
+          "단체짐"
+        ],
+        "substitute": [
+          "짐보관",
+          "물품보관",
+          "luggage"
+        ]
+      }
+    },
+    {
+      "variant_id": "MRO-BASKET",
+      "parent_candidate_id": "OC-022",
+      "label": "예약 반복조달 바스켓",
+      "customer_job": "분산된 소액 안전 소모품 발주 묶음",
+      "payer": "사업장 구매자",
+      "revenue_unit": "주문 바스켓",
+      "economic_model": "ORDER",
+      "equipment_service_class": "재고 없는 견적·직송 서비스",
+      "typical_host_archetype": "사업장; 입지는 거래 부속",
+      "direct_competition_taxonomy": [
+        "MRO",
+        "산업용품",
+        "안전용품"
+      ],
+      "substitute_taxonomy": [
+        "철물",
+        "공구",
+        "온라인"
+      ],
+      "required_site_attributes": [
+        "납품 접근·규격/일정 확인"
+      ],
+      "capex_components": [
+        "주문 도구",
+        "운전자금"
+      ],
+      "opex_components": [
+        "매입",
+        "이행",
+        "배송",
+        "반품",
+        "결제"
+      ],
+      "revenue_variables": [
+        "basket_revenue",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "긴급배송 제외·주문당 소유자 시간"
+      ],
+      "legal_regulatory_unknowns": [
+        "상품 인증·세무·고용주 겸업·이해상충"
+      ],
+      "source_ids": [
+        "WB-MRO"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "SUBCONTRACTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "MRO",
+          "산업용품",
+          "안전용품"
+        ],
+        "substitute": [
+          "철물",
+          "공구",
+          "온라인"
+        ]
+      }
+    },
+    {
+      "variant_id": "EVENT-PHOTO",
+      "parent_candidate_id": "OC-030",
+      "label": "외주 포토 행사 패키지",
+      "customer_job": "행사 참여·사진 체험",
+      "payer": "행사 주최자",
+      "revenue_unit": "행사 1건",
+      "economic_model": "EVENT",
+      "equipment_service_class": "날짜/사양 특정 외주 포토 서비스",
+      "typical_host_archetype": "행사장",
+      "direct_competition_taxonomy": [
+        "포토부스",
+        "포토키오스크"
+      ],
+      "substitute_taxonomy": [
+        "사진",
+        "이벤트"
+      ],
+      "required_site_attributes": [
+        "전력·통신·반입·행사 시간"
+      ],
+      "capex_components": [
+        "계약/브랜딩",
+        "운전자금"
+      ],
+      "opex_components": [
+        "공급자",
+        "운송",
+        "취소",
+        "결제"
+      ],
+      "revenue_variables": [
+        "event_price",
+        "USER_ENTERED_VOLUME_ONLY"
+      ],
+      "operational_constraints": [
+        "서면 SLA·현장 책임·owner 운송 필요 시 STOP"
+      ],
+      "legal_regulatory_unknowns": [
+        "개인정보·초상권·취소·보험·고용주 겸업"
+      ],
+      "source_ids": [
+        "WB-S03",
+        "WB-S05"
+      ],
+      "deployment_evidence": "SOURCE_BACKED_FORM",
+      "commercial_models": [
+        "SUBCONTRACTED",
+        "RENTED"
+      ],
+      "competition_rules": {
+        "direct": [
+          "포토부스",
+          "포토키오스크"
+        ],
+        "substitute": [
+          "사진",
+          "이벤트"
+        ]
+      }
+    }
+  ],
+  "configurations": [
+    {
+      "configuration_id": "C-BOOTH-CUSTOM",
+      "vendor": null,
+      "model": "상업 통화 부스 · 견적 필요",
+      "variant_ids": [
+        "BOOTH-CALL"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": null,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S00"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "COMMERCIAL_MODEL_UNVERIFIED",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-KZONE",
+      "vendor": "뮤존",
+      "model": "K-존 개인 사무실 가정용",
+      "variant_ids": [
+        "BOOTH-FOCUS"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 2650000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S00"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "낮은 노출 호가. VAT/옵션/설치 범위 미확인; 일반 방음·홈·상업 통화 용도 구별."
+      ]
+    },
+    {
+      "configuration_id": "C-SING-STD",
+      "vendor": "뮤존",
+      "model": "노래방 방음 일반형",
+      "variant_ids": [
+        "BOOTH-SING"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 4630000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S00"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "낮은 노출 호가. VAT/옵션/설치 범위 미확인; 일반 방음·홈·상업 통화 용도 구별."
+      ]
+    },
+    {
+      "configuration_id": "C-SING-PRO",
+      "vendor": "뮤존",
+      "model": "노래방 방음 고급형",
+      "variant_ids": [
+        "BOOTH-SING"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 5480000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S00"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "낮은 노출 호가. VAT/옵션/설치 범위 미확인; 일반 방음·홈·상업 통화 용도 구별."
+      ]
+    },
+    {
+      "configuration_id": "C-SING-COM",
+      "vendor": "뮤존",
+      "model": "뮤존플러스 업소용",
+      "variant_ids": [
+        "BOOTH-SING"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 8030000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S00"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "낮은 노출 호가. VAT/옵션/설치 범위 미확인; 일반 방음·홈·상업 통화 용도 구별."
+      ]
+    },
+    {
+      "configuration_id": "C-SM05-BASIC",
+      "vendor": "SELPIC",
+      "model": "SM05 BASIC",
+      "variant_ids": [
+        "PHOTO-PRINT"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": null,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "INCLUDED",
+      "dimensions_mm": [
+        540,
+        1200,
+        350
+      ],
+      "footprint_sqm": 0.189,
+      "power": "220V · UTP/WiFi; 소비전력 UNKNOWN",
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "설치·배송 견적 문의",
+      "software_monthly_fee_krw": null,
+      "consumables": "염료승화; 단가 UNKNOWN",
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S01"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-SM05-DUAL",
+      "vendor": "SELPIC",
+      "model": "SM05 DUAL",
+      "variant_ids": [
+        "PHOTO-PRINT"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 7700000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "INCLUDED",
+      "dimensions_mm": [
+        540,
+        1200,
+        350
+      ],
+      "footprint_sqm": 0.189,
+      "power": "220V · UTP/WiFi; 소비전력 UNKNOWN",
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "설치·배송 견적 문의",
+      "software_monthly_fee_krw": null,
+      "consumables": "염료승화; 단가 UNKNOWN",
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S01"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님.",
+        "공개 카드 높이 160cm와 표 규격 높이 120cm가 상충. 표 규격을 전사했으며 배치 전에 공급자 확인 필요."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-SM06-STATION",
+      "vendor": "SELPIC",
+      "model": "SM06 STATION",
+      "variant_ids": [
+        "PHOTO-PRINT",
+        "PHOTO-ID-OUTPUT"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 5500000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "INCLUDED",
+      "dimensions_mm": [
+        360,
+        640,
+        640
+      ],
+      "footprint_sqm": 0.2304,
+      "power": "220V · UTP/WiFi; 소비전력 UNKNOWN",
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "설치·배송 견적 문의",
+      "software_monthly_fee_krw": null,
+      "consumables": "염료승화; 단가 UNKNOWN",
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S01"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-SM08-PREMIUM",
+      "vendor": "SELPIC",
+      "model": "SM08 PREMIUM",
+      "variant_ids": [
+        "PHOTO-PRINT",
+        "PHOTO-ID-OUTPUT",
+        "DOCUMENT-PRINT"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 9900000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "INCLUDED",
+      "dimensions_mm": [
+        565,
+        1790,
+        699
+      ],
+      "footprint_sqm": 0.394935,
+      "power": "220V · UTP/WiFi; 소비전력 UNKNOWN",
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "설치·배송 견적 문의",
+      "software_monthly_fee_krw": null,
+      "consumables": "염료승화; 단가 UNKNOWN",
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S01"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-SM09-BIG-PRINT",
+      "vendor": "SELPIC",
+      "model": "SM09 BIG PRINT",
+      "variant_ids": [
+        "PHOTO-PRINT"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": null,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "INCLUDED",
+      "dimensions_mm": [
+        580,
+        1670,
+        697
+      ],
+      "footprint_sqm": 0.40426,
+      "power": "220V · UTP/WiFi; 소비전력 UNKNOWN",
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "설치·배송 견적 문의",
+      "software_monthly_fee_krw": null,
+      "consumables": "염료승화; 단가 UNKNOWN",
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S01"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-CHIKI-COMPACT",
+      "vendor": "Chiki",
+      "model": "COMPACT",
+      "variant_ids": [
+        "EVENT-PHOTO"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 6000000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "EXCLUDED",
+      "dimensions_mm": [
+        450,
+        1500,
+        580
+      ],
+      "footprint_sqm": 0.261,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "운송·설치 별도 견적",
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S04"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "EVENT_RENTAL_REFERENCE_ONLY; OWNERSHIP_NOT_AUTHORIZED",
+      "limitations": [
+        "장비·SW 라이선스 포함; 월 운영비·커스텀 별도. 행사 외주 서비스와 다른 구매 참고 가격; 소유 모델 v1 제외."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-CHIKI-ORIGINAL",
+      "vendor": "Chiki",
+      "model": "ORIGINAL",
+      "variant_ids": [
+        "EVENT-PHOTO"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 7000000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "EXCLUDED",
+      "dimensions_mm": [
+        800,
+        2000,
+        550
+      ],
+      "footprint_sqm": 0.44,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "운송·설치 별도 견적",
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S04"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "EVENT_RENTAL_REFERENCE_ONLY; OWNERSHIP_NOT_AUTHORIZED",
+      "limitations": [
+        "장비·SW 라이선스 포함; 월 운영비·커스텀 별도. 행사 외주 서비스와 다른 구매 참고 가격; 소유 모델 v1 제외."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-CHIKI-SIGNATURE",
+      "vendor": "Chiki",
+      "model": "SIGNATURE",
+      "variant_ids": [
+        "EVENT-PHOTO"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 9000000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": "EXCLUDED",
+      "dimensions_mm": [
+        1400,
+        2000,
+        800
+      ],
+      "footprint_sqm": 1.12,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "운송·설치 별도 견적",
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S04"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "EVENT_RENTAL_REFERENCE_ONLY; OWNERSHIP_NOT_AUTHORIZED",
+      "limitations": [
+        "장비·SW 라이선스 포함; 월 운영비·커스텀 별도. 행사 외주 서비스와 다른 구매 참고 가격; 소유 모델 v1 제외."
+      ],
+      "footprint_semantics": "DERIVED_DEVICE_BASE_ONLY; access/service space excluded"
+    },
+    {
+      "configuration_id": "C-SELPIC-EVENT",
+      "vendor": "SELPIC",
+      "model": "1일 1대 시작 행사 패키지",
+      "variant_ids": [
+        "EVENT-PHOTO"
+      ],
+      "structure": "SERVICE",
+      "asking_price_krw": 300000,
+      "price_semantics": "PUBLIC_SERVICE_RATE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "설치·철수·원격 모니터링 소개",
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S03"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-CHIKI-EVENT",
+      "vendor": "Chiki",
+      "model": "서울·대구·부산 1일 AI 포토 행사",
+      "variant_ids": [
+        "EVENT-PHOTO"
+      ],
+      "structure": "SERVICE",
+      "asking_price_krw": 1000000,
+      "price_semantics": "PUBLIC_SERVICE_RATE",
+      "vat_treatment": "EXCLUDED",
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": "운송·설치·철거 포함 소개",
+      "software_monthly_fee_krw": null,
+      "consumables": "기간 중 용지 무제한 소개",
+      "maintenance_as": "원격 지원 포함 소개",
+      "removal": "철거 포함 소개",
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S05"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "다른 지역 운송 추가; 파트너 순견적 아님; 1일 연장 35만원과 구별."
+      ]
+    },
+    {
+      "configuration_id": "C-VEND-USED",
+      "vendor": "신성아이앤씨",
+      "model": "중고 오픈 냉장 5단",
+      "variant_ids": [
+        "VEND-BEVERAGE"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 2500000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": "냉장/냉동 분류; 소비전력 UNKNOWN",
+      "payment_system": null,
+      "installation": "배송비 무료 표시; 현장 설치 UNKNOWN",
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S07"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-VEND-SLIM",
+      "vendor": "신성아이앤씨",
+      "model": "슬림형 캔/PET 냉장 음료",
+      "variant_ids": [
+        "VEND-BEVERAGE"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 6600000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": "냉장; 소비전력 UNKNOWN",
+      "payment_system": "카드단말기 장착 표시",
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S09"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-COFFEE-M500",
+      "vendor": "신성아이앤씨",
+      "model": "메일빈 M500 2026",
+      "variant_ids": [
+        "VEND-COFFEE"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 26400000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S09"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-COFFEE-X500",
+      "vendor": "신성아이앤씨",
+      "model": "카페퍼플먼트 X500 FULL SET",
+      "variant_ids": [
+        "VEND-COFFEE"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": 19250000,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S09"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-LUGGAGE-HOST",
+      "vendor": "Radical Storage",
+      "model": "서울 제휴 호스트 가방/일",
+      "variant_ids": [
+        "LUGGAGE-HOST",
+        "LUGGAGE-OVERFLOW"
+      ],
+      "structure": "SERVICE",
+      "asking_price_krw": 5100,
+      "price_semantics": "PUBLIC_SERVICE_RATE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-S06"
+      ],
+      "observed_at": "2026-10-05",
+      "freshness": "CURRENT_OBSERVATION",
+      "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+      "compatibility": "STANDARD_BAG_RATE_ONLY; overflow price UNKNOWN",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-LOCKER-QUOTE",
+      "vendor": null,
+      "model": "스마트 락커 · 견적 필요",
+      "variant_ids": [
+        "LUGGAGE-LOCKER"
+      ],
+      "structure": "BUY",
+      "asking_price_krw": null,
+      "price_semantics": "LIST_PRICE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-LOCKER"
+      ],
+      "observed_at": "2026-10-03",
+      "freshness": "STALE",
+      "evidence_quality": "INHERITED_REPOSITORY_C2",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    },
+    {
+      "configuration_id": "C-MRO-QUOTE",
+      "vendor": null,
+      "model": "바스켓별 직송 공급 견적 필요",
+      "variant_ids": [
+        "MRO-BASKET"
+      ],
+      "structure": "SERVICE",
+      "asking_price_krw": null,
+      "price_semantics": "PUBLIC_SERVICE_RATE",
+      "vat_treatment": null,
+      "dimensions_mm": null,
+      "footprint_sqm": null,
+      "power": null,
+      "cooling_ventilation": null,
+      "payment_system": null,
+      "installation": null,
+      "software_monthly_fee_krw": null,
+      "consumables": null,
+      "maintenance_as": null,
+      "removal": null,
+      "resale_recovery_krw": null,
+      "source_ids": [
+        "WB-MRO"
+      ],
+      "observed_at": "2026-10-03",
+      "freshness": "STALE",
+      "evidence_quality": "INHERITED_REPOSITORY_C2",
+      "compatibility": "REQUIRES_VENDOR_AND_SITE_VERIFICATION",
+      "limitations": [
+        "공개 호가/상품 분류는 완전 설치비·정산액·견적·재판매 회수가 아님."
+      ]
+    }
+  ],
+  "excluded_forms": [
+    {
+      "form": "toy capsule/gacha",
+      "reason": "이 접근 가능한 국내 자료는 캡슐 커피이며 장난감 가챠 배포/규격 근거가 아님. toy SKU/배포 검증 후 추가."
+    },
+    {
+      "form": "generic amenity/specialty vending",
+      "reason": "구체 상품/job·판매 조건 미정; 기계 종류만으로 변형 생성하지 않음."
+    },
+    {
+      "form": "ID photo capture",
+      "reason": "증명사진 출력 기능은 촬영/규격 보증 서비스가 아님."
+    }
+  ],
+  "additional_source": {
+    "source_id": "WB-S08",
+    "status": "DOCUMENTATION_REVIEWED_NOT_INTEGRATED",
+    "required_secret_added": false,
+    "known_fields": [
+      "store_id",
+      "name",
+      "industry classifications",
+      "address",
+      "lat",
+      "lng"
+    ],
+    "future_use": "공간 검색·업종 분류를 POI에 병합/중복 제거한 후 서비스 일치 확인. 분류만으로 직접 경쟁 확정 금지. 서비스키 미제공; 호출/필수 secret 없음."
+  }
+}
