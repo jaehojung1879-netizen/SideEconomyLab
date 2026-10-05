@@ -25,15 +25,21 @@ def public_get(url, data=None):
 def collect(client=None, root=ROOT):
     client=client or Client(budget=100)
     raw={'schema_version':1,'retrieved_at':datetime.now(timezone.utc).isoformat(),'secret_contract':['DATA_GO','R_ONE'],'store_caches':[],'r_one':[],'buildings':[],'public_research':[]}
+    def store_request(params):
+        for attempt in range(3):
+            try:return client.data_go('B553077/api/open/sdsc2/storeListInRadius',params)
+            except SourceError as exc:
+                if not str(exc).startswith(('TRANSPORT_OR_PARSE_ERROR','HTTP_5')) or attempt==2:raise
     for target in TARGETS:
         rows=[];total=None
         for page in range(1,31):
-            p=client.data_go('B553077/api/open/sdsc2/storeListInRadius',{'radius':800,'cx':target['lng'],'cy':target['lat'],'pageNo':page,'numOfRows':1000,'type':'json'})
+            p=store_request({'radius':800,'cx':target['lng'],'cy':target['lat'],'pageNo':page,'numOfRows':1000,'type':'json'})
             batch,n,code=portal_store_rows(p)
             if str(code)!='00' or n is None:raise SourceError('STORE_COLLECTION_FAILED')
             if total is None:total=int(n)
             if int(n)!=total or not batch and len(rows)<total:raise SourceError('STORE_PAGINATION_CHANGED')
             rows += [{k:r.get(k) for k in STORE_FIELDS} for r in batch]
+            print('STORE_CACHE_PROGRESS target='+target['area_id']+' page='+str(page)+' rows='+str(len(rows)),flush=True)
             if len(rows)>=total:break
         if len(rows)!=total:raise SourceError('STORE_CACHE_INCOMPLETE')
         raw['store_caches'].append({'area_id':target['area_id'],'name':target['name'],'center':{'lat':target['lat'],'lng':target['lng']},'radius_m':800,'operation':'storeListInRadius','total':total,'row_count':len(rows),'pages':page,'complete':True,'rows':rows})

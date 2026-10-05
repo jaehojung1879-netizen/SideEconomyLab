@@ -69,7 +69,7 @@ class Client:
         query = urllib.parse.urlencode({**params, key_param: credential})
         req = urllib.request.Request(endpoint + '?' + query, headers={'User-Agent': 'SideEconomyLab/decision-intelligence-v1'})
         try:
-            with self.opener.open(req, timeout=25) as response:
+            with self.opener.open(req, timeout=45) as response:
                 body = response.read(8_000_001)
             if len(body) > 8_000_000:
                 raise SourceError('RESPONSE_BUDGET_EXCEEDED')
@@ -98,7 +98,7 @@ class Client:
             raise
         except Exception:
             # Never stringify network exceptions, request objects, response bodies or URLs.
-            raise SourceError('TRANSPORT_OR_PARSE_ERROR') from None
+            raise SourceError('TRANSPORT_OR_PARSE_ERROR_' + type(__import__('sys').exception()).__name__) from None
 
     def data_go(self, operation, params):
         return self.request('https://apis.data.go.kr/' + operation, params, 'DATA_GO', 'serviceKey')
