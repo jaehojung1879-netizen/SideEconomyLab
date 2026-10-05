@@ -56,7 +56,7 @@
   function classify(variant,poi){
     const text=[poi.name,poi.category,poi.indsSclsNm,poi.ksicNm].join(' ').normalize('NFKC').toLowerCase();
     for(const role of ['direct','substitute'])if(variant.competition_rules[role].some(t=>text.includes(t.toLowerCase())))return role.toUpperCase();
-    const complementary={ 'VEND-BEVERAGE':['체육','헬스','사무'], 'VEND-COFFEE':['사무','학원'], 'PHOTO-PRINT':['관광','여행'], 'DOCUMENT-PRINT':['학교','대학','사무'], 'BOOTH-SING':['오락','게임'], 'LUGGAGE-HOST':['호텔','숙박','여행'] };
+    const complementary={ 'VEND-BEVERAGE':['체육','헬스','사무'], 'VEND-COFFEE':['사무','학원'], 'PHOTO-PRINT':['관광','여행'], 'DOCUMENT-PRINT':['학교','대학','사무'], 'LUGGAGE-HOST':['호텔','숙박','여행'] };
     if((complementary[variant.variant_id]||[]).some(t=>text.includes(t)))return 'COMPLEMENTARY';
     return 'CONTEXT';
   }
@@ -128,8 +128,8 @@
     return {rate:transactions/flow,required_transactions_day:transactions,relevant_daily_flow:flow,field,evidence:'DERIVED',denominator_evidence:daily_flow!==null?'USER_INPUT':'PLANNING_ASSUMPTION',observation_period:period,normalization:daily_flow!==null?'사용자 현장 일 유동 입력':`공개 ${field} 집계 ÷ ${quarter_days}일: 분기합 해석을 선택한 검토 가정`,limitations:['원자료 시간 집계가 일 평균인지 분기 합인지 미검증; 기본 분모는 가정','상권 유동은 점포 전면 통행/고유 고객이 아님','필요 포획률은 매출 예측 또는 전환 관측치가 아님']};
   }
   function evaluate({variant,catalog,area,market,point,kakao=[],cache,settings={},overrides={},comparables=[],floor_evidence=[],asOf,blockers=[]}){
-    const d=DEFAULTS[variant.variant_id],areaSize=settings.area_sqm??d.area,rent=areaSize===0?{...cell(range(0),'PLANNING_ASSUMPTION','비입지 계약형','독립 임대 공간 없는 직송/외주 가정'),method:'NO_STANDALONE_SITE'}:rentEnvelope({market,area_sqm:areaSize,floor:settings.floor??'1',comparables,scope:String(area.trdar_cd),asOf,actual:settings.actual_rent??null,floor_evidence});
-    const stack=costStack(variant,catalog,rent,overrides),common={...settings,session_minutes:settings.session_minutes??d.session};
+    const d=DEFAULTS[variant.variant_id],areaSize=settings.area_sqm??d.area;let rent=areaSize===0?{...cell(range(0),'PLANNING_ASSUMPTION','비입지 계약형','독립 임대 공간 없는 직송/외주 가정'),method:'NO_STANDALONE_SITE'}:rentEnvelope({market,area_sqm:areaSize,floor:settings.floor??'1',comparables,scope:String(area.trdar_cd),asOf,actual:settings.actual_rent??null,floor_evidence});
+    const stack=costStack(variant,catalog,rent,overrides);if(overrides.rent)rent={...rent,...stack.rows.find(r=>r.key==='rent'),method:'PRIVATE_COST_OVERRIDE',market_envelope:{low:rent.low,base:rent.base,high:rent.high},actual_quoted_rent:null};const common={...settings,session_minutes:settings.session_minutes??d.session};
     const results=Object.fromEntries(['low','base','high'].map(k=>[k,solveStack(stack,k,common,true)])),base=results.base;
     const cap=capture(variant,area,base,{...settings,period:settings.flow_period});
     const competitors=point?competition(variant,point,kakao,cache,asOf):null;

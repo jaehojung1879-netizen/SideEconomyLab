@@ -71,7 +71,7 @@ class Client:
         query = urllib.parse.urlencode({**params, key_param: credential})
         req = urllib.request.Request(endpoint + '?' + query, headers={'User-Agent': 'SideEconomyLab/decision-intelligence-v1'})
         try:
-            with self.opener.open(req, timeout=20 if secret_name=='R_ONE' else 45) as response:
+            with self.opener.open(req, timeout=45) as response:
                 body = response.read(8_000_001)
             if len(body) > 8_000_000:
                 raise SourceError('RESPONSE_BUDGET_EXCEEDED')

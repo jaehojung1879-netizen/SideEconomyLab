@@ -68,12 +68,17 @@ def audit(client,raw):
     raw['audit_retrieved_at']=datetime.now(timezone.utc).isoformat()
     raw['r_one']=[]
     raw['public_research']=[]
+    def rone_request(op,params):
+        for attempt in range(3):
+            try:return client.r_one(op,params)
+            except SourceError as exc:
+                if not str(exc).startswith(('TRANSPORT_OR_PARSE_ERROR','HTTP_5')) or attempt==2:raise
     now=datetime.now(timezone.utc);quarter=(now.month-1)//3;index=now.year*4+quarter-1
     selected_period=None
     for offset in range(4):
         year,q=divmod(index-offset,4);probe_period=str(year)+'0'+str(q+1)
         try:
-            p=client.r_one('SttsApiTblData',{'STATBL_ID':RENT_TABLE,'DTACYCLE_CD':'QY','CLS_ID':'500002','ITM_ID':'100001','START_WRTTIME':probe_period,'END_WRTTIME':probe_period})
+            p=rone_request('SttsApiTblData',{'STATBL_ID':RENT_TABLE,'DTACYCLE_CD':'QY','CLS_ID':'500002','ITM_ID':'100001','START_WRTTIME':probe_period,'END_WRTTIME':probe_period})
             rows,n,code=response_rows(p,'SttsApiTblData')
             raw['r_one'].append({'operation':'SttsApiTblData','purpose':'LATEST_COMPLETED_QUARTER_PROBE','params':{'STATBL_ID':RENT_TABLE,'START_WRTTIME':probe_period,'END_WRTTIME':probe_period},'code':code,'total':n,'rows':[public_fields(r) for r in rows]})
             if code=='ERROR-290':raise SourceError('R_ONE_AUTHENTICATION_REJECTED')
@@ -85,7 +90,7 @@ def audit(client,raw):
     raw['selected_rent_period']=selected_period
     for op,params in [('SttsApiTbl',{}),('SttsApiTblItm',{'STATBL_ID':RENT_TABLE}),('SttsApiTblData',{'STATBL_ID':RENT_TABLE,'DTACYCLE_CD':'QY','START_WRTTIME':selected_period,'END_WRTTIME':selected_period}),('SttsApiTblData',{'STATBL_ID':VACANCY_TABLE,'DTACYCLE_CD':'QY','START_WRTTIME':selected_period,'END_WRTTIME':selected_period})]:
         try:
-            payload=client.r_one(op,params);rows,n,code=response_rows(payload,op)
+            payload=rone_request(op,params);rows,n,code=response_rows(payload,op)
             raw['r_one'].append({'operation':op,'params':params,'code':code,'total':n,'result':payload.get('RESULT'),'rows':[public_fields(r) for r in rows]})
         except SourceError as exc:raw['r_one'].append({'operation':op,'params':params,'status':str(exc)})
     # Public classification metadata remains useful when authenticated statistics are rejected.
@@ -99,11 +104,6 @@ def audit(client,raw):
             body=public_get(url);text=body.decode('utf-8',errors='replace');text=re.sub(r'<(?:script|style)\b[^>]*>.*?</(?:script|style)>',' ',text,flags=re.S|re.I);plain=re.sub(r'<[^>]+>',' ',text);plain=re.sub(r'\s+',' ',plain)
             raw['public_research'].append({'url':url,'status':'HTTP_200_PUBLIC_DOCUMENT','document_hash':__import__('hashlib').sha256(body).hexdigest(),'excerpt':re.sub(r'(?i)(?:[?&])(?:serviceKey|KEY|apiKey|authKey)=[^\s<]+','[credential parameter omitted]',re.sub(r'(?i);jsessionid=[a-z0-9]+','',plain))[:12000], 'public_dataset_ids':sorted(set(re.findall(r'(?:/data/|data[A-Za-z]+[^(]*\(\s*[\"\'])([0-9]{7,9})',text)))[:30], 'public_table_ids':sorted(set(re.findall(r'T\d{15}',text)))[:150]})
         except Exception:raw['public_research'].append({'url':url,'status':'UNAVAILABLE_NO_CIRCUMVENTION'})
-    def rone_request(op,params):
-        for attempt in range(2):
-            try:return client.r_one(op,params)
-            except SourceError as exc:
-                if not str(exc).startswith(('TRANSPORT_OR_PARSE_ERROR','HTTP_5')) or attempt==1:raise
     tables=[r for r in raw['r_one'] if r['operation']=='SttsApiTbl' and r.get('code')=='INFO-000']
     for table in [r for t in tables for r in t['rows'] if str(r.get('STATBL_NM','')).startswith('임대동향') and ('2024년3분기~' in str(r.get('STATBL_NM',''))) and re.search('임대료|공실|전환|층별|효용|임대가격지수|상대표준오차',str(r.get('STATBL_NM','')))][:24]:
         identifier=table.get('STATBL_ID')
@@ -136,7 +136,10 @@ def scan_public(client,root):
 def require_rent(raw):
     for table in (RENT_TABLE,VACANCY_TABLE):
         records=[r for r in raw['r_one'] if r['operation']=='SttsApiTblData' and r.get('params',{}).get('STATBL_ID')==table and r.get('code')=='INFO-000' and r.get('total')==len(r.get('rows',[]))]
-        if not records:raise SourceError('CORE_RENT_REFRESH_FAILED; previous bundle preserved')
+        if not records:
+            attempted=[r for r in raw['r_one'] if r['operation']=='SttsApiTblData' and r.get('params',{}).get('STATBL_ID')==table]
+            for r in attempted:print('CORE_RENT_STATUS table='+table+' code='+str(r.get('code',r.get('status','UNKNOWN')))+' rows='+str(len(r.get('rows',[])))+' total='+str(r.get('total')),flush=True)
+            raise SourceError('CORE_RENT_REFRESH_FAILED; previous bundle preserved')
 
 def audit_only(root=ROOT):
     import gzip

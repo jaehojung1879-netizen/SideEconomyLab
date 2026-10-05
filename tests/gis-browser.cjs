@@ -126,6 +126,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.goto(base);await page.waitForFunction(()=>state.adapter?.provider==='kakao');assert.equal(await page.locator('#map').getAttribute('data-synthetic-kakao'),'true');assert.ok(await page.locator('.demand-marker').count()>0);
   await page.locator('.demand-marker').nth(2).click();assert.ok((await page.locator('#selected-card').innerText()).includes('FIELD CHECK'));
   for(const candidate of ['photo','vending','luggage','booth']){await page.selectOption('#candidate',candidate);assert.ok(await page.locator('.demand-marker').count()>0);assert.ok(await page.locator('.poi-marker').count()>0);}
+  await page.locator('#filter-panel').evaluate(e=>e.open=true);
   await page.uncheck('#show-demand');assert.equal(await page.locator('button.demand-marker').count(),0);await page.check('#show-demand');assert.ok(await page.locator('button.demand-marker').count()>0);
   for(const mode of ['quadrant','supply','demand']){await page.selectOption('#map-mode',mode);assert.ok(await page.locator('button.demand-marker').count()>0);}
   await page.unroute('https://dapi.kakao.com/v2/maps/sdk.js?*');await page.route('https://dapi.kakao.com/v2/maps/sdk.js?*',r=>r.fulfill({contentType:'application/javascript',body:'/* synthetic SDK rejection: no Kakao globals */'}));
