@@ -99,7 +99,7 @@
     return markets.find(m=>m.geography_type==='city'&&m.geography_id==='11'&&m.unit==='THOUSAND_KRW_SQM_MONTH')||null;
   }
   function rentEnvelope({market,area_sqm,floor='1',comparables=[],scope='',asOf,actual=null,floor_evidence=[]}){
-    if(actual!==null){const c=cell(range(actual),'USER_INPUT','PRIVATE 실제 월세 입력','서명 견적 여부는 사용자가 확인', 'MEDIUM');return {...c,basis:'ACTUAL_SITE_TERMS',method:'PRIVATE_TERMS',geography:'PRIVATE site',actual_quoted_rent:actual,area_sqm,floor_basis:floor,limitations:['보증금 환산액은 월 현금 월세와 구별']};}
+    if(actual!==null){const c=cell(range(actual),'USER_INPUT','PRIVATE 대상 월 고정 공간비 입력','서명 견적 여부는 사용자가 확인', 'MEDIUM');return {...c,basis:'ACTUAL_SITE_TERMS',method:'PRIVATE_TERMS',geography:'PRIVATE site',actual_quoted_rent:actual,area_sqm,floor_basis:floor,limitations:['보증금 환산액은 월 현금 월세와 구별']};}
     const comps=comparableStats(comparables,{scope,floor,area_sqm,asOf});
     if(comps.count>=5){return {...cell(range(comps.rent_per_sqm.q1*area_sqm,comps.rent_per_sqm.median*area_sqm,comps.rent_per_sqm.q3*area_sqm),'MARKET_ESTIMATE','PRIVATE 공개 호가 입력','비교 가능한 5건 이상 호가의 단위면적 IQR; 신뢰구간 아님','LOW'),basis:'PRIVATE_COMPARABLES',method:'PRIVATE_COMPARABLE_IQR',geography:scope,area_sqm,floor_basis:floor,observation_period:comps.observation_dates,comparables:comps,actual_quoted_rent:null,limitations:['호가는 계약가격이 아님; 관리비·보증금 환산 별도; 선택 편향 가능']};}
     if(!market||!Number.isFinite(area_sqm)||area_sqm<=0)return {...UNKNOWN(),basis:'UNKNOWN',method:'NO_DEFENSIBLE_RENT',actual_quoted_rent:null,limitations:['공간 면적과 단위가 검증된 시장 통계 필요']};
