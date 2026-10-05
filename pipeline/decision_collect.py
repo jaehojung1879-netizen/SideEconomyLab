@@ -23,7 +23,7 @@ def public_get(url, data=None):
     return body
 
 def collect(client=None, root=ROOT):
-    client=client or Client(budget=100)
+    client=client or Client(budget=140)
     raw={'schema_version':1,'retrieved_at':datetime.now(timezone.utc).isoformat(),'secret_contract':['DATA_GO','R_ONE'],'store_caches':[],'r_one':[],'buildings':[],'public_research':[]}
     def store_request(params):
         for attempt in range(3):
@@ -61,6 +61,7 @@ def collect(client=None, root=ROOT):
     return raw
 
 def audit(client,raw):
+    raw['decision_derivation_version']=2
     raw['audit_retrieved_at']=datetime.now(timezone.utc).isoformat()
     raw['r_one']=[]
     raw['public_research']=[]
@@ -80,22 +81,27 @@ def audit(client,raw):
             body=public_get(url);text=body.decode('utf-8',errors='replace');text=re.sub(r'<(?:script|style)\b[^>]*>.*?</(?:script|style)>',' ',text,flags=re.S|re.I);plain=re.sub(r'<[^>]+>',' ',text);plain=re.sub(r'\s+',' ',plain)
             raw['public_research'].append({'url':url,'status':'HTTP_200_PUBLIC_DOCUMENT','document_hash':__import__('hashlib').sha256(body).hexdigest(),'excerpt':re.sub(r'(?i)(?:[?&])(?:serviceKey|KEY|apiKey|authKey)=[^\s<]+','[credential parameter omitted]',re.sub(r'(?i);jsessionid=[a-z0-9]+','',plain))[:12000], 'public_table_ids':sorted(set(re.findall(r'T\d{15}',text)))[:150]})
         except Exception:raw['public_research'].append({'url':url,'status':'UNAVAILABLE_NO_CIRCUMVENTION'})
+    def rone_request(op,params):
+        for attempt in range(2):
+            try:return client.r_one(op,params)
+            except SourceError as exc:
+                if not str(exc).startswith(('TRANSPORT_OR_PARSE_ERROR','HTTP_5')) or attempt==1:raise
     tables=[r for r in raw['r_one'] if r['operation']=='SttsApiTbl' and r.get('code')=='INFO-000']
-    for table in [r for t in tables for r in t['rows'] if re.search('임대료|공실|전환|층별|효용|상대표준오차',str(r))][:24]:
+    for table in [r for t in tables for r in t['rows'] if str(r.get('STATBL_NM','')).startswith('임대동향') and ('2024년3분기~' in str(r.get('STATBL_NM',''))) and re.search('임대료|공실|전환|층별|효용|임대가격지수|상대표준오차',str(r.get('STATBL_NM','')))][:24]:
         identifier=table.get('STATBL_ID')
         if not identifier:continue
         for op in ['SttsApiTblItm','SttsApiTblData']:
             params={'STATBL_ID':identifier}
             if op.endswith('Data'):params.update(DTACYCLE_CD='QY',START_WRTTIME='202602',END_WRTTIME='202602')
             try:
-                p=client.r_one(op,params);rows,n,code=response_rows(p,op)
+                p=rone_request(op,params);rows,n,code=response_rows(p,op)
                 raw['r_one'].append({'operation':op,'params':params,'code':code,'total':n,'table_metadata':table,'rows':[public_fields(r) for r in rows],'complete':n is not None and len(rows)==int(n)})
             except SourceError as exc:raw['r_one'].append({'operation':op,'params':params,'status':str(exc)})
     # One bounded authorization probe; sale prices remain market-asset context only.
     try:
         p=client.data_go('1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade',{'LAWD_CD':'11140','DEAL_YMD':'202609','pageNo':1,'numOfRows':1})
         rows,n,code=portal_store_rows(p)
-        raw['additional_api_audit']=[{'dataset':'국토교통부_상업업무용 부동산 매매 실거래가 자료','operation':'getRTMSDataSvcNrgTrade','code':str(code),'total':n,'authorization':'YES' if str(code)=='00' else 'UNKNOWN','used_in_rent_estimate':False}]
+        raw['additional_api_audit']=[{'dataset':'국토교통부_상업업무용 부동산 매매 실거래가 자료','operation':'getRTMSDataSvcNrgTrade','code':str(code),'total':n,'authorization':'YES' if str(code) in ('00','000','0') else 'UNKNOWN','used_in_rent_estimate':False}]
     except SourceError as exc:raw['additional_api_audit']=[{'operation':'getRTMSDataSvcNrgTrade','status':str(exc),'authorization':'UNKNOWN','used_in_rent_estimate':False}]
 
 
@@ -103,7 +109,7 @@ def audit_only(root=ROOT):
     import gzip
     root=Path(root);public=json.loads((root/'docs/data/decision-evidence.json').read_bytes())
     raw=json.loads(gzip.decompress((root/'data/decision-intelligence'/public['snapshot_id']/'source.json.gz').read_bytes()))
-    client=Client(budget=65);audit(client,raw);client.sanitize(raw);publish(raw,root)
+    client=Client(budget=140);audit(client,raw);client.sanitize(raw);publish(raw,root)
     print('DECISION_AUDIT_VALIDATED; preserved store retrieval dates; requests='+str(client.calls))
 
 if __name__=='__main__':

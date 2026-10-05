@@ -16,9 +16,11 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 def derive(raw, snapshot, raw_hash):
+    from decision_rent import derive_rent
     stores = {r['bizesId']: r for c in raw['store_caches'] for r in c['rows']}
     return {'schema_version':1, 'snapshot_id':snapshot, 'raw_hash':raw_hash,
             'retrieved_at':raw['retrieved_at'], 'classification_version':'variant-rules-v1',
+            **(derive_rent(raw) if raw.get('decision_derivation_version')==2 else {}),
             'coverage':[{k:v for k,v in c.items() if k!='rows'} for c in raw['store_caches']],
             'stores':list(stores.values()), 'r_one':raw['r_one'], 'buildings':raw['buildings'],
             'public_research':raw.get('public_research',[]), **({k:raw[k] for k in ('additional_api_audit','audit_retrieved_at') if k in raw}), 'limitations':['Selected 800m caches only; no Seoul-wide store census','Building records belong to explicitly labeled public hypothetical parcels, not private user sites']}
