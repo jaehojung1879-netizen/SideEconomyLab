@@ -17,17 +17,24 @@ const OpportunityMap=(()=>{
     constructor(element){
       this.provider='leaflet';this.map=L.map(element,{preferCanvas:true}).setView([37.5665,126.978],11);
       this.renderer=L.canvas();this.layers={demand:L.layerGroup().addTo(this.map),poi:L.layerGroup().addTo(this.map),sites:L.layerGroup().addTo(this.map),selection:L.layerGroup().addTo(this.map)};
-      this.popup=null;
+      this.popup=null;this.armed=false;
+      this.map.getContainer().addEventListener('click',e=>{if(e.target.closest('.leaflet-control'))return;this.dismiss();if(this.armed){this.armed=false;const p=this.map.mouseEventToLatLng(e);e.stopPropagation();e.preventDefault();this.onPrivatePoint?.([p.lat,p.lng]);}},true);
+      this.map.on('click',e=>{this.dismiss();if(this.armed){this.armed=false;this.onPrivatePoint?.([e.latlng.lat,e.latlng.lng]);}});
+      this.map.on('contextmenu',e=>{this.dismiss();this.onPrivatePoint?.([e.latlng.lat,e.latlng.lng]);});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape'){this.armed=false;this.dismiss();}});
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(this.map);
     }
+    dismiss(){this.map.closePopup();this.layers.poi.eachLayer(layer=>layer.closeTooltip?.());}
+    privatePoint(fn){this.onPrivatePoint=fn;}
+    armPrivatePoint(){this.armed=true;}
     clear(layer){this.layers[layer].clearLayers();}
     demand(rows,onSelect){
       this.clear('demand');
-      rows.forEach(r=>L.circleMarker(r.position,{radius:r.score>=95?7:5,color:r.color,fillColor:r.color,fillOpacity:.7,weight:1,renderer:this.renderer}).on('click',()=>onSelect(r.area)).addTo(this.layers.demand));
+      rows.forEach(r=>L.circleMarker(r.position,{radius:r.score>=95?7:5,color:r.color,fillColor:r.color,fillOpacity:.7,weight:1,renderer:this.renderer}).on('click',()=>{if(this.armed){this.armed=false;this.onPrivatePoint?.(r.position);}else onSelect(r.area);}).addTo(this.layers.demand));
     }
     pois(rows,radius){
-      this.clear('poi');
-      rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="poi-marker '+(r.role||'context')+'"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).bindPopup(r.html).addTo(this.layers.poi));
+      const adapter=this;this.clear('poi');
+      rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="poi-marker '+(r.role||'context')+'"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).bindTooltip(r.html,{direction:'top',opacity:1}).on('click',function(e){L.DomEvent.stopPropagation(e);if(adapter.armed){adapter.armed=false;adapter.dismiss();adapter.onPrivatePoint?.(r.position);}else this.openTooltip();}).addTo(this.layers.poi));
       if(radius)L.circle(radius.position,{radius:radius.meters,renderer:this.renderer,interactive:false,color:'#7c4dff',weight:1,dashArray:'5,5',fillOpacity:.025}).addTo(this.layers.poi);
     }
     sites(rows){this.clear('sites');rows.forEach(r=>L.marker(r.position,{icon:L.divIcon({className:'',html:'<div class="site-marker"></div>',iconSize:[18,18],iconAnchor:[9,9]})}).bindPopup(r.html).addTo(this.layers.sites));}
@@ -42,20 +49,26 @@ const OpportunityMap=(()=>{
       this.provider='kakao';const k=window.kakao.maps;
       this.map=new k.Map(element,{center:new k.LatLng(37.5665,126.978),level:8});
       this.map.addControl(new k.ZoomControl(),k.ControlPosition.LEFT);
-      this.layers={demand:[],poi:[],sites:[],selection:[]};this.popup=null;
+      this.layers={demand:[],poi:[],sites:[],selection:[]};this.popup=null;this.armed=false;
+      k.event?.addListener(this.map,'click',e=>{this.dismiss();if(this.armed&&e?.latLng){this.armed=false;this.onPrivatePoint?.([e.latLng.getLat(),e.latLng.getLng()]);}});
+      k.event?.addListener(this.map,'rightclick',e=>{this.dismiss();if(e?.latLng)this.onPrivatePoint?.([e.latLng.getLat(),e.latLng.getLng()]);});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape'){this.armed=false;this.dismiss();}});
     }
+    dismiss(){if(this.popup){this.popup.setMap(null);this.popup=null;}}
+    privatePoint(fn){this.onPrivatePoint=fn;}
+    armPrivatePoint(){this.armed=true;}
     clear(layer){this.layers[layer].forEach(x=>x.setMap(null));this.layers[layer]=[];if(this.popup){this.popup.setMap(null);this.popup=null;}}
     overlay(layer,position,content,zIndex=3){
       const k=window.kakao.maps;const overlay=new k.CustomOverlay({map:this.map,position:new k.LatLng(...position),content,clickable:true,xAnchor:.5,yAnchor:.5,zIndex});
       this.layers[layer].push(overlay);return overlay;
     }
     demand(rows,onSelect){this.clear('demand');rows.forEach(r=>{
-      const button=document.createElement('button');button.className='demand-marker';button.style.background=r.color;button.title=r.area.trdar_name;button.setAttribute('aria-label',r.area.trdar_name);button.onclick=()=>onSelect(r.area);
+      const button=document.createElement('button');button.className='demand-marker';button.style.background=r.color;button.title=r.area.trdar_name;button.setAttribute('aria-label',r.area.trdar_name);button.onclick=e=>{e.stopPropagation();if(this.armed){this.armed=false;this.onPrivatePoint?.(r.position);}else onSelect(r.area);};
       this.overlay('demand',r.position,button,3);
     });}
     pois(rows,radius){this.clear('poi');rows.forEach(r=>{
       const button=document.createElement('button');button.className='poi-marker '+(r.role||'context');button.style.padding='0';button.setAttribute('aria-label',r.name);
-      button.onclick=()=>{if(this.popup)this.popup.setMap(null);this.popup=this.overlay('poi',r.position,r.html,10);};
+      const inspect=()=>{this.dismiss();const k=window.kakao.maps;this.popup=new k.CustomOverlay({map:this.map,position:new k.LatLng(...r.position),content:r.html,clickable:true,xAnchor:.5,yAnchor:1.15,zIndex:10});};button.onmouseenter=inspect;button.onmouseleave=()=>this.dismiss();button.onfocus=inspect;button.onblur=()=>this.dismiss();button.onclick=e=>{e.stopPropagation();if(this.armed){this.armed=false;this.dismiss();this.onPrivatePoint?.(r.position);}else inspect();};
       this.overlay('poi',r.position,button,5);
     });
       if(radius){const k=window.kakao.maps;const circle=new k.Circle({map:this.map,center:new k.LatLng(...radius.position),radius:radius.meters,strokeColor:'#7c4dff',strokeWeight:1,strokeStyle:'dash',fillColor:'#7c4dff',fillOpacity:.025});this.layers.poi.push(circle);}

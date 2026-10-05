@@ -6,6 +6,10 @@ on:
         description: 'Audit R-ONE/metadata only; retain original store retrieval dates'
         type: boolean
         default: false
+      commit_bundle:
+        description: 'Commit the validated bundle; false runs authenticated validation without publishing'
+        type: boolean
+        default: true
 permissions:
   contents: write
 concurrency:
@@ -36,6 +40,7 @@ jobs:
       - name: Validate immutable source and exact public derivation
         run: python pipeline/decision_bundle.py
       - name: Commit only complete sanitized bundle if upstream HEAD is unchanged
+        if: ${{ inputs.commit_bundle != false }}
         run: |
           BEFORE_HEAD=$(git rev-parse HEAD)
           git fetch origin "${{ github.ref_name }}"

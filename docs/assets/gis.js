@@ -9,7 +9,7 @@ let FIELDS={},CANDIDATES={},registry=null;
 const QUADRANTS={A:'고수요 · 낮은 관측공급',B:'고수요 · 높은 관측공급',C:'90점 미만 · 낮은 관측공급',D:'90점 미만 · 높은 관측공급',E:'미측정 / 판정 보류'};
 const QUADRANT_COLORS={A:'#00856a',B:'#d24d67',C:'#36a99c',D:'#8b65ba',E:'#8894a2'};
 proj4.defs('EPSG:5181','+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +units=m +no_defs');
-const state={data:null,poiData:null,evidence:null,supplies:new Map(),mode:'demand',sort:'demand',district:'',supplyFilter:'all',quadrant:'all',sites:[],candidate:'booth',threshold:85,query:'',adapter:null,selectedArea:null,ranked:[],visible:[],limit:30,coordinates:new Map(),percentiles:new Map(),rankByCode:new Map()};
+const state={data:null,poiData:null,evidence:null,supplies:new Map(),mode:'demand',sort:'demand',district:'',supplyFilter:'all',quadrant:'all',sites:[],privateSites:[],decisionVariant:null,candidate:'booth',threshold:85,query:'',adapter:null,selectedArea:null,ranked:[],visible:[],limit:30,coordinates:new Map(),percentiles:new Map(),rankByCode:new Map()};
 const $=id=>document.getElementById(id);
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function fmt(n){return n==null||!Number.isFinite(Number(n))?'—':Math.round(Number(n)).toLocaleString('ko-KR');}
@@ -39,7 +39,7 @@ function renderCoverage(){
   $('coverage').textContent=c?`공급 조사 ${c.measured_count} / ${state.data.areas.length} · 불완전 ${c.partial_count} · ${state.evidence.radius_m}m · 오류 ${fmt(state.evidence.query_error_count)} · ${date}`:'공급 분석 미검증 · 미측정을 0으로 계산하지 않음';
   $('data-status').textContent=`서울 ${fmt(state.data.areas.length)} 상권 · 수요 ${state.data.periods?.flow||'—'} · 공급 ${c?c.measured_count:'—'}곳 · 실제 후보지 ${state.sites.length}개`;
   const legend=state.mode==='demand'?[[scoreColor(95),'95+'],[scoreColor(90),'90+'],[scoreColor(80),'80+'],[scoreColor(0),'80 미만']]:state.mode==='quadrant'?Object.entries(QUADRANTS).map(([k,v])=>[QUADRANT_COLORS[k],k+' '+v]):[['#00856a','낮은 관측공급'],['#8b38b5','높은 관측공급'],[QUADRANT_COLORS.E,'미측정 / 판정 보류']];
-  $('map-legend').innerHTML=legend.map(([color,label])=>`<span><i style="background:${color}"></i>${label}</span>`).join('')+'<span><i style="background:#7c4dff"></i>선택 POI</span><span><i style="background:#0b8f72"></i>실제 후보지</span>';
+  $('map-legend').innerHTML=legend.map(([color,label])=>`<span><i style="background:${color}"></i>${label}</span>`).join('')+'<span><i style="background:#c93d64"></i>직접 경쟁형</span><span><i style="background:#7c4dff"></i>대체형</span><span><i style="background:#2a91ac"></i>보완형</span><span><i style="background:#78818b"></i>문맥</span><span><i style="background:#0b8f72"></i>개인/실제 후보지</span><span><i style="background:#1a3955"></i>선택 상권</span>';
 }
 function buildPercentiles(){
   const areas=state.data.areas;
@@ -92,20 +92,20 @@ function renderPoi(){
   const supply=state.selectedArea&&poiAreaFor(state.selectedArea.trdar_cd);
   const roles=new Map((state.selectedArea?supplyFor(state.selectedArea).classified_pois:[]).map(p=>[String(p.id),p.role]));
   if($('show-poi').checked&&supply){
-    (supply.pois||[]).forEach(p=>{if(!Number.isFinite(p.lat)||!Number.isFinite(p.lng))return;const url=safePlaceUrl(p.place_url);const role=roles.get(String(p.id))||'context';rows.push({role,position:[p.lat,p.lng],name:p.name,html:`<div class="map-popup"><h3>${esc(p.name)}</h3><p>${role==='direct_proxy'?'직접 경쟁형 프록시':role==='substitute_proxy'?'대체형 프록시':'문맥/미확인'}</p><p>${esc(p.category)} · ${p.distance_m==null?'거리 미상':fmt(p.distance_m)+'m'}</p><p>${esc(p.address)}</p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener">카카오 장소 보기 ↗</a>`:''}</div>`});});
+    (supply.pois||[]).forEach(p=>{if(!Number.isFinite(p.lat)||!Number.isFinite(p.lng))return;const url=safePlaceUrl(p.place_url);const variantRole=state.decisionVariant&&window.DecisionIntelligence.classify(state.decisionVariant,p);const role=variantRole?({DIRECT:'direct_proxy',SUBSTITUTE:'substitute_proxy',COMPLEMENTARY:'complementary',CONTEXT:'context'})[variantRole]:roles.get(String(p.id))||'context';rows.push({role,position:[p.lat,p.lng],name:p.name,html:`<div class="map-popup"><h3>${esc(p.name)}</h3><p>${role==='direct_proxy'?'직접 경쟁형 프록시':role==='substitute_proxy'?'대체형 프록시':role==='complementary'?'보완 서비스':'문맥/미확인'}</p><p>${esc(p.category)} · ${p.distance_m==null?'거리 미상':fmt(p.distance_m)+'m'}</p><p>${esc(p.address)}</p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener">카카오 장소 보기 ↗</a>`:''}</div>`});});
     if(Number.isFinite(supply.lat)&&Number.isFinite(supply.lng))radius={position:[supply.lat,supply.lng],meters:Number(state.poiData.radius_m||800)};
   }
   state.adapter.pois(rows,radius);
 }
 function renderSites(){
-  const sites=state.sites.filter(s=>s.candidate_id===CANDIDATES[state.candidate].id);
+  const sites=[...state.sites.filter(s=>s.candidate_id===CANDIDATES[state.candidate].id),...state.privateSites];
   $('site-count').textContent=sites.length;
   state.adapter.sites($('show-sites').checked?sites.map(s=>({position:[s.lat,s.lng],name:s.name||s.site_id,html:`<div class="map-popup"><h3>${esc(s.name||s.site_id)}</h3><p>${esc(s.address||'')}</p><p>임대료 ${s.rent==null?'미확인':fmt(s.rent)+'원'} · 보증금 ${s.deposit==null?'미확인':fmt(s.deposit)+'원'}</p><p>${esc(s.field_note||'현장 메모 미기록')}</p></div>`})):[]);
 }
 function selectArea(a,{pan=true,openSheet=true}={}){
   state.selectedArea=a;if(a&&pan)state.adapter.focus(toLatLng(a));
   renderSelected();renderPoi();state.adapter.selected(a?toLatLng(a):null);
-  window.dispatchEvent(new CustomEvent('sideeconomy:area-selected',{detail:{area:a,position:a?toLatLng(a):null,candidate_id:CANDIDATES[state.candidate].id,poiLayer:state.poiData}}));
+  window.dispatchEvent(new CustomEvent('sideeconomy:area-selected',{detail:{area:a,position:a?toLatLng(a):null,candidate_id:CANDIDATES[state.candidate].id,poiLayer:state.poiData,flow_period:state.data.periods?.flow}}));
   document.querySelectorAll('.top-item').forEach(b=>b.classList.toggle('active',a&&b.dataset.code===String(a.trdar_cd)));
   if(openSheet&&matchMedia('(max-width:800px)').matches&&document.body.dataset.sheet!=='decision')setSheet('decision');
 }
@@ -185,8 +185,10 @@ async function init(){
     const periods=data.periods||{};
     $('source-periods').textContent=`서울 Open Data · 직장 ${periods.worker||'—'} / 유동 ${periods.flow||'—'} / 집객 ${periods.facility||'—'}`;
     $('data-status').textContent=`서울 ${fmt(data.areas.length)} 상권 · 유동 ${periods.flow||'—'} · ${poi?'Kakao POI '+(poi.query_error_count?'일부 검색 실패':'표본'):'POI 데이터 이용 불가'} · 실제 후보지 ${state.sites.length}개`;
-    render();new ResizeObserver(()=>adapter.resize()).observe($('map'));
+    adapter.privatePoint?.(position=>window.dispatchEvent(new CustomEvent('sideeconomy:private-map-point',{detail:position})));$('di-map-create').onclick=()=>{adapter.armPrivatePoint?.();$('data-status').textContent='지도를 클릭하면 브라우저에 개인 사이트를 만듭니다. Escape로 취소.';};render();new ResizeObserver(()=>adapter.resize()).observe($('map'));
   }catch{state.adapter=await mapPromise.catch(()=>null);$('data-status').textContent='수요 데이터를 불러오지 못했습니다.';$('top-list').innerHTML='<p class="empty-state">데이터를 준비하지 못했습니다. 잠시 후 다시 열어 주세요.</p>';}
 }
 window.addEventListener('sideeconomy:choose-family',e=>{if(CANDIDATES[e.detail]&&state.data&&state.adapter){state.candidate=e.detail;$('candidate').value=e.detail;state.selectedArea=null;render();}});
+window.addEventListener('sideeconomy:decision-updated',e=>{state.decisionVariant=e.detail.selected_variant;if(state.adapter)renderPoi();});
+window.addEventListener('sideeconomy:private-sites',e=>{state.privateSites=e.detail.filter(s=>Number.isFinite(s.lat)&&Number.isFinite(s.lng)).map(s=>({...s,rent:s.rent?.value??null,deposit:s.deposit?.value??null,field_note:'PRIVATE · 브라우저 저장'}));if(state.adapter)renderSites();});
 init();

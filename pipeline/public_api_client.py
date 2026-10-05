@@ -41,6 +41,8 @@ def assert_sanitized(value, secrets=()):
             continue
         decoded = data_go_key(secret)
         forms = {secret, decoded, urllib.parse.quote(secret, safe=''), urllib.parse.quote(decoded, safe='')}
+        if len(decoded)>=40:
+            forms.update((decoded[:24],decoded[-24:]))
         if any(form and form in encoded for form in forms):
             raise SourceError('CREDENTIAL_LEAK_REJECTED')
     if re.search(r'(?i)(?:[?&]|&amp;)(?:serviceKey|KEY|apiKey|authKey)\s*=', encoded):
@@ -69,7 +71,7 @@ class Client:
         query = urllib.parse.urlencode({**params, key_param: credential})
         req = urllib.request.Request(endpoint + '?' + query, headers={'User-Agent': 'SideEconomyLab/decision-intelligence-v1'})
         try:
-            with self.opener.open(req, timeout=45) as response:
+            with self.opener.open(req, timeout=20 if secret_name=='R_ONE' else 45) as response:
                 body = response.read(8_000_001)
             if len(body) > 8_000_000:
                 raise SourceError('RESPONSE_BUDGET_EXCEEDED')

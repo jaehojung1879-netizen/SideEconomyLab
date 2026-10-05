@@ -1,0 +1,51 @@
+# Decision Intelligence v1
+
+Click an area, choose a business variant in the top bar, and read the decision snapshot. Three configurations in the chosen family show cash, monthly site cost, break-even, required capture, observed competition, operating burden and the next verification. The research dashboard and Workbench remain available below.
+
+All seven evidence labels are supported: VERIFIED, PUBLIC_SOURCE, MARKET_ESTIMATE, PLANNING_ASSUMPTION, USER_INPUT, DERIVED, UNKNOWN. Public equipment asking prices cover the equipment alone. Delivery, installation, VAT reserves, utilities and contingencies are separate editable rows. An attractive idea can still have LOW evidence confidence.
+
+## Economics and decision rules
+
+Each cost row has low/base/high values, source, confidence and reason. Initial cash separates nonrecoverable setup, equipment capital, working capital and deposit. Deposit is excluded from the recovery target; its return and equipment resale are not guaranteed. Missing cost values propagate rather than becoming zero. The legacy six-model economics module is reused.
+
+Contribution = price × (1 − payment − host share − platform − shrinkage) − unit costs. Break-even = ceiling(monthly fixed cost / positive contribution). Time businesses show occupied minutes, sessions and utilization; storage shows slot-days; order/event models retain their appropriate units. The low/high economics cases pair lower costs with higher price, and higher costs with lower price. Cash ranges use only the corresponding cost bounds.
+
+Sensitivity uses 0.75/1/1.5/2 × break-even units, explicitly **not a demand forecast**. A user may enter a separate monthly volume. Conditional operating contribution = volume × unit contribution − fixed cost. Recovery months = cash at risk / positive operating contribution. Twelve/twenty-four/thirty-six-month thresholds add cash-at-risk / horizon to fixed cost. Maximum site cost at entered volume and horizon = volume × contribution − non-site fixed − cash at risk / horizon. Negative ceilings remain negative. Monthly contribution excludes taxes, financing and an imputed owner salary.
+
+Gates expose definition, cost completeness, rent basis, contribution, capacity, capture, competition, owner availability, known legal blocker and evidence quality. Known blockers yield BLOCKED. Nonpositive contribution, capacity failure, owner inability, required capture above 1%, ten or more directly classified 800m observations, or failure at entered volume yield WEAK. The capture/competition thresholds are named conservative research policies, not empirical probabilities. Otherwise the result is CHECK; a low capture threshold plus explicitly available owner coverage can become PROMISING. No success score is generated. Price/cost assumptions and unverified flow grain cap v1 confidence at LOW.
+
+Ranking retains the chosen variant first, then orders the remaining variants by decision status, utilization burden, cash at risk and stable ID. This is an explainable shortlist inside the selected candidate family, separate from PR #13's validation frontier.
+
+## Rent and required capture
+
+The authenticated catalog enumerates 738 statistical tables and supplies current small, medium/large, collective-retail and office contexts. Until a defensible area/submarket crosswalk is available, rent uses a Seoul city statistic in the selected asset class. The default is the **2026 Q2 Seoul small-retail, first-floor-equivalent market statistic**: 52.7777926305664 thousand KRW/㎡. Multiply by requested area and an explicit planning factor: first floor 0.75/1/1.5, other floors 0.4/0.65/1. These are planning bands, **not confidence intervals**. The statistic incorporates deposit conversion and excludes management/VAT; it does not identify a shop's cash asking rent. Actual entered rent has a separate USER_INPUT basis. A fractional host installation's price may differ materially from full-property statistics.
+
+The public classification catalog proves city → market → submarket names, including 서울>도심>명동 and 서울>강남>강남대로. A tourism-area aggregate or Gangnam station center does not prove equality with those survey boundaries. Name similarity is insufficient. The resolver accepts a published explicit crosswalk or falls back to city membership. Current floor-rent/utility and deposit-conversion tables are collected where returned. An exact city/asset/quarter/floor rent cell can replace the regional point before applying the explicit planning range. Other asset classes retain a warning if their floor conversion basis is unverified. RSE/confidence metadata was not identified in the enumerated commercial tables; no statistical confidence interval is invented.
+
+Capture = required paid transactions per operating day / relevant daily flow. The default divides the chosen quarterly signal by 91 days as an **explicit editable planning interpretation**. The source's temporal grain is unverified: it may already be an average. This denominator is therefore not asserted as observed daily traffic. Enter counted daily front-door flow to replace it. The source includes area-level modeled flows, not unique customers or guaranteed physical access. Weekday, young, daytime and after-work signals differ by customer job. Storage/contract businesses with no defensible paid-opportunity denominator display that limitation.
+
+## Public and private data
+
+DATA_GO authenticated collection uses `storeListInRadius`, with complete paginated 800m caches for two public centers. Smaller 200/400m bands are derived by geographic distance. Official IDs/industries, addresses and coordinates retain provenance. Variant-specific DIRECT/SUBSTITUTE/COMPLEMENTARY/CONTEXT rules use industry names and place names; no registry classification proves a specific vending machine or SKU.
+
+Kakao remains a consumer search sample. Source matching requires an exact normalized name within 35m, or a sufficiently long contained name within 15m; ambiguous many-to-one identities remain unmatched. Counts expose MATCHED, KAKAO_ONLY and DATA_GO_ONLY and never add a matched pair twice. Coverage is complete only when the whole requested 800m circle lies inside a fresh complete target cache. Other locations remain partial/unmeasured; zero observations do not prove no competitors.
+
+The building service successfully returned title and floor records for one nearest registered-store public hypothetical parcel per target. These are examples, not the user's site. A private site's compatibility remains unverified until its own official parcel/floor evidence is supplied. Commercial main use makes physical fit plausible; power, ventilation, fire safety, host permission and legal operation remain separate checks. No Seoul building crawl is implemented.
+
+Automated rental listings were not collected: public access/robots checks were unavailable, and no circumvention was attempted. Enter 5–10 public asking listings through PRIVATE CSV/JSON. Required columns: `id,scope,address,area_sqm,floor,deposit,rent,management,observed_at,source_url`. Scope is the selected commercial-area code. Compare the same floor group, 0.5–2 times requested area and observations no older than 90 days. Unknown deposit/management stays null. Medians/ranges and rent per ㎡/평 are shown; IQR outliers are flagged but retained. At least five eligible listings replace the statistical planning rent with a comparable asking-price IQR; this is not a confidence interval.
+
+Private sites, terms, assumptions, listings, owner overrides and observed outcomes stay in browser storage. The combined JSON backup includes the existing Workbench workspace; malformed imports preserve both stores. Right-click or use the explicit map button to create a private site at an arbitrary point, then enter floor, area, rent, deposit, management, key money and host share. A corrupt stored file is preserved until valid restoration. Owner overrides and later observations never rewrite public research evidence.
+
+## Refresh and integrity
+
+`Refresh decision intelligence evidence` is manually dispatched, without bot-trigger loops. Exact secret names are `DATA_GO` and `R_ONE`. Missing variables fail before network access. The transport decodes a portal-encoded DATA_GO key at most once, preserves a raw `+`, forbids credential-bearing redirects, and reports code/type-only errors. Actual keys and authentication query parameters are scanned before persistence. Browser files contain only sanitized public data.
+
+A bounded collection validates full pagination, unique IDs, coordinates, request budgets and exact source derivation before publication. Each gzip source snapshot is immutable and content-addressed; the public dataset declares its raw hash, date, operation, coverage, counts and classification version. Ordinary publication failure restores previous bytes. Upstream HEAD changes abort the generated-data commit. Metadata-only audits keep the original store retrieval date. The GIS staged refresh also validates this source bundle and preserves its immutable snapshots. Decisions/economics are recalculated from current inputs at runtime; no stored derived recommendation can become stale against newly published inputs.
+
+PR #13 semantic selection, budgets, evidence and frontier are unchanged. PR #14's original 13 variants, 22 configurations and 13 source entries are preserved verbatim; two source-backed snack/amenity variants and two configurations are additions. Toy gacha and unspecified character/specialty goods remain excluded.
+
+## User action still required
+
+Both exact secrets have successfully authenticated in Actions. R-ONE’s initial ERROR-290 was resolved on the subsequent authenticated audit. No secret value was inspected or exposed. A published survey-boundary/GIS-area crosswalk, actual private-site parcel/floor records and source-backed front-door volume remain user/research work. Additional API requests are optional and listed separately.
+
+Before a real commitment, replace planning prices/costs with matched supplier and host quotes, count front-door flow, confirm parcel/floor permissions and assign an interruption responder. The product authorizes no purchase, lease, deposit or pilot.

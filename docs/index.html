@@ -6,23 +6,23 @@
 <title>SideEconomyLab · 사업기회 GIS</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <link rel="stylesheet" href="./assets/gis.css">
-<link rel="stylesheet" href="./assets/workbench.css">
+<link rel="stylesheet" href="./assets/workbench.css"><link rel="stylesheet" href="./assets/decision.css">
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="./index.html"><span>SideEconomyLab</span><h1>사업기회 GIS</h1></a>
   <div class="primary-controls">
-    <div><label for="candidate">사업 후보</label><select id="candidate">
+    <div><label for="candidate">후보 가족</label><select id="candidate">
       <option>사업 후보 로딩 중</option>
     </select></div>
-    <div><label for="area-search">상권 · 구 · 동</label><div class="search-row"><input id="area-search" type="search" placeholder="어디를 살펴볼까요?" autocomplete="off"><button id="search-clear" title="검색 초기화" aria-label="검색 초기화">×</button></div></div>
+    <div><label for="di-variant">사업 변형</label><select id="di-variant"><option>변형 로딩 중</option></select></div><div><label for="di-location">상권 / 개인 사이트</label><select id="di-location"><option>선택 상권 중심</option></select></div><div><label for="area-search">상권 · 구 · 동</label><div class="search-row"><input id="area-search" type="search" placeholder="어디를 살펴볼까요?" autocomplete="off"><button id="search-clear" title="검색 초기화" aria-label="검색 초기화">×</button></div></div>
   </div>
   <nav class="header-actions"><button id="wb-toggle" disabled aria-expanded="false" aria-controls="workbench">사업 구성·경제성</button><button data-dialog="method-dialog">데이터·방법</button><button data-dialog="transaction-dialog">전체 후보·검증</button></nav>
 </header>
 <main class="workspace">
   <aside class="navigator" id="navigator" aria-label="입지 탐색">
     <div class="mobile-panel-title"><strong>입지 탐색</strong><button data-sheet="close" aria-label="패널 닫기">×</button></div>
-    <details class="filters" id="filter-panel" open>
+    <details class="filters" id="filter-panel">
       <summary>필터 · 레이어</summary>
       <div class="filter-content">
         <div class="row-between"><label for="threshold">최소 수요점수</label><strong id="threshold-value">85</strong></div>
@@ -46,13 +46,13 @@
   </aside>
   <section class="map-wrap" aria-label="서울 입지 지도">
     <div id="map"></div>
-    <div class="map-top"><span id="map-badge">지도 준비 중</span><button id="seoul-view">서울 전체</button></div>
+    <div class="map-top"><span id="map-badge">지도 준비 중</span><button id="di-map-create" title="버튼을 누른 뒤 지도 위치를 클릭하거나 지도를 우클릭">개인 사이트 만들기</button><button id="seoul-view">서울 전체</button></div>
     <div class="map-legend" id="map-legend"><span><i style="background:#ef476f"></i>95+</span><span><i style="background:#ff9f1c"></i>90+</span><span><i style="background:#ffd166"></i>80+</span><span><i style="background:#3a86ff"></i>80 미만</span><span><i style="background:#7c4dff"></i>주변 POI</span><span><i style="background:#0b8f72"></i>실제 후보지</span></div>
     <div id="data-status" class="data-status" role="status">데이터 로딩 중</div>
   </section>
   <aside class="intelligence" id="intelligence" aria-label="선택 상권 분석">
     <div class="panel-heading"><h2>선택 상권 분석</h2><button data-sheet="close" class="mobile-close" aria-label="분석 닫기">×</button></div>
-    <div id="selected-card" aria-live="polite">지도나 입지 목록에서 상권을 선택하세요.</div>
+    <section id="decision-panel" aria-label="Decision snapshot">판단 자료 로딩 중</section><h3 class="di-research-heading">상세 공개 연구 근거</h3><div id="selected-card" aria-live="polite">지도나 입지 목록에서 상권을 선택하세요.</div>
     <section id="workbench" hidden aria-label="사업 구성 및 경제성">
       <h2>Business Workbench v1</h2>
       <p class="wb-private">PRIVATE · 사이트/협상/판단은 이 브라우저에만 저장됩니다. 공용 기기 사용에 주의하고 JSON을 백업하세요. 구매·파일럿 승인 없음.</p>
@@ -90,5 +90,5 @@
 <noscript>지도 탐색에는 JavaScript가 필요합니다. <a href="./research.html">연구 기록 보기</a></noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
-<script src="./assets/map-adapter.js"></script><script src="./assets/real-estate.js"></script><script src="./assets/economics.js"></script><script src="./assets/business-workspace.js"></script><script src="./assets/workbench.js"></script><script src="./assets/gis.js"></script>
+<script src="./assets/map-adapter.js"></script><script src="./assets/real-estate.js"></script><script src="./assets/economics.js"></script><script src="./assets/business-workspace.js"></script><script src="./assets/workbench.js"></script><script src="./assets/decision-intelligence.js"></script><script src="./assets/decision-panel.js"></script><script src="./assets/gis.js"></script>
 </body></html>

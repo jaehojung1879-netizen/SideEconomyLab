@@ -24,7 +24,7 @@ OUTPUTS = (*DERIVED_INPUTS, PORTFOLIO)
 
 def copy_workspace(root, stage):
     # Existing modules resolve paths from __file__: isolated files, no Git checkout/worktree.
-    for directory in ('pipeline', 'docs', 'tests', 'config', 'field', 'research', 'data/real-estate-context', '.github/workflows'):
+    for directory in ('pipeline', 'docs', 'tests', 'config', 'field', 'research', 'data/real-estate-context', 'data/decision-intelligence', '.github/workflows'):
         shutil.copytree(root / directory, stage / directory, ignore=shutil.ignore_patterns('__pycache__'))
 
 
@@ -65,6 +65,9 @@ def validate_bundle(root):
     rebuilt = context.build(snapshot=snapshot, demand_path=demand_path)
     if published != rebuilt:
         raise ValueError('context dependency mismatch; previous bundle preserved')
+    if (root / 'docs/data/decision-evidence.json').exists():
+        from decision_bundle import check
+        check(root)
     return published['demand_hash']
 
 
@@ -89,7 +92,8 @@ def validate_stage(stage):
 
 def raw_hashes(root):
     return {str(path.relative_to(root)): context.sha(path.read_bytes())
-            for path in (root / 'data/real-estate-context').rglob('*') if path.is_file()}
+            for directory in ('data/real-estate-context','data/decision-intelligence')
+            for path in (root / directory).rglob('*') if path.is_file()}
 
 
 def publish_bundle(root, stage):

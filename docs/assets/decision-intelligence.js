@@ -6,6 +6,7 @@
   const range=(low,base=low,high=base)=>({low,base,high});
   function cell(values,evidence='PLANNING_ASSUMPTION',source='견적 전 예산 자리표시자',reason='공급자·호스트 견적으로 교체하세요.',confidence='LOW'){
     if(!CLASSES.includes(evidence))throw Error('Invalid evidence');
+    if(source!==null&&(typeof source!=='string'||source.length>4000)||typeof reason!=='string'||reason.length>4000||!['LOW','MEDIUM','HIGH'].includes(confidence))throw Error('Invalid provenance');
     for(const k of ['low','base','high'])if(values[k]!==null&&(!Number.isFinite(values[k])||values[k]<0))throw Error('Invalid envelope');
     if(values.low!==null&&values.base!==null&&values.high!==null&&!(values.low<=values.base&&values.base<=values.high))throw Error('Unordered envelope');
     return {...values,evidence,source,reason,confidence};
@@ -20,7 +21,9 @@
     'PHOTO-ID-OUTPUT':{area:4,price:[5000,6000,7000],cost:[1500,2000,2500],config:'C-SM06-STATION',flow:'weekday_flow'},
     'DOCUMENT-PRINT':{area:4,price:[1000,2000,3000],cost:[500,800,1200],capex:[3000000,5000000,7000000],flow:'weekday_flow'},
     'VEND-BEVERAGE':{area:4,price:[1500,2000,2500],cost:[800,1000,1300],config:'C-VEND-USED',flow:'day_flow'},
-    'VEND-COFFEE':{area:6,price:[2000,2500,3000],cost:[600,800,1000],capex:[19000000,23000000,27000000],flow:'weekday_flow'},
+    'VEND-SNACK':{area:4,price:[1500,2000,3000],cost:[900,1200,1800],config:'C-MULTI-790',flow:'day_flow'},
+    'VEND-AMENITY':{area:4,price:[3000,5000,7000],cost:[1500,2500,4000],config:'C-MULTI-790',flow:'flow'},
+    'VEND-COFFEE':{area:6,price:[2000,2500,3000],cost:[600,800,1000],config:'C-COFFEE-X500',flow:'weekday_flow'},
     'LUGGAGE-HOST':{area:15,price:[5000,6000,8000],cost:[1500,2000,2500],capex:[500000,1000000,2000000],flow:'flow'},
     'LUGGAGE-LOCKER':{area:12,price:[5000,6000,8000],cost:[300,500,800],capex:[8000000,12000000,18000000],flow:'flow'},
     'LUGGAGE-OVERFLOW':{area:20,price:[7000,10000,12000],cost:[2500,3500,4500],capex:[1000000,2000000,3000000],flow:'flow'},
@@ -32,19 +35,23 @@
     const end=new Date(Date.UTC(+m[1],+m[2]*3,0));const age=Math.floor((Date.parse(asOf)-end)/86400000);
     return {status:age<0?'FUTURE':age>maxDays?'STALE':'CURRENT',age_days:age};
   }
-  function resolveMarket(area,markets,crosswalk=[]){
+  function resolveMarket(area,markets,crosswalk=[],assetClass='SMALL_RETAIL'){
+    markets=markets.filter(m=>(m.asset_class||'SMALL_RETAIL')===assetClass);
     const link=crosswalk.find(x=>String(x.trdar_cd)===String(area.trdar_cd)&&x.method==='EXPLICIT_PUBLISHED_CROSSWALK');
     if(link){const market=markets.find(m=>m.geography_id===link.geography_id&&m.unit==='THOUSAND_KRW_SQM_MONTH');if(market)return {...market,mapping:link.method};}
     return markets.find(m=>m.geography_type==='city'&&m.geography_id==='11'&&m.unit==='THOUSAND_KRW_SQM_MONTH')||null;
   }
-  function rentEnvelope({market,area_sqm,floor='1',comparables=[],scope='',asOf,actual=null}){
+  function rentEnvelope({market,area_sqm,floor='1',comparables=[],scope='',asOf,actual=null,floor_evidence=[]}){
     if(actual!==null){const c=cell(range(actual),'USER_INPUT','PRIVATE 실제 월세 입력','서명 견적 여부는 사용자가 확인', 'MEDIUM');return {...c,method:'PRIVATE_TERMS',geography:'PRIVATE site',actual_quoted_rent:actual,area_sqm,floor_basis:floor,limitations:['보증금 환산액은 월 현금 월세와 구별']};}
     const comps=comparableStats(comparables,{scope,floor,area_sqm,asOf});
     if(comps.count>=5){return {...cell(range(comps.rent_per_sqm.q1*area_sqm,comps.rent_per_sqm.median*area_sqm,comps.rent_per_sqm.q3*area_sqm),'MARKET_ESTIMATE','PRIVATE 공개 호가 입력','비교 가능한 5건 이상 호가의 단위면적 IQR; 신뢰구간 아님','LOW'),method:'PRIVATE_COMPARABLE_IQR',geography:scope,area_sqm,floor_basis:floor,observation_period:comps.observation_dates,comparables:comps,actual_quoted_rent:null,limitations:['호가는 계약가격이 아님; 관리비·보증금 환산 별도; 선택 편향 가능']};}
     if(!market||!Number.isFinite(area_sqm)||area_sqm<=0)return {...UNKNOWN(),method:'NO_DEFENSIBLE_RENT',actual_quoted_rent:null,limitations:['공간 면적과 단위가 검증된 시장 통계 필요']};
-    const floorFactor=floor==='1'?range(.75,1,1.5):range(.4,.65,1);
-    const monthly=market.rent_thousand_krw_per_sqm*1000*area_sqm;
-    return {...cell(range(monthly*floorFactor.low,monthly*floorFactor.base,monthly*floorFactor.high),'MARKET_ESTIMATE',market.source_id,'1층 환산 시장 통계 × 면적 × 명시적 층/시장 편차 가정; 통계적 신뢰구간 아님'),method:'STATISTIC_TIMES_AREA_PLANNING_FACTOR',geography:market.name,geography_type:market.geography_type,asset_class:market.asset_class||'small retail',floor_basis:{requested_floor:floor,statistic:'1F converted market rent',factor:{...floorFactor,evidence:'PLANNING_ASSUMPTION'}},area_sqm,observation_period:market.period,freshness:freshness(market.period,asOf),sources:[market.source_id],actual_quoted_rent:null,limitations:['서울 도시 통계는 개별 점포 호가가 아님','보증금 환산 임대료 포함; 월 현금 월세를 직접 관측하지 않음','VAT·관리비 제외; 부분 임차·호스트 배분 가격 미확인','하위 시장 연결·층 효용/RSE가 검증되지 않으면 도시 근거와 가정만 사용']};
+    const floorName=/^B|지하|^-/.test(String(floor))?'지하'+String(floor).replace(/[^0-9]/g,'')+'층':String(floor).replace(/층$/,'')+'층';
+    const floorRow=floor_evidence.find(r=>r.name===market.name&&r.asset_class===(market.asset_class||'SMALL_RETAIL')&&r.period===market.period&&r.floor===floorName&&r.item==='임대료'&&r.unit_label==='천원/㎡'&&Number.isFinite(r.value));
+    const basisKnown=(market.asset_class||'SMALL_RETAIL')==='SMALL_RETAIL';
+    const floorFactor=floorRow||!basisKnown?range(.75,1,1.5):floor==='1'?range(.75,1,1.5):range(.4,.65,1);
+    const monthly=(floorRow?floorRow.value:market.rent_thousand_krw_per_sqm)*1000*area_sqm;
+    return {...cell(range(monthly*floorFactor.low,monthly*floorFactor.base,monthly*floorFactor.high),'MARKET_ESTIMATE',market.source_id,'공개 시장/층 임대료 × 면적 × 명시적 예산 편차 가정; 통계적 신뢰구간 아님'),method:floorRow?'FLOOR_STATISTIC_TIMES_AREA_PLANNING_BAND':'STATISTIC_TIMES_AREA_PLANNING_FACTOR',geography:market.name,geography_type:market.geography_type,asset_class:market.asset_class||'small retail',floor_basis:{requested_floor:floor,statistic:floorRow?floorRow.floor+' published floor rent':basisKnown?'1F converted market rent':'SOURCE FLOOR BASIS NOT VERIFIED',source:floorRow?.source_id||market.source_id,factor:{...floorFactor,evidence:'PLANNING_ASSUMPTION'}},area_sqm,observation_period:market.period,freshness:freshness(market.period,asOf),sources:floorRow?[market.source_id,floorRow.source_id]:[market.source_id],actual_quoted_rent:null,limitations:['서울 도시 통계는 개별 점포 호가가 아님','보증금 환산 임대료 포함; 월 현금 월세를 직접 관측하지 않음','VAT·관리비 제외; 부분 임차·호스트 배분 가격 미확인','하위 시장 연결·층 효용/RSE가 검증되지 않으면 도시 근거와 가정만 사용']};
   }
   function classify(variant,poi){
     const text=[poi.name,poi.category,poi.indsSclsNm,poi.ksicNm].join(' ').normalize('NFKC').toLowerCase();
@@ -56,20 +63,23 @@
   const normalize=s=>String(s||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]/gu,'');
   function crossMatch(kakao,official){
     const ks=[...new Map(kakao.map(p=>[String(p.id),p])).values()],os=[...new Map(official.map(p=>[String(p.bizesId),{...p,name:p.bizesNm,lng:Number(p.lon),lat:Number(p.lat)}])).values()];
-    const pairs=[];
-    ks.forEach((k,i)=>os.forEach((o,j)=>{if(![k.lat,k.lng,o.lat,o.lng].every(Number.isFinite))return;const a=normalize(k.name),b=normalize(o.name),distance=W.distance(k,o);if(a.length>=2&&a===b&&distance<=35||Math.min(a.length,b.length)>=4&&(a.includes(b)||b.includes(a))&&distance<=15)pairs.push({i,j,distance,exact:a===b});}));
+    const pairs=[],nameIndex=new Map(),grid=new Map(),bucket=(lat,lng)=>[Math.floor(lat/.0004),Math.floor(lng/.0004)];
+    os.forEach((o,j)=>{o.normalized_name=normalize(o.name);if(!nameIndex.has(o.normalized_name))nameIndex.set(o.normalized_name,[]);nameIndex.get(o.normalized_name).push(j);if([o.lat,o.lng].every(Number.isFinite)){const k=bucket(o.lat,o.lng).join(':');if(!grid.has(k))grid.set(k,[]);grid.get(k).push(j);}});
+    ks.forEach((k,i)=>{if(![k.lat,k.lng].every(Number.isFinite))return;const a=normalize(k.name),[x,y]=bucket(k.lat,k.lng),candidates=new Set(nameIndex.get(a)||[]);for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)for(const j of grid.get([x+dx,y+dy].join(':'))||[])candidates.add(j);for(const j of candidates){const o=os[j],b=o.normalized_name;if(![o.lat,o.lng].every(Number.isFinite))continue;const distance=W.distance(k,o);if(a.length>=2&&a===b&&distance<=35||Math.min(a.length,b.length)>=4&&(a.includes(b)||b.includes(a))&&distance<=15)pairs.push({i,j,distance,exact:a===b});}});
     // Reject ambiguous identities rather than pairing chain branches by proximity alone.
     const selected=pairs.filter(p=>pairs.filter(x=>x.i===p.i).length===1&&pairs.filter(x=>x.j===p.j).length===1),ki=new Set(selected.map(p=>p.i)),oi=new Set(selected.map(p=>p.j));
     return [...selected.map(p=>({status:'MATCHED',kakao:ks[p.i],official:os[p.j],distance:p.distance})),...ks.filter((_,i)=>!ki.has(i)).map(k=>({status:'KAKAO_ONLY',kakao:k})),...os.filter((_,i)=>!oi.has(i)).map(o=>({status:'DATA_GO_ONLY',official:o}))];
   }
   function competition(variant,point,kakao,cache,asOf){
-    const records=(cache?.stores||[]).filter(p=>[Number(p.lat),Number(p.lon)].every(Number.isFinite));
+    const records=(cache?.stores||[]).filter(p=>[Number(p.lat),Number(p.lon)].every(Number.isFinite)&&W.distance(point,{lat:Number(p.lat),lng:Number(p.lon)})<=835);
+    kakao=kakao.filter(p=>[p.lat,p.lng].every(Number.isFinite)&&W.distance(point,p)<=835);
     const matched=crossMatch(kakao,records).map(p=>{const source=p.kakao||p.official;return {...p,role:classify(variant,{...p.official,...source}),distance_m:W.distance(point,source)};}).filter(p=>p.distance_m<=800);
     const covers=(cache?.coverage||[]).filter(c=>W.distance(point,c.center)+800<=c.radius_m+1);
-    const complete=covers.some(c=>c.complete)&&freshnessAge(cache?.retrieved_at,asOf)<=30;
-    return {bands:[200,400,800].map(radius=>{const rows=matched.filter(p=>p.distance_m<=radius);const roles=Object.fromEntries(['DIRECT','SUBSTITUTE','COMPLEMENTARY','CONTEXT'].map(role=>{const r=rows.filter(p=>p.role===role);return [role,{kakao:r.filter(p=>p.kakao).length,official:records.length?r.filter(p=>p.official).length:null,matched:r.filter(p=>p.status==='MATCHED').length,unique_observed:r.length}];}));return {radius_m:radius,roles};}),records:matched,official_coverage:complete?'COMPLETE_TARGET_CIRCLE':'PARTIAL_OR_UNMEASURED',freshness: Number.isFinite(freshnessAge(cache?.retrieved_at,asOf))&&freshnessAge(cache?.retrieved_at,asOf)<=30?'CURRENT':'STALE_OR_UNKNOWN',limitations:['공식 업종·이름 분류는 실제 기기/SKU 확인이 아님','Kakao 검색은 제한된 소비자 장소 신호; 관측 개수는 전수 경쟁 밀도가 아님','동명이점·불명확한 지점은 MATCHED로 강제 결합하지 않음']};
+    const sourceObserved=records.length>0||covers.length>0,kakaoObserved=kakao.length>0;
+    const age=freshnessAge(cache?.retrieved_at,asOf);const complete=covers.some(c=>c.complete)&&age>=0&&age<=30;
+    return {bands:[200,400,800].map(radius=>{const rows=matched.filter(p=>p.distance_m<=radius);const roles=Object.fromEntries(['DIRECT','SUBSTITUTE','COMPLEMENTARY','CONTEXT'].map(role=>{const r=rows.filter(p=>p.role===role);return [role,{kakao:kakaoObserved?r.filter(p=>p.kakao).length:null,official:sourceObserved?r.filter(p=>p.official).length:null,matched:r.filter(p=>p.status==='MATCHED').length,unique_observed:sourceObserved||kakaoObserved?r.length:null}];}));return {radius_m:radius,roles};}),records:matched,official_coverage:complete?'COMPLETE_TARGET_CIRCLE':'PARTIAL_OR_UNMEASURED',freshness: Number.isFinite(age)&&age>=0&&age<=30?'CURRENT':'STALE_OR_UNKNOWN',limitations:['공식 업종·이름 분류는 실제 기기/SKU 확인이 아님','Kakao 검색은 제한된 소비자 장소 신호; 관측 개수는 전수 경쟁 밀도가 아님','동명이점·불명확한 지점은 MATCHED로 강제 결합하지 않음']};
   }
-  function freshnessAge(date,asOf=new Date().toISOString().slice(0,10)){return (Date.parse(asOf)-Date.parse(date))/86400000;}
+  function freshnessAge(date,asOf=new Date().toISOString().slice(0,10)){return (Date.parse(asOf)-Date.parse(String(date).slice(0,10)))/86400000;}
   function costStack(variant,catalog,rent,overrides={}){
     const d=DEFAULTS[variant.variant_id];if(!d)throw Error('Unprofiled variant');
     const config=catalog.configurations.find(c=>c.configuration_id===d.config);
@@ -110,15 +120,15 @@
     if(stack.model==='STORAGE')put('storage_capacity',settings.capacity??20);
     return E.solve(stack.model,inp);
   }
-  function capture(variant,area,economics,{daily_flow=null,quarter_days=91,period}={}){
+  function capture(variant,area,economics,{daily_flow=null,quarter_days=91,period,operating_days=30}={}){
     const field=DEFAULTS[variant.variant_id]?.flow;
     if(!field||['STORAGE','ORDER','EVENT'].includes(variant.economic_model))return {rate:null,reason:'여행객/계약 수요의 일일 유료 기회가 공개 유동 집계로 입증되지 않음',evidence:'UNKNOWN'};
-    const flow=daily_flow??(Number(area[field])/quarter_days),transactions=economics.break_even_transactions_month/30;
+    const flow=daily_flow??(Number(area[field])/quarter_days),transactions=economics.break_even_transactions_month/operating_days;
     if(!Number.isFinite(flow)||flow<=0||economics.break_even_transactions_month===null)return {rate:null,evidence:'UNKNOWN',field};
     return {rate:transactions/flow,required_transactions_day:transactions,relevant_daily_flow:flow,field,evidence:'DERIVED',denominator_evidence:daily_flow!==null?'USER_INPUT':'PLANNING_ASSUMPTION',observation_period:period,normalization:daily_flow!==null?'사용자 현장 일 유동 입력':`공개 ${field} 집계 ÷ ${quarter_days}일: 분기합 해석을 선택한 검토 가정`,limitations:['원자료 시간 집계가 일 평균인지 분기 합인지 미검증; 기본 분모는 가정','상권 유동은 점포 전면 통행/고유 고객이 아님','필요 포획률은 매출 예측 또는 전환 관측치가 아님']};
   }
-  function evaluate({variant,catalog,area,market,point,kakao=[],cache,settings={},overrides={},comparables=[],asOf,blockers=[]}){
-    const d=DEFAULTS[variant.variant_id],areaSize=settings.area_sqm??d.area,rent=areaSize===0?{...cell(range(0),'PLANNING_ASSUMPTION','비입지 계약형','독립 임대 공간 없는 직송/외주 가정'),method:'NO_STANDALONE_SITE'}:rentEnvelope({market,area_sqm:areaSize,floor:settings.floor??'1',comparables,scope:String(area.trdar_cd),asOf,actual:settings.actual_rent??null});
+  function evaluate({variant,catalog,area,market,point,kakao=[],cache,settings={},overrides={},comparables=[],floor_evidence=[],asOf,blockers=[]}){
+    const d=DEFAULTS[variant.variant_id],areaSize=settings.area_sqm??d.area,rent=areaSize===0?{...cell(range(0),'PLANNING_ASSUMPTION','비입지 계약형','독립 임대 공간 없는 직송/외주 가정'),method:'NO_STANDALONE_SITE'}:rentEnvelope({market,area_sqm:areaSize,floor:settings.floor??'1',comparables,scope:String(area.trdar_cd),asOf,actual:settings.actual_rent??null,floor_evidence});
     const stack=costStack(variant,catalog,rent,overrides),common={...settings,session_minutes:settings.session_minutes??d.session};
     const results=Object.fromEntries(['low','base','high'].map(k=>[k,solveStack(stack,k,common,true)])),base=results.base;
     const cap=capture(variant,area,base,{...settings,period:settings.flow_period});
@@ -132,17 +142,17 @@
       {id:'definition',pass:!!(variant.customer_job&&variant.revenue_unit&&variant.competition_rules),reason:variant.customer_job},
       {id:'cost',pass:base.cash_required!==null&&base.monthly_fixed!==null,reason:'호가와 편집 가능한 예산 스택'},
       {id:'site',pass:rent.base!==null,reason:rent.method},
-      {id:'contribution',pass:base.contribution_per_unit!==null&&base.contribution_per_unit>0,reason:'판매가격 − 단위 원가 − 비율 비용'},
+      {id:'contribution',pass:base.contribution_per_unit===null?null:base.contribution_per_unit>0,reason:'판매가격 − 단위 원가 − 비율 비용'},
       {id:'capacity',pass:base.required_utilization===null?null:base.required_utilization<=1,reason:base.required_utilization===null?'물리적 판매량 상한 현장 확인':'사용 가능 분/칸 용량과 비교'},
-      {id:'capture',pass:cap.rate===null?null:cap.rate<=.01,reason:'1%는 소유자가 바꿀 수 있는 조사 문턱 가정; 성공 확률 아님'},
-      {id:'competition',pass:count==null?null:count<10,reason:'800m 직접형 관측 10개 이상이면 WEAK 검토 가정; 전수/시장점유율 아님'},
+      {id:'capture',pass:cap.rate===null?null:cap.rate<=(settings.capture_ceiling??.01),reason:`${(settings.capture_ceiling??.01)*100}% 조사 문턱 가정; 성공 확률 아님`},
+      {id:'competition',pass:count==null?null:count<(settings.competition_limit??10),reason:`800m 직접형 관측 ${settings.competition_limit??10}개 이상이면 WEAK 검토 가정; 전수/시장점유율 아님`},
       {id:'owner',pass:settings.owner_available===true?true:settings.owner_available===false?false:null,reason:variant.operational_constraints.join(' · ')},
       {id:'legal',pass:blockers.length?false:null,reason:blockers.join(' · ')||variant.legal_regulatory_unknowns.join(' · ')},
       {id:'quality',pass:null,reason:'실제 견적/현장 전환 검증 전; 추정 매력도와 신뢰도 분리'}];
     let status=blockers.length?'BLOCKED':gates.filter(g=>['contribution','capacity','capture','competition','owner'].includes(g.id)).some(g=>g.pass===false)||siteCeiling!==null&&siteCeiling<rent.base+stack.rows.find(r=>r.key==='management').base?'WEAK':gates.filter(g=>['definition','cost','site','contribution'].includes(g.id)).every(g=>g.pass===true)&&cap.rate!==null&&cap.rate<.001&&settings.owner_available===true?'PROMISING':'CHECK';
     if(!gates.filter(g=>['cost','site'].includes(g.id)).every(g=>g.pass===true)&&status!=='BLOCKED')status='CHECK';
     const confidence='LOW'; // Planning prices/costs and unverified flow grain cap v1 confidence.
-    return {variant_id:variant.variant_id,label:variant.label,status,confidence,gates,rent,stack,cash,results,capture:cap,competition:competitors,sensitivity,recovery,max_site_with_recovery:siteCeiling,max_rent_with_recovery:siteCeiling===null?null:siteCeiling-stack.rows.find(r=>r.key==='management').base,next_verification:status==='BLOCKED'?blockers[0]:base.status==='CAPACITY_EXCEEDED'?'가격·사용 가능 용량을 먼저 확인':settings.volume!=null&&status==='WEAK'?'호스트 공간비를 회수 목표 이하로 협상':cap.denominator_evidence==='PLANNING_ASSUMPTION'?'출입 전면 일 유동·결제 의향을 직접 계수':'사양 특정 공급자·호스트 서면 견적',main_risk:variant.operational_constraints[0],why:DEFAULTS[variant.variant_id].flow?`${DEFAULTS[variant.variant_id].flow} 고객 신호를 사용; ${variant.customer_job}`:'계약형 수요 검증은 지도 밖에서 진행',owner_override:settings.owner_override||null};
+    return {variant_id:variant.variant_id,label:variant.label,status,confidence,gates,rent,stack,cash,results,capture:cap,competition:competitors,sensitivity,recovery,max_site_with_recovery:siteCeiling,max_rent_with_recovery:siteCeiling===null?null:siteCeiling-stack.rows.find(r=>r.key==='management').base,next_verification:status==='BLOCKED'?blockers[0]:base.status==='CAPACITY_EXCEEDED'?'가격·사용 가능 용량을 먼저 확인':settings.volume!=null&&status==='WEAK'?'호스트 공간비를 회수 목표 이하로 협상':cap.denominator_evidence==='PLANNING_ASSUMPTION'?'출입 전면 일 유동·결제 의향을 직접 계수':'사양 특정 공급자·호스트 서면 견적',main_risk:variant.operational_constraints[0],why:DEFAULTS[variant.variant_id].flow?`${({weekday_flow:'평일 유동',young_flow:'20–40대 유동',day_flow:'주간 유동',afterwork_flow:'퇴근 시간 유동',flow:'전체 유동'})[DEFAULTS[variant.variant_id].flow]} 신호 검토 · ${variant.customer_job}`:'계약형 수요 검증은 지도 밖에서 진행',owner_override:settings.owner_override||null};
   }
   function topPlays(evaluations,selected){const order={PROMISING:0,CHECK:1,WEAK:2,BLOCKED:3};const sorted=[...evaluations].sort((a,b)=>order[a.status]-order[b.status]||(a.results.base.required_utilization??0)-(b.results.base.required_utilization??0)||a.cash.base.cash_at_risk-b.cash.base.cash_at_risk||a.variant_id.localeCompare(b.variant_id));const preferred=sorted.find(r=>r.variant_id===selected);return [...(preferred?[preferred]:[]),...sorted.filter(r=>r!==preferred)].slice(0,3);}
   function floorClass(floor){return String(floor).startsWith('-')||/B|지하/i.test(String(floor))?'BASEMENT':String(floor)==='1'?'GROUND':'UPPER';}
