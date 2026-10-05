@@ -57,3 +57,7 @@ See:
 ## Candidate validation portfolio v1
 
 The next decision is which candidates deserve real-world validation effort, rather than more site infrastructure. See the [decision board](docs/validation.html), [assessment](research/candidate-validation-portfolio-v1.md), [canonical validation state](docs/data/candidate-validation-portfolio.json), and [research instruments](field/candidate-validation-instruments-v1.md). OC-022 and the supplier gate for OC-030 are provisionally selected. Current public-source rechecks are blocked by network policy; no new interviews, quotes, intents or transactions are claimed. All LOCATION candidates remain NOT_READY for detailed site discovery. This work authorizes no purchases, leases, deposits, inventory, ads or pilots.
+
+## Business Configuration & Economics Workbench v1
+
+The GIS now offers **사업 구성·경제성**: source-backed child variants/configurations, reverse break-even and site-cost thresholds, variant competition proxies and 2–4 scenario comparisons. Site terms and analyst judgments stay in a browser-local PRIVATE workspace with JSON backup. [Method, formulas and privacy](docs/business-workbench-v1.md). The calculator does not forecast demand or change the candidate-validation frontier; no purchase or pilot is authorized.

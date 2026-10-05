@@ -1,0 +1,587 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "catalog_id": {
+      "const": "business-workbench-v1"
+    },
+    "curated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "freshness_days": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "attempted_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_quality": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "response_sha256": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            ]
+          },
+          "excerpt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "capture_method": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "source_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "access_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "repository_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "source_id",
+          "url",
+          "observed_at",
+          "access_status",
+          "evidence_quality",
+          "response_sha256",
+          "excerpt",
+          "repository_reference"
+        ]
+      }
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "variant_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parent_candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "customer_job": {
+            "type": "string",
+            "minLength": 1
+          },
+          "payer": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revenue_unit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "economic_model": {
+            "enum": [
+              "UNIT_SALE",
+              "TRANSACTION",
+              "TIME",
+              "STORAGE",
+              "ORDER",
+              "EVENT"
+            ]
+          },
+          "equipment_service_class": {
+            "type": "string",
+            "minLength": 1
+          },
+          "typical_host_archetype": {
+            "type": "string",
+            "minLength": 1
+          },
+          "direct_competition_taxonomy": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "substitute_taxonomy": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "required_site_attributes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "capex_components": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "opex_components": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "revenue_variables": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "operational_constraints": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "legal_regulatory_unknowns": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "deployment_evidence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "commercial_models": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "OWNED",
+                "RENTED",
+                "HOST_PLACEMENT",
+                "SUBCONTRACTED"
+              ]
+            }
+          },
+          "competition_rules": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "direct": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "substitute": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "direct",
+              "substitute"
+            ]
+          }
+        },
+        "required": [
+          "variant_id",
+          "parent_candidate_id",
+          "label",
+          "customer_job",
+          "payer",
+          "revenue_unit",
+          "economic_model",
+          "equipment_service_class",
+          "typical_host_archetype",
+          "direct_competition_taxonomy",
+          "substitute_taxonomy",
+          "required_site_attributes",
+          "capex_components",
+          "opex_components",
+          "revenue_variables",
+          "operational_constraints",
+          "legal_regulatory_unknowns",
+          "source_ids",
+          "deployment_evidence",
+          "commercial_models",
+          "competition_rules"
+        ]
+      }
+    },
+    "configurations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "dimensions_mm": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              }
+            ]
+          },
+          "footprint_sqm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "vendor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "vat_treatment": {
+            "enum": [
+              null,
+              "INCLUDED",
+              "EXCLUDED"
+            ]
+          },
+          "resale_recovery_krw": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "freshness": {
+            "enum": [
+              "CURRENT_OBSERVATION",
+              "STALE"
+            ]
+          },
+          "variant_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "footprint_semantics": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "asking_price_krw": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "price_semantics": {
+            "enum": [
+              "LIST_PRICE",
+              "PUBLIC_SERVICE_RATE"
+            ]
+          },
+          "maintenance_as": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "compatibility": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "limitations": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "structure": {
+            "enum": [
+              "BUY",
+              "SERVICE"
+            ]
+          },
+          "consumables": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "removal": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "installation": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "power": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "software_monthly_fee_krw": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "payment_system": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_quality": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "cooling_ventilation": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "configuration_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "configuration_id",
+          "vendor",
+          "model",
+          "variant_ids",
+          "structure",
+          "asking_price_krw",
+          "price_semantics",
+          "vat_treatment",
+          "dimensions_mm",
+          "footprint_sqm",
+          "power",
+          "cooling_ventilation",
+          "payment_system",
+          "installation",
+          "software_monthly_fee_krw",
+          "consumables",
+          "maintenance_as",
+          "removal",
+          "resale_recovery_krw",
+          "source_ids",
+          "observed_at",
+          "freshness",
+          "evidence_quality",
+          "compatibility",
+          "limitations"
+        ]
+      }
+    },
+    "excluded_forms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "form": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "form",
+          "reason"
+        ]
+      }
+    },
+    "additional_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "DOCUMENTATION_REVIEWED_NOT_INTEGRATED"
+        },
+        "required_secret_added": {
+          "const": false
+        },
+        "known_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "future_use": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_id",
+        "status",
+        "required_secret_added",
+        "known_fields",
+        "future_use"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "catalog_id",
+    "curated_at",
+    "freshness_days",
+    "sources",
+    "variants",
+    "configurations",
+    "excluded_forms",
+    "additional_source"
+  ]
+}

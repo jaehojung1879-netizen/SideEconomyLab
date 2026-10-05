@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S04",
+  "url": "https://chiki.ai/product",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "8810c9ae013584e7ae072eb28cdd9b79a23f9302a9edb2f561139b1b78885e9c",
+  "excerpt": "부가세 별도. 운송·설치비 별도 견적. 컴팩트 600만원부터 H1500 W450 D580mm; 오리지널 700만원부터 H2000 W800 D550mm; 시그니처 900만원부터 H2000 W1400 D800mm. 기기·소프트웨어 라이선스 포함. 소프트웨어 운영비·추가 커스텀 비용 별도.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S06",
+  "url": "https://radicalstorage.com/ko_kr/luggage-storage/seoul",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "05f826c278979c15426694f380f4fc19d6c084d98359377ad3e170152c74942f",
+  "excerpt": "서울 짐 보관소 ₩5100부터 | 70개 지점. 제휴 호텔·상점; 짐 1개/일 ₩5,100. 호스트 순수취액·플랫폼 수수료·실제 볼륨 미확인.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

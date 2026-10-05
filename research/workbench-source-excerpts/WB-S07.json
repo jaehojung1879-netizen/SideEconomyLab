@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S07",
+  "url": "https://www.shinsunginc.kr/m/product.html?branduid=11274896&xcode=005&mcode=001&type=X",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "53c67f5158f8363e242fde9602276cb2b2a29beec6e5cdf3264c5dcab1aba79f",
+  "excerpt": "오픈형 냉장자판기 쇼케이스 무인판매기 - 5단 (중고); 3,800,000원 / 2,500,000원. 배송비 (무료) 표시. 재고·실거래·VAT·설치·AS·재판매 회수 미확인.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

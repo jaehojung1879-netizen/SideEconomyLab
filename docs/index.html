@@ -6,6 +6,7 @@
 <title>SideEconomyLab · 사업기회 GIS</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <link rel="stylesheet" href="./assets/gis.css">
+<link rel="stylesheet" href="./assets/workbench.css">
 </head>
 <body>
 <header class="topbar">
@@ -16,7 +17,7 @@
     </select></div>
     <div><label for="area-search">상권 · 구 · 동</label><div class="search-row"><input id="area-search" type="search" placeholder="어디를 살펴볼까요?" autocomplete="off"><button id="search-clear" title="검색 초기화" aria-label="검색 초기화">×</button></div></div>
   </div>
-  <nav class="header-actions"><button data-dialog="method-dialog">데이터·방법</button><button data-dialog="transaction-dialog">전체 후보·검증</button></nav>
+  <nav class="header-actions"><button id="wb-toggle" disabled aria-expanded="false" aria-controls="workbench">사업 구성·경제성</button><button data-dialog="method-dialog">데이터·방법</button><button data-dialog="transaction-dialog">전체 후보·검증</button></nav>
 </header>
 <main class="workspace">
   <aside class="navigator" id="navigator" aria-label="입지 탐색">
@@ -52,6 +53,19 @@
   <aside class="intelligence" id="intelligence" aria-label="선택 상권 분석">
     <div class="panel-heading"><h2>선택 상권 분석</h2><button data-sheet="close" class="mobile-close" aria-label="분석 닫기">×</button></div>
     <div id="selected-card" aria-live="polite">지도나 입지 목록에서 상권을 선택하세요.</div>
+    <section id="workbench" hidden aria-label="사업 구성 및 경제성">
+      <h2>Business Workbench v1</h2>
+      <p class="wb-private">PRIVATE · 사이트/협상/판단은 이 브라우저에만 저장됩니다. 공용 기기 사용에 주의하고 JSON을 백업하세요. 구매·파일럿 승인 없음.</p>
+      <p id="wb-status" role="status">공개 카탈로그 로딩 중</p>
+      <div class="wb-columns"><label>후보 가족<select id="wb-family"></select></label><label>새 사업 변형<select id="wb-variant"></select></label></div>
+      <label>기존 시나리오<select id="wb-scenario"></select></label>
+      <label>사이트<select id="wb-site-picker"></select></label><p id="wb-map-seed"></p>
+      <div class="wb-actions"><button id="wb-new-site">지도 위치 / 빈 가상 사이트 생성</button><button id="wb-new-scenario">선택 변형 + 사이트로 새 시나리오</button><button id="wb-clone">시나리오 복제</button><button id="wb-delete">선택 시나리오 삭제</button></div>
+      <div id="wb-identity"></div><nav id="wb-tabs" aria-label="시나리오 분석"></nav>
+      <div id="wb-content"></div><details><summary>시나리오 비교</summary><div id="wb-comparison"></div></details>
+      <div class="wb-actions"><button id="wb-export">PRIVATE JSON 백업</button><label>JSON 복원 (저장본 대체)<input id="wb-import" type="file" accept="application/json,.json"></label></div>
+      <p><a href="./business-workbench-v1.md">계산·증거·개인 저장 안내</a> · <a href="./data/business-workbench.json">공개 구성 카탈로그</a></p>
+    </section>
   </aside>
 </main>
 <nav class="mobile-tabs" aria-label="지도 패널"><button data-sheet="rank" aria-expanded="false">입지 목록</button><button data-sheet="filters" aria-expanded="false">필터·레이어</button><button data-sheet="decision" aria-expanded="false">선택 분석</button></nav>
@@ -76,5 +90,5 @@
 <noscript>지도 탐색에는 JavaScript가 필요합니다. <a href="./research.html">연구 기록 보기</a></noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
-<script src="./assets/map-adapter.js"></script><script src="./assets/real-estate.js"></script><script src="./assets/gis.js"></script>
+<script src="./assets/map-adapter.js"></script><script src="./assets/real-estate.js"></script><script src="./assets/economics.js"></script><script src="./assets/business-workspace.js"></script><script src="./assets/workbench.js"></script><script src="./assets/gis.js"></script>
 </body></html>

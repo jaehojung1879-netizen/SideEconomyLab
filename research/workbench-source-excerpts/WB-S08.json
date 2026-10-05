@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S08",
+  "url": "https://www.data.go.kr/data/15012005/openapi.do",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "OFFICIAL_API_DOCUMENTATION",
+  "response_sha256": "42241be0f10d8d483a23386b4146494e2b4751052622bbb743cc1141077a6303",
+  "excerpt": "소상공인시장진흥공단_상가(상권)정보_API. REST, JSON+XML, 전국, 반경조회/영역별조회. 제공항목 상가업소번호·상호명·주소·상권업종명·표준산업분류명·경도·위도. 비용 무료, 업데이트 주기 실시간 표기. 수정일 2026-08-14. 활용신청 및 서비스키 필요. 분류의 점포 존재는 세부 서비스 일치·가동 확인 아님.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

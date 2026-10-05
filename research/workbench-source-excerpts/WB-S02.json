@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S02",
+  "url": "https://selpic.kr/service",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "bdb8edcb681d7e667368f47422f31ecc524281bd1b79dd22fd98ebff9f31d346",
+  "excerpt": "4×6 사진 1,000원~. 사진 출력의 시작 소매가; 문서·증명 촬영 요금 아님.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}

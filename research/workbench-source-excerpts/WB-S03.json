@@ -1,0 +1,10 @@
+{
+  "source_id": "WB-S03",
+  "url": "https://selpic.kr/events",
+  "observed_at": "2026-10-05",
+  "access_status": "HTTP_200_PUBLIC_CONTENT",
+  "evidence_quality": "PUBLIC_VENDOR_CLAIM",
+  "response_sha256": "644f137b290884f5da7151e2be6b60f110abbeddd6bc6ba9edde09326756ade1",
+  "excerpt": "1일 30만원~ · 키오스크 1대 기준. 맞춤 프레임 제작부터 설치·철수, 원격 모니터링. 파트너 순가격과 정확한 범위 미확인.",
+  "capture_method": "HTTPS GET; bounded response; manually reviewed visible text, not an executed quote or service test"
+}
