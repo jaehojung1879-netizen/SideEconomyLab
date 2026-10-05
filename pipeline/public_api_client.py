@@ -105,7 +105,7 @@ class Client:
 
     def r_one(self, operation, params=None):
         return self.request('https://www.reb.or.kr/r-one/openapi/' + operation + '.do',
-                            {'TYPE': 'json', 'pIndex': 1, 'pSize': 1000, **(params or {})}, 'R_ONE', 'KEY')
+                            {'Type': 'json', 'pIndex': 1, 'pSize': 1000, **(params or {})}, 'R_ONE', 'KEY')
 
     def sanitize(self, value):
         return assert_sanitized(value, self.secrets.values())

@@ -59,14 +59,14 @@ def probe(output):
     def record(name, fn, parser):
         try:
             payload = fn(); rows, total, code = parser(payload)
-            sanitized = client.sanitize({'operation': name, 'code': str(code) if code is not None else None, 'total': total, 'field_names': sorted(set().union(*(r.keys() for r in rows))) if rows else [], 'rows': [public_fields(r) for r in rows]})
+            sanitized = client.sanitize({'operation': name, 'code': str(code) if code is not None else None, 'total': total, 'field_names': sorted(set().union(*(r.keys() for r in rows))) if rows else [], 'rows': [public_fields(r) for r in rows], 'result': payload.get('RESULT')})
             report['operations'].append(sanitized)
         except SourceError as exc:
             report['operations'].append({'operation': name, 'status': str(exc)})
     for op in ['SttsApiTbl', 'SttsApiTblItm']:
         record(op, lambda op=op: client.r_one(op, {'STATBL_ID': RENT_TABLE} if op.endswith('Itm') else {}), lambda p, op=op: response_rows(p, op))
-    record('SttsApiTblData.rent', lambda: client.r_one('SttsApiTblData', {'STATBL_ID': RENT_TABLE, 'DTACYCLE_CD': 'QY', 'WRTTIME_IDTFR_ID': '202602'}), lambda p: response_rows(p, 'SttsApiTblData'))
-    record('SttsApiTblData.vacancy', lambda: client.r_one('SttsApiTblData', {'STATBL_ID': VACANCY_TABLE, 'DTACYCLE_CD': 'QY', 'WRTTIME_IDTFR_ID': '202602'}), lambda p: response_rows(p, 'SttsApiTblData'))
+    record('SttsApiTblData.rent', lambda: client.r_one('SttsApiTblData', {'STATBL_ID': RENT_TABLE, 'DTACYCLE_CD': 'QY', 'START_WRTTIME': '202602', 'END_WRTTIME': '202602'}), lambda p: response_rows(p, 'SttsApiTblData'))
+    record('SttsApiTblData.vacancy', lambda: client.r_one('SttsApiTblData', {'STATBL_ID': VACANCY_TABLE, 'DTACYCLE_CD': 'QY', 'START_WRTTIME': '202602', 'END_WRTTIME': '202602'}), lambda p: response_rows(p, 'SttsApiTblData'))
     try:
         p = client.data_go('B553077/api/open/sdsc2/storeListInRadius', {'radius': 800, 'cx': 126.9818562, 'cy': 37.5640587, 'pageNo': 1, 'numOfRows': 1000, 'type': 'json'})
         rows, total, code = portal_store_rows(p)
