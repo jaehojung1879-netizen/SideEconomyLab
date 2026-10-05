@@ -135,7 +135,7 @@ def scan_public(client,root):
 
 def require_rent(raw):
     for table in (RENT_TABLE,VACANCY_TABLE):
-        records=[r for r in raw['r_one'] if r['operation']=='SttsApiTblData' and r.get('params',{}).get('STATBL_ID')==table and r.get('code')=='INFO-000' and r.get('total')==len(r.get('rows',[]))]
+        records=[r for r in raw['r_one'] if r['operation']=='SttsApiTblData' and r.get('purpose')!='LATEST_COMPLETED_QUARTER_PROBE' and r.get('params',{}).get('STATBL_ID')==table and r.get('code')=='INFO-000' and r.get('total') is not None and r['total']>0 and r.get('total')==len(r.get('rows',[]))]
         if not records:
             attempted=[r for r in raw['r_one'] if r['operation']=='SttsApiTblData' and r.get('params',{}).get('STATBL_ID')==table]
             for r in attempted:print('CORE_RENT_STATUS table='+table+' code='+str(r.get('code',r.get('status','UNKNOWN')))+' rows='+str(len(r.get('rows',[])))+' total='+str(r.get('total')),flush=True)

@@ -12,6 +12,8 @@ from public_api_client import Client, SourceError, assert_sanitized, require_sec
 from decision_sources import portal_store_rows, response_rows
 from decision_bundle import check, publish, encode
 from decision_rent import derive_rent
+from decision_collect import require_rent
+from decision_sources import RENT_TABLE, VACANCY_TABLE
 
 class Response:
     def __init__(self,body=b'{"ok":true}'):self.body=body
@@ -76,6 +78,26 @@ class DecisionSourceTests(unittest.TestCase):
             current={r[idkey]:r for r in catalog[key]}
             for identifier,expected in pins['workbench_original_entries'][key].items():
                 self.assertEqual(hashlib.sha256(json.dumps(current[identifier],sort_keys=True,ensure_ascii=False).encode()).hexdigest(),expected)
+
+    def test_floor_geography_uses_group_not_floor_classification(self):
+        raw={'retrieved_at':'2026-10-05','r_one':[{'operation':'SttsApiTblData','code':'INFO-000','total':1,'table_metadata':{'STATBL_NM':'임대동향 층별 임대료_중대형 상가'},'rows':[{'STATBL_ID':'fixture','CLS_ID':2,'CLS_FULLNM':'2층','GRP_ID':500002,'GRP_FULLNM':'서울','ITM_FULLNM':'임대료','UI_NM':'천원/㎡','DTA_VAL':30,'WRTTIME_IDTFR_ID':'202602'}]}]}
+        floor=derive_rent(raw)['floor_context'][0]
+        self.assertEqual((floor['name'],floor['floor'],floor['asset_class']),('서울','2층','MEDIUM_LARGE_RETAIL'))
+        self.assertEqual(derive_rent(raw)['rent_markets'],[])
+        raw['r_one'][0]['rows'][0]['CLS_FULLNM']='1층'
+        fallback=derive_rent(raw)['rent_markets'][0]
+        self.assertEqual((fallback['geography_id'],fallback['method'],fallback['rent_thousand_krw_per_sqm']),('11','QUALIFIED_FIRST_FLOOR_TABLE_FALLBACK',30))
+        raw['r_one'][0]['total']=2
+        self.assertEqual(derive_rent(raw)['floor_context'],[])
+
+    def test_core_period_probe_does_not_replace_full_rent_table(self):
+        import contextlib,io
+        record=lambda table:{'operation':'SttsApiTblData','params':{'STATBL_ID':table},'code':'INFO-000','total':1,'rows':[{}]}
+        raw={'r_one':[dict(record(RENT_TABLE),purpose='LATEST_COMPLETED_QUARTER_PROBE'),record(VACANCY_TABLE)]}
+        with contextlib.redirect_stdout(io.StringIO()),self.assertRaises(SourceError):require_rent(raw)
+        raw['r_one'].append(record(RENT_TABLE));require_rent(raw)
+        raw['r_one'][-1]['total']=2
+        with contextlib.redirect_stdout(io.StringIO()),self.assertRaises(SourceError):require_rent(raw)
 
     def raw(self):
         return {'schema_version':1,'retrieved_at':'2026-10-05T00:00:00+00:00','secret_contract':['DATA_GO','R_ONE'],'r_one':[],'buildings':[],'store_caches':[{'area_id':'3001492','name':'target','center':{'lat':37.56,'lng':126.98},'radius_m':800,'operation':'storeListInRadius','total':1,'row_count':1,'pages':1,'complete':True,'rows':[{'bizesId':'test-only','bizesNm':'fixture','lat':37.56,'lon':126.98}]}]}

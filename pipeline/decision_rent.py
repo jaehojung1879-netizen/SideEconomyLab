@@ -26,4 +26,13 @@ def derive_rent(raw):
             elif '층별' in name:
                 floor_context.append({**base,'group':r.get('GRP_FULLNM') or r.get('GRP_NM'),'classification':r.get('CLS_FULLNM'), 'floor':r.get('CLS_FULLNM') or r.get('CLS_NM'),'status':'SOURCE_CONTEXT_ONLY; require exact floor/item/asset/geo match before adjustment'})
             elif any(t in name for t in ['공실','전환','임대가격지수']):ancillary.append(base)
+    # A qualified published 1F cell supplies the same asset/geography's site basis
+    # when the regional table fails, retaining the floor table's identity and period.
+    existing={(m['asset_class'],m['name'],m['period']) for m in markets}
+    for f in floor_context:
+        key=(f['asset_class'],f['name'],f['period'])
+        if key in existing or f['floor']!='1층' or f['item']!='임대료' or f['unit_label']!='천원/㎡' or f['value']<0:continue
+        parts=f['name'].split('>')
+        markets.append({**f,'geography_id':'11' if len(parts)==1 else f['geography_code'],'geography_type':'city' if len(parts)==1 else 'market' if len(parts)==2 else 'submarket','unit':'THOUSAND_KRW_SQM_MONTH','rent_thousand_krw_per_sqm':f['value'],'mapping':'Published survey classification; no GIS polygon crosswalk','statistic_basis':'Published first-floor rent; FLOOR_TABLE_FALLBACK, not a regional aggregate','method':'QUALIFIED_FIRST_FLOOR_TABLE_FALLBACK'})
+        existing.add(key)
     return {'rent_markets':markets,'floor_context':floor_context,'commercial_context':ancillary,'crosswalk':[], 'geography_resolution':{'finest_available':'submarket' if any(m['geography_type']=='submarket' for m in markets) else 'city','finest_linked_to_gis':'city','reason':'No published survey-boundary/GIS-area crosswalk verified; geographic membership in Seoul is proven'}}

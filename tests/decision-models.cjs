@@ -31,3 +31,12 @@ const override=evaluate('VEND-BEVERAGE',{settings:{owner_override:{rating:'STRON
 console.log('PASS: conditional cash/BE/capture/recovery/site ceilings, unknowns, explicit gates, source matching, scoped comparables, geography, freshness and building limits.');
 
 const stress=evaluate('VEND-BEVERAGE',{settings:{volume:300},overrides:{rent:D.cell(D.range(5000000),'PLANNING_ASSUMPTION','Adverse stress','No real quote')}});assert.equal(stress.rent.base,5000000);assert.equal(stress.rent.evidence,'PLANNING_ASSUMPTION');assert.equal(stress.status,'WEAK');
+
+// Every retained and added variant uses its declared revenue unit and yields a reviewable envelope.
+for(const v of catalog.variants){const e=evaluate(v.variant_id);assert.equal(e.stack.model,v.economic_model);assert.ok(Number.isFinite(e.cash.base.total)&&e.cash.base.total>0);assert.ok(e.stack.rows.every(r=>D.CLASSES.includes(r.evidence)));if(['TIME','STORAGE'].includes(v.economic_model))assert.ok(Number.isFinite(e.results.base.required_utilization));if(['ORDER','EVENT'].includes(v.economic_model))assert.equal(e.capture.rate,null);}
+
+const floorCell={name:market.name,asset_class:'SMALL_RETAIL',period:market.period,floor:'2층',item:'임대료',unit_label:'천원/㎡',value:30,source_id:'R_ONE:floor-fixture'};
+const floorRent=D.rentEnvelope({market,area_sqm:8,floor:'2',floor_evidence:[floorCell],asOf:'2026-10-05'});assert.equal(floorRent.method,'FLOOR_STATISTIC_TIMES_AREA_PLANNING_BAND');assert.equal(floorRent.base,240000);assert.ok(floorRent.sources.includes(floorCell.source_id));
+for(const mismatch of [{asset_class:'OFFICE'},{period:'20254'},{name:'다른 시장'},{unit_label:'%'},{item:'효용비율'}])assert.equal(D.rentEnvelope({market,area_sqm:8,floor:'2',floor_evidence:[{...floorCell,...mismatch}]}).method,'STATISTIC_TIMES_AREA_PLANNING_FACTOR');
+
+assert.equal(D.rentEnvelope({market,area_sqm:4,floor:'1층'}).base,D.rentEnvelope({market,area_sqm:4,floor:'1'}).base);assert.equal(D.comparableStats(imports,{scope:'3001492',floor:'지상 1층',area_sqm:4,asOf:'2026-10-05'}).count,6);assert.equal(D.rentEnvelope({market,area_sqm:8,floor:'지상 2층',floor_evidence:[floorCell]}).base,240000);
