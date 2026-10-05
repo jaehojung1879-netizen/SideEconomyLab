@@ -1,6 +1,11 @@
 name: Refresh decision intelligence evidence
 on:
   workflow_dispatch:
+    inputs:
+      audit_only:
+        description: 'Audit R-ONE/metadata only; retain original store retrieval dates'
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -22,7 +27,12 @@ jobs:
         env:
           DATA_GO: ${{ secrets.DATA_GO }}
           R_ONE: ${{ secrets.R_ONE }}
-        run: python pipeline/decision_collect.py
+        run: |
+          if [ '${{ inputs.audit_only }}' = 'true' ]; then
+            python pipeline/decision_collect.py --audit-only
+          else
+            python pipeline/decision_collect.py
+          fi
       - name: Validate immutable source and exact public derivation
         run: python pipeline/decision_bundle.py
       - name: Commit only complete sanitized bundle if upstream HEAD is unchanged

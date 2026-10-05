@@ -54,6 +54,16 @@ def collect(client=None, root=ROOT):
                     batch,n,status=portal_store_rows(p)
                     raw['buildings'].append({'area_id':target['area_id'],'site_basis':'PUBLIC_HYPOTHETICAL_NEAREST_REGISTERED_STORE_PARCEL','parcel':parcel,'operation':operation,'code':str(status),'total':n,'rows':[{k:r.get(k) for k in BUILD_FIELDS} for r in batch]})
                 except SourceError as exc:raw['buildings'].append({'area_id':target['area_id'],'operation':operation,'status':str(exc)})
+    audit(client,raw)
+    client.sanitize(raw)
+    snapshot=publish(raw,root)
+    print('DECISION_COLLECTION_VALIDATED snapshot='+snapshot+'; stores='+str(sum(c['total'] for c in raw['store_caches']))+'; requests='+str(client.calls))
+    return raw
+
+def audit(client,raw):
+    raw['audit_retrieved_at']=datetime.now(timezone.utc).isoformat()
+    raw['r_one']=[]
+    raw['public_research']=[]
     for op,params in [('SttsApiTbl',{}),('SttsApiTblItm',{'STATBL_ID':RENT_TABLE}),('SttsApiTblData',{'STATBL_ID':RENT_TABLE,'DTACYCLE_CD':'QY','START_WRTTIME':'202602','END_WRTTIME':'202602'}),('SttsApiTblData',{'STATBL_ID':VACANCY_TABLE,'DTACYCLE_CD':'QY','START_WRTTIME':'202602','END_WRTTIME':'202602'})]:
         try:
             payload=client.r_one(op,params);rows,n,code=response_rows(payload,op)
@@ -65,17 +75,40 @@ def collect(client=None, root=ROOT):
         payload=json.loads(public_get(url,urllib.parse.urlencode({'statblId':RENT_TABLE}).encode()))
         raw['public_research'].append({'name':'R-ONE public small-retail classifications','url':url,'payload':payload})
     except Exception:raw['public_research'].append({'name':'R-ONE public classifications','url':url,'status':'UNAVAILABLE'})
-    for url in ['https://www.reb.or.kr/r-one/portal/openapi/openApiGuidePage.do','https://www.bandainamco.co.kr/','https://gashapon.jp/shop/location.php?lang=ko','https://www.shinsunginc.kr/m/product_list.html?xcode=005&type=X&page=2','https://new.land.naver.com/robots.txt','https://www.r114.com/robots.txt']:
+    for url in ['https://www.reb.or.kr/r-one/portal/openapi/openApiIntroPage.do','https://www.reb.or.kr/r-one/portal/stat/easyStatPage.do','https://www.data.go.kr/data/15126480/openapi.do','https://www.data.go.kr/tcs/dss/selectDataSetList.do?keyword='+urllib.parse.quote('국토교통부 토지이용규제정보서비스'),'https://www.bandainamco.co.kr/','https://gashapon.jp/shop/location.php?lang=ko','https://www.shinsunginc.kr/m/product_list.html?xcode=005&type=X&page=2','https://new.land.naver.com/robots.txt','https://www.r114.com/robots.txt']:
         try:
-            body=public_get(url);text=body.decode('utf-8',errors='replace');plain=re.sub(r'<[^>]+>',' ',text);plain=re.sub(r'\s+',' ',plain)
-            raw['public_research'].append({'url':url,'status':'HTTP_200_PUBLIC_DOCUMENT','document_hash':__import__('hashlib').sha256(body).hexdigest(),'excerpt':plain[:12000]})
+            body=public_get(url);text=body.decode('utf-8',errors='replace');text=re.sub(r'<(?:script|style)\b[^>]*>.*?</(?:script|style)>',' ',text,flags=re.S|re.I);plain=re.sub(r'<[^>]+>',' ',text);plain=re.sub(r'\s+',' ',plain)
+            raw['public_research'].append({'url':url,'status':'HTTP_200_PUBLIC_DOCUMENT','document_hash':__import__('hashlib').sha256(body).hexdigest(),'excerpt':re.sub(r'(?i)(?:[?&])(?:serviceKey|KEY|apiKey|authKey)=[^\s<]+','[credential parameter omitted]',re.sub(r'(?i);jsessionid=[a-z0-9]+','',plain))[:12000], 'public_table_ids':sorted(set(re.findall(r'T\d{15}',text)))[:150]})
         except Exception:raw['public_research'].append({'url':url,'status':'UNAVAILABLE_NO_CIRCUMVENTION'})
-    client.sanitize(raw)
-    snapshot=publish(raw,root)
-    print('DECISION_COLLECTION_VALIDATED snapshot='+snapshot+'; stores='+str(sum(c['total'] for c in raw['store_caches']))+'; requests='+str(client.calls))
-    return raw
+    tables=[r for r in raw['r_one'] if r['operation']=='SttsApiTbl' and r.get('code')=='INFO-000']
+    for table in [r for t in tables for r in t['rows'] if re.search('임대료|공실|전환|층별|효용|상대표준오차',str(r))][:24]:
+        identifier=table.get('STATBL_ID')
+        if not identifier:continue
+        for op in ['SttsApiTblItm','SttsApiTblData']:
+            params={'STATBL_ID':identifier}
+            if op.endswith('Data'):params.update(DTACYCLE_CD='QY',START_WRTTIME='202602',END_WRTTIME='202602')
+            try:
+                p=client.r_one(op,params);rows,n,code=response_rows(p,op)
+                raw['r_one'].append({'operation':op,'params':params,'code':code,'total':n,'table_metadata':table,'rows':[public_fields(r) for r in rows],'complete':n is not None and len(rows)==int(n)})
+            except SourceError as exc:raw['r_one'].append({'operation':op,'params':params,'status':str(exc)})
+    # One bounded authorization probe; sale prices remain market-asset context only.
+    try:
+        p=client.data_go('1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade',{'LAWD_CD':'11140','DEAL_YMD':'202609','pageNo':1,'numOfRows':1})
+        rows,n,code=portal_store_rows(p)
+        raw['additional_api_audit']=[{'dataset':'국토교통부_상업업무용 부동산 매매 실거래가 자료','operation':'getRTMSDataSvcNrgTrade','code':str(code),'total':n,'authorization':'YES' if str(code)=='00' else 'UNKNOWN','used_in_rent_estimate':False}]
+    except SourceError as exc:raw['additional_api_audit']=[{'operation':'getRTMSDataSvcNrgTrade','status':str(exc),'authorization':'UNKNOWN','used_in_rent_estimate':False}]
+
+
+def audit_only(root=ROOT):
+    import gzip
+    root=Path(root);public=json.loads((root/'docs/data/decision-evidence.json').read_bytes())
+    raw=json.loads(gzip.decompress((root/'data/decision-intelligence'/public['snapshot_id']/'source.json.gz').read_bytes()))
+    client=Client(budget=65);audit(client,raw);client.sanitize(raw);publish(raw,root)
+    print('DECISION_AUDIT_VALIDATED; preserved store retrieval dates; requests='+str(client.calls))
 
 if __name__=='__main__':
-    try:collect()
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--audit-only',action='store_true');args=parser.parse_args()
+    try:audit_only() if args.audit_only else collect()
     except SourceError as exc:raise SystemExit(str(exc)) from None
     except Exception:raise SystemExit('DECISION_REFRESH_FAILED; previous bundle preserved') from None
