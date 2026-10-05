@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SideEconomyLab · Candidate validation portfolio</title>
+<link rel="stylesheet" href="./assets/validation.css">
+<script src="./assets/validation.js" defer></script>
+</head>
+<body>
+<header><a href="./research.html">← 연구 기록</a><a href="./index.html">LOCATION GIS</a></header>
+<main>
+<p class="eyebrow">SideEconomyLab / 현실 검증 포트폴리오</p>
+<h1>다음 시간과 돈으로<br>무엇을 확인할 것인가?</h1>
+<p class="intro">지도와 코드의 성숙도 대신 실제 구매·호스트·공급 조건을 비교합니다. 장비·임대차·예치금·재고·광고·파일럿 승인은 없습니다.</p>
+<p id="load-status" role="status" aria-live="polite">검증 상태를 불러오는 중…</p>
+<div id="portfolio" hidden>
+<section class="notice"><h2>현재 근거의 한계</h2><p id="evidence-note"></p><p>공개 웹페이지는 협상 견적이 아닙니다. C2 공개자료와 실제 C3 면담, C4 서면 의향, C5 완료 거래를 구별합니다. UNKNOWN은 0이 아닙니다.</p></section>
+<section aria-labelledby="selection-title"><h2 id="selection-title">다음 사이클: 잠정 선정</h2><div id="selection" class="selection"></div><p id="budget"></p></section>
+<section aria-labelledby="comparison-title"><div class="section-head"><h2 id="comparison-title">7개 후보의 결정 경계</h2><label>Lane <select id="lane"><option value="all">전체</option><option>LOCATION</option><option>TRANSACTION</option></select></label></div><p>가로로 비교하거나 후보를 선택해 근거와 실험을 확인하세요. 총점·수익 전망은 산출하지 않습니다.</p><div class="table-wrap" tabindex="0" role="region" aria-label="후보 비교표"><table><thead><tr><th>후보 / Lane</th><th>실제 증거</th><th>Hard gate</th><th>가장 중요한 UNKNOWN</th><th>다음 실험</th><th>검증 상한 / 기대 증거</th><th>결정</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section aria-labelledby="detail-title"><h2 id="detail-title">후보의 근거와 실험</h2><label for="candidate">후보</label> <select id="candidate"></select><article id="detail"></article></section>
+<section aria-labelledby="queue-title"><h2 id="queue-title">첫 한 주: 10시간 / 20만원 상한</h2><p>USER ACTION REQUIRED · 몇 번의 저녁과 주말 한 번. 전체 sample을 한 주에 완료한다고 가정하지 않습니다.</p><ol id="queue" class="queue"></ol></section>
+<section><h2>도구 편향 감사</h2><p id="bias"></p><p>수요·공급 사분면·부동산 맥락은 호스트 승인이나 결제 증거가 아닙니다. LOCATION 4개 모두 상세 사이트 조사 NOT_READY입니다. 실제 사이트 목록은 만들지 않습니다.</p></section>
+<section><h2>근거 / 접근 상태</h2><p>기존 관측일과 현재 재접근 여부를 분리합니다. 네트워크 차단으로 최신 외부 내용은 미확인입니다.</p><div id="sources"></div></section>
+<section><h2>남은 선행조건</h2><ul id="blockers"></ul><p>현장 연락·견적 회신·방문은 아직 수행되지 않았습니다. 사람 검토 후 실제 원본은 동의와 접근권한이 있는 비공개 경로에 보관하고, 공개 저장소에는 익명 집계만 남깁니다.</p></section>
+</div>
+<footer><a href="./data/candidate-validation-portfolio.json">기계 판독 상태</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/research/candidate-validation-portfolio-v1/research/candidate-validation-portfolio-v1.md" target="_blank" rel="noopener">판단 보고서 (Draft branch)</a><a href="https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/research/candidate-validation-portfolio-v1/field/candidate-validation-instruments-v1.md" target="_blank" rel="noopener">실험 질문지 (Draft branch)</a></footer>
+</main>
+</body>
+</html>

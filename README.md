@@ -53,3 +53,7 @@ See:
 - `docs/research-philosophy.md`
 - `research/scoring-framework.md`
 - `research/opportunity-registry.csv`
+
+## Candidate validation portfolio v1
+
+The next decision is which candidates deserve real-world validation effort, rather than more site infrastructure. See the [decision board](docs/validation.html), [assessment](research/candidate-validation-portfolio-v1.md), [canonical validation state](docs/data/candidate-validation-portfolio.json), and [research instruments](field/candidate-validation-instruments-v1.md). OC-022 and the supplier gate for OC-030 are provisionally selected. Current public-source rechecks are blocked by network policy; no new interviews, quotes, intents or transactions are claimed. All LOCATION candidates remain NOT_READY for detailed site discovery. This work authorizes no purchases, leases, deposits, inventory, ads or pilots.

@@ -1,0 +1,1247 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "portfolio_id",
+    "updated_at",
+    "baseline_main",
+    "decision_question",
+    "assessment_status",
+    "pilot_authorized",
+    "scope",
+    "bias_audit",
+    "common_prerequisites",
+    "sources",
+    "candidates",
+    "economic_bounds",
+    "portfolio_budget",
+    "execution_queue",
+    "blockers",
+    "integrity_baseline"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "portfolio_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "baseline_main": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "decision_question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assessment_status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pilot_authorized": {
+      "const": false
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "candidate_registry",
+        "scoring_framework",
+        "preferred_pilot_capital_krw",
+        "normal_pilot_ceiling_krw",
+        "current_c3_c4_c5_registered_rows",
+        "historical_scores_used_for_selection",
+        "current_public_c2_collected_count",
+        "new_field_evidence_count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "candidate_registry": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scoring_framework": {
+          "type": "string",
+          "minLength": 1
+        },
+        "preferred_pilot_capital_krw": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "normal_pilot_ceiling_krw": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "current_c3_c4_c5_registered_rows": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "historical_scores_used_for_selection": {
+          "type": "boolean"
+        },
+        "current_public_c2_collected_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "new_field_evidence_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "bias_audit": {
+      "type": "object",
+      "required": [
+        "unit_of_comparison",
+        "excluded_from_ranking",
+        "counterfactual",
+        "commercial_evidence_rule"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "unit_of_comparison": {
+          "type": "string",
+          "minLength": 1
+        },
+        "excluded_from_ranking": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "counterfactual": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commercial_evidence_rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "common_prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "candidate_ids",
+          "url",
+          "repository_reference",
+          "observed_date",
+          "evidence_type",
+          "claim",
+          "caveat",
+          "rechecked_at",
+          "access_status",
+          "fresh_public_content_collected"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "repository_reference": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observed_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "evidence_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "claim": {
+            "type": "string",
+            "minLength": 1
+          },
+          "caveat": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rechecked_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "access_status": {
+            "enum": [
+              "BLOCKED_NETWORK_403",
+              "REPOSITORY_READ"
+            ]
+          },
+          "fresh_public_content_collected": {
+            "const": false
+          }
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "candidate_id",
+          "lane",
+          "evidence_level",
+          "evidence_scope",
+          "evidence_verified_through",
+          "evidence_references",
+          "inventory",
+          "hard_gates",
+          "dependencies",
+          "decision_status",
+          "selected_for_next_cycle",
+          "decision_rationale",
+          "decisive_questions",
+          "next_experiment",
+          "stop_conditions",
+          "site_discovery",
+          "economics",
+          "updated_at"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "enum": [
+              "OC-001",
+              "OC-013",
+              "OC-020",
+              "OC-008",
+              "OC-022",
+              "OC-021",
+              "OC-030"
+            ]
+          },
+          "lane": {
+            "enum": [
+              "LOCATION",
+              "TRANSACTION"
+            ]
+          },
+          "evidence_level": {
+            "const": "C2"
+          },
+          "evidence_scope": {
+            "type": "object",
+            "required": [
+              "strength",
+              "decision_reason"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "strength": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "evidence_verified_through": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_references": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "inventory": {
+            "type": "object",
+            "required": [
+              "sourced_facts",
+              "derived_signals",
+              "assumptions",
+              "unknowns",
+              "real_world_evidence_required"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "sourced_facts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "text",
+                    "source_ids",
+                    "verification"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "verification": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "derived_signals": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "assumptions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "unknowns": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "real_world_evidence_required": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "hard_gates": {
+            "type": "object",
+            "required": [
+              "status",
+              "assessment_basis",
+              "checks"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "type": "string",
+                "minLength": 1
+              },
+              "assessment_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "checks": {
+                "type": "object",
+                "required": [
+                  "weekday_availability",
+                  "emergency_response",
+                  "owner_labor_scaling",
+                  "fixed_lease",
+                  "legal_permission",
+                  "downside",
+                  "paying_customer_route",
+                  "cheap_kill",
+                  "recoverability",
+                  "outsourcing"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "weekday_availability": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "emergency_response": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "owner_labor_scaling": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "fixed_lease": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "legal_permission": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "downside": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "paying_customer_route": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "cheap_kill": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "recoverability": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "outsourcing": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "finding"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "UNKNOWN",
+                          "CONDITIONAL",
+                          "AVOIDED_BY_DESIGN",
+                          "PLAUSIBLE_UNPROVEN",
+                          "DEPENDENT",
+                          "NOT_APPLICABLE"
+                        ]
+                      },
+                      "finding": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dependencies": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "OC-001",
+                "OC-013",
+                "OC-020",
+                "OC-008",
+                "OC-022",
+                "OC-021",
+                "OC-030"
+              ]
+            }
+          },
+          "decision_status": {
+            "enum": [
+              "ADVANCE_NOW",
+              "CHEAP_TEST_FIRST",
+              "HOLD",
+              "DEPENDENT",
+              "KILL_ARCHIVE"
+            ]
+          },
+          "selected_for_next_cycle": {
+            "type": "boolean"
+          },
+          "decision_rationale": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decisive_questions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "next_experiment": {
+            "type": "object",
+            "required": [
+              "experiment_id",
+              "status",
+              "hypothesis",
+              "unknown_resolved",
+              "target_counterparty",
+              "required_sample",
+              "questions_and_data",
+              "cash_ceiling_krw",
+              "owner_hours_ceiling",
+              "weekday_interruption",
+              "travel",
+              "external_parties",
+              "decision_window_days",
+              "budget_basis",
+              "pass_rule",
+              "hold_rule",
+              "fail_rule",
+              "next_on_pass",
+              "expected_evidence_level",
+              "prohibited",
+              "instrument"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "experiment_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "const": "USER ACTION REQUIRED"
+              },
+              "hypothesis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "unknown_resolved": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_counterparty": {
+                "type": "string",
+                "minLength": 1
+              },
+              "required_sample": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "questions_and_data": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "cash_ceiling_krw": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "owner_hours_ceiling": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "weekday_interruption": {
+                "type": "string",
+                "minLength": 1
+              },
+              "travel": {
+                "type": "string",
+                "minLength": 1
+              },
+              "external_parties": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "decision_window_days": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "budget_basis": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pass_rule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "hold_rule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fail_rule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "next_on_pass": {
+                "type": "string",
+                "minLength": 1
+              },
+              "expected_evidence_level": {
+                "type": "string",
+                "minLength": 1
+              },
+              "prohibited": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "instrument": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "stop_conditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "site_discovery": {
+            "type": "object",
+            "required": [
+              "status",
+              "reason",
+              "actual_site_discovery_authorized"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "NOT_READY",
+                  "NOT_APPLICABLE"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "actual_site_discovery_authorized": {
+                "const": false
+              },
+              "next_methodology": {
+                "type": "string"
+              },
+              "target_archetypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "economics": {
+            "type": "object",
+            "required": [
+              "status",
+              "overall_score",
+              "forecast_revenue_krw",
+              "contribution_krw",
+              "resale_recovery_krw",
+              "framework_assessment"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "type": "string",
+                "minLength": 1
+              },
+              "overall_score": {
+                "type": "null"
+              },
+              "forecast_revenue_krw": {
+                "type": "null"
+              },
+              "contribution_krw": {
+                "type": "null"
+              },
+              "resale_recovery_krw": {
+                "type": "null"
+              },
+              "framework_assessment": {
+                "type": "object",
+                "required": [
+                  "economics_25",
+                  "owner_fit_25",
+                  "demand_distribution_20",
+                  "asset_operations_15",
+                  "competition_defensibility_10",
+                  "ai_data_leverage_5"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "economics_25": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "reason"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "owner_fit_25": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "reason"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "demand_distribution_20": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "reason"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "asset_operations_15": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "reason"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "competition_defensibility_10": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "reason"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "ai_data_leverage_5": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "reason"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "updated_at": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "economic_bounds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "candidate_id",
+          "type",
+          "statement",
+          "value_krw",
+          "source_ids",
+          "limitation"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": [
+              "SOURCED_REPOSITORY_CLAIM",
+              "ESTIMATE_FROM_SOURCED_BASE_WITH_EXPLICIT_VAT_ASSUMPTION"
+            ]
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value_krw": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "limitation": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "portfolio_budget": {
+      "type": "object",
+      "required": [
+        "type",
+        "selected_candidate_ids",
+        "full_experiment_cash_ceiling_krw",
+        "full_experiment_owner_hours_ceiling",
+        "first_week_cash_ceiling_krw",
+        "first_week_owner_hours_ceiling",
+        "capex_commitment_krw",
+        "overlap_rule",
+        "staging"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selected_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "full_experiment_cash_ceiling_krw": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "full_experiment_owner_hours_ceiling": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "first_week_cash_ceiling_krw": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "first_week_owner_hours_ceiling": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capex_commitment_krw": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "overlap_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "staging": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "execution_queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "order",
+          "window",
+          "candidate_ids",
+          "owner_hours_ceiling",
+          "cash_ceiling_krw",
+          "action",
+          "expected_output",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "window": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "owner_hours_ceiling": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cash_ceiling_krw": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_output": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "operation",
+          "status",
+          "action"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "claims_paused": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "integrity_baseline": {
+      "type": "object",
+      "required": [
+        "docs/data/seoul-opportunity-map.json",
+        "docs/data/kakao-poi-layer.json",
+        "docs/data/opportunity-intelligence.json",
+        "docs/data/real-estate-context.json",
+        "docs/data/candidate-registry.json",
+        "docs/assets/gis.js",
+        "docs/assets/map-adapter.js",
+        "docs/assets/real-estate.js",
+        "docs/index.html",
+        "docs/gis.html"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "docs/data/seoul-opportunity-map.json": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/data/kakao-poi-layer.json": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/data/opportunity-intelligence.json": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/data/real-estate-context.json": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/data/candidate-registry.json": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/assets/gis.js": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/assets/map-adapter.js": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/assets/real-estate.js": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/index.html": {
+          "type": "string",
+          "minLength": 1
+        },
+        "docs/gis.html": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Candidate validation portfolio v1: inherited public C2, no field completion",
+  "description": "A provisional decision snapshot. Proposed cash/time budgets are not sourced market costs. C2 public-only evidence is not negotiated quotation or C3 buyer/host evidence. This v1 cannot claim completed experiments or authorize a pilot."
+}

@@ -15,6 +15,9 @@ on:
       - pipeline/kakao_competitor_layer.py
       - pipeline/candidate_registry.py
       - pipeline/opportunity_intelligence.py
+      - pipeline/real_estate_context.py
+      - pipeline/gis_refresh.py
+      - config/real-estate-geography-v1.json
       - docs/data/candidate-registry.json
       - docs/gis.html
       - docs/assets/gis.js
@@ -25,8 +28,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: seoul-opportunity-gis-${{ github.ref }}
-  cancel-in-progress: true
+  group: seoul-derived-data-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -37,6 +40,13 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Decide demand refresh
         id: refresh
@@ -52,36 +62,41 @@ jobs:
           echo "Demand refresh: ${NEED}"
 
       - name: Install GIS dependency
-        run: python -m pip install --disable-pip-version-check pyproj==3.7.2
+        run: python -m pip install --disable-pip-version-check pyproj==3.7.2 jsonschema==4.26.0
 
-      - name: Build public Seoul demand-fit dataset
-        if: steps.refresh.outputs.demand == 'true'
+      - name: Stage and validate the complete GIS dependency bundle
         env:
           SEOUL: ${{ secrets.SEOUL }}
-          GIS_OUTPUT: docs/data/seoul-opportunity-map.json
-        run: python -u pipeline/seoul_location_screen.py
-
-      - name: Build Kakao competition / substitute layer
-        env:
           KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
           KAKAO_POI_TOP_N: "40"
           KAKAO_POI_MODERATE_N: "20"
           KAKAO_REQUEST_BUDGET: "2160"
           KAKAO_POI_RADIUS_M: "800"
-        run: python -u pipeline/kakao_competitor_layer.py
-
-      - name: Derive reproducible competition evidence
-        run: python pipeline/opportunity_intelligence.py
+          REFRESH_DEMAND: ${{ steps.refresh.outputs.demand }}
+        run: |
+          set -euo pipefail
+          if [ "$REFRESH_DEMAND" = true ]; then
+            python -u pipeline/gis_refresh.py --refresh-demand
+          else
+            python -u pipeline/gis_refresh.py
+          fi
 
       - name: Commit refreshed GIS datasets
         run: |
+          set -euo pipefail
+          # No rebase of generated snapshots: require the validated input commit still be current.
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)" || {
+            echo "Remote changed during refresh; rerun from the new input snapshot."
+            exit 1
+          }
+          python pipeline/gis_refresh.py --check
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/seoul-opportunity-map.json docs/data/kakao-poi-layer.json docs/data/opportunity-intelligence.json
+          git add docs/data/seoul-opportunity-map.json docs/data/kakao-poi-layer.json docs/data/opportunity-intelligence.json docs/data/real-estate-context.json docs/data/candidate-validation-portfolio.json
           if git diff --cached --quiet; then
             echo "No GIS data changes to commit"
             exit 0
           fi
           git commit -m "data: refresh Seoul opportunity GIS"
-          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"

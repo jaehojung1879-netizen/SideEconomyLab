@@ -1,0 +1,1885 @@
+{
+  "schema_version": 1,
+  "portfolio_id": "candidate-validation-portfolio-v1",
+  "updated_at": "2026-10-05",
+  "baseline_main": "18e213b86bd42d61052925996fa59878de0c9e21",
+  "decision_question": "소유자의 다음 현실 검증 시간·돈을 어느 사업 가설에 사용할 것인가?",
+  "assessment_status": "PROVISIONAL_PENDING_CURRENT_PUBLIC_C2_RECHECK",
+  "pilot_authorized": false,
+  "scope": {
+    "candidate_registry": "docs/data/candidate-registry.json",
+    "scoring_framework": "research/scoring-framework.md",
+    "preferred_pilot_capital_krw": [
+      3000000,
+      7000000
+    ],
+    "normal_pilot_ceiling_krw": 10000000,
+    "current_c3_c4_c5_registered_rows": 0,
+    "historical_scores_used_for_selection": false,
+    "current_public_c2_collected_count": 0,
+    "new_field_evidence_count": 0
+  },
+  "bias_audit": {
+    "unit_of_comparison": "사업 가설별 실제 비용·지불 경로·운영 책임·다음 증거 비용",
+    "excluded_from_ranking": [
+      "지도 존재",
+      "파일 수",
+      "POI/공공 데이터 행 수",
+      "코드 양",
+      "UI 성숙도",
+      "AI 적용 가능성",
+      "과거 정밀 총점"
+    ],
+    "counterfactual": "GIS가 없더라도 OC-022/OC-030은 재고·설치 없이 바스켓/RFQ/공급 조건을 확인할 수 있어 우선. OC-013은 공급 정보가 더 명확하지만 host 순기여가 비어 있어 미선정. OC-021은 최고 과거 점수라도 DEPENDENT.",
+    "commercial_evidence_rule": "GIS·시장임대료·경쟁 검색은 C3/유료수요/호스트 승인으로 승격하지 않음."
+  },
+  "common_prerequisites": [
+    "상업 접촉 전 고용주 겸업/이해상충 정책 확인; 미확인 시 비상업 정보수집 면담만",
+    "고용주 고객/비공개 자료/내부 시스템/연락처 사용 금지",
+    "관할·상품별 허가/인증·세무·보험·계약·개인정보 요건은 실제 판매/설치 전 공식 확인",
+    "공개 기록에는 익명 역할/집계만; 실제 바스켓/의향 원본은 동의·권한 있는 비공개 경로에 보관"
+  ],
+  "sources": [
+    {
+      "source_id": "S-BOOTH",
+      "candidate_ids": [
+        "OC-001"
+      ],
+      "url": "https://muzone.co.kr/",
+      "repository_reference": "research/korea-c2-evidence-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: K-zone 개인 오피스/홈 부스 265만원; 노래 부스 463만–803만원.",
+      "caveat": "서로 다른 용도. 한국 상업 통화 부스의 납품·환기·소방·접근통제·유지비·VAT 범위는 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-PHOTO",
+      "candidate_ids": [
+        "OC-013"
+      ],
+      "url": "https://www.selpic.kr/kiosks",
+      "repository_reference": "research/korea-c2-evidence-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: SELPIC 모델별 550만 / 770만 / 990만원, VAT 포함.",
+      "caveat": "모델·기능이 다름. 설치·월 소프트웨어·소모품·호스트 배분 포함 여부 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-PRINT",
+      "candidate_ids": [
+        "OC-013"
+      ],
+      "url": "https://selpic.kr/service",
+      "repository_reference": "research/korea-c2-evidence-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 4×6 사진 출력 1,000원부터.",
+      "caveat": "사진 출력 가격이며 문서 출력·증명 촬영 전체에 적용하지 않음. 지역·옵션 차이.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-HOST",
+      "candidate_ids": [
+        "OC-013",
+        "OC-030"
+      ],
+      "url": "https://selpic.kr/en/business",
+      "repository_reference": "research/korea-feasibility-source-notes-v1.md",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 구매·임대·이벤트·호스트 설치 모델 소개.",
+      "caveat": "무료 설치/호스트 편의시설이 독립 운영자의 수익배분 계약을 보장하지 않음.",
+      "rechecked_at": null,
+      "access_status": "REPOSITORY_READ",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-VEND",
+      "candidate_ids": [
+        "OC-020"
+      ],
+      "url": "https://www.shinsunginc.kr/m/product.html?branduid=11274896&xcode=005&mcode=001&type=X",
+      "repository_reference": "research/korea-c2-evidence-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 중고 5단 오픈 냉장 자판기 한 건 250만원.",
+      "caveat": "한 상품의 과거 호가. 재고·실거래·재판매가·결제기·배송·전력·용도 적합성 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-LUGGAGE",
+      "candidate_ids": [
+        "OC-008"
+      ],
+      "url": "https://radicalstorage.com/ko_kr/luggage-storage/seoul",
+      "repository_reference": "research/korea-c2-evidence-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 서울 제휴 73곳, 가방/일 5,100원부터.",
+      "caveat": "동적 페이지의 과거 수치. 호스트 순수취액·보험·수요량·지역 공백 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-LOCKERS",
+      "candidate_ids": [
+        "OC-008"
+      ],
+      "url": "https://mediahub.seoul.go.kr/archives/2013639",
+      "repository_reference": "research/seoul-location-screen-v1.md",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 서울 2025 공지의 T-Locker 269역·332곳·5,511칸, 주요 관광역 T-Luggage.",
+      "caveat": "2025년 공급 현황. 현시점 가동·사이즈·빈칸·가격·보행 접근 확인 아님.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-MRO",
+      "candidate_ids": [
+        "OC-022",
+        "OC-021"
+      ],
+      "url": "https://www.serveone.co.kr/kr/purchasing-service/mro.do",
+      "repository_reference": "research/transaction-validation-sources-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 다수 공급처·소액 품목·불규칙 MRO 구매를 통합하고 구매 프로세스 가시성을 제공.",
+      "caveat": "대형 업체의 서비스 설명. 10–100인 사업장의 불편·전환 의향·중개 마진을 증명하지 않음.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-MRO2",
+      "candidate_ids": [
+        "OC-022",
+        "OC-021"
+      ],
+      "url": "https://www.koreab2b.com/main/sub02/sub02_mro_2016.do",
+      "repository_reference": "research/transaction-validation-sources-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 공급사·주문 빈도가 많은 MRO에서 배송·프로세스 효율을 제시.",
+      "caveat": "경쟁자의 가치제안. 고객 지불의사·주문당 소유자 시간을 확인해야 함.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-DISPENSE",
+      "candidate_ids": [
+        "OC-021"
+      ],
+      "url": "https://www.factoryuse.com/mro-solution-advantage-benefits/stop-managing-ppe-by-hand--automate-it/",
+      "repository_reference": "research/korea-c2-evidence-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 직원/QR 인증 지급·사용 데이터·반복 공급 모델.",
+      "caveat": "공개 장비가격 없음. 고객이 단가 절감 대신 지급통제를 원하는지 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-EVENT",
+      "candidate_ids": [
+        "OC-030"
+      ],
+      "url": "https://selpic.kr/events",
+      "repository_reference": "research/transaction-validation-sources-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 행사 포토 키오스크 1일 30만원부터, 설치·철거·원격 모니터링 소개.",
+      "caveat": "시작 소매가. 파트너 순가격·범위·출장·소모품·취소·장애대응 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-CHIKI",
+      "candidate_ids": [
+        "OC-030"
+      ],
+      "url": "https://chiki.ai/rental/ai-photo-booth",
+      "repository_reference": "research/transaction-validation-sources-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 1일 100만원, 운송·설치철거·소모품·프레임/UI·원격지원 포함 소개.",
+      "caveat": "다른 묶음 서비스. 리셀러 차익/무현장 운영 가능성·VAT 포함 여부 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-CHIKI-BUY",
+      "candidate_ids": [
+        "OC-030"
+      ],
+      "url": "https://chiki.ai/product",
+      "repository_reference": "research/transaction-validation-sources-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 구매 600만/700만/900만원부터, VAT 별도·소프트웨어 추가.",
+      "caveat": "공개 기본가. 보관·운송·고장·재판매가·최종 취득비용 미확인.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-PHOTOQ",
+      "candidate_ids": [
+        "OC-030"
+      ],
+      "url": "https://www.photoq.kr/www/kiosk_photo/photo2/rental",
+      "repository_reference": "research/korea-c2-evidence-v1.csv",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 1일 모델별 약 99만–132만원.",
+      "caveat": "다른 장비·범위. 비교 가능한 순견적이 아니며 현재가 재확인 불가.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-LEADS",
+      "candidate_ids": [
+        "OC-022"
+      ],
+      "url": "https://www.data.go.kr/data/15105482/fileData.do",
+      "repository_reference": "research/transaction-validation-v1.md",
+      "observed_date": "2026-10-03",
+      "evidence_type": "PUBLIC_SUPPLIER_COMPETITOR",
+      "claim": "기존 조사: 전국 공장등록 공공파일이 회사·산업단지·제품·주소 기반 공개 리드 경로를 제공.",
+      "caveat": "현재 다운로드 미확인. 이 PR에서 개인 연락처/회사 리드 목록 수집 안 함.",
+      "rechecked_at": "2026-10-05",
+      "access_status": "BLOCKED_NETWORK_403",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-GIS",
+      "candidate_ids": [
+        "OC-001",
+        "OC-013",
+        "OC-020",
+        "OC-008"
+      ],
+      "url": null,
+      "repository_reference": "docs/opportunity-intelligence-v3.md",
+      "observed_date": "2026-10-04",
+      "evidence_type": "REPOSITORY_SNAPSHOT",
+      "claim": "공개 집계 수요·Kakao 관측 공급·사분면은 연구용 파생 신호.",
+      "caveat": "상권 중심점·검색 제한·상품 미정·미관측 구역이 존재. 유료 수요·호스트 조건·현장 사실 아님.",
+      "rechecked_at": null,
+      "access_status": "REPOSITORY_READ",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-CONTEXT",
+      "candidate_ids": [
+        "OC-001",
+        "OC-013",
+        "OC-020",
+        "OC-008"
+      ],
+      "url": null,
+      "repository_reference": "docs/real-estate-context-foundation-v1.md",
+      "observed_date": "2026-10-04",
+      "evidence_type": "REPOSITORY_SNAPSHOT",
+      "claim": "서울 시장 맥락/과거 점포 집계만 수집; 실제 사이트 조건은 UNKNOWN.",
+      "caveat": "현재 main의 부동산 demand_hash 불일치. PR12 원본 보존; 현재 호스트/임대/허가 증거로 사용하지 않음.",
+      "rechecked_at": null,
+      "access_status": "REPOSITORY_READ",
+      "fresh_public_content_collected": false
+    },
+    {
+      "source_id": "S-FIELD",
+      "candidate_ids": [
+        "OC-001",
+        "OC-013",
+        "OC-020",
+        "OC-008",
+        "OC-022",
+        "OC-021",
+        "OC-030"
+      ],
+      "url": null,
+      "repository_reference": "field/transaction-evidence-log-v1.csv",
+      "observed_date": "2026-10-05",
+      "evidence_type": "REPOSITORY_SNAPSHOT",
+      "claim": "현장 거래 증거 로그는 헤더만 있고 실제 인터뷰/주문 행 없음.",
+      "caveat": "저장소에 등록되지 않은 실제 활동의 부재까지 증명하는 것은 아님.",
+      "rechecked_at": null,
+      "access_status": "REPOSITORY_READ",
+      "fresh_public_content_collected": false
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "OC-001",
+      "lane": "LOCATION",
+      "evidence_level": "C2",
+      "evidence_scope": {
+        "strength": "한국 장비의 공개 가격 단서만 C2; 실제 상업 통화 서비스는 C1 수준",
+        "decision_reason": "홈/노래 부스 가격을 상업 통화부스 총비용으로 전용할 수 없다. 결제 도달이 더 싼 거래 후보보다 후순위."
+      },
+      "evidence_verified_through": "C2_PUBLIC_ONLY_INHERITED",
+      "evidence_references": [
+        "S-BOOTH",
+        "S-GIS",
+        "S-CONTEXT",
+        "S-FIELD"
+      ],
+      "inventory": {
+        "sourced_facts": [
+          {
+            "text": "서로 다른 용도 부스의 과거 공개 가격 단서가 있다.",
+            "source_ids": [
+              "S-BOOTH"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          }
+        ],
+        "derived_signals": [
+          "오피스 인구/통행 수요 신호는 이용률·사적 통화 결제와 다르다."
+        ],
+        "assumptions": [
+          "기존 호스트 공간과 외주 점검으로 고정 임대와 평일 출동을 피할 수 있다는 가설."
+        ],
+        "unknowns": [
+          "한국 상업용 전체 capex",
+          "환기·전력·소방·방음 적용조건",
+          "이용료/이용률",
+          "호스트 조건",
+          "재판매가"
+        ],
+        "real_world_evidence_required": [
+          "상업용 통화 부스의 설치·접근통제·유지비가 1,000만원 상한 내에 들어오는가?",
+          "호스트 3곳 중 1곳에서 실제 사적 통화 부족과 무고정임대 협의가 함께 가능한가?"
+        ]
+      },
+      "hard_gates": {
+        "status": "UNRESOLVED_NO_PILOT",
+        "assessment_basis": "헌법 기준으로 먼저 검토; 설계상 회피는 실측 PASS가 아님",
+        "checks": {
+          "weekday_availability": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "emergency_response": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "owner_labor_scaling": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "fixed_lease": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "이 실험에서는 고정 임대차/구매 약정 없음; 사업 실행까지 통과 아님"
+          },
+          "legal_permission": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "downside": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "paying_customer_route": {
+            "status": "PLAUSIBLE_UNPROVEN",
+            "finding": "기존 시장 경로는 있지만 우리에게 지불할 고객 미확인"
+          },
+          "cheap_kill": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "서류/인터뷰까지만 실시하고 상한에서 중단 가능"
+          },
+          "recoverability": {
+            "status": "UNKNOWN",
+            "finding": "공개 실거래/매입보장/잔존가치 없음"
+          },
+          "outsourcing": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          }
+        }
+      },
+      "dependencies": [],
+      "decision_status": "HOLD",
+      "selected_for_next_cycle": false,
+      "decision_rationale": "홈/노래 부스 가격을 상업 통화부스 총비용으로 전용할 수 없다. 결제 도달이 더 싼 거래 후보보다 후순위.",
+      "decisive_questions": [
+        "상업용 통화 부스의 설치·접근통제·유지비가 1,000만원 상한 내에 들어오는가?",
+        "호스트 3곳 중 1곳에서 실제 사적 통화 부족과 무고정임대 협의가 함께 가능한가?"
+      ],
+      "next_experiment": {
+        "experiment_id": "CV-001",
+        "status": "USER ACTION REQUIRED",
+        "hypothesis": "기존 호스트 통화 부족을 상업용 이동 부스로 해결할 수 있다.",
+        "unknown_resolved": "총 설치비와 조건부 호스트 필요를 함께 확인",
+        "target_counterparty": "한국 부스 공급사 3곳 + 기존 인력 있는 오피스/공유공간 호스트 3곳",
+        "required_sample": {
+          "suppliers": 3,
+          "hosts": 3
+        },
+        "questions_and_data": [
+          "총 설치비와 조건부 호스트 필요를 함께 확인",
+          "용도·규격·환기·화재/접근성 검토 범위·VAT·배송·설치·전력·인증결제·월비용·AS·회수/매입 조건",
+          "최근 통화 공간 거절/대기 사례·현재 무료 대체재·공간 책임자·고정임대/배분 요구·장애응답 주체"
+        ],
+        "cash_ceiling_krw": 100000,
+        "owner_hours_ceiling": 6,
+        "weekday_interruption": "사전 예약만; 긴급/당일 방문 없음; 근무 중 응답 약속 금지",
+        "travel": "최대 한 번의 묶음 방문; 원격 우선",
+        "external_parties": 6,
+        "decision_window_days": 14,
+        "budget_basis": "제안된 정보수집 지출·시간 상한(시장 견적 아님); 모집 실패는 HOLD, 완료로 계산하지 않음",
+        "pass_rule": "비교 가능한 상업 견적 2건; 전체 비용 <=1,000만원(300–700만원 선호); 1/3 호스트에서 구체적 최근 부족 사례+무고정임대/외주 대응 논의 가능.",
+        "hold_rule": "견적 누락/무응답 또는 허가/호스트 운영 책임 미확정이면 보완 1회만.",
+        "fail_rule": "완전 견적 모두 >1,000만원 또는 모든 호스트가 선임대/상시 소유자 출동 요구 또는 유료 가치 대신 기존 무료 공간만 선호.",
+        "next_on_pass": "후보 재검토 및 SITE_DISCOVERY_READY 판정; 결제 의사 추가 확인 전 사이트 목록 생성 없음.",
+        "expected_evidence_level": "C3",
+        "prohibited": [
+          "장비 구매",
+          "임대차",
+          "보증금/예치금",
+          "재고 약정",
+          "유료광고",
+          "파일럿 시작"
+        ],
+        "instrument": "field/candidate-validation-instruments-v1.md#cv-001"
+      },
+      "stop_conditions": [
+        "완전 견적 2건 모두 정상 pilot 상한 초과; 예외 투자심사 없이 종료",
+        "통화 가치 부족/상시 대응/선임대가 구조적이면 이 형태 ARCHIVE"
+      ],
+      "site_discovery": {
+        "status": "NOT_READY",
+        "reason": "한국 상업용 전체 비용·호스트·실사용·허가/운영 조건 미확인",
+        "next_methodology": "상업 견적·호스트 면담을 먼저. READY 재판정 후 별도 검토 PR에서만 실제 사이트 조사.",
+        "target_archetypes": [
+          "기존 인력이 있는 오피스/공유공간",
+          "방문객 흐름이 있는 기존 호스트"
+        ],
+        "actual_site_discovery_authorized": false
+      },
+      "economics": {
+        "status": "UNKNOWN",
+        "overall_score": null,
+        "forecast_revenue_krw": null,
+        "contribution_krw": null,
+        "resale_recovery_krw": null,
+        "framework_assessment": {
+          "economics_25": {
+            "status": "UNKNOWN",
+            "reason": "실제 기여·고정비·반복 결제·잔존가치 미확인"
+          },
+          "owner_fit_25": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "demand_distribution_20": {
+            "status": "PROVISIONAL",
+            "reason": "외부 유사 모델은 있음; 우리 구매자/호스트 지불의사 미확인"
+          },
+          "asset_operations_15": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "competition_defensibility_10": {
+            "status": "UNKNOWN",
+            "reason": "대체재/경쟁 존재; 지속 차별화 미검증"
+          },
+          "ai_data_leverage_5": {
+            "status": "ASSUMPTION",
+            "reason": "반복 처리의 노동 절감 가능성만; 선정 가산점 없음"
+          }
+        }
+      },
+      "updated_at": "2026-10-05"
+    },
+    {
+      "candidate_id": "OC-013",
+      "lane": "LOCATION",
+      "evidence_level": "C2",
+      "evidence_scope": {
+        "strength": "장비·고객 소매가·설치모델의 공개 C2; 소모품/호스트 순기여 UNKNOWN",
+        "decision_reason": "출력 장비/배포 경로 단서는 있지만 독립 운영자 이익과 출력 job이 미정. OC-030 공급사 확인과 공유하여 후속 비용을 줄인다."
+      },
+      "evidence_verified_through": "C2_PUBLIC_ONLY_INHERITED",
+      "evidence_references": [
+        "S-PHOTO",
+        "S-PRINT",
+        "S-HOST",
+        "S-GIS",
+        "S-CONTEXT",
+        "S-FIELD"
+      ],
+      "inventory": {
+        "sourced_facts": [
+          {
+            "text": "550만/770만/990만원의 서로 다른 SELPIC 모델 기본가격이 기록되어 있다.",
+            "source_ids": [
+              "S-PHOTO"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          },
+          {
+            "text": "4×6 사진 1,000원부터이며 호스트/렌탈 모델이 소개되어 있다.",
+            "source_ids": [
+              "S-PRINT",
+              "S-HOST"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          }
+        ],
+        "derived_signals": [
+          "경쟁 POI와 유동인구는 사진 출력·문서 출력의 지불수요를 구분하지 못한다."
+        ],
+        "assumptions": [
+          "사진 출력 한 가지 job을 고르고 기존 인력 있는 호스트에 설치하면 보충/장애를 맡길 수 있다는 가설."
+        ],
+        "unknowns": [
+          "모델별 정확한 출력 기능",
+          "용지/잉크/불량 비용",
+          "월 라이선스/결제료",
+          "호스트 순수취 구조",
+          "AS·개인정보 보관/삭제·재판매"
+        ],
+        "real_world_evidence_required": [
+          "사진 출력 1개 job에서 설치·소모품·호스트 배분을 모두 반영해 거래당 기여가 남는가?",
+          "경쟁자가 제공하는 무료 설치와 비교해 신규 운영자에게 호스트가 조건을 줄 이유가 있는가?"
+        ]
+      },
+      "hard_gates": {
+        "status": "UNRESOLVED_NO_PILOT",
+        "assessment_basis": "헌법 기준으로 먼저 검토; 설계상 회피는 실측 PASS가 아님",
+        "checks": {
+          "weekday_availability": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "emergency_response": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "owner_labor_scaling": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "fixed_lease": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "이 실험에서는 고정 임대차/구매 약정 없음; 사업 실행까지 통과 아님"
+          },
+          "legal_permission": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "downside": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "paying_customer_route": {
+            "status": "PLAUSIBLE_UNPROVEN",
+            "finding": "기존 시장 경로는 있지만 우리에게 지불할 고객 미확인"
+          },
+          "cheap_kill": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "서류/인터뷰까지만 실시하고 상한에서 중단 가능"
+          },
+          "recoverability": {
+            "status": "UNKNOWN",
+            "finding": "공개 실거래/매입보장/잔존가치 없음"
+          },
+          "outsourcing": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          }
+        }
+      },
+      "dependencies": [],
+      "decision_status": "CHEAP_TEST_FIRST",
+      "selected_for_next_cycle": false,
+      "decision_rationale": "출력 장비/배포 경로 단서는 있지만 독립 운영자 이익과 출력 job이 미정. OC-030 공급사 확인과 공유하여 후속 비용을 줄인다.",
+      "decisive_questions": [
+        "사진 출력 1개 job에서 설치·소모품·호스트 배분을 모두 반영해 거래당 기여가 남는가?",
+        "경쟁자가 제공하는 무료 설치와 비교해 신규 운영자에게 호스트가 조건을 줄 이유가 있는가?"
+      ],
+      "next_experiment": {
+        "experiment_id": "CV-013",
+        "status": "USER ACTION REQUIRED",
+        "hypothesis": "기존 인력 있는 호스트에 사진 출력 단일 job으로 저고정비 계약이 가능하다.",
+        "unknown_resolved": "사진 출력 1개 job의 완전 비용·호스트 조건 확인",
+        "target_counterparty": "사진 출력 공급사 3곳 + 해당 job의 호스트 3곳",
+        "required_sample": {
+          "suppliers": 3,
+          "hosts": 3
+        },
+        "questions_and_data": [
+          "사진 출력 1개 job의 완전 비용·호스트 조건 확인",
+          "동일 4×6 기능 기준 기기/렌탈/무료설치 비교; VAT·운송·설치·소모품 장당·폐기·결제·월비용·AS·데이터 삭제·해지",
+          "호스트가 얻는 가치·현재 경쟁 서비스·최근 출력 요청·보충 담당·배분/최소보장"
+        ],
+        "cash_ceiling_krw": 100000,
+        "owner_hours_ceiling": 6,
+        "weekday_interruption": "사전 예약만; 긴급/당일 방문 없음; 근무 중 응답 약속 금지",
+        "travel": "최대 한 번의 묶음 방문; 원격 우선",
+        "external_parties": 6,
+        "decision_window_days": 14,
+        "budget_basis": "제안된 정보수집 지출·시간 상한(시장 견적 아님); 모집 실패는 HOLD, 완료로 계산하지 않음",
+        "pass_rule": "비교 견적 2건과 구체 호스트 1곳; 총취득 <=1,000만원 또는 해지 가능한 임대; 확인된 비용/배분 후 장당 기여>0; 월 고정비는 실제 관측 수요가 없으므로 미판정.",
+        "hold_rule": "소모품/월요금/배분/개인정보 요건 누락 또는 host 필요 미확인: 구매 없이 보완 1회.",
+        "fail_rule": "호스트가 기존 무료설치 이상 조건만 요구해 장당 기여<=0 또는 소유자 평일 출동 필수 또는 완전 비용 상한 초과.",
+        "next_on_pass": "다음 사이클에서 C3 호스트 수요 확인 후 사이트 조사 준비 판정; 구매/파일럿 승인 없음.",
+        "expected_evidence_level": "C3",
+        "prohibited": [
+          "장비 구매",
+          "임대차",
+          "보증금/예치금",
+          "재고 약정",
+          "유료광고",
+          "파일럿 시작"
+        ],
+        "instrument": "field/candidate-validation-instruments-v1.md#cv-013"
+      },
+      "stop_conditions": [
+        "명세 일치 견적+호스트 조건에서 장당 기여가 없으면 이 job 종료",
+        "출력 job 혼합으로 검증을 늘리지 말고 가설 변경을 별도 기록"
+      ],
+      "site_discovery": {
+        "status": "NOT_READY",
+        "reason": "장비 기본가만 있음; 출력 job·소모품·호스트 순조건·AS/개인정보 미확인",
+        "next_methodology": "상업 견적·호스트 면담을 먼저. READY 재판정 후 별도 검토 PR에서만 실제 사이트 조사.",
+        "target_archetypes": [
+          "기존 인력 있는 사진 출력 요청 호스트(예: 산후조리/병원 편의시설)",
+          "기존 인력 있는 카페/리테일; 실제 요청 확인 필요"
+        ],
+        "actual_site_discovery_authorized": false
+      },
+      "economics": {
+        "status": "UNKNOWN",
+        "overall_score": null,
+        "forecast_revenue_krw": null,
+        "contribution_krw": null,
+        "resale_recovery_krw": null,
+        "framework_assessment": {
+          "economics_25": {
+            "status": "UNKNOWN",
+            "reason": "실제 기여·고정비·반복 결제·잔존가치 미확인"
+          },
+          "owner_fit_25": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "demand_distribution_20": {
+            "status": "PROVISIONAL",
+            "reason": "외부 유사 모델은 있음; 우리 구매자/호스트 지불의사 미확인"
+          },
+          "asset_operations_15": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "competition_defensibility_10": {
+            "status": "UNKNOWN",
+            "reason": "대체재/경쟁 존재; 지속 차별화 미검증"
+          },
+          "ai_data_leverage_5": {
+            "status": "ASSUMPTION",
+            "reason": "반복 처리의 노동 절감 가능성만; 선정 가산점 없음"
+          }
+        }
+      },
+      "updated_at": "2026-10-05"
+    },
+    {
+      "candidate_id": "OC-020",
+      "lane": "LOCATION",
+      "evidence_level": "C2",
+      "evidence_scope": {
+        "strength": "중고 장비 단일 호가 C2; 상품/고객/반복수요 C0–C1",
+        "decision_reason": "특화 SKU와 대체재 회피 이유가 없다. 자판기 가격/지도부터 확장하면 검증 대상이 사라진다."
+      },
+      "evidence_verified_through": "C2_PUBLIC_ONLY_INHERITED",
+      "evidence_references": [
+        "S-VEND",
+        "S-GIS",
+        "S-FIELD"
+      ],
+      "inventory": {
+        "sourced_facts": [
+          {
+            "text": "중고 냉장 자판기 250만원 단일 호가가 기록되어 있다.",
+            "source_ids": [
+              "S-VEND"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          }
+        ],
+        "derived_signals": [
+          "편의점/무인점포 관측은 미정 상품의 동일상품 경쟁 지표가 아니다."
+        ],
+        "assumptions": [
+          "비식품·비규제 단일 소모품을 찾으면 주간 보충 가능한 수요가 있을 수 있다."
+        ],
+        "unknowns": [
+          "정확한 SKU/상황",
+          "구매 단가/소매가/규제 범위",
+          "반복구매·재고주기",
+          "호스트 조건",
+          "호환 장비·고장/전력/회수가"
+        ],
+        "real_world_evidence_required": [
+          "어떤 한 상품의 어떤 반복 구매 상황이 편의점으로 대체되지 않는가?",
+          "그 상품을 보충/긴급출동 없이 기존 호스트에서 팔 수 있는가?"
+        ]
+      },
+      "hard_gates": {
+        "status": "UNRESOLVED_NO_PILOT",
+        "assessment_basis": "헌법 기준으로 먼저 검토; 설계상 회피는 실측 PASS가 아님",
+        "checks": {
+          "weekday_availability": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "emergency_response": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "owner_labor_scaling": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "fixed_lease": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "이 실험에서는 고정 임대차/구매 약정 없음; 사업 실행까지 통과 아님"
+          },
+          "legal_permission": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "downside": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "paying_customer_route": {
+            "status": "PLAUSIBLE_UNPROVEN",
+            "finding": "기존 시장 경로는 있지만 우리에게 지불할 고객 미확인"
+          },
+          "cheap_kill": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "서류/인터뷰까지만 실시하고 상한에서 중단 가능"
+          },
+          "recoverability": {
+            "status": "UNKNOWN",
+            "finding": "공개 실거래/매입보장/잔존가치 없음"
+          },
+          "outsourcing": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          }
+        }
+      },
+      "dependencies": [],
+      "decision_status": "HOLD",
+      "selected_for_next_cycle": false,
+      "decision_rationale": "특화 SKU와 대체재 회피 이유가 없다. 자판기 가격/지도부터 확장하면 검증 대상이 사라진다.",
+      "decisive_questions": [
+        "어떤 한 상품의 어떤 반복 구매 상황이 편의점으로 대체되지 않는가?",
+        "그 상품을 보충/긴급출동 없이 기존 호스트에서 팔 수 있는가?"
+      ],
+      "next_experiment": {
+        "experiment_id": "CV-020",
+        "status": "USER ACTION REQUIRED",
+        "hypothesis": "단일 비규제 비식품 SKU의 반복적 미충족 필요가 있다.",
+        "unknown_resolved": "장비가 아니라 한 상품의 최근 대체 실패·반복 필요 확인",
+        "target_counterparty": "1개 사용상황의 잠재 구매자 8명 + 기존 호스트 2곳",
+        "required_sample": {
+          "buyers": 8,
+          "hosts": 2,
+          "exact_sku": 1
+        },
+        "questions_and_data": [
+          "장비가 아니라 한 상품의 최근 대체 실패·반복 필요 확인",
+          "최근 언제 어떤 상품/규격을 어디서 얼마에 구매했는지; 편의점/택배 대체 실패의 구체 사례; 반복 간격",
+          "host 공급 책임·주간 보충·도난/결제/반품 대응; 상품별 인증/판매 요건을 공식 경로로 확인"
+        ],
+        "cash_ceiling_krw": 50000,
+        "owner_hours_ceiling": 4,
+        "weekday_interruption": "사전 예약만; 긴급/당일 방문 없음; 근무 중 응답 약속 금지",
+        "travel": "최대 한 번의 묶음 방문; 원격 우선",
+        "external_parties": 10,
+        "decision_window_days": 14,
+        "budget_basis": "제안된 정보수집 지출·시간 상한(시장 견적 아님); 모집 실패는 HOLD, 완료로 계산하지 않음",
+        "pass_rule": "한 SKU를 고정; 8명 중 3명 이상 최근 대체 실패/반복 필요 사례; 1 host에서 선임대 없는 취급 논의; 상품별 규제 범위 확인 후에만 장비 견적 단계.",
+        "hold_rule": "SKU가 미정이거나 규제/사례 확인 안 됨: 1회 한정 가설 좁히기, 현장 설치 금지.",
+        "fail_rule": "8명 중 3명 미만 최근 사례; 편의점/온라인으로 충분; 일일 보충/긴급 출동/중앙 허가 불확실성이 남으면 해당 SKU 종료.",
+        "next_on_pass": "상품 가설만 재판정; 구매 없이 상품 맞춤 공급 견적 수집.",
+        "expected_evidence_level": "C3",
+        "prohibited": [
+          "장비 구매",
+          "임대차",
+          "보증금/예치금",
+          "재고 약정",
+          "유료광고",
+          "파일럿 시작"
+        ],
+        "instrument": "field/candidate-validation-instruments-v1.md#cv-020"
+      },
+      "stop_conditions": [
+        "1개 SKU 가설을 1회만 재설계; 계속 generic vending이면 ARCHIVE",
+        "규제 상품/냉장폐기/일일 보충이 owner fit을 깨면 종료"
+      ],
+      "site_discovery": {
+        "status": "NOT_READY",
+        "reason": "판매 상품 자체 미정; 법적 범위·반복수요·장비 적합성이 불명",
+        "next_methodology": "상업 견적·호스트 면담을 먼저. READY 재판정 후 별도 검토 PR에서만 실제 사이트 조사.",
+        "target_archetypes": [
+          "SKU 정의 후 기존 인력과 반복 수요가 있는 시설 유형만"
+        ],
+        "actual_site_discovery_authorized": false
+      },
+      "economics": {
+        "status": "UNKNOWN",
+        "overall_score": null,
+        "forecast_revenue_krw": null,
+        "contribution_krw": null,
+        "resale_recovery_krw": null,
+        "framework_assessment": {
+          "economics_25": {
+            "status": "UNKNOWN",
+            "reason": "실제 기여·고정비·반복 결제·잔존가치 미확인"
+          },
+          "owner_fit_25": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "demand_distribution_20": {
+            "status": "PROVISIONAL",
+            "reason": "외부 유사 모델은 있음; 우리 구매자/호스트 지불의사 미확인"
+          },
+          "asset_operations_15": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "competition_defensibility_10": {
+            "status": "UNKNOWN",
+            "reason": "대체재/경쟁 존재; 지속 차별화 미검증"
+          },
+          "ai_data_leverage_5": {
+            "status": "ASSUMPTION",
+            "reason": "반복 처리의 노동 절감 가능성만; 선정 가산점 없음"
+          }
+        }
+      },
+      "updated_at": "2026-10-05"
+    },
+    {
+      "candidate_id": "OC-008",
+      "lane": "LOCATION",
+      "evidence_level": "C2",
+      "evidence_scope": {
+        "strength": "운영자 가격/공공 기존 공급 C2; 호스트 순기여·특수 공백 UNKNOWN",
+        "decision_reason": "일반 역세권 짐보관은 기존 대체재가 강함. 대형짐/단체·호텔 overflow만 보류; 미관측 POI를 공급 공백으로 읽지 않는다."
+      },
+      "evidence_verified_through": "C2_PUBLIC_ONLY_INHERITED",
+      "evidence_references": [
+        "S-LUGGAGE",
+        "S-LOCKERS",
+        "S-GIS",
+        "S-FIELD"
+      ],
+      "inventory": {
+        "sourced_facts": [
+          {
+            "text": "제휴 운영자의 과거 서울 가방/일 5,100원 시작가가 기록되어 있다.",
+            "source_ids": [
+              "S-LUGGAGE"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          },
+          {
+            "text": "서울의 2025 T-Locker/T-Luggage 대규모 기존 공급 기록이 있다.",
+            "source_ids": [
+              "S-LOCKERS"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          }
+        ],
+        "derived_signals": [
+          "높은 숙박/교통 수요와 낮은 관측 POI가 역 내부 용량·빈칸·대형짐 공백을 확인하지 못한다."
+        ],
+        "assumptions": [
+          "기존 직원이 있는 호스트의 대형짐/단체 overflow는 near-zero fixed-cost로 가능할 수 있다."
+        ],
+        "unknowns": [
+          "현재 사이즈/운영시간/실제 가용량",
+          "호스트 순수취액",
+          "보험/배상/도난 대응",
+          "대형짐 거절 횟수",
+          "운영자 긴급응답"
+        ],
+        "real_world_evidence_required": [
+          "최근 기존 보관 대체재가 받지 못한 대형짐/단체 요청이 실제로 있는가?",
+          "기존 호스트 직원이 배상/인수인계/운영시간과 함께 경제적으로 맡을 수 있는가?"
+        ]
+      },
+      "hard_gates": {
+        "status": "UNRESOLVED_NO_PILOT",
+        "assessment_basis": "헌법 기준으로 먼저 검토; 설계상 회피는 실측 PASS가 아님",
+        "checks": {
+          "weekday_availability": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "emergency_response": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "owner_labor_scaling": {
+            "status": "CONDITIONAL",
+            "finding": "입출고는 호스트 직원만; owner가 접수하면 선형 노동"
+          },
+          "fixed_lease": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "이 실험에서는 고정 임대차/구매 약정 없음; 사업 실행까지 통과 아님"
+          },
+          "legal_permission": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "downside": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "paying_customer_route": {
+            "status": "PLAUSIBLE_UNPROVEN",
+            "finding": "기존 시장 경로는 있지만 우리에게 지불할 고객 미확인"
+          },
+          "cheap_kill": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "서류/인터뷰까지만 실시하고 상한에서 중단 가능"
+          },
+          "recoverability": {
+            "status": "NOT_APPLICABLE",
+            "finding": "장비 없이 조사; 보험/배상 노출은 별도 UNKNOWN"
+          },
+          "outsourcing": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          }
+        }
+      },
+      "dependencies": [],
+      "decision_status": "HOLD",
+      "selected_for_next_cycle": false,
+      "decision_rationale": "일반 역세권 짐보관은 기존 대체재가 강함. 대형짐/단체·호텔 overflow만 보류; 미관측 POI를 공급 공백으로 읽지 않는다.",
+      "decisive_questions": [
+        "최근 기존 보관 대체재가 받지 못한 대형짐/단체 요청이 실제로 있는가?",
+        "기존 호스트 직원이 배상/인수인계/운영시간과 함께 경제적으로 맡을 수 있는가?"
+      ],
+      "next_experiment": {
+        "experiment_id": "CV-008",
+        "status": "USER ACTION REQUIRED",
+        "hypothesis": "한 유형의 oversize/group overflow가 기존 직원 host에게 배치 가능하다.",
+        "unknown_resolved": "미충족 짐 유형·배상·호스트 기여를 함께 확인",
+        "target_counterparty": "같은 유형 숙박/관광 호스트 5곳 + 기존 보관 대체재 3곳",
+        "required_sample": {
+          "hosts": 5,
+          "substitutes": 3
+        },
+        "questions_and_data": [
+          "미충족 짐 유형·배상·호스트 기여를 함께 확인",
+          "최근 30일 거절 사례·짐 크기·요청 시간·기존 T서비스/호텔/락커 대체 가능성",
+          "현재 대체재 가격/크기/시간 직접 확인; host 순수취·입출고 책임·보험/배상/보안·취소·owner 긴급 호출"
+        ],
+        "cash_ceiling_krw": 50000,
+        "owner_hours_ceiling": 5,
+        "weekday_interruption": "사전 예약만; 긴급/당일 방문 없음; 근무 중 응답 약속 금지",
+        "travel": "최대 한 번의 묶음 방문; 원격 우선",
+        "external_parties": 8,
+        "decision_window_days": 14,
+        "budget_basis": "제안된 정보수집 지출·시간 상한(시장 견적 아님); 모집 실패는 HOLD, 완료로 계산하지 않음",
+        "pass_rule": "5 host 중 2곳에서 같은 구체 공백의 최근 사례; 1 host가 기존 직원+무고정임대+명확 책임분담을 논의; 보험/배상 미해결이면 계약 단계로 진행 금지.",
+        "hold_rule": "직원/보험/파트너 순조건 누락: 조건 확인만 1회, 보관 접수 금지.",
+        "fail_rule": "공백 사례 없음/기존 서비스로 모두 충분 또는 owner가 입출고·분실 긴급대응해야 함 또는 배상책임 해결 불가.",
+        "next_on_pass": "틈새만 재검토; 새 보관업 시작 전 책임/보험 승인 및 별도 preregistration.",
+        "expected_evidence_level": "C3 실제 host 면담; substitute 관측만이면 C2",
+        "prohibited": [
+          "장비 구매",
+          "임대차",
+          "보증금/예치금",
+          "재고 약정",
+          "유료광고",
+          "파일럿 시작"
+        ],
+        "instrument": "field/candidate-validation-instruments-v1.md#cv-008"
+      },
+      "stop_conditions": [
+        "일반 역세권 보관 단독 임대/락커 구매형은 이번 cycle ARCHIVE",
+        "틈새를 5 hosts에서 못 찾으면 OC-008 현재 가설 ARCHIVE"
+      ],
+      "site_discovery": {
+        "status": "NOT_READY",
+        "reason": "일반 수요는 기존 공급으로 해결 가능; niche host·배상·순기여 미확인",
+        "next_methodology": "상업 견적·호스트 면담을 먼저. READY 재판정 후 별도 검토 PR에서만 실제 사이트 조사.",
+        "target_archetypes": [
+          "직원이 상주하는 숙박 호스트의 대형짐/단체 overflow 유형"
+        ],
+        "actual_site_discovery_authorized": false
+      },
+      "economics": {
+        "status": "UNKNOWN",
+        "overall_score": null,
+        "forecast_revenue_krw": null,
+        "contribution_krw": null,
+        "resale_recovery_krw": null,
+        "framework_assessment": {
+          "economics_25": {
+            "status": "UNKNOWN",
+            "reason": "실제 기여·고정비·반복 결제·잔존가치 미확인"
+          },
+          "owner_fit_25": {
+            "status": "PROVISIONAL",
+            "reason": "입출고는 호스트 직원만; owner가 접수하면 선형 노동"
+          },
+          "demand_distribution_20": {
+            "status": "PROVISIONAL",
+            "reason": "외부 유사 모델은 있음; 우리 구매자/호스트 지불의사 미확인"
+          },
+          "asset_operations_15": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "competition_defensibility_10": {
+            "status": "UNKNOWN",
+            "reason": "대체재/경쟁 존재; 지속 차별화 미검증"
+          },
+          "ai_data_leverage_5": {
+            "status": "ASSUMPTION",
+            "reason": "반복 처리의 노동 절감 가능성만; 선정 가산점 없음"
+          }
+        }
+      },
+      "updated_at": "2026-10-05"
+    },
+    {
+      "candidate_id": "OC-022",
+      "lane": "TRANSACTION",
+      "evidence_level": "C2",
+      "evidence_scope": {
+        "strength": "구매 통합 경쟁자 C2; 우리 표적 고객 pain·바스켓·마진은 UNKNOWN",
+        "decision_reason": "재고/장비 없이 실제 구매 바스켓과 RFQ로 지불 경로를 확인할 수 있다. 반복조달의 노동/마진 위험을 가장 먼저 반증한다."
+      },
+      "evidence_verified_through": "C2_PUBLIC_ONLY_INHERITED",
+      "evidence_references": [
+        "S-MRO",
+        "S-MRO2",
+        "S-LEADS",
+        "S-FIELD"
+      ],
+      "inventory": {
+        "sourced_facts": [
+          {
+            "text": "국내 MRO 업체가 통합 구매/배송 프로세스를 제공한다.",
+            "source_ids": [
+              "S-MRO",
+              "S-MRO2"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          },
+          {
+            "text": "공공 공장 정보가 비고용주 리드 경로로 기록되어 있다.",
+            "source_ids": [
+              "S-LEADS"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          }
+        ],
+        "derived_signals": [
+          "장비 전 단계에서 SKU·지출·주문주기·배송·비가격 pain을 직접 볼 수 있어 실물 설치보다 검증 노출을 제한할 수 있다."
+        ],
+        "assumptions": [
+          "10–100인 소규모 제조/수리 사업장의 10–20개 비규제 소모품은 일정 배송/공급사 직송으로 표준화 가능할 수 있다."
+        ],
+        "unknowns": [
+          "최근 실제 바스켓",
+          "전환 이유",
+          "정규격 매입가/배송/결제/반품비",
+          "기여액/주문당 owner 분",
+          "공급사 직송·최소주문·여신",
+          "등록/세무/정확 규격 요건"
+        ],
+        "real_world_evidence_required": [
+          "표적 사업장 15곳에서 반복 조달과 비가격 불편이 실제로 확인되는가?",
+          "실제 바스켓 5개 중 3개에 이행비 포함 마진 >=15%와 표준 배송이 가능한가?"
+        ]
+      },
+      "hard_gates": {
+        "status": "UNRESOLVED_NO_PILOT",
+        "assessment_basis": "헌법 기준으로 먼저 검토; 설계상 회피는 실측 PASS가 아님",
+        "checks": {
+          "weekday_availability": {
+            "status": "CONDITIONAL",
+            "finding": "정기/직송만; 당일 납품 약속 금지"
+          },
+          "emergency_response": {
+            "status": "CONDITIONAL",
+            "finding": "안전필수/긴급부품 제외; 긴급 요청 비중 측정"
+          },
+          "owner_labor_scaling": {
+            "status": "UNKNOWN",
+            "finding": "개별 RFQ/포장/배달 시간이 고객수에 비례할 위험"
+          },
+          "fixed_lease": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "이 실험에서는 고정 임대차/구매 약정 없음; 사업 실행까지 통과 아님"
+          },
+          "legal_permission": {
+            "status": "UNKNOWN",
+            "finding": "비규제 소모품으로 범위 제한; 인증 PPE/화학/의료 제외; 판매 전 사업자/세무/고용주 확인"
+          },
+          "downside": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "인터뷰+견적만; 재고/여신/선지급 없음"
+          },
+          "paying_customer_route": {
+            "status": "PLAUSIBLE_UNPROVEN",
+            "finding": "기존 시장 경로는 있지만 우리에게 지불할 고객 미확인"
+          },
+          "cheap_kill": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "서류/인터뷰까지만 실시하고 상한에서 중단 가능"
+          },
+          "recoverability": {
+            "status": "NOT_APPLICABLE",
+            "finding": "검증 단계 재고/장비 없음"
+          },
+          "outsourcing": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          }
+        }
+      },
+      "dependencies": [],
+      "decision_status": "ADVANCE_NOW",
+      "selected_for_next_cycle": true,
+      "decision_rationale": "재고/장비 없이 실제 구매 바스켓과 RFQ로 지불 경로를 확인할 수 있다. 반복조달의 노동/마진 위험을 가장 먼저 반증한다.",
+      "decisive_questions": [
+        "표적 사업장 15곳에서 반복 조달과 비가격 불편이 실제로 확인되는가?",
+        "실제 바스켓 5개 중 3개에 이행비 포함 마진 >=15%와 표준 배송이 가능한가?"
+      ],
+      "next_experiment": {
+        "experiment_id": "CV-022",
+        "status": "USER ACTION REQUIRED",
+        "hypothesis": "반복 소모품 통합은 값만 낮추는 중개보다 구체적 주문/재고 불편을 줄일 수 있다.",
+        "unknown_resolved": "실제 반복 바스켓의 pain와 이행 후 마진·주문당 시간을 확인",
+        "target_counterparty": "서울/경기 10–100인 제조·수리·가공 사업장; 구매 담당/현장 관리자; 고용주 관계 배제",
+        "required_sample": {
+          "qualified_buyer_interviews": 15,
+          "anonymized_real_baskets": 5,
+          "supplier_quotes": 3
+        },
+        "questions_and_data": [
+          "실제 반복 바스켓의 pain와 이행 후 마진·주문당 시간을 확인",
+          "최근 1개월 10–20 SKU/규격/단가/수량/공급처수/배송/긴급주문/결제/반품/주문 시간; 자료 공유 동의",
+          "동일 규격 매입가·대체 허용·최소주문·직송·배송주기·결제료·반품비; 비규제 확인; 바스켓 처리 시간을 측정",
+          "OC-021 확장 질문은 지급기 구매 대신 사용통제 pain만 기록"
+        ],
+        "cash_ceiling_krw": 150000,
+        "owner_hours_ceiling": 10,
+        "weekday_interruption": "사전 예약만; 긴급/당일 방문 없음; 근무 중 응답 약속 금지",
+        "travel": "최대 한 번의 묶음 방문; 원격 우선",
+        "external_parties": 18,
+        "decision_window_days": 21,
+        "budget_basis": "제안된 정보수집 지출·시간 상한(시장 견적 아님); 모집 실패는 HOLD, 완료로 계산하지 않음",
+        "pass_rule": "15 qualified 중 >=8 매월 반복, >=5 실제 바스켓, >=5 비가격 pain; 5중 >=3 바스켓이 이행/결제비 후 >=15% 마진(명시된 바스켓 매출 분모) 또는 확인된 consolidation 서비스료로 이를 충족; 정규 배송 가능.",
+        "hold_rule": "샘플 미완료/정규격 견적 누락/마진은 되지만 주문당 시간이 표준화 안 됨: 한 번 범위 축소; 신규 재고·거래 없음.",
+        "fail_rule": "15 qualified gate 실패 또는 >=4/5가 commodity-only이고 비가격 가치 없음; 일일 배송/긴급 대응만 수용; 바스켓별 기여가 owner 시간을 감당할 경로가 없음.",
+        "next_on_pass": "실제 바스켓 기반 무예치·무주문 제안서 3건까지 작성. 서면 의향/거래는 별도 사람 검토/승인 후; 이 PR은 주문/파일럿 승인 아님.",
+        "expected_evidence_level": "C3",
+        "prohibited": [
+          "장비 구매",
+          "임대차",
+          "보증금/예치금",
+          "재고 약정",
+          "유료광고",
+          "파일럿 시작"
+        ],
+        "instrument": "field/candidate-validation-instruments-v1.md#cv-022"
+      },
+      "stop_conditions": [
+        "15명 gate 실패 후 segment 수정 1회만; 반복 실패 ARCHIVE",
+        "직송/배치 불가 또는 위험 규격/고용주 의존이면 종료"
+      ],
+      "site_discovery": {
+        "status": "NOT_APPLICABLE",
+        "reason": "자산 없는 조달 검증; site discovery 대신 구매/이행 확인",
+        "actual_site_discovery_authorized": false
+      },
+      "economics": {
+        "status": "UNKNOWN",
+        "overall_score": null,
+        "forecast_revenue_krw": null,
+        "contribution_krw": null,
+        "resale_recovery_krw": null,
+        "framework_assessment": {
+          "economics_25": {
+            "status": "UNKNOWN",
+            "reason": "실제 기여·고정비·반복 결제·잔존가치 미확인"
+          },
+          "owner_fit_25": {
+            "status": "PROVISIONAL",
+            "reason": "개별 RFQ/포장/배달 시간이 고객수에 비례할 위험"
+          },
+          "demand_distribution_20": {
+            "status": "PROVISIONAL",
+            "reason": "외부 유사 모델은 있음; 우리 구매자/호스트 지불의사 미확인"
+          },
+          "asset_operations_15": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "competition_defensibility_10": {
+            "status": "UNKNOWN",
+            "reason": "대체재/경쟁 존재; 지속 차별화 미검증"
+          },
+          "ai_data_leverage_5": {
+            "status": "ASSUMPTION",
+            "reason": "반복 처리의 노동 절감 가능성만; 선정 가산점 없음"
+          }
+        }
+      },
+      "updated_at": "2026-10-05"
+    },
+    {
+      "candidate_id": "OC-021",
+      "lane": "TRANSACTION",
+      "evidence_level": "C2",
+      "evidence_scope": {
+        "strength": "인증 지급 운영 모델 C2; 장비가격·현장 지급통제 필요 UNKNOWN",
+        "decision_reason": "OC-022에서 반복 바스켓/발급통제 pain이 확인되어야 의미 있다. 과거 82점은 독립 장비 구매/접촉 우선순위가 아니다."
+      },
+      "evidence_verified_through": "C2_PUBLIC_ONLY_INHERITED",
+      "evidence_references": [
+        "S-DISPENSE",
+        "S-MRO",
+        "S-FIELD"
+      ],
+      "inventory": {
+        "sourced_facts": [
+          {
+            "text": "QR/직원 인증 PPE 지급과 사용 데이터 서비스의 공개 모델이 기록되어 있다.",
+            "source_ids": [
+              "S-DISPENSE"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          }
+        ],
+        "derived_signals": [
+          "고객이 단가/조달만 원하면 지급기는 추가 비용. 지급통제 value를 먼저 확인해야 한다."
+        ],
+        "assumptions": [
+          "반복조달 고객 중 일부는 비근무시간 지급/통제 문제를 갖고 있을 수 있다."
+        ],
+        "unknowns": [
+          "지급통제 pain 비용",
+          "장비+소프트웨어+설치+지원 가격",
+          "네트워크/보안/직원 데이터 적법 처리",
+          "최소소모품 약정·AS·잔존가치"
+        ],
+        "real_world_evidence_required": [
+          "OC-022 고객이 단가가 아닌 발급통제/stockout 문제를 실제 사례로 설명하는가?",
+          "장비를 요구하는 두 독립 사이트가 설치 책임/기술 조건/외주 지원을 논의하는가?"
+        ]
+      },
+      "hard_gates": {
+        "status": "UNRESOLVED_NO_PILOT",
+        "assessment_basis": "헌법 기준으로 먼저 검토; 설계상 회피는 실측 PASS가 아님",
+        "checks": {
+          "weekday_availability": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "emergency_response": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "owner_labor_scaling": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "fixed_lease": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "이 실험에서는 고정 임대차/구매 약정 없음; 사업 실행까지 통과 아님"
+          },
+          "legal_permission": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "downside": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "paying_customer_route": {
+            "status": "DEPENDENT",
+            "finding": "OC-022 반복 수요+통제 pain gate 후에만 payer 경로"
+          },
+          "cheap_kill": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "서류/인터뷰까지만 실시하고 상한에서 중단 가능"
+          },
+          "recoverability": {
+            "status": "UNKNOWN",
+            "finding": "공개 실거래/매입보장/잔존가치 없음"
+          },
+          "outsourcing": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          }
+        }
+      },
+      "dependencies": [
+        "OC-022"
+      ],
+      "decision_status": "DEPENDENT",
+      "selected_for_next_cycle": false,
+      "decision_rationale": "OC-022에서 반복 바스켓/발급통제 pain이 확인되어야 의미 있다. 과거 82점은 독립 장비 구매/접촉 우선순위가 아니다.",
+      "decisive_questions": [
+        "OC-022 고객이 단가가 아닌 발급통제/stockout 문제를 실제 사례로 설명하는가?",
+        "장비를 요구하는 두 독립 사이트가 설치 책임/기술 조건/외주 지원을 논의하는가?"
+      ],
+      "next_experiment": {
+        "experiment_id": "CV-021",
+        "status": "USER ACTION REQUIRED",
+        "hypothesis": "반복 소비 고객에게 인증 지급기가 수동 정기조달 이상의 가치가 있다.",
+        "unknown_resolved": "조달과 지급통제 job을 분리",
+        "target_counterparty": "CV-022의 같은 15명; 독립 장비 prospecting 없음",
+        "required_sample": {
+          "shared_oc022_interviews": 15,
+          "control_pain_sites_min": 5,
+          "potential_sites_min": 2
+        },
+        "questions_and_data": [
+          "조달과 지급통제 job을 분리",
+          "누가 지급/기록? 야간 요청? 최근 분실/과소·과다 사용? 관리자 분/주? stockout 중단 사례? manual 대체?",
+          "5 pain 사이트 중 2가 설치지점·전력·네트워크·보안·책임·무예치 서면 논의에 동의하는지"
+        ],
+        "cash_ceiling_krw": 0,
+        "owner_hours_ceiling": 1,
+        "weekday_interruption": "사전 예약만; 긴급/당일 방문 없음; 근무 중 응답 약속 금지",
+        "travel": "최대 한 번의 묶음 방문; 원격 우선",
+        "external_parties": 0,
+        "decision_window_days": 21,
+        "budget_basis": "제안된 정보수집 지출·시간 상한(시장 견적 아님); 모집 실패는 HOLD, 완료로 계산하지 않음",
+        "pass_rule": "CV-022 완료 뒤 >=5 사이트 구체적 통제 pain, >=2 사이트 설치/외주지원/서면 검토 논의 가능; 그때에만 완전 장비 견적 요청(구매 없음).",
+        "hold_rule": "OC-022 미완료 또는 pain/보안 담당 확인 미완료면 DEPENDENT 유지.",
+        "fail_rule": "반복 수요가 없거나 모두 단가만 원하거나 수동 보충으로 해결되면 이 upgrade ARCHIVE.",
+        "next_on_pass": "한국 지급기 complete quotation/고객 비용부담 구조 비교; 2 written trial intents 없이 장비 평가 확장 금지.",
+        "expected_evidence_level": "C3",
+        "prohibited": [
+          "장비 구매",
+          "임대차",
+          "보증금/예치금",
+          "재고 약정",
+          "유료광고",
+          "파일럿 시작"
+        ],
+        "instrument": "field/candidate-validation-instruments-v1.md#cv-021"
+      },
+      "stop_conditions": [
+        "OC-022 FAIL이면 장비 가설 자동 HOLD/ARCHIVE 재판정",
+        "고객의 수동조달 대체로 충분/상시 현장 support 필수이면 종료"
+      ],
+      "site_discovery": {
+        "status": "NOT_APPLICABLE",
+        "reason": "OC-022 증거에 종속; 장비 설치처 발굴 없음",
+        "actual_site_discovery_authorized": false
+      },
+      "economics": {
+        "status": "UNKNOWN",
+        "overall_score": null,
+        "forecast_revenue_krw": null,
+        "contribution_krw": null,
+        "resale_recovery_krw": null,
+        "framework_assessment": {
+          "economics_25": {
+            "status": "UNKNOWN",
+            "reason": "실제 기여·고정비·반복 결제·잔존가치 미확인"
+          },
+          "owner_fit_25": {
+            "status": "PROVISIONAL",
+            "reason": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "demand_distribution_20": {
+            "status": "PROVISIONAL",
+            "reason": "외부 유사 모델은 있음; 우리 구매자/호스트 지불의사 미확인"
+          },
+          "asset_operations_15": {
+            "status": "PROVISIONAL",
+            "reason": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "competition_defensibility_10": {
+            "status": "UNKNOWN",
+            "reason": "대체재/경쟁 존재; 지속 차별화 미검증"
+          },
+          "ai_data_leverage_5": {
+            "status": "ASSUMPTION",
+            "reason": "반복 처리의 노동 절감 가능성만; 선정 가산점 없음"
+          }
+        }
+      },
+      "updated_at": "2026-10-05"
+    },
+    {
+      "candidate_id": "OC-030",
+      "lane": "TRANSACTION",
+      "evidence_level": "C2",
+      "evidence_scope": {
+        "strength": "국내 행사 묶음상품/가격 공개 C2; 순파트너 조건·dated RFQ UNKNOWN",
+        "decision_reason": "구매 없이 3개 순견적으로 외주 logistics와 차익을 빨리 반증 가능. 공급 gate를 넘기 전 buyer campaign은 하지 않는다."
+      },
+      "evidence_verified_through": "C2_PUBLIC_ONLY_INHERITED",
+      "evidence_references": [
+        "S-EVENT",
+        "S-CHIKI",
+        "S-CHIKI-BUY",
+        "S-PHOTOQ",
+        "S-FIELD"
+      ],
+      "inventory": {
+        "sourced_facts": [
+          {
+            "text": "행사 30만원/100만원/99만–132만원의 서로 다른 과거 소매 묶음이 기록되어 있다.",
+            "source_ids": [
+              "S-EVENT",
+              "S-CHIKI",
+              "S-PHOTOQ"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          },
+          {
+            "text": "Chiki 장비 구매 기본가와 VAT/소프트웨어 추가가 기록되어 있다.",
+            "source_ids": [
+              "S-CHIKI-BUY"
+            ],
+            "verification": "INHERITED_REPOSITORY_CLAIM"
+          }
+        ],
+        "derived_signals": [
+          "소매 묶음의 가격 차이는 중개 마진이 아니다. 행사 장소/날짜/물량/지원 포함을 맞춰야 비교 가능."
+        ],
+        "assumptions": [
+          "공급자가 설치·철거·현장 장애를 책임지면 owner는 예약된 영업/관리만 할 수 있다는 가설."
+        ],
+        "unknowns": [
+          "파트너 순견적·VAT",
+          "일정/물량 동일성",
+          "장애/현장 지원·취소 책임",
+          "날짜 있는 수요",
+          "owner 실제 시간",
+          "개인정보 수집 없는 offer"
+        ],
+        "real_world_evidence_required": [
+          "동일 행사 사양의 파트너 순조건에서 owner 현장 출동 없이 차익을 남길 수 있는가?",
+          "적격 buyer 20곳 중 4곳이 날짜/장소가 있는 실제 견적 요청을 하는가?"
+        ]
+      },
+      "hard_gates": {
+        "status": "UNRESOLVED_NO_PILOT",
+        "assessment_basis": "헌법 기준으로 먼저 검토; 설계상 회피는 실측 PASS가 아님",
+        "checks": {
+          "weekday_availability": {
+            "status": "CONDITIONAL",
+            "finding": "가설대로 배치/외주가 가능할 때만 허용"
+          },
+          "emergency_response": {
+            "status": "UNKNOWN",
+            "finding": "행사 중 고장 대응이 공급자 책임인지 서면 확인 필요"
+          },
+          "owner_labor_scaling": {
+            "status": "CONDITIONAL",
+            "finding": "소유자 영업시간은 증가 가능; 반복 견적·날짜당 시간 측정"
+          },
+          "fixed_lease": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "이 실험에서는 고정 임대차/구매 약정 없음; 사업 실행까지 통과 아님"
+          },
+          "legal_permission": {
+            "status": "UNKNOWN",
+            "finding": "사업자·세무·계약/보험·초상/개인정보. v1은 리드/설문 수집 제외"
+          },
+          "downside": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "공급 견적/무예치 buyer RFQ까지만; 계약/광고/매입 없음"
+          },
+          "paying_customer_route": {
+            "status": "PLAUSIBLE_UNPROVEN",
+            "finding": "기존 시장 경로는 있지만 우리에게 지불할 고객 미확인"
+          },
+          "cheap_kill": {
+            "status": "AVOIDED_BY_DESIGN",
+            "finding": "서류/인터뷰까지만 실시하고 상한에서 중단 가능"
+          },
+          "recoverability": {
+            "status": "NOT_APPLICABLE",
+            "finding": "외주 견적 모델, 자산 취득 없음"
+          },
+          "outsourcing": {
+            "status": "UNKNOWN",
+            "finding": "실제 조건/관할 확인 전 PASS 아님"
+          }
+        }
+      },
+      "dependencies": [],
+      "decision_status": "CHEAP_TEST_FIRST",
+      "selected_for_next_cycle": true,
+      "decision_rationale": "구매 없이 3개 순견적으로 외주 logistics와 차익을 빨리 반증 가능. 공급 gate를 넘기 전 buyer campaign은 하지 않는다.",
+      "decisive_questions": [
+        "동일 행사 사양의 파트너 순조건에서 owner 현장 출동 없이 차익을 남길 수 있는가?",
+        "적격 buyer 20곳 중 4곳이 날짜/장소가 있는 실제 견적 요청을 하는가?"
+      ],
+      "next_experiment": {
+        "experiment_id": "CV-030",
+        "status": "USER ACTION REQUIRED",
+        "hypothesis": "1개 표준 행사 패키지를 완전 외주로 중개할 수 있다.",
+        "unknown_resolved": "동일 사양 순조건과 owner 무현장 운영 가능성을 확인",
+        "target_counterparty": "SELPIC/Chiki/PhotoQ 등 공급 3곳; 이후 날짜 있는 HR/행사 PM/행사대행 buyer 20곳",
+        "required_sample": {
+          "comparable_supplier_quotes": 3,
+          "later_qualified_buyers": 20
+        },
+        "questions_and_data": [
+          "동일 사양 순조건과 owner 무현장 운영 가능성을 확인",
+          "1일/서울/정해진 시간·인원·출력수·브랜딩; 순공급가/VAT·운송·설치철거·소모품상한·staff·장애/보상 SLA·취소·인보이스·leadtime",
+          "supplier gate 이후 dated buyer RFQ 20: 최근 지출 범위·확정 날짜/장소/인원·현행 대체·브랜딩 필요·소매견적 요청; 개인정보 수집 옵션 제외"
+        ],
+        "cash_ceiling_krw": 100000,
+        "owner_hours_ceiling": 8,
+        "weekday_interruption": "사전 예약만; 긴급/당일 방문 없음; 근무 중 응답 약속 금지",
+        "travel": "최대 한 번의 묶음 방문; 원격 우선",
+        "external_parties": 23,
+        "decision_window_days": 21,
+        "budget_basis": "제안된 정보수집 지출·시간 상한(시장 견적 아님); 모집 실패는 HOLD, 완료로 계산하지 않음",
+        "pass_rule": "Stage A: 동일 범위 견적 3건, 최소 1곳 완전 외주/장애대응 서면 명시. Stage B: 20명 중 >=4 dated RFQ, >=2 scope 논의; 실제 buyer 가격-순공급/모든비용 >=15만원/event, scheduled owner <=2시간/event, owner 현장 참석 없음.",
+        "hold_rule": "Stage A 3견적 미완료/범위 불일치/가격 비공개면 비교 완료까지만; Stage B 샘플 미완료는 C3 achieved로 표시하지 않음.",
+        "fail_rule": "Stage A에서 외주 support 불가 또는 owner 운송/설치/당일대기 필수. Stage B에서 20명 후 dated RFQ 0 또는 matched 기여<10만원/event; 10–15만원은 HOLD 후 1회 범위 조정.",
+        "next_on_pass": "공급 stage 통과 후 무예치 dated RFQ/제안서만. 실제 계약/예치금/주문/행사 실행은 별도 검토. 장비 소유 검토는 미래 완료 유료 외주 행사 >=3건 후에만.",
+        "expected_evidence_level": "Stage A C2 직접견적; Stage B C3 dated RFQ",
+        "prohibited": [
+          "장비 구매",
+          "임대차",
+          "보증금/예치금",
+          "재고 약정",
+          "유료광고",
+          "파일럿 시작"
+        ],
+        "instrument": "field/candidate-validation-instruments-v1.md#cv-030"
+      },
+      "stop_conditions": [
+        "generic 가격비교뿐/외주 후 차익 없음/주말 운송 필수이면 현재 offer 종료",
+        "Stage B 20명 이후 RFQ 0이면 이 offer ARCHIVE; paid deposit 요청 안 함"
+      ],
+      "site_discovery": {
+        "status": "NOT_APPLICABLE",
+        "reason": "외주 행사 조건 검증; 영구 설치/건물 발굴 없음",
+        "actual_site_discovery_authorized": false
+      },
+      "economics": {
+        "status": "UNKNOWN",
+        "overall_score": null,
+        "forecast_revenue_krw": null,
+        "contribution_krw": null,
+        "resale_recovery_krw": null,
+        "framework_assessment": {
+          "economics_25": {
+            "status": "UNKNOWN",
+            "reason": "실제 기여·고정비·반복 결제·잔존가치 미확인"
+          },
+          "owner_fit_25": {
+            "status": "PROVISIONAL",
+            "reason": "소유자 영업시간은 증가 가능; 반복 견적·날짜당 시간 측정"
+          },
+          "demand_distribution_20": {
+            "status": "PROVISIONAL",
+            "reason": "외부 유사 모델은 있음; 우리 구매자/호스트 지불의사 미확인"
+          },
+          "asset_operations_15": {
+            "status": "PROVISIONAL",
+            "reason": "실제 조건/관할 확인 전 PASS 아님"
+          },
+          "competition_defensibility_10": {
+            "status": "UNKNOWN",
+            "reason": "대체재/경쟁 존재; 지속 차별화 미검증"
+          },
+          "ai_data_leverage_5": {
+            "status": "ASSUMPTION",
+            "reason": "반복 처리의 노동 절감 가능성만; 선정 가산점 없음"
+          }
+        }
+      },
+      "updated_at": "2026-10-05"
+    }
+  ],
+  "economic_bounds": [
+    {
+      "candidate_id": "OC-001",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "개인/홈 부스의 과거 시작 가격",
+      "value_krw": 2650000,
+      "source_ids": [
+        "S-BOOTH"
+      ],
+      "limitation": "상업 통화부스 total capex 하한도 보장하지 않음."
+    },
+    {
+      "candidate_id": "OC-013",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "서로 다른 키오스크 모델 VAT 포함 기본가",
+      "value_krw": 5500000,
+      "source_ids": [
+        "S-PHOTO"
+      ],
+      "limitation": "배송/설치/라이선스/소모품/host 비용 미확인; 한 모델의 가격범위로 묶지 않음."
+    },
+    {
+      "candidate_id": "OC-013",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "서로 다른 키오스크 모델 VAT 포함 기본가",
+      "value_krw": 7700000,
+      "source_ids": [
+        "S-PHOTO"
+      ],
+      "limitation": "배송/설치/라이선스/소모품/host 비용 미확인; 한 모델의 가격범위로 묶지 않음."
+    },
+    {
+      "candidate_id": "OC-013",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "서로 다른 키오스크 모델 VAT 포함 기본가",
+      "value_krw": 9900000,
+      "source_ids": [
+        "S-PHOTO"
+      ],
+      "limitation": "배송/설치/라이선스/소모품/host 비용 미확인; 한 모델의 가격범위로 묶지 않음."
+    },
+    {
+      "candidate_id": "OC-013",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "4×6 사진 시작 소매가",
+      "value_krw": 1000,
+      "source_ids": [
+        "S-PRINT"
+      ],
+      "limitation": "기여액 아님; 현재가/장소/consumable 미확인."
+    },
+    {
+      "candidate_id": "OC-020",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "중고 냉장 장비 단일 과거 호가",
+      "value_krw": 2500000,
+      "source_ids": [
+        "S-VEND"
+      ],
+      "limitation": "용도·재고·결제·재판매가 미확인."
+    },
+    {
+      "candidate_id": "OC-008",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "가방/일 과거 시작 소매가",
+      "value_krw": 5100,
+      "source_ids": [
+        "S-LUGGAGE"
+      ],
+      "limitation": "host fee/보험/노동 공제 전; 수량·수요·현재가 없음."
+    },
+    {
+      "candidate_id": "OC-030",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "서로 다른 행사 모델/서비스 묶음의 과거 소매가",
+      "value_krw": 300000,
+      "source_ids": [
+        "S-EVENT"
+      ],
+      "limitation": "같은 묶음이 아님; VAT/날짜/공급 순가 미확인; 가격차=마진 금지."
+    },
+    {
+      "candidate_id": "OC-030",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "서로 다른 행사 모델/서비스 묶음의 과거 소매가",
+      "value_krw": 1000000,
+      "source_ids": [
+        "S-CHIKI"
+      ],
+      "limitation": "같은 묶음이 아님; VAT/날짜/공급 순가 미확인; 가격차=마진 금지."
+    },
+    {
+      "candidate_id": "OC-030",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "서로 다른 행사 모델/서비스 묶음의 과거 소매가",
+      "value_krw": 990000,
+      "source_ids": [
+        "S-PHOTOQ"
+      ],
+      "limitation": "같은 묶음이 아님; VAT/날짜/공급 순가 미확인; 가격차=마진 금지."
+    },
+    {
+      "candidate_id": "OC-030",
+      "type": "SOURCED_REPOSITORY_CLAIM",
+      "statement": "서로 다른 행사 모델/서비스 묶음의 과거 소매가",
+      "value_krw": 1320000,
+      "source_ids": [
+        "S-PHOTOQ"
+      ],
+      "limitation": "같은 묶음이 아님; VAT/날짜/공급 순가 미확인; 가격차=마진 금지."
+    },
+    {
+      "candidate_id": "OC-030",
+      "type": "ESTIMATE_FROM_SOURCED_BASE_WITH_EXPLICIT_VAT_ASSUMPTION",
+      "statement": "과거 장비 기본가 6,000,000원에 VAT 10%만 더한 금액",
+      "value_krw": 6600000,
+      "source_ids": [
+        "S-CHIKI-BUY"
+      ],
+      "limitation": "추가 software/설치/운송/보관 없음. VAT 적용률 10% 계산 가정; 현재 세무/견적 확인 필요. 구매 판단 아님."
+    },
+    {
+      "candidate_id": "OC-030",
+      "type": "ESTIMATE_FROM_SOURCED_BASE_WITH_EXPLICIT_VAT_ASSUMPTION",
+      "statement": "과거 장비 기본가 7,000,000원에 VAT 10%만 더한 금액",
+      "value_krw": 7700000,
+      "source_ids": [
+        "S-CHIKI-BUY"
+      ],
+      "limitation": "추가 software/설치/운송/보관 없음. VAT 적용률 10% 계산 가정; 현재 세무/견적 확인 필요. 구매 판단 아님."
+    },
+    {
+      "candidate_id": "OC-030",
+      "type": "ESTIMATE_FROM_SOURCED_BASE_WITH_EXPLICIT_VAT_ASSUMPTION",
+      "statement": "과거 장비 기본가 9,000,000원에 VAT 10%만 더한 금액",
+      "value_krw": 9900000,
+      "source_ids": [
+        "S-CHIKI-BUY"
+      ],
+      "limitation": "추가 software/설치/운송/보관 없음. VAT 적용률 10% 계산 가정; 현재 세무/견적 확인 필요. 구매 판단 아님."
+    }
+  ],
+  "portfolio_budget": {
+    "type": "PROPOSED_VALIDATION_CEILINGS_NOT_MARKET_QUOTES",
+    "selected_candidate_ids": [
+      "OC-022",
+      "OC-030"
+    ],
+    "full_experiment_cash_ceiling_krw": 250000,
+    "full_experiment_owner_hours_ceiling": 18,
+    "first_week_cash_ceiling_krw": 200000,
+    "first_week_owner_hours_ceiling": 10,
+    "capex_commitment_krw": 0,
+    "overlap_rule": "OC-021 질문은 OC-022 인터뷰에만 붙임; 1시간은 선택 예산 밖 잠재 후속 상한이며 첫 주 별도 작업 없음",
+    "staging": "첫 주는 전체 sample 완료가 아니라 모집/부분 인터뷰/공급 견적. 무응답은 가설 통과 아님; 21일 또는 시간상한에서 HOLD 판정."
+  },
+  "execution_queue": [
+    {
+      "order": 1,
+      "window": "첫 평일 저녁",
+      "candidate_ids": [
+        "OC-022",
+        "OC-030"
+      ],
+      "owner_hours_ceiling": 1,
+      "cash_ceiling_krw": 0,
+      "action": "고용주 정책·비고용주 접촉 경계를 확인하고 인터뷰/견적 표준 양식을 고정. 상품/규격은 비규제 소모품만.",
+      "expected_output": "접촉 가능 범위와 미확인 항목 기록",
+      "status": "USER ACTION REQUIRED"
+    },
+    {
+      "order": 2,
+      "window": "두 번째 저녁",
+      "candidate_ids": [
+        "OC-030"
+      ],
+      "owner_hours_ceiling": 2,
+      "cash_ceiling_krw": 0,
+      "action": "동일 1일 서울 행사 사양으로 3 공급사에 순조건 요청을 준비·직접 전달; support/취소/운송 전부 같은 명세로 비교.",
+      "expected_output": "실제 회신 0–3건; 무응답은 UNKNOWN. Stage A 통과 전 buyer outreach 없음.",
+      "status": "USER ACTION REQUIRED"
+    },
+    {
+      "order": 3,
+      "window": "세 번째 저녁 + 미리 정한 면담 시간",
+      "candidate_ids": [
+        "OC-022"
+      ],
+      "owner_hours_ceiling": 3,
+      "cash_ceiling_krw": 50000,
+      "action": "공개 회사 정보만으로 10곳 적격 여부 확인·모집; 주말/퇴근 후 인터뷰 5개 예약·부분 실시. 근무시간 즉시 응답 약속하지 않음.",
+      "expected_output": "qualifying roster는 비공개; 최근 구매/비가격 pain/익명 basket 요청. 5명은 15명 gate 완료 아님.",
+      "status": "USER ACTION REQUIRED"
+    },
+    {
+      "order": 4,
+      "window": "주말 1회 묶음",
+      "candidate_ids": [
+        "OC-022"
+      ],
+      "owner_hours_ceiling": 3,
+      "cash_ceiling_krw": 100000,
+      "action": "확정 면담을 합계 최대 5개 완료하고 동의된 익명 바스켓 최대 2개 확보; 자료가 있으면 3 공급사에 동규격 quote만 요청.",
+      "expected_output": "실제 사례·SKU·수량·배송/결제·비가격 pain·자료 누락을 기록; 거래/재고 약정 없음.",
+      "status": "USER ACTION REQUIRED"
+    },
+    {
+      "order": 5,
+      "window": "일요일 저녁",
+      "candidate_ids": [
+        "OC-022",
+        "OC-030"
+      ],
+      "owner_hours_ceiling": 1,
+      "cash_ceiling_krw": 50000,
+      "action": "회신과 시간 사용을 검토: OC-022 남은 15명/5 basket gate 일정을 상한 내 배치; OC-030 공급 gate 실패면 즉시 HOLD/FAIL.",
+      "expected_output": "다음 주 continue/HOLD/FAIL, 예산 잔액. 두 샘플이 미완료면 C3 전체검증/승격 완료 주장 금지.",
+      "status": "USER ACTION REQUIRED"
+    }
+  ],
+  "blockers": [
+    {
+      "operation": "현재 C2 공개 웹자료 확인",
+      "status": "BLOCKED_NETWORK_403",
+      "action": "환경 설정에서 공개 공급자/공공 사이트 도메인 허용 적용 후 재확인",
+      "claims_paused": [
+        "현재 가격",
+        "신규 C2 수집",
+        "공급자 명세 최신성",
+        "외부 링크 접근 유효성"
+      ]
+    },
+    {
+      "operation": "기존 GIS 전체 브라우저 테스트",
+      "status": "BLOCKED_NETWORK_403",
+      "action": "지도 CDN/타일/Playwright 다운로드 도메인 적용 후 CI pinned Chromium 재검증"
+    }
+  ],
+  "integrity_baseline": {
+    "docs/data/seoul-opportunity-map.json": "282a282312df284794bc5e060aeec7c6294bd1f22021483424659d179bb52d28",
+    "docs/data/kakao-poi-layer.json": "4a28854448ce7cc4e9051137bf1e46e789e547f8cca65ef5fc2f86ccf6a0d6a5",
+    "docs/data/opportunity-intelligence.json": "3d8049b89aa278212e240aab8cc312624d63794f64f69ba7afc258158ea3bf25",
+    "docs/data/real-estate-context.json": "eafdd7aeaabe45a086a665f2c06d5031587289d766a0b0191b20383ef877e024",
+    "docs/data/candidate-registry.json": "213e965a5e13138e4a78c87fc97ed7393f9449aac0943c084891f1c298243c21",
+    "docs/assets/gis.js": "e6c5163ca4564715220b2f56c51dee6d5ec0bd7a3c459606f7bc1aa61514e70b",
+    "docs/assets/map-adapter.js": "9900b1f4e170312056aacb36a3b5bbc56bec8b7240bb8e0ca6a2b710b27ea651",
+    "docs/assets/real-estate.js": "e54cc38e37bafdc824c5beabd3f800b65b0f465fa47b35132ada5c549e632b8e",
+    "docs/index.html": "269780fd7e8cf4909d122d5d0c44d1ad1265bd9f013b93f74e9650fc1b2e71af",
+    "docs/gis.html": "cb3cfce5cd861ae1d56e66df8510ca334f176f66c4035f309bc9e348cdb9ad59"
+  }
+}

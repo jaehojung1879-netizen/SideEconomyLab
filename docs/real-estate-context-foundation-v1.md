@@ -73,3 +73,15 @@ python -m unittest discover -s tests -v
 먼저 후보별 A/C 및 수요 상위 중 실제 보행동선과 경쟁을 확인하고, 가능성 있는 건물/호스트3곳의 정확한 주소·호실·층을 기록합니다. 그때 건축HUB에서 주/세부용도·층별 면적·연면적·사용승인일·구조를 수집하고 확인 주소/필지로 연결합니다. 구 시스템→건축HUB PK 변경도 기록해야 합니다. 좌표는 별도 공식 건물 도형/검증된 지오코딩으로 확인합니다. 대장 용도는 설치 허가·전력·접근·영업 가능성의 증명이 아닙니다.
 
 [건축물 증거 스키마](data/building-context.schema.json)는 기존 site_id에 연결 가능한 미래 구조만 정의합니다. 실제 건축물 데이터/사이트는 생성하지 않았고 기존 사이트 관측 스키마도 유지했습니다. 실제 월세·보증금·관리비·호스트배분은 호스트 인터뷰/견적/계약 증거로 확보하고, 이용률·서비스 비용·유료거래를 검증한 다음 별도 경제성 연구를 설계합니다.
+
+## 수요 refresh의 파생 의존성 (PR #13 무결성 보수)
+
+Seoul demand snapshot은 부동산 컨텍스트의 `demand_hash`와 ID/이름 매핑의 상위 입력이다. PR12 merge에서는 일치했으나 `18e213b`의 scheduled GIS refresh가 수요/공급만 커밋하여 main에서 먼저 불일치가 생겼다. #13은 이를 상속했고 기존 transform 테스트 및 Actions 로그로 동일 실패를 확인했다.
+
+`pipeline/gis_refresh.py`는 Git checkout/worktree 없이 임시 파일 공간에서 수요(필요 시) → POI → 공급 파생 → 부동산 파생을 만든다. 부동산은 **기존 active immutable raw snapshot**만 재사용하며 `--refresh`/새 `as_of`를 전달하지 않는다. 관측 기간·retrieved_at·raw hashes·STALE·서울시 R-ONE 값/출처는 보존한다. 전체 Python·Node context·portfolio·schema 검증과 정확한 dependency 재계산을 모두 통과한 bundle만 반영하고 Git workflow가 함께 커밋한다. 실패 시 remote의 이전 커밋은 유지되며 일반 파일 반영 오류도 이전 public bytes로 되돌린다. 강제 프로세스 종료 후 runner 로컬 파일까지 다중 파일 원자성을 보장하는 것은 아니지만 실패한 job은 Git commit 단계에 진입하지 않는다.
+
+원래 unique ID·서울 구·store ID coverage·99% 이름 일치 검증은 유지한다. `config/real-estate-geography-v1.json`은 PR12에서 감사한 1,650개 중심점의 ID/이름/구/dong/좌표·CRS fingerprint를 고정한다. count/ID/name/district/center/CRS drift는 자동 hash 교체 대신 새 감사를 요구한다. 중심점 일치가 폴리곤 동일성이나 새 표준단위구역 crosswalk를 증명하지는 않는다.
+
+portfolio의 선택·증거·실험·예산·날짜·UI는 바꾸지 않는다. 합법적인 GIS refresh 뒤 보호 파일 검사도 유효하도록 `integrity_baseline`의 **생성 데이터 4개 SHA만 기계적으로 재바인딩**한다. GIS와 수동 원자료 refresh는 같은 branch concurrency group으로 직렬화하고, bot commit 후 다른 mutation workflow가 실행될 것을 기대하지 않는다. 생성 출력은 mutation trigger에 추가하지 않았다. remote가 검증 중 바뀌면 rebase하지 않고 실패/재실행한다. 정상 push도 non-fast-forward를 거부하므로 검증된 서로 다른 snapshot을 재합성하지 않는다.
+
+기존 committed inputs의 offline 복구: `python pipeline/gis_refresh.py --rebuild-only`. 읽기 전용 dependency 확인: `python pipeline/gis_refresh.py --check`. 둘 다 비밀값/새 네트워크 원자료 요청 없이 사용할 수 있다.

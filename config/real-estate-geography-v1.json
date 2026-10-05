@@ -1,0 +1,17 @@
+{
+  "audit_version": 1,
+  "coordinate_system": "EPSG:5181",
+  "geography_hash": "8da0b31132f7e3f5fbbab73e29a9b0d2577dba896396e8e8c3749d86ce554c13",
+  "identity_fields": [
+    "trdar_cd",
+    "trdar_name",
+    "district",
+    "dong",
+    "x_epsg5181",
+    "y_epsg5181"
+  ],
+  "limitation": "Published center-point identity only; no polygon equivalence or standard-unit crosswalk. Changes require a new mapping audit.",
+  "source_commit": "36456448afa2abd492858353cece8a608f62adc3",
+  "source_demand_hash": "f1206cc4b8d734c15d6427dcf75de20062e6081de2dc2b080732e8d75f061ec1",
+  "target_area_count": 1650
+}

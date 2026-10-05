@@ -10,6 +10,9 @@ on:
       - 'pipeline/candidate_registry.py'
       - 'pipeline/opportunity_intelligence.py'
       - 'pipeline/real_estate_context.py'
+      - 'pipeline/gis_refresh.py'
+      - 'config/real-estate-geography-v1.json'
+      - '.github/workflows/seoul-gis-refresh.yml'
       - 'data/real-estate-context/**'
       - '.github/workflows/real-estate-context.yml'
       - '.github/workflows/browser-map-config.yml'
@@ -24,6 +27,9 @@ on:
       - 'pipeline/candidate_registry.py'
       - 'pipeline/opportunity_intelligence.py'
       - 'pipeline/real_estate_context.py'
+      - 'pipeline/gis_refresh.py'
+      - 'config/real-estate-geography-v1.json'
+      - '.github/workflows/seoul-gis-refresh.yml'
       - 'data/real-estate-context/**'
       - '.github/workflows/real-estate-context.yml'
       - '.github/workflows/browser-map-config.yml'
@@ -54,7 +60,7 @@ jobs:
       - name: Verify offline pipeline and syntax
         run: |
           python -m unittest discover -s tests -v
-          python -m py_compile pipeline/seoul_location_screen.py pipeline/kakao_competitor_layer.py pipeline/browser_map_config.py pipeline/candidate_registry.py pipeline/opportunity_intelligence.py
+          python -m py_compile pipeline/seoul_location_screen.py pipeline/kakao_competitor_layer.py pipeline/browser_map_config.py pipeline/candidate_registry.py pipeline/opportunity_intelligence.py pipeline/gis_refresh.py
           node --check docs/assets/gis.js
           node --check docs/assets/map-adapter.js
           python -m py_compile pipeline/real_estate_context.py
