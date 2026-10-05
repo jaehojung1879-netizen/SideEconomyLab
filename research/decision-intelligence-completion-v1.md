@@ -1,4 +1,6 @@
-# Decision Intelligence v1 — review report
+# Decision Intelligence v1 — initial review report
+
+> Historical report for handoff HEAD `5853003df80c2dd6af37453eea57f2db8be63990`. Recommendation states, defaults and family-only ranking below are superseded by the [decision-semantics correctness revision](decision-semantics-revision-v1.md). In particular, Myeongdong vending is now CHECK / LOW by default.
 
 Draft PR [#15](https://github.com/jaehojung1879-netizen/SideEconomyLab/pull/15), branch `feat/decision-intelligence-v1`. Actual starting main: `6f40b0fbf447c6cd5c6ddd57b8759d66e6983c2f` (PR #14 merged). No PR was open at the verified start; this task created one Draft. Final commit identity and Actions links are recorded in the PR completion comment; the report is committed with the implementation rather than embedding its own recursively changing hash.
 

@@ -188,7 +188,7 @@ async function init(){
     adapter.privatePoint?.(position=>window.dispatchEvent(new CustomEvent('sideeconomy:private-map-point',{detail:position})));$('di-map-create').onclick=()=>{adapter.armPrivatePoint?.();$('data-status').textContent='지도를 클릭하면 브라우저에 개인 사이트를 만듭니다. Escape로 취소.';};render();new ResizeObserver(()=>adapter.resize()).observe($('map'));
   }catch{state.adapter=await mapPromise.catch(()=>null);$('data-status').textContent='수요 데이터를 불러오지 못했습니다.';$('top-list').innerHTML='<p class="empty-state">데이터를 준비하지 못했습니다. 잠시 후 다시 열어 주세요.</p>';}
 }
-window.addEventListener('sideeconomy:choose-family',e=>{if(CANDIDATES[e.detail]&&state.data&&state.adapter){state.candidate=e.detail;$('candidate').value=e.detail;state.selectedArea=null;render();}});
+window.addEventListener('sideeconomy:choose-family',e=>{const family=typeof e.detail==='string'?e.detail:e.detail?.family;if(CANDIDATES[family]&&state.data&&state.adapter){state.candidate=family;$('candidate').value=family;if(!e.detail?.preserve_area)state.selectedArea=null;render();}});
 window.addEventListener('sideeconomy:decision-updated',e=>{state.decisionVariant=e.detail.selected_variant;if(state.adapter)renderPoi();});
 window.addEventListener('sideeconomy:private-sites',e=>{state.privateSites=e.detail.filter(s=>Number.isFinite(s.lat)&&Number.isFinite(s.lng)).map(s=>({...s,rent:s.rent?.value??null,deposit:s.deposit?.value??null,field_note:'PRIVATE · 브라우저 저장'}));if(state.adapter)renderSites();});
 init();
