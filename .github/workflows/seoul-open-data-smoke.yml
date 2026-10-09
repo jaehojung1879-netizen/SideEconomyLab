@@ -5,12 +5,18 @@ on:
     branches:
       - data/seoul-open-data-api-v1
   workflow_dispatch:
+    inputs:
+      radar_history:
+        description: 'Collect bounded sales/store history for Opportunity Radar (artifact only)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   smoke:
+    if: ${{ inputs.radar_history != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -41,3 +47,31 @@ jobs:
           path: artifacts/seoul-open-data-smoke.json
           if-no-files-found: error
           retention-days: 7
+
+  radar-history:
+    if: ${{ inputs.radar_history == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect and validate bounded history with existing server secret
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: python pipeline/opportunity_radar.py
+      - name: Verify reproducible source bundle
+        if: success()
+        run: python pipeline/opportunity_radar.py --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opportunity-radar-collection
+          path: |
+            data/opportunity-radar
+            docs/data/opportunity-radar.json
+            docs/data/opportunity-radar-status.json
+            docs/data/opportunity-radar-details
+          if-no-files-found: error
+          retention-days: 14
