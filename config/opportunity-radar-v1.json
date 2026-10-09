@@ -2,7 +2,7 @@
   "schema_version": 1,
   "area_ids": ["3001492", "3120189"],
   "history_quarters": 5,
-  "request_budget": 80,
+  "request_budget": 260,
   "max_rows_per_partition": 5000,
   "freshness_days": 180,
   "geography": {

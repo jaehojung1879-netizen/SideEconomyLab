@@ -98,7 +98,10 @@ class SeoulHistoryClient:
         quarter_index(period)
         # Official legacy endpoint also used by the existing demand collector.
         # GitHub Actions only. Never log or persist a URL containing the path key.
-        path = '/'.join((urllib.parse.quote(self.key, safe=''), 'json', SERVICES[kind]['service'], str(start), str(end), period, area))
+        parts = [urllib.parse.quote(self.key, safe=''), 'json', SERVICES[kind]['service'], str(start), str(end), period]
+        # Sales API documents only a quarter argument. Stores also documents area.
+        if kind == 'stores': parts.append(area)
+        path = '/'.join(parts)
         for attempt in range(2):
             if self.calls >= self.budget:
                 raise SourceError('REQUEST_BUDGET_EXCEEDED')
@@ -159,6 +162,34 @@ def fetch_partition(client, kind, period, area, max_rows=5000, page_size=1000):
             'rows': sorted(normalized, key=lambda r: r['SVC_INDUTY_CD'])}
 
 
+def fetch_sales_period(client, period, areas, max_rows=60000, page_size=1000):
+    """API lacks area filter: inspect each bounded page once, retain selected rows.
+
+    Immutable snapshot keeps the exact allowlisted selected observations plus
+    per-page counts/hashes. Citywide raw responses never reach the browser/artifact.
+    """
+    selected = {area: [] for area in areas}; seen = set(); receipts = []
+    rows, total = response(client.call('sales', 1, page_size, period, areas[0]), 'sales')
+    if not 0 < total <= max_rows: raise SourceError('SALES_PERIOD_ROW_BUDGET_EXCEEDED')
+    for start in range(1, total + 1, page_size):
+        if start != 1:
+            rows, count = response(client.call('sales', start, min(start + page_size - 1, total), period, areas[0]), 'sales')
+            if count != total: raise SourceError('INCOMPLETE_PAGINATION')
+        if len(rows) != min(page_size, total - start + 1): raise SourceError('INCOMPLETE_PAGINATION')
+        receipts.append({'start': start, 'rows': len(rows), 'response_hash': digest(encode(rows))})
+        for row in rows:
+            area = str(row.get('TRDAR_CD', ''))
+            r = normalize(row, 'sales', period, area)
+            key = (area, r['SVC_INDUTY_CD'])
+            if key in seen: raise SourceError('DUPLICATE_SOURCE_KEY')
+            seen.add(key)
+            if area in selected: selected[area].append(r)
+    return [{'kind': 'sales', 'period': period, 'area_id': area, 'total': len(selected[area]),
+             'rows': sorted(selected[area], key=lambda r: r['SVC_INDUTY_CD']), 'complete': True,
+             'upstream_total': total, 'inspected_rows': len(seen), 'page_receipts': receipts,
+             'selection': 'OFFICIAL_ID_FILTER_AFTER_COMPLETE_CITY_PAGINATION'} for area in areas]
+
+
 def validate_raw(raw):
     assert_sanitized(raw)
     if raw.get('schema_version') != 1 or raw.get('evidence_origin') != 'LIVE_OFFICIAL_API':
@@ -180,6 +211,9 @@ def validate_raw(raw):
         if key not in expected or key in seen or not part['complete'] or part['total'] != len(part['rows']):
             raise SourceError('INCOMPLETE_SOURCE_SNAPSHOT')
         seen.add(key)
+        if part['kind'] == 'sales' and 'upstream_total' in part:
+            if part['upstream_total'] != part['inspected_rows'] or sum(p['rows'] for p in part['page_receipts']) != part['upstream_total']:
+                raise SourceError('INCOMPLETE_PAGINATION')
         normalized = [normalize(r, *key) for r in part['rows']]
         if normalized != part['rows'] or len({r['SVC_INDUTY_CD'] for r in normalized}) != len(normalized):
             raise SourceError('DUPLICATE_OR_INVALID_SOURCE_ROWS')
@@ -352,10 +386,10 @@ def collect(root=ROOT, client=None, now=None):
     raw = {'schema_version': 1, 'evidence_origin': 'LIVE_OFFICIAL_API', 'retrieved_at': now.isoformat(),
            'time_unit': 'quarter', 'units': {k: v['unit'] for k, v in SERVICES.items()}, 'geography': config['geography'],
            'freshness_days': config['freshness_days'], 'area_ids': config['area_ids'], 'periods': periods, 'partitions': []}
-    for kind in SERVICES:
-        for period in periods:
-            for area in config['area_ids']:
-                raw['partitions'].append(fetch_partition(client, kind, period, area, config['max_rows_per_partition']))
+    for period in periods:
+        raw['partitions'].extend(fetch_sales_period(client, period, config['area_ids']))
+        for area in config['area_ids']:
+            raw['partitions'].append(fetch_partition(client, 'stores', period, area, config['max_rows_per_partition']))
     raw['request_count'] = client.calls
     assert_sanitized(raw, (client.key,))
     identity = publish(raw, root)
