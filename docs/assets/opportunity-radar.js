@@ -30,6 +30,7 @@
   function signals(){return (data?.signals||[]).filter(s=>fresh(data.entities.find(e=>e.id===s.entity_id)?.period));}
   function mode(value,{push=false}={}){
     const next=['radar','region','evaluate'].includes(value)?value:'radar';
+    if(next!=='evaluate'&&document.body.dataset.workbench==='true')$('wb-toggle').click();
     document.body.dataset.workspace=next;document.body.dataset.sheet='';
     document.querySelector('.brand h1').textContent={radar:'기회 탐색',region:'지역 분석',evaluate:'사업성 검토'}[next];
     document.querySelectorAll('[data-workspace-nav]').forEach(a=>a.setAttribute('aria-current',a.dataset.workspaceNav===next?'page':'false'));

@@ -48,7 +48,11 @@ const output=process.env.RADAR_SCREENSHOTS||'/tmp/radar-browser';fs.mkdirSync(ou
   assert.equal(await page.locator('#candidate').inputValue(),'vending');
   assert.ok(requests.some(r=>r.url.endsWith('decision-evidence.json')));
   assert.equal(await page.evaluate(()=>localStorage.length),0,'research handoff must not fabricate private sites/scenarios');
+  await page.click('#wb-toggle');assert.ok(await page.locator('#workbench').isVisible());
   await page.goBack();await page.waitForFunction(()=>document.body.dataset.workspace==='radar');
+  assert.equal(await page.evaluate(()=>document.body.dataset.workbench),'false','return navigation closes the economics panel without changing stored data');
+  await page.click('[data-workspace-nav=region]');assert.ok(await page.locator('#selected-card').isVisible());assert.ok(!await page.locator('#workbench').isVisible());
+  await page.goBack();await page.waitForFunction(()=>document.body.dataset.workspace==='radar');assert.equal(await page.evaluate(()=>localStorage.length),0);
   await page.selectOption('#radar-area','3120189');assert.ok(await page.locator('.radar-item').evaluateAll(xs=>xs.every(x=>x.textContent.includes('강남역'))));
   await page.selectOption('#radar-industry','CS100001');assert.equal(await page.locator('.radar-item').count(),1);
   await page.selectOption('#radar-period','20252');await page.locator('.radar-item').click();await page.waitForFunction(()=>document.querySelector('#radar-handoff'));
