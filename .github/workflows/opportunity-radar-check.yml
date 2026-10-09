@@ -1,0 +1,60 @@
+name: Verify opportunity radar
+on:
+  pull_request:
+    paths: ['docs/**', 'pipeline/**', 'config/**', 'data/opportunity-radar/**', 'research/**', 'tests/**', '.github/workflows/**']
+  push:
+    branches: [main]
+    paths: ['docs/**', 'pipeline/**', 'config/**', 'data/opportunity-radar/**', 'research/**', 'tests/**', '.github/workflows/**']
+permissions:
+  contents: read
+concurrency:
+  group: radar-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned verification tools
+        run: |
+          python -m pip install pyproj==3.7.2 jsonschema==4.26.0
+          npm install --prefix /tmp/radar-test playwright@1.58.2 leaflet@1.9.4 proj4@2.11.0
+          /tmp/radar-test/node_modules/.bin/playwright install --with-deps chromium
+      - name: Validate evidence, exact derivation, and existing decisions
+        run: |
+          python pipeline/opportunity_radar.py --check
+          python -m unittest discover -s tests -v
+          python pipeline/gis_refresh.py --check
+          python pipeline/decision_bundle.py
+          python pipeline/validation_portfolio.py --check
+          node tests/decision-models.cjs
+          node tests/workbench-models.cjs
+          node tests/real-estate-context.cjs
+          node --check docs/assets/opportunity-radar.js
+      - name: Verify core journeys and responsive layout
+        env:
+          NODE_PATH: /tmp/radar-test/node_modules
+        run: |
+          mkdir -p /tmp/radar-static
+          ln -s "$GITHUB_WORKSPACE/docs" /tmp/radar-static/SideEconomyLab
+          python -m http.server 8765 --bind 127.0.0.1 --directory /tmp/radar-static > /tmp/radar-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID"' EXIT
+          for attempt in $(seq 1 20); do
+            if curl -sf http://127.0.0.1:8765/SideEconomyLab/ > /dev/null; then break; fi
+            sleep 0.2
+          done
+          node tests/radar-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opportunity-radar-browser-evidence
+          path: /tmp/radar-browser
+          if-no-files-found: error

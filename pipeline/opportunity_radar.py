@@ -57,7 +57,9 @@ def period_end(period):
 
 
 def number(value):
-    if value is None or isinstance(value, bool) or str(value).strip() == '':
+    if isinstance(value, bool):
+        raise SourceError('INVALID_NUMERIC_VALUE')
+    if value is None or str(value).strip() == '':
         return None
     try:
         n = float(value)
@@ -75,7 +77,7 @@ def normalize(row, kind, period, area):
     r = {k: str(row[k]).strip() if row[k] is not None else '' for k in IDENTITY}
     if r['STDR_YYQU_CD'] != period or r['TRDAR_CD'] != area:
         raise SourceError('RESPONSE_SCOPE_MISMATCH')
-    if not all(r.values()) or not re.fullmatch(r'CS\d{6}', r['SVC_INDUTY_CD']):
+    if not all(r.values()) or not re.fullmatch(r'\d{7}', r['TRDAR_CD']) or not re.fullmatch(r'CS\d{6}', r['SVC_INDUTY_CD']):
         raise SourceError('INVALID_SOURCE_IDENTITY')
     r.update({k: number(row[k]) for k in SERVICES[kind]['fields']})
     if kind == 'stores' and all(r[k] is not None for k in ('SIMILR_INDUTY_STOR_CO', 'STOR_CO', 'FRC_STOR_CO')):
@@ -128,7 +130,11 @@ def response(payload, kind):
     if not isinstance(payload, dict):
         raise SourceError('INVALID_API_RESPONSE')
     block = payload.get(SERVICES[kind]['service'], {})
+    if not isinstance(block, dict):
+        raise SourceError('INVALID_API_RESPONSE')
     result = block.get('RESULT', payload.get('RESULT', {}))
+    if not isinstance(result, dict):
+        raise SourceError('INVALID_API_RESPONSE')
     code = result.get('CODE')
     if code == 'INFO-200':
         return [], 0
@@ -226,7 +232,13 @@ def derive(raw):
     validate_raw(raw)
     lookup = {(p['kind'], p['period'], p['area_id']): {r['SVC_INDUTY_CD']: r for r in p['rows']} for p in raw['partitions']}
     geography = raw['geography']
-    comparable = geography.get('comparability_verified') is True and bool(geography.get('version')) and bool(geography.get('evidence_url'))
+    try:
+        provenance = urllib.parse.urlparse(geography.get('evidence_url') or '')
+        official_geography = provenance.scheme == 'https' and provenance.hostname in ('data.seoul.go.kr', 'golmok.seoul.go.kr')
+    except ValueError:
+        official_geography = False
+    comparable = (geography.get('comparability_verified') is True and official_geography
+                  and all(geography.get(k) for k in ('version', 'geometry_version', 'crs')))
     fresh = (date.fromisoformat(raw['retrieved_at'][:10]) - period_end(raw['periods'][-1])).days <= raw['freshness_days']
     entities, details, signals = [], {}, []
     for area in raw['area_ids']:
@@ -301,7 +313,7 @@ def source_metadata(raw):
              'unit': v['unit'], 'time_unit': 'quarter', 'periods': raw['periods'], 'publication_date': None,
              'retrieved_at': raw['retrieved_at'], 'geography': raw['geography'], 'license': '공공누리 1유형 · 서울특별시/서울신용보증재단 출처표시',
              'row_count': sum(p['total'] for p in raw['partitions'] if p['kind'] == k),
-             'partitions': [{key: p[key] for key in ('period', 'area_id', 'total', 'complete')} for p in raw['partitions'] if p['kind'] == k]}
+             'partitions': [{key: p[key] for key in ('period', 'area_id', 'total', 'complete')} for p in sorted(raw['partitions'], key=lambda p: (p['period'], p['area_id'])) if p['kind'] == k]}
             for k, v in SERVICES.items()]
 
 

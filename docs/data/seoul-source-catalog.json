@@ -1,0 +1,486 @@
+{
+  "schema_version": 1,
+  "audited_at": "2026-10-09",
+  "starting_main": "a1372273b60c6d89dad8e7db3a585ba50d14c5d6",
+  "purpose": "기회 탐색에 필요한 공식 출처와 실제 검증 범위를 구별",
+  "sources": [
+    {
+      "id": "OA-15572",
+      "name": "서울시 상권분석서비스(추정매출-상권)",
+      "url": "https://data.seoul.go.kr/dataList/OA-15572/A/1/datasetView.do",
+      "api_identifier": "VwsmTrdarSelngQq",
+      "dimensions": [
+        "분기",
+        "상권 코드",
+        "생활밀접 업종",
+        "추정매출 원",
+        "매출 건수"
+      ],
+      "geographic_unit": "출처 상권 코드 · 경계 버전 UNKNOWN",
+      "time_unit": "quarter",
+      "latest_observed_period": "20262",
+      "latest_observed_evidence": "GitHub Actions run 37908347723 · source snapshot 2026-10-09-55b80cb44604",
+      "collection_method": "인증 API · 5개 분기; 매출은 분기 전체 페이지 검사 후 두 지역 ID 필터, 점포는 공식 지역 인자 사용",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "실제 응답·필수 스키마·범위·페이지 건수·키 중복·단위·점포 항등식 검사 통과. 186조합 중 85조합 일부 관측 누락. 지리 비교 보류.",
+      "licensing": "공공누리 1유형 · 서울특별시/서울신용보증재단 출처표시",
+      "commercial_relevance": "소비 변화와 공급 진입·퇴출의 조사 출발점",
+      "access_status": "LIVE_COLLECTED_COMPARISON_BLOCKED",
+      "integration_priority": 1,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "observed_periods": [
+        "20252",
+        "20253",
+        "20254",
+        "20261",
+        "20262"
+      ],
+      "row_count": 513,
+      "coverage": "공식 코드 3001492 / 3120189 · 전체 서울 대표 표본 아님",
+      "retrieved_at": "2026-10-09T08:59:11.808300+00:00",
+      "publication_date": null,
+      "metadata_updated_date": "2026-09-11",
+      "freshness": "최신 관측 2026 Q2; 수집일과 공표일을 구분",
+      "verification_level": "RESPONSE_AND_ROWS"
+    },
+    {
+      "id": "OA-15577",
+      "name": "서울시 상권분석서비스(점포-상권)",
+      "url": "https://data.seoul.go.kr/dataList/OA-15577/A/1/datasetView.do",
+      "api_identifier": "VwsmTrdarStorQq",
+      "dimensions": [
+        "분기",
+        "상권 코드",
+        "생활밀접 업종",
+        "전체 점포",
+        "일반 점포",
+        "프랜차이즈",
+        "분기 개업",
+        "분기 폐업"
+      ],
+      "geographic_unit": "출처 상권 코드 · 경계 버전 UNKNOWN",
+      "time_unit": "quarter",
+      "latest_observed_period": "20262",
+      "latest_observed_evidence": "GitHub Actions run 37908347723 · source snapshot 2026-10-09-55b80cb44604",
+      "collection_method": "인증 API · 5개 분기; 매출은 분기 전체 페이지 검사 후 두 지역 ID 필터, 점포는 공식 지역 인자 사용",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "실제 응답·필수 스키마·범위·페이지 건수·키 중복·단위·점포 항등식 검사 통과. 186조합 중 85조합 일부 관측 누락. 지리 비교 보류.",
+      "licensing": "공공누리 1유형 · 서울특별시/서울신용보증재단 출처표시",
+      "commercial_relevance": "소비 변화와 공급 진입·퇴출의 조사 출발점",
+      "access_status": "LIVE_COLLECTED_COMPARISON_BLOCKED",
+      "integration_priority": 1,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "observed_periods": [
+        "20252",
+        "20253",
+        "20254",
+        "20261",
+        "20262"
+      ],
+      "row_count": 929,
+      "coverage": "공식 코드 3001492 / 3120189 · 전체 서울 대표 표본 아님",
+      "retrieved_at": "2026-10-09T08:59:11.808300+00:00",
+      "publication_date": null,
+      "metadata_updated_date": "2026-09-11",
+      "freshness": "최신 관측 2026 Q2; 수집일과 공표일을 구분",
+      "verification_level": "RESPONSE_AND_ROWS"
+    },
+    {
+      "id": "OA-15576",
+      "name": "서울시 상권분석서비스(상권변화지표-상권)",
+      "url": "https://data.seoul.go.kr/dataList/OA-15576/A/1/datasetView.do",
+      "api_identifier": "VwsmTrdarIxQq",
+      "dimensions": [
+        "상권",
+        "분기",
+        "상권변화 구분",
+        "운영·폐업 영업기간"
+      ],
+      "geographic_unit": "상권 코드",
+      "time_unit": "quarter",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "구조적 변화 보조. 개폐업 흐름과 중복되므로 첫 슬라이스에서는 보류",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 2,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-15569",
+      "name": "서울시 상권분석서비스(직장인구-상권)",
+      "url": "https://data.seoul.go.kr/dataList/OA-15569/A/1/datasetView.do",
+      "api_identifier": "VwsmTrdarWrcPopltnQq",
+      "dimensions": [
+        "상권",
+        "분기",
+        "직장인구",
+        "성·연령"
+      ],
+      "geographic_unit": "기존 상권 코드",
+      "time_unit": "quarter",
+      "latest_observed_period": "20262",
+      "latest_observed_evidence": "기존 docs/data/seoul-opportunity-map.json · 이번 PR 재수집하지 않음",
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "기존 검증 유지; 새 시계열/매출과 결합하지 않음",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "업무형 고객 기반. 기존 수요 계산만 유지",
+      "access_status": "EXISTING_SNAPSHOT_PRESERVED",
+      "integration_priority": 2,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "coverage": "기존 1650개 상권",
+      "verification_level": "EXISTING_EVIDENCE"
+    },
+    {
+      "id": "OA-15560",
+      "name": "서울시 상권분석서비스(영역-상권)",
+      "url": "https://data.seoul.go.kr/dataList/OA-15560/A/1/datasetView.do",
+      "api_identifier": "TbgisTrdarRelm",
+      "dimensions": [
+        "상권 코드",
+        "중심 좌표",
+        "행정 코드"
+      ],
+      "geographic_unit": "상권 중심/영역",
+      "time_unit": "versioned spatial reference",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "최우선 검증: 공식 경계 버전·CRS·대응표",
+      "access_status": "METADATA_AND_EXISTING_CENTERS_ONLY",
+      "integration_priority": 1,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "crs": "기존 중심점 EPSG:5181; 새 영역 CRS/버전 UNKNOWN",
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-22784",
+      "name": "[내국인] 서울 생활인구(250m)",
+      "url": "https://data.seoul.go.kr/dataList/OA-22784/A/1/datasetView.do",
+      "api_identifier": null,
+      "dimensions": [
+        "250m 격자",
+        "날짜",
+        "시간",
+        "성·연령"
+      ],
+      "geographic_unit": "국가표준 250m 격자 · CRS UNKNOWN",
+      "time_unit": "day/hour",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "2026년 7월 이후 기존 집계구·행정동 생산 중단/250m 전환 확인. 격자 CRS·버전·경계 및 데이터 실제값 미수집",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "실제 시간대별 활동 탐색. 격자→상권 관계 없으면 별도 공간 도메인",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 2,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "latest_advertised_file_period": "2026-10-02",
+      "latest_advertised_evidence": "공식 페이지 파일명 250_LOCAL_RESD_20261002.zip; 내부 관측 미검증",
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-23022",
+      "name": "자치구별 서울 생활인구(250m) 일별집계표",
+      "url": "https://data.seoul.go.kr/dataList/OA-23022/A/1/datasetView.do",
+      "api_identifier": null,
+      "dimensions": [
+        "자치구",
+        "일자",
+        "생활인구"
+      ],
+      "geographic_unit": "자치구 (250m 원자료 집계)",
+      "time_unit": "day",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "넓은 지역의 일별 변화. 상권 일유동으로 대체 불가",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 2,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-22378",
+      "name": "수도권 생활이동 (출발-도착지 기준)",
+      "url": "https://data.seoul.go.kr/dataList/OA-22378/A/1/datasetView.do",
+      "api_identifier": null,
+      "dimensions": [
+        "출발·도착 행정동",
+        "시간",
+        "이동 목적",
+        "성·연령"
+      ],
+      "geographic_unit": "행정동 OD; 원 250m 데이터는 별도 접근",
+      "time_unit": "day/hour",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "출퇴근·관광·쇼핑 이동의 변화; OD량은 방문객/고객 수 아님",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 3,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증",
+        "2026년 2월 일부 행 누락 정정 공지 확인. 재가공·백필 이력 검사 필요"
+      ],
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-12914",
+      "name": "서울시 지하철호선별 역별 승하차 인원 정보",
+      "url": "https://data.seoul.go.kr/dataList/OA-12914/A/1/datasetView.do",
+      "api_identifier": null,
+      "dimensions": [
+        "역·호선",
+        "일자",
+        "승차",
+        "하차"
+      ],
+      "geographic_unit": "역·호선",
+      "time_unit": "day",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "환승 중복과 역 식별자 확인 후 통행 변화 보조",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 2,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-15566",
+      "name": "서울시 상권분석서비스(아파트-상권)",
+      "url": "https://data.seoul.go.kr/dataList/OA-15566/A/1/datasetView.do",
+      "api_identifier": null,
+      "dimensions": [
+        "상권",
+        "아파트 규모",
+        "가구"
+      ],
+      "geographic_unit": "상권 코드",
+      "time_unit": "quarter label / underlying reference UNKNOWN",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "거주 고객 맥락; 분기 표기가 실제 분기 관측인지 확인",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 3,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-15580",
+      "name": "서울시 상권분석서비스(집객시설-상권)",
+      "url": "https://data.seoul.go.kr/dataList/OA-15580/A/1/datasetView.do",
+      "api_identifier": "VwsmTrdarFcltyQq",
+      "dimensions": [
+        "시설 종류",
+        "상권",
+        "분기"
+      ],
+      "geographic_unit": "기존 상권 코드",
+      "time_unit": "quarter",
+      "latest_observed_period": "20262",
+      "latest_observed_evidence": "기존 docs/data/seoul-opportunity-map.json · 이번 PR 재수집하지 않음",
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "기존 검증 유지; 새 시계열/매출과 결합하지 않음",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "교통·학교·업무 시설 맥락; 기존 수요 계산 유지",
+      "access_status": "EXISTING_SNAPSHOT_PRESERVED",
+      "integration_priority": 3,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "coverage": "기존 1650개 상권",
+      "verification_level": "EXISTING_EVIDENCE"
+    },
+    {
+      "id": "OA-15486",
+      "name": "서울시 문화행사 정보",
+      "url": "https://data.seoul.go.kr/dataList/OA-15486/A/1/datasetView.do",
+      "api_identifier": null,
+      "dimensions": [
+        "행사",
+        "장소",
+        "날짜",
+        "분류",
+        "대상",
+        "요금",
+        "위경도"
+      ],
+      "geographic_unit": "행사 위치; 좌표 정의 확인 필요",
+      "time_unit": "event dates",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "단기 수요의 대안 설명. 행사 개최는 실제 유료 수요의 증거가 아님",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 3,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "OA-23054",
+      "name": "서울시 무인점포 현황",
+      "url": "https://data.seoul.go.kr/dataList/OA-23054/A/1/datasetView.do",
+      "api_identifier": null,
+      "dimensions": [
+        "연번",
+        "자치구",
+        "업소명",
+        "업종"
+      ],
+      "geographic_unit": "자치구·업소 · 정확한 위치 UNKNOWN",
+      "time_unit": "reference date UNKNOWN",
+      "latest_observed_period": null,
+      "latest_observed_evidence": null,
+      "collection_method": "공식 API/파일 · 이번 PR 원자료 미수집",
+      "authentication": "API: 서버 SEOUL / 공개 파일: 불필요",
+      "quality": "메타정보 확인 · 실제 응답/누락/중복 미검증",
+      "licensing": "서울 페이지별 공공누리 유형 재확인 후 수집; 일괄 라이선스 추정 금지",
+      "commercial_relevance": "기존 자동판매 사업의 관측 사각지대 보완 후보. 자유업종이므로 전수성 확인",
+      "access_status": "METADATA_ONLY",
+      "integration_priority": 2,
+      "integrity_limitations": [
+        "기존 1,650 상권에 대한 공식 지리 대응 미검증"
+      ],
+      "metadata_published_date": "2026-09-30",
+      "verification_level": "OFFICIAL_METADATA"
+    },
+    {
+      "id": "15012005",
+      "name": "소상공인시장진흥공단_상가(상권)정보_API",
+      "url": "https://www.data.go.kr/data/15012005/openapi.do",
+      "api_identifier": "storeListInRadius",
+      "dimensions": [
+        "업소 ID",
+        "분류",
+        "주소",
+        "위경도"
+      ],
+      "geographic_unit": "개별 사업장",
+      "time_unit": "snapshot",
+      "latest_observed_period": null,
+      "latest_observed_evidence": "기존 부동산/판단 근거 스냅샷 · 재수집하지 않음",
+      "collection_method": "기존 서버 수집 보존 / 신규 수집 보류",
+      "authentication": "DATA_GO · 서비스 활용 승인",
+      "quality": "기존 검증 범위 보존; 첫 매출·점포 변화 계산에 미사용",
+      "licensing": "공식 카탈로그/제공자 이용조건 적용; 개별 대장 재배포는 별도 검토",
+      "commercial_relevance": "직접·대체 경쟁과 실제 운영 위치 확인",
+      "access_status": "EXISTING_SELECTED_CACHES",
+      "integration_priority": 2,
+      "verification_level": "EXISTING_EVIDENCE",
+      "integrity_limitations": [
+        "출처의 공간·시간 정의를 상권 통계와 직접 결합하지 않음"
+      ]
+    },
+    {
+      "id": "15134735",
+      "name": "국토교통부_건축HUB_건축물대장정보 서비스",
+      "url": "https://www.data.go.kr/data/15134735/openapi.do",
+      "api_identifier": "getBrTitleInfo",
+      "dimensions": [
+        "대장 PK",
+        "주소",
+        "용도",
+        "면적",
+        "층"
+      ],
+      "geographic_unit": "건물·층",
+      "time_unit": "reference date",
+      "latest_observed_period": null,
+      "latest_observed_evidence": "기존 부동산/판단 근거 스냅샷 · 재수집하지 않음",
+      "collection_method": "기존 서버 수집 보존 / 신규 수집 보류",
+      "authentication": "DATA_GO · 서비스 활용 승인",
+      "quality": "기존 검증 범위 보존; 첫 매출·점포 변화 계산에 미사용",
+      "licensing": "공식 카탈로그/제공자 이용조건 적용; 개별 대장 재배포는 별도 검토",
+      "commercial_relevance": "실제 사이트 주소가 확보되면 설치 허용과 공간 검증",
+      "access_status": "DEFER_SITE_ADDRESS_REQUIRED",
+      "integration_priority": 2,
+      "verification_level": "EXISTING_EVIDENCE",
+      "integrity_limitations": [
+        "출처의 공간·시간 정의를 상권 통계와 직접 결합하지 않음"
+      ]
+    },
+    {
+      "id": "R-ONE-small-retail",
+      "name": "한국부동산원 상업용부동산 임대동향조사",
+      "url": "https://www.reb.or.kr/r-one/portal/stat/easyStatPage/T248223134698125.do",
+      "api_identifier": [
+        "T248223134698125",
+        "T241833134686576"
+      ],
+      "dimensions": [
+        "분기",
+        "시장",
+        "층",
+        "임대료",
+        "공실률"
+      ],
+      "geographic_unit": "REB 조사시장 / 기존 연결은 서울 전체",
+      "time_unit": "quarter",
+      "latest_observed_period": "20262",
+      "latest_observed_evidence": "기존 부동산/판단 근거 스냅샷 · 재수집하지 않음",
+      "collection_method": "기존 서버 수집 보존 / 신규 수집 보류",
+      "authentication": "R_ONE · API 활용 승인",
+      "quality": "기존 검증 범위 보존; 첫 매출·점포 변화 계산에 미사용",
+      "licensing": "공식 카탈로그/제공자 이용조건 적용; 개별 대장 재배포는 별도 검토",
+      "commercial_relevance": "시장 협상 배경; 실제 점포 임대조건으로 대체 금지",
+      "access_status": "EXISTING_MARKET_CONTEXT",
+      "integration_priority": 2,
+      "verification_level": "EXISTING_EVIDENCE",
+      "integrity_limitations": [
+        "출처의 공간·시간 정의를 상권 통계와 직접 결합하지 않음"
+      ]
+    }
+  ],
+  "geography_notice": "https://data.seoul.go.kr/together/notice/datasetNoticeView.do?bbsCd=10008&ditcCd=&pageIndex=1&seq=a2197dabd5a3a52edd6fe0d4eead6bd3",
+  "geography_definition": "https://golmok.seoul.go.kr/introduce3.do",
+  "population_transition_notice": "https://data.seoul.go.kr/together/notice/boardView.do?seq=721010a1522630fbf7a78d381a8326ee",
+  "crosswalk_status": "NO_VERIFIED_OFFICIAL_CROSSWALK_FOUND; absence of verified evidence, not proof none exists"
+}

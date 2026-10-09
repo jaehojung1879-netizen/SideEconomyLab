@@ -13,6 +13,7 @@ const state={data:null,poiData:null,evidence:null,supplies:new Map(),mode:'deman
 const $=id=>document.getElementById(id);
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function fmt(n){return n==null||!Number.isFinite(Number(n))?'—':Math.round(Number(n)).toLocaleString('ko-KR');}
+function displayQuarter(value){return /^20\d{2}[1-4]$/.test(String(value))?`${String(value).slice(0,4)}년 ${String(value)[4]}분기`:'관측 분기 미확인';}
 function scoreColor(s){return s>=95?'#ef476f':s>=90?'#ff9f1c':s>=80?'#ffd166':'#3a86ff';}
 function safePlaceUrl(value){try{const u=new URL(value);return ['http:','https:'].includes(u.protocol)&&u.hostname==='place.map.kakao.com'?u.href:'';}catch{return '';}}
 function toLatLng(a){
@@ -37,9 +38,10 @@ function markerColor(a){const e=supplyFor(a);if(state.mode==='demand')return sco
 function renderCoverage(){
   const c=evidenceCandidate(),date=state.evidence?.collected_at||'수집일 미기록';
   $('coverage').textContent=c?`공급 조사 ${c.measured_count} / ${state.data.areas.length} · 불완전 ${c.partial_count} · ${state.evidence.radius_m}m · 오류 ${fmt(state.evidence.query_error_count)} · ${date}`:'공급 분석 미검증 · 미측정을 0으로 계산하지 않음';
-  $('data-status').textContent=`서울 ${fmt(state.data.areas.length)} 상권 · 수요 ${state.data.periods?.flow||'—'} · 공급 ${c?c.measured_count:'—'}곳 · 실제 후보지 ${state.sites.length}개`;
+  $('data-status').textContent=`서울 ${fmt(state.data.areas.length)} 상권 · 수요 ${displayQuarter(state.data.periods?.flow)} · 공급 ${c?c.measured_count:'—'}곳 · 실제 후보지 ${state.sites.length}개`;
   const legend=state.mode==='demand'?[[scoreColor(95),'95+'],[scoreColor(90),'90+'],[scoreColor(80),'80+'],[scoreColor(0),'80 미만']]:state.mode==='quadrant'?Object.entries(QUADRANTS).map(([k,v])=>[QUADRANT_COLORS[k],k+' '+v]):[['#00856a','낮은 관측공급'],['#8b38b5','높은 관측공급'],[QUADRANT_COLORS.E,'미측정 / 판정 보류']];
   $('map-legend').innerHTML=legend.map(([color,label])=>`<span><i style="background:${color}"></i>${label}</span>`).join('')+'<span><i style="background:#c93d64"></i>직접 경쟁형</span><span><i style="background:#7c4dff"></i>대체형</span><span><i style="background:#2a91ac"></i>보완형</span><span><i style="background:#78818b"></i>문맥</span><span><i style="background:#0b8f72"></i>개인/실제 후보지</span><span><i style="background:#1a3955"></i>선택 상권</span>';
+  if(document.body.dataset.workspace==='radar')$('map-legend').innerHTML='<span>기존 수요점수</span>'+legend.map(([color,label])=>`<span><i style="background:${color}"></i>${label}</span>`).join('');
 }
 function buildPercentiles(){
   const areas=state.data.areas;
@@ -74,24 +76,24 @@ function renderSelected(){
   const signalRows=signals(a).slice(0,3).map(s=>`<li>${FIELDS[s.field]} · 서울 백분위 <b>${Math.round(s.percentile*100)}</b><div class="signal-detail">기존 점수 비중 ${Math.round(s.weight*100)}% · 공개 집계 ${fmt(a[s.field])}</div></li>`).join('');
   const metricFields=candidate.metric_fields;
   const localSites=state.sites.filter(s=>s.candidate_id===candidate.id&&String(s.commercial_area_id)===String(a.trdar_cd));
-  host.innerHTML=`<button class="wb-map-create" onclick="window.dispatchEvent(new Event('sideeconomy:create-scenario'))">이 지도 위치로 PRIVATE 시나리오 구성</button><div class="selected-title">${esc(a.trdar_name)}</div><div class="selected-sub">${esc(a.district)} ${esc(a.dong)} · ${esc(a.trdar_cd)}<br>${candidate.id} · ${candidate.label}</div>
+  host.innerHTML=`<button class="wb-map-create" onclick="window.dispatchEvent(new Event('sideeconomy:create-scenario'))">이 지도 위치로 개인 시나리오 구성</button><div class="selected-title">${esc(a.trdar_name)}</div><div class="selected-sub">${esc(a.district)} ${esc(a.dong)} · ${esc(a.trdar_cd)}<br>${candidate.id} · ${candidate.label}</div>
     <div class="score-card"><div><span>수요 적합도</span><b>${currentScore(a).toFixed(1)}</b><small>100점 기준</small></div><div><span>서울 내 수요 순위</span><b>#${rank}</b><small>/ ${fmt(state.data.areas.length)} · 동점 동일 순위</small></div></div>
-    <section class="decision-section supply-section"><h3><span class="kind">DATA / DERIVED</span>OBSERVED SUPPLY · 관측공급</h3>${!state.poiData?'<p>POI 데이터를 불러오지 못했습니다. 수요 지도는 이용할 수 있습니다.</p>':''}<p>${evidence.status==='MEASURED'?'조사됨':evidence.status==='PARTIAL'?'불완전 조사 · 비교 제외':'미측정 / 분석 미검증'}</p><div class="metrics"><div><span>관련 POI (직접형 + 대체형)</span><b>${fmt(evidence.relevant_count)}</b></div><div><span>가장 가까운 관련 POI</span><b>${evidence.nearest_m==null?'관측 없음/미상':fmt(evidence.nearest_m)+'m'}</b></div><div><span>200m / 400m / 800m</span><b>${[200,400,800].map(m=>fmt(evidence.within_m?.[m])).join(' / ')}</b></div><div><span>직접형 / 대체형</span><b>${fmt(evidence.direct_proxy_count)} / ${fmt(evidence.substitute_proxy_count)}</b></div></div><p>원시 ${fmt(evidence.raw_poi_count)} · 문맥/미확인 ${fmt(evidence.context_count)} · 검색 실패 ${fmt(evidence.query_errors)}건</p>${evidence.truncated?'<p class="caution">검색 결과 제한 있음 · 낮은 공급 판정은 보류합니다.</p>':''}<details class="poi-details"><summary>검색별 건수·가까운 관련 POI</summary><div class="poi-chips">${tags}</div><div class="poi-list">${links||'<p>0개 관측과 미측정은 다릅니다. 경쟁 부재를 증명하지 않습니다.</p>'}</div></details></section>
-    <section class="decision-section"><h3><span class="kind">DERIVED SIGNAL</span>RESEARCH QUADRANT</h3><b class="quadrant-label" style="border-color:${QUADRANT_COLORS[evidence.quadrant]}">${evidence.quadrant} · ${QUADRANTS[evidence.quadrant]}</b><p>고수요 ≥ ${state.evidence?.high_demand_min??90}점 · 낮은 관측공급 ≤ 후보별 조사 표본 중앙값 ${esc(cohort?.reference_median??'—')}개 (${fmt(cohort?.reference_count)}곳). 서울 전체 공급 기준이 아닙니다.</p><p>${evidence.quadrant==='E'?esc({'incomplete collection':'검색 실패·정의 불일치 또는 유효하지 않은 관측입니다.','insufficient or invariant reference':'10곳 미만이거나 관측 개수가 같아 비교 기준이 없습니다.','capped results cannot establish lower observed supply':'검색 결과가 제한되어 낮은 공급 판정을 보류합니다.'}[evidence.quadrant_reason]||'공급 미측정 또는 원본과 일치하는 분석이 없습니다.'):['A','C'].includes(evidence.quadrant)?'상대적으로 적은 관측공급: 공백 가능성을 현장에서 검증할 연구 목록입니다.':'많은 관측공급: 직접 경쟁인지, 수요 집적/보완 서비스인지 현장에서 구분하세요.'}</p><p class="caution">Kakao 검색 프록시 · 전수조사 아님. ${esc(candidate.competition.risk)}</p></section>
-    <section class="decision-section"><h3><span class="kind">DERIVED SIGNAL</span>왜 살펴볼 만한가</h3><ul>${signalRows}</ul><p>가중 수요 신호입니다. 경쟁·비용을 반영한 사업성 판단은 아직 아닙니다.</p></section>
-    <section class="decision-section"><h3><span class="kind">DATA</span>수요 원자료</h3><div class="metrics">${metricFields.map(f=>`<div><span>${FIELDS[f]}</span><b>${fmt(a[f])}</b></div>`).join('')}</div><p>서울 공개 상권 집계 · 분기와 원자료 정의는 데이터·방법 참조.</p></section>
+    <section class="decision-section supply-section"><h3><span class="kind">공개 자료 · 계산 지표</span>경쟁 현황 · 관측공급</h3>${!state.poiData?'<p>POI 데이터를 불러오지 못했습니다. 수요 지도는 이용할 수 있습니다.</p>':''}<p>${evidence.status==='MEASURED'?'조사됨':evidence.status==='PARTIAL'?'불완전 조사 · 비교 제외':'미측정 / 분석 미검증'}</p><div class="metrics"><div><span>관련 POI (직접형 + 대체형)</span><b>${fmt(evidence.relevant_count)}</b></div><div><span>가장 가까운 관련 POI</span><b>${evidence.nearest_m==null?'관측 없음/미상':fmt(evidence.nearest_m)+'m'}</b></div><div><span>200m / 400m / 800m</span><b>${[200,400,800].map(m=>fmt(evidence.within_m?.[m])).join(' / ')}</b></div><div><span>직접형 / 대체형</span><b>${fmt(evidence.direct_proxy_count)} / ${fmt(evidence.substitute_proxy_count)}</b></div></div><p>원시 ${fmt(evidence.raw_poi_count)} · 문맥/미확인 ${fmt(evidence.context_count)} · 검색 실패 ${fmt(evidence.query_errors)}건</p>${evidence.truncated?'<p class="caution">검색 결과 제한 있음 · 낮은 공급 판정은 보류합니다.</p>':''}<details class="poi-details"><summary>검색별 건수·가까운 관련 POI</summary><div class="poi-chips">${tags}</div><div class="poi-list">${links||'<p>0개 관측과 미측정은 다릅니다. 경쟁 부재를 증명하지 않습니다.</p>'}</div></details></section>
+    <section class="decision-section"><h3><span class="kind">계산 지표</span>연구 사분면</h3><b class="quadrant-label" style="border-color:${QUADRANT_COLORS[evidence.quadrant]}">${evidence.quadrant} · ${QUADRANTS[evidence.quadrant]}</b><p>고수요 ≥ ${state.evidence?.high_demand_min??90}점 · 낮은 관측공급 ≤ 후보별 조사 표본 중앙값 ${esc(cohort?.reference_median??'—')}개 (${fmt(cohort?.reference_count)}곳). 서울 전체 공급 기준이 아닙니다.</p><p>${evidence.quadrant==='E'?esc({'incomplete collection':'검색 실패·정의 불일치 또는 유효하지 않은 관측입니다.','insufficient or invariant reference':'10곳 미만이거나 관측 개수가 같아 비교 기준이 없습니다.','capped results cannot establish lower observed supply':'검색 결과가 제한되어 낮은 공급 판정을 보류합니다.'}[evidence.quadrant_reason]||'공급 미측정 또는 원본과 일치하는 분석이 없습니다.'):['A','C'].includes(evidence.quadrant)?'상대적으로 적은 관측공급: 공백 가능성을 현장에서 검증할 연구 목록입니다.':'많은 관측공급: 직접 경쟁인지, 수요 집적/보완 서비스인지 현장에서 구분하세요.'}</p><p class="caution">Kakao 검색 프록시 · 전수조사 아님. ${esc(candidate.competition.risk)}</p></section>
+    <section class="decision-section"><h3><span class="kind">계산 지표</span>왜 살펴볼 만한가</h3><ul>${signalRows}</ul><p>가중 수요 신호입니다. 경쟁·비용을 반영한 사업성 판단은 아직 아닙니다.</p></section>
+    <section class="decision-section"><h3><span class="kind">공개 자료</span>수요 원자료</h3><div class="metrics">${metricFields.map(f=>`<div><span>${FIELDS[f]}</span><b>${fmt(a[f])}</b></div>`).join('')}</div><p>서울 공개 상권 집계 · 분기와 원자료 정의는 데이터·방법 참조.</p></section>
     ${RealEstateContext.render(a,state.realEstate)}
-    <section class="decision-section"><h3><span class="kind">UNKNOWN / DATA</span>SITE ECONOMICS · 실제 조건</h3><p>${localSites.length?'아래 후보지에 관측된 조건만 표시합니다. 누락은 UNKNOWN입니다.':'UNKNOWN · 임대료·보증금·관리비·호스트 수익배분·실제 가용 공간 미확인'}</p><p>전환율·이용률·운영 비용 미확인 · 종합 기회점수 없음</p></section>
-    <section class="decision-section"><h3><span class="kind">UNKNOWN / FIELD CHECK</span>OPERABILITY · 운영 가능성</h3><p>전력·환기·접근·보충 동선·설치 허용·호스트 책임·법적 제약은 현장에서 확인해야 합니다.</p></section>
-    <section class="decision-section"><h3><span class="kind">DATA / UNKNOWN</span>VALIDATION · 검증 증거</h3><p>후보 설계 단계: ${esc(candidate.research_status)}. 현장 인터뷰·견적·유료거래·파일럿 증거는 별도 기록으로 확인해야 합니다.</p></section>
-    <section class="decision-section"><h3><span class="kind">FIELD CHECK</span>다음 현장 확인</h3><ol>${[...candidate.next_actions,...candidate.checks].map(c=>`<li>${c}</li>`).join('')}</ol><a class="area-link" href="https://map.kakao.com/link/map/${encodeURIComponent(a.trdar_name)},${toLatLng(a).join(',')}" target="_blank" rel="noopener">카카오맵에서 주변 살펴보기 ↗</a></section>
+    <section class="decision-section"><h3><span class="kind">관측·미확인</span>사업성 · 실제 조건</h3><p>${localSites.length?'아래 후보지에 관측된 조건만 표시합니다. 누락은 미확인으로 표시합니다.':'미확인 · 임대료·보증금·관리비·호스트 수익배분·실제 가용 공간 미확인'}</p><p>전환율·이용률·운영 비용 미확인 · 종합 기회점수 없음</p></section>
+    <section class="decision-section"><h3><span class="kind">현장 확인 필요</span>운영 가능성</h3><p>전력·환기·접근·보충 동선·설치 허용·호스트 책임·법적 제약은 현장에서 확인해야 합니다.</p></section>
+    <section class="decision-section"><h3><span class="kind">공개 자료 · 미확인</span>검증 증거</h3><p>후보 설계 단계: ${esc(candidate.research_status)}. 현장 인터뷰·견적·유료거래·파일럿 증거는 별도 기록으로 확인해야 합니다.</p></section>
+    <section class="decision-section"><h3><span class="kind">현장 확인</span>다음 현장 확인</h3><ol>${[...candidate.next_actions,...candidate.checks].map(c=>`<li>${c}</li>`).join('')}</ol><a class="area-link" href="https://map.kakao.com/link/map/${encodeURIComponent(a.trdar_name)},${toLatLng(a).join(',')}" target="_blank" rel="noopener">카카오맵에서 주변 살펴보기 ↗</a></section>
     <section class="decision-section"><h3>실제 후보지 관찰</h3>${localSites.length?localSites.map(s=>`<div class="site-info">${esc(s.name||s.site_id)} · ${esc(s.status||'상태 미기록')}<br>${esc(s.address||'주소 미기록')}<br>임대료 ${s.rent==null?'미확인':fmt(s.rent)+'원'} · 보증금 ${s.deposit==null?'미확인':fmt(s.deposit)+'원'}<br>호스트 ${esc(s.host_type||'UNKNOWN')} · 수익배분 ${s.revenue_share==null?'UNKNOWN':esc(s.revenue_share*100)+'%'} · 면적 ${s.area_sqm==null?'UNKNOWN':esc(s.area_sqm)+'㎡'}<br>관측 ${esc(s.observed_at||'미기록')} · 출처 ${esc(s.source||'미기록')}<br>${esc(s.field_note||'현장 메모 미기록')}</div>`).join(''):'<p>등록된 후보지가 없습니다. 확인한 건물·호스트·현장 조건을 별도 관찰 기록으로 연결할 수 있습니다.</p>'}</section>`;
 }
 function renderPoi(){
   const rows=[];let radius=null;
   const supply=state.selectedArea&&poiAreaFor(state.selectedArea.trdar_cd);
   const roles=new Map((state.selectedArea?supplyFor(state.selectedArea).classified_pois:[]).map(p=>[String(p.id),p.role]));
-  if($('show-poi').checked&&supply){
+  if(document.body.dataset.workspace!=='radar'&&$('show-poi').checked&&supply){
     (supply.pois||[]).forEach(p=>{if(!Number.isFinite(p.lat)||!Number.isFinite(p.lng))return;const url=safePlaceUrl(p.place_url);const variantRole=state.decisionVariant&&window.DecisionIntelligence.classify(state.decisionVariant,p);const role=variantRole?({DIRECT:'direct_proxy',SUBSTITUTE:'substitute_proxy',COMPLEMENTARY:'complementary',CONTEXT:'context'})[variantRole]:roles.get(String(p.id))||'context';rows.push({role,position:[p.lat,p.lng],name:p.name,html:`<div class="map-popup"><h3>${esc(p.name)}</h3><p>${role==='direct_proxy'?'직접 경쟁형 프록시':role==='substitute_proxy'?'대체형 프록시':role==='complementary'?'보완 서비스':'문맥/미확인'}</p><p>${esc(p.category)} · ${p.distance_m==null?'거리 미상':fmt(p.distance_m)+'m'}</p><p>${esc(p.address)}</p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener">카카오 장소 보기 ↗</a>`:''}</div>`});});
     if(Number.isFinite(supply.lat)&&Number.isFinite(supply.lng))radius={position:[supply.lat,supply.lng],meters:Number(state.poiData.radius_m||800)};
   }
@@ -127,7 +129,8 @@ function render(){
   $('navigator-note').textContent='왼쪽 숫자는 서울 내 수요 순위 · 공급 정렬/연구 목록은 종합 사업성 순위가 아닙니다.';
   $('ranking-title').textContent=state.sort==='whitespace'?'공백 가능성 연구 목록':state.sort==='supply'?'낮은 관측공급 탐색':'수요 순위 탐색';
   if(state.selectedArea&&!state.visible.some(x=>x.a===state.selectedArea))state.selectedArea=null;
-  state.adapter.demand($('show-demand').checked?state.visible.map(x=>({area:x.a,position:x.position,score:x.score,color:markerColor(x.a)})):[],a=>selectArea(a));
+  const mapRows=window.OpportunityRadar?.mapRows(state.visible)||state.visible;
+  state.adapter.demand($('show-demand').checked?mapRows.map(x=>({area:x.a,position:x.position,score:x.score,color:markerColor(x.a)})):[],a=>selectArea(a));
   $('visible-count').textContent=fmt(state.visible.length);$('area-count').textContent=fmt(state.data.areas.length);
   const top=state.visible.slice(0,state.limit);
   $('top-list').innerHTML=top.map(x=>{const e=supplyFor(x.a);return `<button class="top-item" data-code="${esc(x.a.trdar_cd)}"><span class="rank">${state.rankByCode.get(String(x.a.trdar_cd))}</span><span class="name">${esc(x.a.trdar_name)}</span><span class="score">${x.score.toFixed(1)}</span><span class="sub">${esc(x.a.district)} ${esc(x.a.dong)} · ${e.status==='MEASURED'?'관련 '+fmt(e.relevant_count)+'개':e.status==='PARTIAL'?'불완전 조사':'공급 미측정'}</span><span class="quadrant-tag" data-quadrant="${e.quadrant}">${e.quadrant} · ${QUADRANTS[e.quadrant]}${e.truncated?' · 결과 제한':''}</span><span class="reason-tag">${reasonTag(x.a)}</span></button>`;}).join('')||'<p class="empty-state">조건에 맞는 상권이 없습니다. 검색·점수·사분면 조건을 조정하세요.</p>';
@@ -143,7 +146,7 @@ async function fetchJson(url,required=false){try{
   }return value;
 }catch{if(required)throw new Error('Demand dataset unavailable');return url===REAL_ESTATE_URL?{source_error:true}:null;}}
 function bindControls(){
-  $('candidate').onchange=e=>{state.candidate=e.target.value;state.selectedArea=null;state.limit=30;render();};
+  $('candidate').onchange=e=>{state.candidate=e.target.value;state.limit=30;render();};
   $('area-search').oninput=e=>{state.query=e.target.value;state.limit=30;render();};
   $('search-clear').onclick=()=>{$('area-search').value='';state.query='';state.limit=30;render();};
   const threshold=value=>{state.threshold=Number(value);$('threshold').value=value;$('threshold-value').textContent=value;state.limit=30;render();};
@@ -155,7 +158,7 @@ function bindControls(){
   });
   $('show-demand').onchange=render;$('show-poi').onchange=()=>state.adapter&&renderPoi();$('show-sites').onchange=()=>state.adapter&&renderSites();
   $('load-more').onclick=()=>{state.limit+=30;render();};$('seoul-view').onclick=()=>state.adapter?.overview();
-  document.querySelectorAll('[data-sheet]').forEach(b=>b.onclick=()=>setSheet(b.dataset.sheet));
+  document.querySelectorAll('button[data-sheet]').forEach(b=>b.onclick=()=>setSheet(b.dataset.sheet));
   document.querySelectorAll('[data-dialog]').forEach(b=>b.onclick=()=>$(b.dataset.dialog).showModal());
   document.querySelectorAll('[data-close-dialog]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
   document.addEventListener('keydown',e=>{if(e.key==='Escape')setSheet('close');});
@@ -185,10 +188,11 @@ async function init(){
     const periods=data.periods||{};
     $('source-periods').textContent=`서울 Open Data · 직장 ${periods.worker||'—'} / 유동 ${periods.flow||'—'} / 집객 ${periods.facility||'—'}`;
     $('data-status').textContent=`서울 ${fmt(data.areas.length)} 상권 · 유동 ${periods.flow||'—'} · ${poi?'Kakao POI '+(poi.query_error_count?'일부 검색 실패':'표본'):'POI 데이터 이용 불가'} · 실제 후보지 ${state.sites.length}개`;
-    adapter.privatePoint?.(position=>window.dispatchEvent(new CustomEvent('sideeconomy:private-map-point',{detail:position})));$('di-map-create').onclick=()=>{adapter.armPrivatePoint?.();$('data-status').textContent='지도를 클릭하면 브라우저에 개인 사이트를 만듭니다. Escape로 취소.';};render();new ResizeObserver(()=>adapter.resize()).observe($('map'));
+    adapter.privatePoint?.(position=>window.dispatchEvent(new CustomEvent('sideeconomy:private-map-point',{detail:position})));$('di-map-create').onclick=()=>{adapter.armPrivatePoint?.();$('data-status').textContent='지도를 클릭하면 브라우저에 개인 사이트를 만듭니다. Escape로 취소.';};render();window.dispatchEvent(new Event('sideeconomy:gis-ready'));new ResizeObserver(()=>adapter.resize()).observe($('map'));
   }catch{state.adapter=await mapPromise.catch(()=>null);$('data-status').textContent='수요 데이터를 불러오지 못했습니다.';$('top-list').innerHTML='<p class="empty-state">데이터를 준비하지 못했습니다. 잠시 후 다시 열어 주세요.</p>';}
 }
 window.addEventListener('sideeconomy:choose-family',e=>{const family=typeof e.detail==='string'?e.detail:e.detail?.family;if(CANDIDATES[family]&&state.data&&state.adapter){state.candidate=family;$('candidate').value=family;if(!e.detail?.preserve_area)state.selectedArea=null;render();}});
 window.addEventListener('sideeconomy:decision-updated',e=>{state.decisionVariant=e.detail.selected_variant;if(state.adapter)renderPoi();});
 window.addEventListener('sideeconomy:private-sites',e=>{state.privateSites=e.detail.filter(s=>Number.isFinite(s.lat)&&Number.isFinite(s.lng)).map(s=>({...s,rent:s.rent?.value??null,deposit:s.deposit?.value??null,field_note:'PRIVATE · 브라우저 저장'}));if(state.adapter)renderSites();});
+window.SideEconomyGIS={refresh:()=>{render();state.adapter?.resize();},selected:()=>({area:state.selectedArea,candidate_id:CANDIDATES[state.candidate]?.id}),candidates:()=>registry?.candidates||[]};
 init();

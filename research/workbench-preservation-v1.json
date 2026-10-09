@@ -8,7 +8,7 @@
     "docs/assets/real-estate.js": "e54cc38e37bafdc824c5beabd3f800b65b0f465fa47b35132ada5c549e632b8e",
     ".github/workflows/seoul-gis-refresh.yml": "58555173da5f03592add78e4678538dd8f5862630ce289bf224ef376199b0d0c",
     ".github/workflows/real-estate-context.yml": "f0af398d4f99cdf32a837ea94bc7ac97a48ffca4bb4daa13260e350020f82092",
-    "pipeline/gis_refresh.py": "ec5594555828b4a955e648e7f02a14a03d8f79a00af080666474ebee58d1615f",
+    "pipeline/gis_refresh.py": "000f778848d28dddc59bd4a00e74e94dba466ef43a591aa1e81a1c91d90c6f8b",
     "pipeline/real_estate_context.py": "19af52e1e65d5f0fc911aa619050532f49c279dd1a0cb9571057aa2a56bc8e30",
     "field/transaction-evidence-log-v1.csv": "cdd93da126ececf28399e6b8f92f454b1cdb2ff0bd40d2bdeacf6adc8b8d6e56",
     "field/candidate-validation-instruments-v1.md": "91a38f757444663716f37e483d960f2be9c92fbd45bfd273ee880f7b7b0dec36",
@@ -34,6 +34,12 @@
     "pipeline/gis_refresh.py": {
       "prior_sha256": "82bfa0d288ca2bc1f46dbb2ea7e764fcbc9a4c998720126375f71311d25b9252",
       "reason": "User-authorized decision UI/source staging integration. Preserve original research/record semantics."
+    }
+  },
+  "authorized_radar_v1_changes": {
+    "pipeline/gis_refresh.py": {
+      "prior_sha256": "ec5594555828b4a955e648e7f02a14a03d8f79a00af080666474ebee58d1615f",
+      "reason": "Include immutable radar data in isolated existing GIS regression staging; no transformations or candidate decisions changed."
     }
   }
 }

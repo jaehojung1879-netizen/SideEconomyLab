@@ -1876,10 +1876,10 @@
     "docs/data/opportunity-intelligence.json": "e271967b1793282a1df74b51fd376bd57b282614f9653acee33910aee1cfffe9",
     "docs/data/real-estate-context.json": "eafdd7aeaabe45a086a665f2c06d5031587289d766a0b0191b20383ef877e024",
     "docs/data/candidate-registry.json": "213e965a5e13138e4a78c87fc97ed7393f9449aac0943c084891f1c298243c21",
-    "docs/assets/gis.js": "7a1e82d8f2af977039ef7718b89b21dc486bc1dc3f66b5b18a9eb07d51fa610c",
+    "docs/assets/gis.js": "ccce84606d1b0048edfe7e4359e0aad29faf08d0df323a816a3888be3199dad6",
     "docs/assets/map-adapter.js": "1e54de791ba9215d0313ee32f4456c83d2a39121bbb87b1b6485c79ee964ca31",
     "docs/assets/real-estate.js": "e54cc38e37bafdc824c5beabd3f800b65b0f465fa47b35132ada5c549e632b8e",
-    "docs/index.html": "a26a3a49406da5ad94d30f125076d7a4bb79c0f3d7bae87c4371184a69363861",
-    "docs/gis.html": "cb3cfce5cd861ae1d56e66df8510ca334f176f66c4035f309bc9e348cdb9ad59"
+    "docs/index.html": "4471830d4b77ff9c63bf4cba635ad1ab67d500e146ed25dfbbd2fa6c6dcc0aa5",
+    "docs/gis.html": "80884f83e1e5321cd276a12c02344e92158b35eaaf37fc5d018f2a18cbc0fb10"
   }
 }

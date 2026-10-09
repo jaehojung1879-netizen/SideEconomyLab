@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "metadata_receipts": [
+    {
+      "dataset": "OA-15577-schema",
+      "document_sha256": "f81a577d8632d085d7e4d56b99bb73a8badda4a238643ed78a5b38fed71e6caa",
+      "bytes": 21471,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15572-schema",
+      "document_sha256": "a7d5378da5190f1a3fd2144ce3efb76a02e40473664259097e9ab8121ca3884b",
+      "bytes": 26327,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15577-api",
+      "document_sha256": "b9eafe9987d3a7972b54ad79495bf13e8ee1f68ebd25a35b9a154e01466bb7e4",
+      "bytes": 111764,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15572-api",
+      "document_sha256": "f2c317464f72366ee542b8382f2e6d728a1186cd4d83dd43d12166d06f09e2f7",
+      "bytes": 113199,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15576",
+      "document_sha256": "3d1712ab9f502e41f792567a5b2fa60b6bf9437425e0e2930cb77b23ac190bf3",
+      "bytes": 112577,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15560",
+      "document_sha256": "9367fd5e74f46d41cbbc8960549dcc2f06320cc7531d7bb8794423452a4dbbb7",
+      "bytes": 106436,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15577",
+      "document_sha256": "c9528b2b846d5748d8d3c168ad01854b2bd3ee0de0a3c2e0a7b45ca1c8a95e39",
+      "bytes": 111760,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15572",
+      "document_sha256": "aa37ff06e25a2f0d4db5f8b9060d457006cf545b588dec074088122de5469cc0",
+      "bytes": 113195,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15576-schema",
+      "document_sha256": "2790c450cf6ab4004d983394d546ba258e037aea6b1eb8e6e76f4c9aa5963b0f",
+      "bytes": 21069,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15560-schema",
+      "document_sha256": "b5ccac2a92e4fbe0b62839289834273c472250547ad77539818a6b1898fcbc0a",
+      "bytes": 19750,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    },
+    {
+      "dataset": "OA-15580-schema",
+      "document_sha256": "0c101217538de4d7cb1251dd3fd0e9d334c1c1c9177eb7c195dfd51e1c93760e",
+      "bytes": 21181,
+      "kind": "PUBLIC_METADATA_NOT_OBSERVATIONS",
+      "retrieved_on": "2026-10-09"
+    }
+  ],
+  "collection_run": "https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/37908347723",
+  "initial_failed_run": "https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/37908067450",
+  "failure": "PARTITION_ROW_BUDGET_EXCEEDED: sales API has only quarter filter; corrected to bounded full-page inspection and ID selection",
+  "snapshot_id": "2026-10-09-55b80cb44604",
+  "observed_periods": [
+    "20252",
+    "20253",
+    "20254",
+    "20261",
+    "20262"
+  ],
+  "coverage": {
+    "area_industries": 186,
+    "eligible_signals": 0,
+    "fresh_sources": 2,
+    "mapped_signals": 0,
+    "rows": 1442,
+    "source_areas": 2
+  },
+  "request_count": 124,
+  "preserved_observation_fields": [
+    "STDR_YYQU_CD",
+    "TRDAR_CD",
+    "TRDAR_CD_NM",
+    "SVC_INDUTY_CD",
+    "SVC_INDUTY_CD_NM",
+    "THSMON_SELNG_AMT",
+    "THSMON_SELNG_CO",
+    "SIMILR_INDUTY_STOR_CO",
+    "STOR_CO",
+    "FRC_STOR_CO",
+    "OPBIZ_STOR_CO",
+    "CLSBIZ_STOR_CO"
+  ],
+  "limitations": [
+    "Selected normalized fields are immutable; unrelated city rows are not retained. Page response hashes and counts are preserved.",
+    "No verified quarter-level boundary version/crosswalk; no comparable signals or map overlay.",
+    "Source publication date UNKNOWN; metadata update date is not observation/publication date."
+  ]
+}
