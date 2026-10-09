@@ -1,0 +1,34 @@
+{
+  "scroll": 163,
+  "detail": {
+    "x": 12,
+    "y": 70,
+    "width": 366,
+    "height": 972.3125,
+    "top": 70,
+    "right": 378,
+    "bottom": 1042.3125,
+    "left": 12
+  },
+  "back": {
+    "x": 12,
+    "y": 70,
+    "width": 366,
+    "height": 44,
+    "top": 70,
+    "right": 378,
+    "bottom": 114,
+    "left": 12
+  },
+  "switch": {
+    "x": 0,
+    "y": 0,
+    "width": 390,
+    "height": 57,
+    "top": 0,
+    "right": 390,
+    "bottom": 57,
+    "left": 0
+  },
+  "margin": "70px"
+}

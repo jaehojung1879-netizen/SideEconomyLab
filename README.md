@@ -65,3 +65,9 @@ The GIS now offers **사업 구성·경제성**: source-backed child variants/co
 ## Decision Intelligence v1
 
 The GIS now opens with business cash/cost envelopes, reverse economics, conditional sensitivity and explicit decision gates. See [the decision guide](docs/decision-intelligence-v1.md) for evidence labels, private comparable inputs, source coverage and the outstanding R-ONE authentication requirement.
+
+## Seoul Opportunity Radar & UX foundation v1
+
+The canonical workspace now starts with **기회 탐색**, followed by **지역 분석 / 사업성 검토 / 검증 현황**. The existing map, candidate decisions, economics and private records are preserved. [Radar guide](docs/opportunity-radar-v1.md) and [official source catalog](docs/data/seoul-source-catalog.json) distinguish live observations from unverified integrations.
+
+Authenticated Actions collection verified sales (OA-15572) and stores (OA-15577), 2025 Q2–2026 Q2, two source areas, 1,442 retained observations. Geographic revision/crosswalk remains unverified: zero eligible comparison signals, no new map overlay, no new business approval. Individual observations and the next verification step remain usable. Heavy decision evidence loads when opening 사업성 검토.

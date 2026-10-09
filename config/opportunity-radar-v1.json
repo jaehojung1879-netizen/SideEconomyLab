@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "area_ids": ["3001492", "3120189"],
+  "history_quarters": 5,
+  "request_budget": 260,
+  "max_rows_per_partition": 5000,
+  "freshness_days": 180,
+  "geography": {
+    "domain": "seoul-commercial-statistics",
+    "version": null,
+    "crs": null,
+    "geometry_version": null,
+    "comparability_verified": false,
+    "evidence_url": "https://data.seoul.go.kr/together/notice/datasetNoticeView.do?bbsCd=10008&ditcCd=&pageIndex=1&seq=a2197dabd5a3a52edd6fe0d4eead6bd3",
+    "limitation": "표준단위구역 전환은 공식 확인. 분기별 동일 경계 및 기존 GIS 대응표는 미확인. 코드·이름 일치만으로 지도에 연결하지 않습니다."
+  },
+  "official_crosswalk": null
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "관측 근거에 연결된 연구 전용 사업 가설 · 후보 등록/승인과 별도",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["hypothesis_id", "status", "observed_signal_ids", "customer_segment", "observed_market_change", "customer_problem", "business_mechanism", "operating_model", "capital_assumptions", "owner_time_requirements", "alternatives", "missing_evidence", "cheapest_validation"],
+  "properties": {
+    "hypothesis_id": {"type": "string", "pattern": "^RH-[A-Z0-9-]+$"},
+    "status": {"const": "RESEARCH_ONLY"},
+    "observed_signal_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "customer_segment": {"type": "string", "minLength": 1},
+    "observed_market_change": {"type": "string", "minLength": 1},
+    "customer_problem": {"type": ["string", "null"]},
+    "business_mechanism": {"type": ["string", "null"]},
+    "operating_model": {"type": ["string", "null"]},
+    "capital_assumptions": {"type": "object", "additionalProperties": false, "required": ["low_krw", "high_krw", "basis"], "properties": {"low_krw": {"type": ["number", "null"], "minimum": 0}, "high_krw": {"type": ["number", "null"], "minimum": 0}, "basis": {"type": ["string", "null"]}}},
+    "owner_time_requirements": {"type": "object", "additionalProperties": false, "required": ["hours_per_month", "weekday_interruption", "basis"], "properties": {"hours_per_month": {"type": ["number", "null"], "minimum": 0}, "weekday_interruption": {"type": ["string", "null"]}, "basis": {"type": ["string", "null"]}}},
+    "alternatives": {"type": "array", "items": {"type": "string"}},
+    "missing_evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "cheapest_validation": {"type": "string", "minLength": 1}
+  }
+}

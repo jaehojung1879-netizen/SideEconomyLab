@@ -8,6 +8,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
 (async()=>{
   const browser=await chromium.launch({headless:true});
   const page=await browser.newPage({viewport:{width:1600,height:1000}});activePage=page;
+  await page.addInitScript(()=>{if(!location.hash)history.replaceState(null,'',location.pathname+'#region');});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   page.on('console',m=>{if(m.type()==='error')errors.push('browser console error');});
   await page.goto(base);await page.locator('.top-item').first().waitFor();
@@ -48,13 +49,13 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
     const code=await page.locator('.top-item').nth(1).getAttribute('data-code');await page.locator('.top-item').nth(1).click();
     assert.equal(await page.evaluate(()=>state.selectedArea.trdar_cd),code);
     const panel=await page.locator('#selected-card').innerText();
-    for(const label of ['DERIVED SIGNAL','DATA','UNKNOWN','FIELD CHECK', '백분위'])assert.ok(panel.includes(label));
+    for(const label of ['계산 지표','공개 자료','미확인','현장 확인', '백분위'])assert.ok(panel.includes(label));
     const synchronized=await page.evaluate(()=>{
       const a=state.selectedArea,s=signals(a);return {candidate:CANDIDATES[state.candidate].id,score:currentScore(a),reconstructed:s.reduce((total,x)=>total+100*x.weight*x.percentile,0),rank:state.rankByCode.get(a.trdar_cd),poi:poiAreaFor(a.trdar_cd)?.unique_poi_count};
     });
     assert.ok(Math.abs(synchronized.score-synchronized.reconstructed)<.02,'unchanged scoring explanation');
     assert.ok(panel.includes(synchronized.candidate));assert.ok(panel.includes('#'+synchronized.rank));
-    assert.ok(panel.includes('서울 전체'));assert.ok(panel.includes('52.8'));assert.ok(panel.includes('SITE ECONOMICS'));
+    assert.ok(panel.includes('서울 전체'));assert.ok(panel.includes('52.8'));assert.ok(panel.includes('사업성 · 실제 조건'));
     assert.ok(await page.locator('.poi-marker').count()>0);
   }
   await page.click('[data-threshold="95"]');
@@ -79,11 +80,11 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.screenshot({path:'/tmp/gis-browser/desktop.png'});
   await page.selectOption('#map-mode','quadrant');await page.screenshot({path:'/tmp/gis-browser/quadrants.png'});await page.selectOption('#map-mode','demand');
   await page.setViewportSize({width:390,height:844});await page.reload();await page.locator('.top-item').first().waitFor({state:'attached'});
-  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));const mobile=await page.locator('#map').boundingBox();assert.ok(mobile.y<160&&mobile.height>500);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));const mobile=await page.locator('#map').boundingBox();assert.ok(mobile.y<250&&mobile.height>500);
   await page.screenshot({path:'/tmp/gis-browser/mobile-map.png'});
   await page.click('.mobile-tabs [data-sheet="rank"]');assert.ok(await page.locator('#navigator').isVisible());await page.locator('.top-item').nth(1).click();assert.ok(await page.locator('#intelligence').isVisible());await page.screenshot({path:'/tmp/gis-browser/mobile-decision.png'});
   await page.click('#intelligence [data-sheet="close"]');await page.click('.mobile-tabs [data-sheet="filters"]');await page.click('[data-threshold="90"]');await page.uncheck('#show-poi');await page.click('#navigator [data-sheet="close"]');assert.equal(await page.locator('.poi-marker').count(),0);
-  await page.goto(base+'gis.html');await page.waitForURL(base+'index.html');await page.locator('#map').waitFor();
+  await page.goto(base+'gis.html');await page.waitForURL(base+'index.html#region');await page.locator('#map').waitFor();
   assert.deepEqual(errors,[],'normal runtime has no console/page errors');
   // Optional datasets can be missing and candidate switches remain usable.
   await page.route('**/data/kakao-poi-layer.json',r=>r.fulfill({status:404,body:''}));await page.route('**/data/site-observations.json',r=>r.fulfill({status:404,body:''}));await page.route('**/data/map-runtime.json',r=>r.fulfill({status:404,body:''}));
@@ -124,7 +125,7 @@ fs.mkdirSync('/tmp/gis-browser',{recursive:true});
   await page.route('**/data/map-runtime.json',r=>r.fulfill({json:config}));
   await page.route('https://dapi.kakao.com/v2/maps/sdk.js?*',r=>r.fulfill({contentType:'application/javascript',body:fs.readFileSync(path.join(__dirname,'kakao-sdk-fixture.js'),'utf8')}));
   await page.goto(base);await page.waitForFunction(()=>state.adapter?.provider==='kakao');assert.equal(await page.locator('#map').getAttribute('data-synthetic-kakao'),'true');assert.ok(await page.locator('.demand-marker').count()>0);
-  await page.locator('.demand-marker').nth(2).click();assert.ok((await page.locator('#selected-card').innerText()).includes('FIELD CHECK'));
+  await page.locator('.demand-marker').nth(2).click();assert.ok((await page.locator('#selected-card').innerText()).includes('현장 확인'));
   for(const candidate of ['photo','vending','luggage','booth']){await page.selectOption('#candidate',candidate);assert.ok(await page.locator('.demand-marker').count()>0);assert.ok(await page.locator('.poi-marker').count()>0);}
   await page.locator('#filter-panel').evaluate(e=>e.open=true);
   await page.uncheck('#show-demand');assert.equal(await page.locator('button.demand-marker').count(),0);await page.check('#show-demand');assert.ok(await page.locator('button.demand-marker').count()>0);

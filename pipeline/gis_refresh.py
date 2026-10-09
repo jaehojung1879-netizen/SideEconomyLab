@@ -24,7 +24,9 @@ OUTPUTS = (*DERIVED_INPUTS, PORTFOLIO)
 
 def copy_workspace(root, stage):
     # Existing modules resolve paths from __file__: isolated files, no Git checkout/worktree.
-    for directory in ('pipeline', 'docs', 'tests', 'config', 'field', 'research', 'data/real-estate-context', 'data/decision-intelligence', '.github/workflows'):
+    for directory in ('pipeline', 'docs', 'tests', 'config', 'field', 'research', 'data/real-estate-context', 'data/decision-intelligence', 'data/opportunity-radar', '.github/workflows'):
+        if directory == 'data/opportunity-radar' and not (root / directory).exists():
+            continue  # Older isolated workspaces/tests have no optional radar bundle.
         shutil.copytree(root / directory, stage / directory, ignore=shutil.ignore_patterns('__pycache__'))
 
 

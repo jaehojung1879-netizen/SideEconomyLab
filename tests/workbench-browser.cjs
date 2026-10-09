@@ -4,6 +4,7 @@ const base=process.env.GIS_BASE_URL||'http://127.0.0.1:8765/SideEconomyLab/';
 (async()=>{
   const browser=await chromium.launch({headless:true,...(process.env.WORKBENCH_CHROMIUM?{executablePath:process.env.WORKBENCH_CHROMIUM}:{})});
   const context=await browser.newContext({viewport:{width:1600,height:1000}}),page=await context.newPage(),errors=[],requests=[];
+  await page.addInitScript(()=>{if(!location.hash)history.replaceState(null,'',location.pathname+'#evaluate');});
   page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push({url:r.url(),method:r.method(),body:r.postData()}));
   // Pinned local copies remove third-party dependency from the new workbench test. Existing GIS tests verify real providers separately.
   for(const [url,file,type] of [['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','leaflet/dist/leaflet.js','application/javascript'],['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','leaflet/dist/leaflet.css','text/css'],['https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js','proj4/dist/proj4.js','application/javascript']])await page.route(url,r=>r.fulfill({path:require.resolve(file),contentType:type}));

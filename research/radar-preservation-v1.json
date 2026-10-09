@@ -1,0 +1,27 @@
+{
+  "starting_main": "a1372273b60c6d89dad8e7db3a585ba50d14c5d6",
+  "unchanged_files": {
+    "docs/data/candidate-registry.json": "213e965a5e13138e4a78c87fc97ed7393f9449aac0943c084891f1c298243c21",
+    "docs/data/map-runtime.json": "9abbcf9115b7b23ce3cea601ea6c39241940cf5a7ca37a920b912f044de67e7e",
+    "docs/data/seoul-opportunity-map.json": "282a282312df284794bc5e060aeec7c6294bd1f22021483424659d179bb52d28",
+    "docs/data/kakao-poi-layer.json": "de41dc14f7f42e6536b1893c515c8bfce18427540fd655365450e8745a9e8698",
+    "docs/data/opportunity-intelligence.json": "e271967b1793282a1df74b51fd376bd57b282614f9653acee33910aee1cfffe9",
+    "docs/data/real-estate-context.json": "eafdd7aeaabe45a086a665f2c06d5031587289d766a0b0191b20383ef877e024",
+    "docs/data/decision-evidence.json": "45a46d42b63d93c46401b06f5c4fc115438b4ce886a56f6b8e59d6a6489f934b",
+    "docs/data/business-workbench.json": "7fc82b6eef5b95669b1a331b3b64f6d2a34239e1a7ee0f832b724263c6c42a84",
+    "docs/data/site-observations.json": "cfb9edcc52c321f1e08763009e8a9910c189d14a1c9004f6647952219c60a655",
+    "docs/assets/map-adapter.js": "1e54de791ba9215d0313ee32f4456c83d2a39121bbb87b1b6485c79ee964ca31",
+    "docs/assets/business-workspace.js": "94a10b341eeb3e172af941c22c1b608664620e4ceafddecb6502ba8097ddcec0",
+    "docs/assets/decision-intelligence.js": "4092d0cdd9401617e3e2d8d4fb6945ae640c4ae856aa73d5a763e450526b7a15",
+    "field/transaction-evidence-log-v1.csv": "cdd93da126ececf28399e6b8f92f454b1cdb2ff0bd40d2bdeacf6adc8b8d6e56",
+    "field/candidate-validation-instruments-v1.md": "91a38f757444663716f37e483d960f2be9c92fbd45bfd273ee880f7b7b0dec36",
+    "docs/assets/economics.js": "54002c8c59c9e5e1930114f560c96fc27060f0571ff87cd4612f74f6b7cceb62"
+  },
+  "portfolio_semantics_sha256": "8c227a60cbb5cc3191babfb21a64072b935450f0e2a08cc610ef3cc4e4d0da3c",
+  "authorized_presentation_rebindings": [
+    "docs/index.html",
+    "docs/assets/gis.js",
+    "docs/gis.html"
+  ],
+  "scope": "candidate scores, gates, promotion, economics models, map credentials/configuration and public site/evidence records unchanged"
+}
