@@ -23,13 +23,13 @@
   function change(base, current) {
     if (!finite(base) || !finite(current)) return {status: 'UNKNOWN', reason: 'MISSING_OBSERVATION', pct: null, abs: null};
     if (base === 0) return {status: 'UNKNOWN', reason: 'ZERO_BASELINE', pct: null, abs: current - base};
-    return {status: 'OK', pct: Math.round((current / base - 1) * 10000) / 100, abs: current - base};
+    return {status: 'OK', pct: Math.floor((current / base - 1) * 10000 + 0.5) / 100, abs: current - base};
   }
   // Index = value / baseline × 100. Null when baseline missing/zero; never interpolated.
   function indexSeries(values) {
     const base = values[0];
     if (!finite(base) || base === 0) return values.map(() => null);
-    return values.map(v => finite(v) ? Math.round(v / base * 10000) / 100 : null);
+    return values.map(v => finite(v) ? Math.floor(v / base * 10000 + 0.5) / 100 : null);
   }
   function chartModel(periods, series, {width = 640, height = 240, pad = {l: 44, r: 16, t: 18, b: 34}} = {}) {
     const all = series.flatMap(s => s.index).filter(finite);

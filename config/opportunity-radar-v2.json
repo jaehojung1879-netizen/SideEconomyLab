@@ -9,6 +9,11 @@
     "min_baseline_sales_krw": 100000000,
     "min_baseline_stores": 10
   },
+  "extreme": {
+    "spending_pct": 100,
+    "stores_pct": 50,
+    "note": "이 폭을 넘는 1년 변화는 시장 변화보다 점포 배정·업종 분류·결제 처리 변경 같은 자료 요인일 가능성을 먼저 확인합니다."
+  },
   "patterns": {
     "spend_up_supply_flat_or_down": {
       "label": "소비 증가 · 점포 정체/감소",

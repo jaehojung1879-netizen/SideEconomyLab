@@ -10,7 +10,7 @@
   const FLOW_TEXT = {expansion: '최근 4개 분기 모두 개업이 폐업보다 많음', contraction: '최근 4개 분기 모두 폐업이 개업보다 많음', mixed: '최근 4개 분기 순증감 방향이 섞임', UNKNOWN: '개폐업 관측 누락', BLOCKED: '비교 보류'};
   let data = null, sourceState = null, limit = 8, sequence = 0, detail = null;
   const cache = new Map(), byKey = new Map();
-  const filters = {area: '', industry: '', compare: 'yoy', pattern: '', sort: 'sales', scope: 'all'};
+  const filters = {area: '', industry: '', compare: 'yoy', pattern: '', sort: 'size', scope: 'all'};
 
   function decode(index) {
     const cols = index.entity_columns;
@@ -69,14 +69,14 @@
     $('radar-area').innerHTML = data.domains.map(d => `<optgroup label="${esc(d.label)} · ${d.gates.temporal.status === 'VERIFIED' ? '변화 비교 가능' : '비교 보류'}">${d.id === 'district' ? `<option value="district:*">서울 ${d.areas.length}개 자치구 비교</option>` : ''}${d.areas.map(([id, name]) => `<option value="${esc(d.id + ':' + id)}">${esc(name)}</option>`).join('')}</optgroup>`).join('');
     const inDomain = new Set(data.list.filter(e => e.domain === domain).map(e => e.industry_id));
     $('radar-industry').innerHTML = `<option value="">이 지역의 업종 비교</option>` + data.industries.filter(([id]) => inDomain.has(id)).sort((a, b) => a[1].localeCompare(b[1], 'ko')).map(([id, name]) => `<option value="${id}">${esc(name)}</option>`).join('');
-    $('radar-pattern').innerHTML = '<option value="">모든 발견</option>' + Object.entries(data.patterns).filter(([k]) => k !== 'mixed_or_flat').map(([k, p]) => `<option value="${k}">${esc(p.label)}</option>`).join('') + '<option value="flow">개폐업 방향 지속</option>';
+    $('radar-pattern').innerHTML = '<option value="">모든 발견</option>' + Object.entries(data.patterns).filter(([k]) => k !== 'mixed_or_flat').map(([k, p]) => `<option value="${k}">${esc(p.label)}</option>`).join('') + '<option value="flow">개폐업 방향 지속</option><option value="extreme">급변 · 원자료 먼저 확인</option>';
     $('radar-area').value = filters.area; $('radar-industry').value = filters.industry; $('radar-compare').value = filters.compare; $('radar-pattern').value = filters.pattern; $('radar-sort').value = filters.sort; $('radar-scope').value = filters.scope;
   }
 
   function headline() {
     const d = domainOf('district'), c = data.coverage;
     $('radar-headline').innerHTML = d && d.gates.temporal.status === 'VERIFIED'
-      ? `${F.quarter(data.periods[0])} → ${F.quarter(data.periods.at(-1))}, 서울 ${d.areas.length}개 자치구의 공식 추정 소비와 점포 변화를 비교합니다. 비교 가능한 조합 ${c.comparable.toLocaleString('ko-KR')}개 중 <strong>${c.findings.toLocaleString('ko-KR')}건</strong>을 추가 조사 후보로 표시했습니다.`
+      ? `${F.quarter(data.periods[0])} → ${F.quarter(data.periods.at(-1))}, 서울 ${d.areas.length}개 자치구의 공식 추정 소비와 점포 변화를 비교합니다. 비교 가능한 조합 ${c.comparable.toLocaleString('ko-KR')}개 중 <strong>${c.findings.toLocaleString('ko-KR')}건</strong>을 추가 조사 후보로 표시했습니다. 서울 전체 중앙값은 소비 ${F.signed(d.context.median_sales_yoy_pct)}%, 점포 ${F.signed(d.context.median_stores_yoy_pct)}%입니다.`
       : '관측 자료는 확보했지만 같은 지리 기준을 공식 근거로 확인하지 못해 변화 비교를 보류합니다.';
   }
 
@@ -109,6 +109,7 @@
     $('radar-market').innerHTML = `<div class="radar-market-head"><div><span>${esc(d.label)}</span><h3>${title}</h3></div><button class="radar-action" data-radar-up="area">← ${esc(areaName(d.id, area))} 전체 업종</button></div>
       ${summary(e, i0, i1)}
       ${p && filters.compare === 'yoy' ? `<p class="radar-pattern" data-pattern="${e.pattern}"><strong>${esc(p.label)}</strong> ${esc(p.meaning)}${e.material ? '' : ' <em>기준 규모가 작아 발견 목록에서는 제외했습니다.</em>'}</p>` : filters.compare === 'qoq' ? '<p class="radar-pattern">직전 분기 비교는 계절 영향이 포함됩니다. 발견 분류는 전년 같은 분기 기준으로만 합니다.</p>' : ''}
+      ${e.extreme ? `<p class="radar-notice"><strong>급변 · 원자료 먼저 확인</strong> ${esc(data.rules.extreme.note)} 아래 분기별 원값에서 변화가 한 분기에 몰렸는지 보세요.</p>` : ''}
       ${gateNote(d)}
       <section class="radar-chart-wrap" id="radar-chart" aria-live="polite"><p>분기별 추이를 불러오고 있습니다.</p></section>
       ${p && filters.compare === 'yoy' ? `<div class="radar-why"><p><strong>왜 볼 만한가</strong> ${esc(p.why)}</p><p><strong>다른 설명</strong> ${esc(p.alternatives)}</p><p class="radar-next"><strong>다음 확인</strong> ${esc(p.next)}</p></div>` : ''}
@@ -126,7 +127,7 @@
     $('radar-market').innerHTML = `<div class="radar-market-head"><div><span>${esc(d.label)} · ${F.quarter(base)} → ${F.quarter(cur)}</span><h3>${title}</h3></div></div>
       <div class="radar-cards"><article class="radar-card"><h4>추정 소비</h4><strong>${up}곳 증가 · ${down}곳 감소</strong><p>중앙값 ${F.signed(med(ok.map(e => e['sales_' + c].pct)))}%</p><small>변화율 계산 가능 ${ok.length}/${rows.length}</small></article><article class="radar-card"><h4>점포 수</h4><strong>${sUp}곳 증가 · ${sDown}곳 감소</strong><p>중앙값 ${F.signed(med(st.map(e => e['stores_' + c].pct)))}%</p><small>변화율 계산 가능 ${st.length}/${rows.length}</small></article></div>
       ${gateNote(d)}<p class="radar-note">${esc(note)} 막대는 추정 소비 변화율(±${max.toFixed(0)}% 축, 100% 초과는 잘림)입니다. 기준 규모가 작은 항목은 아래로 정렬합니다.</p>
-      <ol class="radar-rank">${sorted.map(e => { const s = e['sales_' + c], t = e['stores_' + c], w = s.status === 'OK' ? Math.min(Math.abs(s.pct), max) / max * 50 : 0; return `<li><button data-radar-pick="${esc(JSON.stringify(target(e)))}"><span class="radar-rank-name">${esc(label(e))}${e.material ? '' : '<small>기준 규모 작음</small>'}</span><span class="radar-bar" aria-hidden="true"><i data-tone="${tone(s)}" style="${s.pct < 0 ? `right:50%;width:${w}%` : `left:50%;width:${w}%`}"></i></span><span class="radar-rank-val"><b data-tone="${tone(s)}">${pctText(s)}</b><small>점포 ${pctText(t)}</small></span></button></li>`; }).join('')}</ol>`;
+      <ol class="radar-rank">${sorted.map(e => { const s = e['sales_' + c], t = e['stores_' + c], w = s.status === 'OK' ? Math.min(Math.abs(s.pct), max) / max * 50 : 0; return `<li><button data-radar-pick="${esc(JSON.stringify(target(e)))}"><span class="radar-rank-name">${esc(label(e))}${e.material ? '' : '<small>기준 규모 작음</small>'}${e.extreme ? '<small>급변 · 원자료 확인</small>' : ''}</span><span class="radar-bar" aria-hidden="true"><i data-tone="${tone(s)}" style="${s.pct < 0 ? `right:50%;width:${w}%` : `left:50%;width:${w}%`}"></i></span><span class="radar-rank-val"><b data-tone="${tone(s)}">${pctText(s)}</b><small>점포 ${pctText(t)}</small></span></button></li>`; }).join('')}</ol>`;
     bindMarket();
   }
   function bindMarket() {
@@ -185,14 +186,18 @@
     const {domain, area} = parseArea(filters.area), sel = filters.scope === 'selection';
     let rows = data.list.filter(e => e.finding && (!sel || ((!area || (e.domain === domain && e.area_id === area)) && (!filters.industry || e.industry_id === filters.industry))));
     if (filters.pattern === 'flow') rows = rows.filter(e => ['expansion', 'contraction'].includes(e.flow));
+    else if (filters.pattern === 'extreme') rows = rows.filter(e => e.extreme);
     else if (filters.pattern) rows = rows.filter(e => e.pattern === filters.pattern);
-    const key = {sales: e => -Math.abs(e.sales_yoy.pct ?? 0), stores: e => -Math.abs(e.stores_yoy.pct ?? 0), area: () => 0}[filters.sort];
-    rows.sort((a, b) => key(a) - key(b) || areaName(a.domain, a.area_id).localeCompare(areaName(b.domain, b.area_id), 'ko') || a.industry_id.localeCompare(b.industry_id));
+    // size: larger baseline estimates first (less noisy, more decision-relevant); not an opportunity ranking.
+    const key = {size: e => -(e.sales[0] ?? 0), sales: e => -Math.abs(e.sales_yoy.pct ?? 0), stores: e => -Math.abs(e.stores_yoy.pct ?? 0), area: () => 0}[filters.sort];
+    // Extreme jumps are listed after ordinary findings: check the source before treating them as market change.
+    rows.sort((a, b) => (a.extreme - b.extreme) || key(a) - key(b) || areaName(a.domain, a.area_id).localeCompare(areaName(b.domain, b.area_id), 'ko') || a.industry_id.localeCompare(b.industry_id));
     $('radar-result-count').textContent = `${rows.length.toLocaleString('ko-KR')}건`;
     let state = '';
     if (sourceState?.status === 'BLOCKED') state += `<p class="radar-notice">최근 수집 시도(${esc((sourceState.attempted_at || '').slice(0, 10))})가 실패했습니다. 이전에 검증한 자료를 그대로 보여줍니다. 사유 코드 <code>${esc(sourceState.reason)}</code></p>`;
     for (const d of data.domains) if (!d.fresh) state += `<p class="radar-notice">${esc(d.label)} 관측이 오래되었습니다. 최근 변화로 해석하지 마세요.</p>`;
     if (filters.compare === 'qoq') state += '<p class="radar-notice">발견 목록은 계절 영향을 줄이기 위해 전년 같은 분기 비교만 사용합니다.</p>';
+    if (filters.sort === 'size') state += '<p class="radar-note">기준 분기 소비가 큰 시장부터 보여줍니다. 규모가 클수록 추정이 안정적이라는 읽기 순서이며 기회 순위가 아닙니다.</p>';
     if (!rows.length) state += '<p class="empty-state">조건에 맞는 발견이 없습니다. 지역·업종·변화 유형을 바꿔 보세요.</p>';
     $('radar-source-state').innerHTML = state;
     const [base, cur] = data.comparisons.yoy;
@@ -201,7 +206,7 @@
       const why = flowOnly ? data.patterns.mixed_or_flat : p;
       const what = flowOnly ? FLOW_TEXT[e.flow] : p.label;
       return `<button class="radar-item" data-radar-finding="${esc(JSON.stringify({area: e.domain + ':' + e.area_id, industry: e.industry_id}))}" data-pattern="${esc(e.pattern || e.flow)}">
-        <span class="radar-item-tag">${esc(what)}</span><strong>${esc(areaName(e.domain, e.area_id))} · ${esc(data.industryName.get(e.industry_id))}</strong>
+        <span class="radar-item-tag">${esc(what)}</span>${e.extreme ? '<span class="radar-item-tag radar-extreme">급변 · 원자료 먼저 확인</span>' : ''}<strong>${esc(areaName(e.domain, e.area_id))} · ${esc(data.industryName.get(e.industry_id))}</strong>
         <span class="radar-metric"><b data-tone="${tone(e.sales_yoy)}">소비 ${pctText(e.sales_yoy)}</b><b data-tone="${tone(e.stores_yoy)}">점포 ${pctText(e.stores_yoy)}</b>${Number.isFinite(e.net_openings_4q) ? `<b>4분기 순개업 ${F.signed(e.net_openings_4q, 0)}</b>` : ''}</span>
         <small>${F.money(e.sales[0]).text} → ${F.money(e.sales[2]).text} · 점포 ${F.count(e.stores[0])} → ${F.count(e.stores[2])} · ${F.shortQuarter(base)}→${F.shortQuarter(cur)}</small>
         <small><em>왜</em> ${esc(flowOnly ? '공급 진입·퇴출이 한 방향으로 이어지고 있습니다.' : why.why)}</small><small><em>다른 설명</em> ${esc(flowOnly ? '이전·업종 전환·등록 시차로도 개폐업이 생깁니다.' : why.alternatives)}</small><small class="radar-item-next"><em>다음 확인</em> ${esc(flowOnly ? '최근 개폐업 점포 몇 곳의 실제 운영 상태와 사유를 확인하세요.' : why.next)}</small></button>`;

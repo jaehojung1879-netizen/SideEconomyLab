@@ -40,7 +40,7 @@ SERVICES = {
 }
 ENTITY_COLUMNS = ('domain', 'area_id', 'industry_id', 'sales', 'stores', 'opened', 'closed',
                   *(f'{m}_{c}_{f}' for m in ('sales', 'stores') for c in ('yoy', 'qoq') for f in ('status', 'pct')),
-                  'flow', 'net_openings_4q', 'pattern', 'material', 'finding', 'blocked', 'map_area_id')
+                  'flow', 'net_openings_4q', 'pattern', 'material', 'extreme', 'finding', 'blocked', 'map_area_id')
 PATTERNS = ('spend_up_supply_flat_or_down', 'spend_down_supply_up', 'both_expand', 'both_contract', 'mixed_or_flat')
 
 
@@ -404,7 +404,8 @@ def change(base, current):
         return {'status': 'UNKNOWN', 'reason': 'MISSING_OBSERVATION', 'pct': None, 'abs': None}
     if base == 0:
         return {'status': 'UNKNOWN', 'reason': 'ZERO_BASELINE', 'pct': None, 'abs': current - base}
-    return {'status': 'OK', 'pct': round((current / base - 1) * 100, 2), 'abs': current - base}
+    # Same IEEE expression as radar-format.js: floor((c / b − 1) × 10000 + 0.5) / 100 (half-up).
+    return {'status': 'OK', 'pct': math.floor((current / base - 1) * 10000 + 0.5) / 100, 'abs': current - base}
 
 
 def classify(sales, stores, bands):
@@ -451,13 +452,15 @@ def derive_domain(domain_id, spec, raw, periods, rules, gates):
         flow, net4 = flow_direction(history) if not blocked else ('BLOCKED', None)
         pattern = classify(sales, stores, rules['bands']) if sales['status'] == stores['status'] == 'OK' else None
         material = (history[0]['sales'] or 0) >= rules['materiality']['min_baseline_sales_krw'] and (history[0]['stores'] or 0) >= rules['materiality']['min_baseline_stores']
+        ex = rules['extreme']
+        extreme = bool((sales['status'] == 'OK' and abs(sales['pct']) >= ex['spending_pct']) or (stores['status'] == 'OK' and abs(stores['pct']) >= ex['stores_pct']))
         finding = bool(material and ((pattern and pattern != 'mixed_or_flat') or flow in ('expansion', 'contraction')))
         row = {'domain': domain_id, 'area_id': g, 'industry_id': i,
                'sales': [history[0]['sales'], history[-2]['sales'], history[-1]['sales']],
                'stores': [history[0]['stores'], history[-2]['stores'], history[-1]['stores']],
                'opened': history[-1]['opened'], 'closed': history[-1]['closed'],
                'sales_yoy': sales, 'stores_yoy': stores, 'sales_qoq': sales_q, 'stores_qoq': stores_q,
-               'flow': flow, 'net_openings_4q': net4, 'pattern': pattern, 'material': material, 'finding': finding,
+               'flow': flow, 'net_openings_4q': net4, 'pattern': pattern, 'material': material, 'extreme': extreme, 'finding': finding,
                'blocked': blocked, 'map_area_id': None}
         rows.append(row)
         details.setdefault(g, {})[i] = {'name': sorted(i_names)[0], 'history': history, 'identity_consistent': identity_ok}
@@ -490,6 +493,15 @@ def source_metadata(domain_id, spec, raw):
     return out
 
 
+def context(rows):
+    """Descriptive medians across all comparable geography×industry pairs (interpretation aid, not a benchmark score)."""
+    def med(key):
+        v = sorted(r[key]['pct'] for r in rows if r[key]['status'] == 'OK')
+        return None if not v else (v[len(v) // 2] if len(v) % 2 else math.floor((v[len(v) // 2 - 1] + v[len(v) // 2]) / 2 * 100 + 0.5) / 100)
+    return {'median_sales_yoy_pct': med('sales_yoy'), 'median_stores_yoy_pct': med('stores_yoy'),
+            'comparable_sales': sum(r['sales_yoy']['status'] == 'OK' for r in rows), 'comparable_stores': sum(r['stores_yoy']['status'] == 'OK' for r in rows)}
+
+
 def columns(row):
     flat = dict(row)
     for m in ('sales', 'stores'):
@@ -506,7 +518,7 @@ def entity_dicts(index):
 
 def derive(config, raws):
     """raws: domain_id -> (raw, raw_hash, snapshot_id). Deterministic, no network."""
-    rules = {k: config[k] for k in ('freshness_days', 'bands', 'materiality')}
+    rules = {k: config[k] for k in ('freshness_days', 'bands', 'materiality', 'extreme')}
     domains, rows, details, industries, periods_all, conflicts = [], [], {}, {}, None, []
     for domain_id, spec in config['domains'].items():
         raw, raw_hash, snapshot_id = raws[domain_id]
@@ -537,6 +549,7 @@ def derive(config, raws):
                                   for k in gates},
                         'fresh': fresh, 'retrieved_at': raw['retrieved_at'], 'sources': source_metadata(domain_id, spec, raw),
                         'areas': [[g, names[g]] for g in sorted(names)],
+                        'context': context(d_rows),
                         'coverage': {'areas': len(names), 'industries': len(inds), 'entities': len(d_rows),
                                      'comparable': sum(r['blocked'] is None for r in d_rows),
                                      'findings': sum(r['finding'] for r in d_rows), 'mapped': 0}})
@@ -612,7 +625,9 @@ def publish(root, config, snapshots, new_raw=None, status=None):
         for p, b in outputs.items():
             if p != root / INDEX: atomic(p, b)
         atomic(root / INDEX, outputs[root / INDEX])
-        atomic(root / STATUS, encode(status or {'schema_version': 2, 'status': 'AVAILABLE', 'snapshots': snapshots}))
+        # A re-derivation keeps the last collection attempt record; only collection writes a new one.
+        if status or not (root / STATUS).exists():
+            atomic(root / STATUS, encode(status or {'schema_version': 2, 'status': 'AVAILABLE', 'snapshots': snapshots}))
         check(root)
     except Exception:
         for p in (root / DETAILS).glob('*.json') if (root / DETAILS).exists() else []:
