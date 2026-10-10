@@ -1,8 +1,14 @@
 {
   "schema_version": 2,
   "freshness_days": 180,
-  "bands": {"spending_pct": 5, "stores_pct": 3},
-  "materiality": {"min_baseline_sales_krw": 100000000, "min_baseline_stores": 10},
+  "bands": {
+    "spending_pct": 5,
+    "stores_pct": 3
+  },
+  "materiality": {
+    "min_baseline_sales_krw": 100000000,
+    "min_baseline_stores": 10
+  },
   "patterns": {
     "spend_up_supply_flat_or_down": {
       "label": "소비 증가 · 점포 정체/감소",
@@ -52,31 +58,83 @@
       "max_rows_per_period": 6000,
       "license": "공공누리 1유형 · 서울특별시/서울신용보증재단 출처표시",
       "services": {
-        "sales": {"id": "OA-22176", "service": "PENDING_PROBE", "name": "서울시 상권분석서비스(추정매출-자치구)"},
-        "stores": {"id": "OA-22173", "service": "PENDING_PROBE", "name": "서울시 상권분석서비스(점포-자치구)"}
+        "sales": {
+          "id": "OA-22176",
+          "service": "VwsmSignguSelngW",
+          "name": "서울시 상권분석서비스(추정매출-자치구)"
+        },
+        "stores": {
+          "id": "OA-22173",
+          "service": "VwsmSignguStorW",
+          "name": "서울시 상권분석서비스(점포-자치구)"
+        }
       },
       "gates": {
-        "temporal": {"verified": false, "summary": "검증 대기", "evidence": [], "boundary_basis": null, "code_basis": null, "industry_basis": null, "limitation": null},
-        "gis": {"verified": false, "summary": "자치구 결과는 기존 지도의 상권 핀에 연결하지 않습니다. 검증된 자치구 경계 지도를 아직 연결하지 않았습니다.", "evidence": [], "crs": null, "geometry_version": null, "official_crosswalk": null, "limitation": null}
+        "temporal": {
+          "verified": false,
+          "summary": "검증 대기",
+          "evidence": [],
+          "boundary_basis": null,
+          "code_basis": null,
+          "industry_basis": null,
+          "limitation": null
+        },
+        "gis": {
+          "verified": false,
+          "summary": "자치구 결과는 기존 지도의 상권 핀에 연결하지 않습니다. 검증된 자치구 경계 지도를 아직 연결하지 않았습니다.",
+          "evidence": [],
+          "crs": null,
+          "geometry_version": null,
+          "official_crosswalk": null,
+          "limitation": null
+        }
       }
     },
     "commercial_area": {
       "label": "상권 표본 (v1)",
       "scope": "명동·남대문 관광특구, 강남역 2곳 · 서울 대표 아님",
       "snapshot_schema": 1,
-      "area_ids": ["3001492", "3120189"],
+      "area_ids": [
+        "3001492",
+        "3120189"
+      ],
       "geo_code": "TRDAR_CD",
       "geo_name": "TRDAR_CD_NM",
       "code_pattern": "\\d{7}",
       "license": "공공누리 1유형 · 서울특별시/서울신용보증재단 출처표시",
       "services": {
-        "sales": {"id": "OA-15572", "service": "VwsmTrdarSelngQq", "name": "서울시 상권분석서비스(추정매출-상권)"},
-        "stores": {"id": "OA-15577", "service": "VwsmTrdarStorQq", "name": "서울시 상권분석서비스(점포-상권)"}
+        "sales": {
+          "id": "OA-15572",
+          "service": "VwsmTrdarSelngQq",
+          "name": "서울시 상권분석서비스(추정매출-상권)"
+        },
+        "stores": {
+          "id": "OA-15577",
+          "service": "VwsmTrdarStorQq",
+          "name": "서울시 상권분석서비스(점포-상권)"
+        }
       },
       "gates": {
-        "temporal": {"verified": false, "summary": "검증 대기", "evidence": [], "boundary_basis": null, "code_basis": null, "industry_basis": null, "limitation": null},
-        "gis": {"verified": false, "summary": "검증 대기", "evidence": [], "crs": null, "geometry_version": null, "official_crosswalk": null, "limitation": null}
-      }
+        "temporal": {
+          "verified": false,
+          "summary": "검증 대기",
+          "evidence": [],
+          "boundary_basis": null,
+          "code_basis": null,
+          "industry_basis": null,
+          "limitation": null
+        },
+        "gis": {
+          "verified": false,
+          "summary": "검증 대기",
+          "evidence": [],
+          "crs": null,
+          "geometry_version": null,
+          "official_crosswalk": null,
+          "limitation": null
+        }
+      },
+      "snapshot": "2026-10-09-55b80cb44604"
     }
   }
 }

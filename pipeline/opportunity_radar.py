@@ -471,7 +471,7 @@ def entity_dicts(index):
 def derive(config, raws):
     """raws: domain_id -> (raw, raw_hash, snapshot_id). Deterministic, no network."""
     rules = {k: config[k] for k in ('freshness_days', 'bands', 'materiality')}
-    domains, rows, details, industries, periods_all = [], [], {}, {}, None
+    domains, rows, details, industries, periods_all, conflicts = [], [], {}, {}, None, []
     for domain_id, spec in config['domains'].items():
         raw, raw_hash, snapshot_id = raws[domain_id]
         if spec['snapshot_schema'] == 1:
@@ -487,8 +487,9 @@ def derive(config, raws):
         gates = {k: gate_status(spec['gates'][k], k) for k in ('temporal', 'gis')}
         d_rows, d_details, names, inds, fresh = derive_domain(domain_id, spec, raw, periods, rules, gates)
         for i, n in inds.items():
+            # Domains are never compared with each other; a naming difference is recorded, not merged.
             if industries.setdefault(i, n) != n:
-                raise SourceError('INDUSTRY_NAME_CONFLICT_ACROSS_DOMAINS')
+                conflicts.append([i, domain_id, n])
         rows.extend(d_rows)
         for g, items in d_details.items():
             details[(domain_id, g)] = {'schema_version': 2, 'domain': domain_id, 'area_id': g, 'area_name': names[g],
@@ -507,7 +508,7 @@ def derive(config, raws):
              'comparisons': {'yoy': [periods_all[0], periods_all[-1]], 'qoq': [periods_all[-2], periods_all[-1]]},
              'rules': {**rules, 'formula': '(비교값 ÷ 기준값 − 1) × 100', 'zero_baseline': 'UNKNOWN', 'missing': 'UNKNOWN', 'incompatible': 'BLOCKED'},
              'patterns': config['patterns'], 'domains': domains,
-             'industries': [[i, industries[i]] for i in sorted(industries)],
+             'industries': [[i, industries[i]] for i in sorted(industries)], 'industry_name_differences': conflicts,
              # Columnar rows keep the summary index compact; values are identical to the per-area details.
              'entity_columns': list(ENTITY_COLUMNS), 'entities': [columns(r) for r in rows],
              'coverage': {'entities': len(rows), 'comparable': sum(r['blocked'] is None for r in rows),
@@ -645,22 +646,25 @@ def collect_domain(domain_id, root=ROOT, client=None, now=None):
 
 def run(root=ROOT, domain_id='district'):
     root = Path(root); now = datetime.now(timezone.utc).isoformat()
+    config = load_config(root)
+    # Fixed (non-collectable) snapshots, then whatever the current valid index publishes.
+    previous = {d: s['snapshot'] for d, s in config['domains'].items() if s.get('snapshot')}
     try:
-        previous = current_snapshots(root)
+        previous.update(current_snapshots(root))
     except Exception:
-        previous = {}
+        pass
     try:
         raw = collect_domain(domain_id, root)
-        config = load_config(root)
-        snapshots = publish(root, config, previous, new_raw=(domain_id, raw))
-        print('RADAR_SOURCE_VALIDATED domain=' + domain_id + ' snapshot=' + snapshots[domain_id] + ' requests=' + str(raw['request_count']))
-        return 0
+        snapshots = publish(root, config, previous, new_raw=(domain_id, raw),
+                            status={'schema_version': 2, 'status': 'AVAILABLE', 'domain': domain_id, 'attempted_at': now})
     except Exception as exc:
         code = str(exc) if isinstance(exc, SourceError) and re.fullmatch(r'[A-Z_0-9-]+', str(exc)) else 'SOURCE_VALIDATION_FAILED'
         atomic(root / STATUS, encode({'schema_version': 2, 'status': 'BLOCKED', 'domain': domain_id, 'attempted_at': now,
                                       'reason': code, 'previous_snapshot_preserved': True, 'snapshots': previous}))
         print('RADAR_BLOCKED domain=' + domain_id + ' reason=' + code + '; previous snapshot preserved')
         return 1
+    print('RADAR_SOURCE_VALIDATED domain=' + domain_id + ' snapshot=' + snapshots[domain_id] + ' requests=' + str(raw.get('request_count')))
+    return 0
 
 
 if __name__ == '__main__':
