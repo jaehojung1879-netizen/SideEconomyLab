@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "freshness_days": 180,
+  "bands": {"spending_pct": 5, "stores_pct": 3},
+  "materiality": {"min_baseline_sales_krw": 100000000, "min_baseline_stores": 10},
+  "patterns": {
+    "spend_up_supply_flat_or_down": {
+      "label": "소비 증가 · 점포 정체/감소",
+      "meaning": "추정 소비는 전년 같은 분기보다 5% 이상 늘었지만 점포 수는 3% 이상 늘지 않았습니다.",
+      "why": "같은 업종에서 지출이 늘어나는 동안 공급이 따라 늘지 않은 곳입니다. 점포당 수요가 늘었을 가능성을 현장에서 확인할 출발점입니다.",
+      "alternatives": "명목 금액이라 가격 인상만으로도 늘 수 있습니다. 대형 점포·온라인 결제 집중, 카드 보정 방식 변경, 임대료·인허가 같은 진입 장벽도 같은 모습을 만듭니다. 미충족 수요의 증거는 아닙니다.",
+      "next": "해당 지역 주요 점포 3~5곳의 대기·가격·영업시간을 관찰하고, 고객 5명에게 실제 지출과 불편을 물어보세요."
+    },
+    "spend_down_supply_up": {
+      "label": "소비 감소 · 점포 증가",
+      "meaning": "추정 소비는 5% 이상 줄었는데 점포 수는 3% 이상 늘었습니다.",
+      "why": "같은 업종 안에서 경쟁이 늘고 지출은 줄어든 곳입니다. 신규 진입을 피해야 할 위험 신호일 수 있습니다.",
+      "alternatives": "신규 점포의 매출이 아직 카드 집계에 덜 반영됐거나, 업종 분류 변경·소규모 점포 증가가 원인일 수 있습니다.",
+      "next": "최근 개업 점포의 실제 영업 상태와 임대 공실·권리금 변화를 확인하세요."
+    },
+    "both_expand": {
+      "label": "소비·점포 동반 증가",
+      "meaning": "추정 소비가 5% 이상, 점포 수가 3% 이상 함께 늘었습니다.",
+      "why": "수요와 공급이 함께 커지는 성장 시장일 수 있습니다. 이미 경쟁이 빠르게 늘고 있다는 뜻이기도 합니다.",
+      "alternatives": "물가 상승과 신규 상업시설 개장이 함께 나타난 결과일 수 있습니다.",
+      "next": "새로 생긴 점포의 유형(프랜차이즈·대형점)과 가격대를 확인하세요."
+    },
+    "both_contract": {
+      "label": "소비·점포 동반 감소",
+      "meaning": "추정 소비가 5% 이상, 점포 수가 3% 이상 함께 줄었습니다.",
+      "why": "업종 전체가 위축되는 곳일 수 있습니다. 대체 업종이나 이전 수요가 어디로 갔는지 볼 단서입니다.",
+      "alternatives": "재개발·상가 철거, 업종 분류 변경, 대형 점포 폐점이 원인일 수 있습니다.",
+      "next": "폐업 점포 위치와 사유(재개발·임대료·수요)를 확인하세요."
+    },
+    "mixed_or_flat": {
+      "label": "뚜렷한 동반 변화 없음",
+      "meaning": "소비와 점포 변화가 기준 폭(소비 ±5%, 점포 ±3%) 안이거나 방향이 위 분류에 해당하지 않습니다.",
+      "why": "이 조합만으로 조사 우선순위를 정하기 어렵습니다.",
+      "alternatives": "기준 폭 안의 변화는 물가·보정 차이로도 설명됩니다.",
+      "next": "다른 지역·업종과 비교하거나 다음 분기 관측을 기다리세요."
+    }
+  },
+  "domains": {
+    "district": {
+      "label": "자치구 공식 집계",
+      "scope": "서울 25개 자치구 전체",
+      "snapshot_schema": 2,
+      "geo_code": "SIGNGU_CD",
+      "geo_name": "SIGNGU_CD_NM",
+      "code_pattern": "11\\d{3}",
+      "request_budget": 120,
+      "max_rows_per_period": 6000,
+      "license": "공공누리 1유형 · 서울특별시/서울신용보증재단 출처표시",
+      "services": {
+        "sales": {"id": "OA-22176", "service": "PENDING_PROBE", "name": "서울시 상권분석서비스(추정매출-자치구)"},
+        "stores": {"id": "OA-22173", "service": "PENDING_PROBE", "name": "서울시 상권분석서비스(점포-자치구)"}
+      },
+      "gates": {
+        "temporal": {"verified": false, "summary": "검증 대기", "evidence": [], "boundary_basis": null, "code_basis": null, "industry_basis": null, "limitation": null},
+        "gis": {"verified": false, "summary": "자치구 결과는 기존 지도의 상권 핀에 연결하지 않습니다. 검증된 자치구 경계 지도를 아직 연결하지 않았습니다.", "evidence": [], "crs": null, "geometry_version": null, "official_crosswalk": null, "limitation": null}
+      }
+    },
+    "commercial_area": {
+      "label": "상권 표본 (v1)",
+      "scope": "명동·남대문 관광특구, 강남역 2곳 · 서울 대표 아님",
+      "snapshot_schema": 1,
+      "area_ids": ["3001492", "3120189"],
+      "geo_code": "TRDAR_CD",
+      "geo_name": "TRDAR_CD_NM",
+      "code_pattern": "\\d{7}",
+      "license": "공공누리 1유형 · 서울특별시/서울신용보증재단 출처표시",
+      "services": {
+        "sales": {"id": "OA-15572", "service": "VwsmTrdarSelngQq", "name": "서울시 상권분석서비스(추정매출-상권)"},
+        "stores": {"id": "OA-15577", "service": "VwsmTrdarStorQq", "name": "서울시 상권분석서비스(점포-상권)"}
+      },
+      "gates": {
+        "temporal": {"verified": false, "summary": "검증 대기", "evidence": [], "boundary_basis": null, "code_basis": null, "industry_basis": null, "limitation": null},
+        "gis": {"verified": false, "summary": "검증 대기", "evidence": [], "crs": null, "geometry_version": null, "official_crosswalk": null, "limitation": null}
+      }
+    }
+  }
+}

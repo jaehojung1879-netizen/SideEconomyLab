@@ -62,9 +62,6 @@ jobs:
       - name: Commit sanitized result if the branch is unchanged
         if: success()
         run: |
-          BEFORE=$(git rev-parse HEAD)
-          git fetch origin "${{ github.ref_name }}"
-          test "$BEFORE" = "$(git rev-parse FETCH_HEAD)" || { echo 'Upstream changed; artifact only.'; exit 1; }
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for p in research/opportunity-radar-v2 data/opportunity-radar docs/data/opportunity-radar.json docs/data/opportunity-radar-status.json docs/data/opportunity-radar-details docs/data/opportunity-radar-v2; do
@@ -72,4 +69,7 @@ jobs:
           done
           git diff --cached --quiet && exit 0
           git commit -m 'data: Opportunity Radar ${{ steps.mode.outputs.mode }} from official Seoul sources'
+          # Generated files only; rebase onto newer branch commits instead of discarding the evidence.
+          git pull --rebase origin "${{ github.ref_name }}"
+          if [ '${{ steps.mode.outputs.mode }}' = 'collect' ]; then python pipeline/opportunity_radar.py --check; fi
           git push origin HEAD:${{ github.ref_name }}

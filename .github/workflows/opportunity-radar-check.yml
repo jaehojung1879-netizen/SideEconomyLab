@@ -38,6 +38,8 @@ jobs:
           node tests/workbench-models.cjs
           node tests/real-estate-context.cjs
           node --check docs/assets/opportunity-radar.js
+          node --check docs/assets/radar-format.js
+          node tests/radar-models.cjs
       - name: Verify core journeys and responsive layout
         env:
           NODE_PATH: /tmp/radar-test/node_modules
