@@ -10,13 +10,17 @@ on:
         description: 'Collect bounded sales/store history for Opportunity Radar (artifact only)'
         type: boolean
         default: false
+      radar_probe:
+        description: 'Probe official geography/service evidence for Opportunity Radar v2 (artifact only)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   smoke:
-    if: ${{ inputs.radar_history != true }}
+    if: ${{ inputs.radar_history != true && inputs.radar_probe != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -48,8 +52,31 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  radar-probe:
+    if: ${{ inputs.radar_probe == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe official geography evidence with existing server secrets
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+          DATA_GO: ${{ secrets.DATA_GO }}
+          R_ONE: ${{ secrets.R_ONE }}
+        run: python pipeline/radar_geography_probe.py --out artifacts/radar-geography-probe.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: radar-geography-probe
+          path: artifacts/radar-geography-probe.json
+          if-no-files-found: warn
+          retention-days: 14
+
   radar-history:
-    if: ${{ inputs.radar_history == true }}
+    if: ${{ inputs.radar_history == true && inputs.radar_probe != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
