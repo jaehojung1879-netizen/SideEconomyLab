@@ -132,10 +132,10 @@ class SeoulHistoryClient:
             raise SourceError('INVALID_REQUEST_SCOPE')
         if area is not None and not re.fullmatch(r'\d{5,10}', area):
             raise SourceError('INVALID_REQUEST_SCOPE')
-        quarter_index(period)
+        if period is not None: quarter_index(period)
         # Official legacy endpoint (also used by the existing demand collector).
         # GitHub Actions only. Never log or persist a URL containing the path key.
-        parts = [urllib.parse.quote(self.key, safe=''), 'json', service, str(start), str(end), period]
+        parts = [urllib.parse.quote(self.key, safe=''), 'json', service, str(start), str(end)] + ([period] if period is not None else [])
         # Sales documents only a quarter argument; v1 stores also documents area.
         if area is not None and kind == 'stores' and service == SERVICES['stores']['service']:
             parts.append(area)
@@ -252,6 +252,37 @@ def fetch_domain_period(client, kind, period, spec, max_rows, page_size=1000):
             'rows': sorted(out, key=lambda r: (r[spec['geo_code']], r['SVC_INDUTY_CD']))}
 
 
+def fetch_domain_history(client, kind, spec, max_rows, page_size=1000):
+    """District services ignore the quarter argument (probe 2026-10-10: identical totals with and
+    without it). Read the complete official history once; keep per-quarter receipts and identity
+    stability; the caller retains only the compared quarters."""
+    service = spec['services'][kind]['service']
+    rows, total = response(client.call(kind, 1, page_size, None, service=service), kind, service)
+    if not 0 < total <= max_rows:
+        raise SourceError('HISTORY_ROW_BUDGET_EXCEEDED' if total else 'EMPTY_HISTORY')
+    by_period, seen, receipts, geo_names, ind_names = {}, set(), [], {}, {}
+    for start in range(1, total + 1, page_size):
+        if start != 1:
+            rows, count = response(client.call(kind, start, min(start + page_size - 1, total), None, service=service), kind, service)
+            if count != total: raise SourceError('INCOMPLETE_PAGINATION')
+        if len(rows) != min(page_size, total - start + 1): raise SourceError('INCOMPLETE_PAGINATION')
+        receipts.append({'start': start, 'rows': len(rows), 'response_hash': digest(encode(rows))})
+        for row in rows:
+            period = str((row or {}).get('STDR_YYQU_CD', ''))
+            quarter_index(period)
+            r = normalize_row(row, kind, period, spec)
+            key = (r[spec['geo_code']], r['SVC_INDUTY_CD'], period)
+            if key in seen: raise SourceError('DUPLICATE_SOURCE_KEY')
+            seen.add(key); by_period.setdefault(period, []).append(r)
+            geo_names.setdefault(r[spec['geo_code']], set()).add(r[spec['geo_name']])
+            ind_names.setdefault(r['SVC_INDUTY_CD'], set()).add(r['SVC_INDUTY_CD_NM'])
+    summary = {'upstream_total': total, 'page_receipts': receipts,
+               'periods': {p: {'rows': len(v), 'geographies': len({r[spec['geo_code']] for r in v}), 'industries': len({r['SVC_INDUTY_CD'] for r in v})} for p, v in sorted(by_period.items())},
+               'geo_names_stable': all(len(v) == 1 for v in geo_names.values()),
+               'industry_names_stable': all(len(v) == 1 for v in ind_names.values())}
+    return {p: sorted(v, key=lambda r: (r[spec['geo_code']], r['SVC_INDUTY_CD'])) for p, v in by_period.items()}, summary
+
+
 # ---------------------------------------------------------------- raw validation
 
 def _validate_periods(raw):
@@ -307,7 +338,12 @@ def validate_domain_raw(raw, spec):
         key = (part['kind'], part['period'])
         if key not in expected or key in seen or not part['complete'] or part['total'] != len(part['rows']):
             raise SourceError('INCOMPLETE_SOURCE_SNAPSHOT')
-        if sum(p['rows'] for p in part['page_receipts']) != part['total']:
+        if part.get('selection') == 'PERIOD_FILTER_AFTER_COMPLETE_HISTORY_PAGINATION':
+            h = raw['history'][part['kind']]
+            if sum(p['rows'] for p in h['page_receipts']) != h['upstream_total'] or sum(p['rows'] for p in h['periods'].values()) != h['upstream_total'] \
+                    or h['periods'].get(part['period'], {}).get('rows') != part['total']:
+                raise SourceError('INCOMPLETE_PAGINATION')
+        elif sum(p['rows'] for p in part['page_receipts']) != part['total']:
             raise SourceError('INCOMPLETE_PAGINATION')
         seen.add(key)
         normalized = [normalize_row(r, *key, spec) for r in part['rows']]
@@ -623,8 +659,28 @@ def collect_domain(domain_id, root=ROOT, client=None, now=None):
     if spec['snapshot_schema'] != 2: raise SourceError('DOMAIN_NOT_COLLECTABLE')
     now = now or datetime.now(timezone.utc)
     if not client: client = SeoulHistoryClient(budget=spec['request_budget'])
-    # Probe completed quarters only; a publication-date change is not an observation.
     newest = now.year * 4 + (now.month - 1) // 3 - 1
+    services = {k: {'id': v['id'], 'service': v['service']} for k, v in spec['services'].items()}
+    if spec.get('request_mode') == 'full_history':
+        histories = {k: fetch_domain_history(client, k, spec, spec['max_history_rows']) for k in MEASURES}
+        common = set.intersection(*(set(h[0]) for h in histories.values()))
+        completed = sorted(p for p in common if quarter_index(p) <= newest)
+        if not completed: raise SourceError('NO_COMMON_RECENT_QUARTER')
+        periods = [quarter(quarter_index(completed[-1]) - n) for n in range(4, -1, -1)]
+        if not set(periods) <= common: raise SourceError('MISSING_HISTORY_PERIOD')
+        raw = {'schema_version': 2, 'evidence_origin': 'LIVE_OFFICIAL_API', 'domain': domain_id, 'retrieved_at': now.isoformat(),
+               'time_unit': 'quarter', 'units': UNITS, 'periods': periods, 'services': services,
+               'history': {k: histories[k][1] for k in MEASURES}, 'partitions': []}
+        for period in periods:
+            for kind in MEASURES:
+                rows = histories[kind][0][period]
+                raw['partitions'].append({'kind': kind, 'period': period, 'total': len(rows), 'complete': True, 'page_receipts': [],
+                                          'selection': 'PERIOD_FILTER_AFTER_COMPLETE_HISTORY_PAGINATION', 'rows': rows})
+        raw['request_count'] = client.calls
+        assert_sanitized(raw, (client.key,))
+        validate_domain_raw(raw, spec)
+        return raw
+    # Probe completed quarters only; a publication-date change is not an observation.
     selected = None
     for offset in range(4):
         period = quarter(newest - offset)
@@ -637,7 +693,7 @@ def collect_domain(domain_id, root=ROOT, client=None, now=None):
            'services': {k: {'id': v['id'], 'service': v['service']} for k, v in spec['services'].items()}, 'partitions': []}
     for period in periods:
         for kind in MEASURES:
-            raw['partitions'].append(fetch_domain_period(client, kind, period, spec, spec['max_rows_per_period']))
+            raw['partitions'].append(fetch_domain_period(client, kind, period, spec, spec.get('max_rows_per_period', 60000)))
     raw['request_count'] = client.calls
     assert_sanitized(raw, (client.key,))
     validate_domain_raw(raw, spec)

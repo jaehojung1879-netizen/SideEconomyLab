@@ -192,6 +192,34 @@ class RadarTests(unittest.TestCase):
         with self.assertRaisesRegex(SourceError, 'ROW_BUDGET'):
             R.fetch_domain_period(ApiDouble([payload('SyntheticSales', [a], 500)]), 'sales', '20262', spec, 100)
 
+    def test_full_history_collection_keeps_compared_quarters_only(self):
+        c = config(); spec = c['domains']['district']; spec['request_mode'] = 'full_history'; spec['max_history_rows'] = 1000
+        hist = {'sales': [], 'stores': []}
+        for p in ['20244', '20251'] + PERIODS:
+            for g in ('11110', '11140'):
+                hist['sales'].append(row('sales', p, g, name={'11110': '종로구', '11140': '중구'}[g]))
+                hist['stores'].append(row('stores', p, g, name={'11110': '종로구', '11140': '중구'}[g]))
+        class Client:
+            calls, key = 0, 'synthetic-key'
+            def call(self, kind, start, end, period, area=None, service=None):
+                assert period is None, 'district services have no quarter filter'
+                self.calls += 1; rows = hist[kind]
+                return payload(service, rows[start - 1:end], len(rows))
+        with tempfile.TemporaryDirectory() as folder:
+            root = self._workspace(folder); (root / R.CONFIG).write_bytes(json.dumps(c).encode())
+            raw = R.collect_domain('district', root, client=Client(), now=datetime(2026, 10, 10, tzinfo=timezone.utc))
+        self.assertEqual(raw['periods'], PERIODS)
+        self.assertEqual(raw['history']['sales']['upstream_total'], 14); self.assertTrue(raw['history']['sales']['geo_names_stable'])
+        self.assertEqual({p['period'] for p in raw['partitions']}, set(PERIODS)); self.assertTrue(all(p['total'] == 2 for p in raw['partitions']))
+        derive(raw, c)
+        broken = copy.deepcopy(raw); broken['history']['sales']['upstream_total'] = 15
+        with self.assertRaisesRegex(SourceError, 'INCOMPLETE_PAGINATION'): derive(broken, c)
+        dup = hist['sales'][0]; hist['sales'].append(dict(dup))
+        with tempfile.TemporaryDirectory() as folder:
+            root = self._workspace(folder); (root / R.CONFIG).write_bytes(json.dumps(c).encode())
+            with self.assertRaisesRegex(SourceError, 'DUPLICATE_SOURCE_KEY'):
+                R.collect_domain('district', root, client=Client(), now=datetime(2026, 10, 10, tzinfo=timezone.utc))
+
     def test_auth_failure_and_request_contract(self):
         p = {'RESULT': {'CODE': 'ERROR-290', 'MESSAGE': 'secret URL must never appear'}}
         with self.assertRaisesRegex(SourceError, '^SEOUL_API_ERROR-290$'): R.response(p, 'sales')
