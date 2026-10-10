@@ -67,7 +67,9 @@ jobs:
           test "$BEFORE" = "$(git rev-parse FETCH_HEAD)" || { echo 'Upstream changed; artifact only.'; exit 1; }
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A research/opportunity-radar-v2 data/opportunity-radar docs/data/opportunity-radar.json docs/data/opportunity-radar-status.json docs/data/opportunity-radar-details docs/data/opportunity-radar-v2 2>/dev/null || true
+          for p in research/opportunity-radar-v2 data/opportunity-radar docs/data/opportunity-radar.json docs/data/opportunity-radar-status.json docs/data/opportunity-radar-details docs/data/opportunity-radar-v2; do
+            if [ -e "$p" ]; then git add -A "$p"; fi
+          done
           git diff --cached --quiet && exit 0
           git commit -m 'data: Opportunity Radar ${{ steps.mode.outputs.mode }} from official Seoul sources'
           git push origin HEAD:${{ github.ref_name }}
