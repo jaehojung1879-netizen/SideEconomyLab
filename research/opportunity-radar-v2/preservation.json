@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "base": "e7c0b748fc2574026b1e55800de3028e935ee0d0",
- "changed_files": 249,
+ "changed_files": 255,
  "changed_outside_radar_scope": [],
  "key_files": {
   "docs/data/candidate-registry.json": {

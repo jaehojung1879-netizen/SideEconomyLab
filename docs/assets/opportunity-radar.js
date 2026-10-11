@@ -78,7 +78,7 @@
   function headline() {
     const d = domainOf('district'), c = data.coverage;
     $('radar-headline').innerHTML = d && d.gates.temporal.status === 'VERIFIED'
-      ? `${F.quarter(data.periods[0])} → ${F.quarter(data.periods.at(-1))}, 서울 ${d.areas.length}개 자치구의 공식 추정 소비와 점포 변화를 비교합니다. 비교 가능한 자치구×업종 조합 ${c.comparable.toLocaleString('ko-KR')}개 중 <strong>${c.findings.toLocaleString('ko-KR')}건</strong>을 추가 조사 후보로 표시했습니다. <span class="radar-stat">참고: 조합별 1년 변화율의 중앙값은 소비 ${F.signed(d.context.median_sales_yoy_pct)}%(${d.context.comparable_sales.toLocaleString('ko-KR')}개 조합), 점포 ${F.signed(d.context.median_stores_yoy_pct)}%(${d.context.comparable_stores.toLocaleString('ko-KR')}개 조합)이며, 서울 전체 소비·점포의 증가율이 아닙니다.</span>`
+      ? `${F.quarter(data.periods[0])} → ${F.quarter(data.periods.at(-1))}, 서울 ${d.areas.length}개 자치구의 공식 추정 소비와 점포 변화를 비교합니다. 비교 가능한 자치구×업종 조합 ${c.comparable.toLocaleString('ko-KR')}개 중 <strong>${c.findings.toLocaleString('ko-KR')}건</strong>을 추가 조사 후보로 표시했습니다. <span class="radar-stat">참고: 조합별 1년 변화율의 중앙값은 소비 ${F.signed(d.context.median_sales_yoy_pct, 2)}%(${d.context.comparable_sales.toLocaleString('ko-KR')}개 조합), 점포 ${F.signed(d.context.median_stores_yoy_pct, 2)}%(${d.context.comparable_stores.toLocaleString('ko-KR')}개 조합)이며, 서울 전체 소비·점포의 증가율이 아닙니다.</span>`
       : '관측 자료는 확보했지만 같은 지리 기준을 공식 근거로 확인하지 못해 변화 비교를 보류합니다.';
   }
 

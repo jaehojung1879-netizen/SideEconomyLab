@@ -1,20 +1,19 @@
 name: Opportunity Radar official collection
-# Server-side only: existing SEOUL secret, sanitized outputs, fail-closed publication.
+# Manual only. Reads the existing SEOUL repository secret, validates fail-closed, and uploads the
+# validated bundle as an ARTIFACT. It never pushes: a person reviews the artifact and commits it
+# through a pull request. If any validation fails nothing is produced and the previous bundle stays.
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'probe = geography/service evidence; collect = validated radar bundle'
+        description: 'collect = validated district history; probe = official geography/service evidence; transport-audit = credential-free HTTPS check'
         type: choice
-        options: [collect, probe]
+        options: [collect, probe, transport-audit]
         default: collect
-  push:
-    branches: [claude/opportunity-radar-v2-trends-37xua1]
-    paths: ['config/opportunity-radar-run.json']
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: radar-collect-${{ github.ref }}
+  group: radar-collect
   cancel-in-progress: false
 jobs:
   run:
@@ -23,53 +22,42 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Resolve mode
-        id: mode
-        run: |
-          if [ '${{ github.event_name }}' = 'workflow_dispatch' ]; then MODE='${{ inputs.mode }}'; else MODE=$(python -c "import json;print(json.load(open('config/opportunity-radar-run.json'))['mode'])"); fi
-          case "$MODE" in probe|collect) ;; *) echo 'invalid mode'; exit 1;; esac
-          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
-      - name: Probe official geography evidence
-        if: steps.mode.outputs.mode == 'probe'
-        env:
-          SEOUL: ${{ secrets.SEOUL }}
-          DATA_GO: ${{ secrets.DATA_GO }}
-          R_ONE: ${{ secrets.R_ONE }}
-        run: python pipeline/radar_geography_probe.py --out research/opportunity-radar-v2/geography-probe.json
-      - name: Collect and validate radar bundle
-        if: steps.mode.outputs.mode == 'collect'
+      - name: Collect, publish into the workspace only if every check passes, then re-derive
+        if: ${{ inputs.mode == 'collect' }}
         env:
           SEOUL: ${{ secrets.SEOUL }}
         run: |
-          python pipeline/opportunity_radar.py
+          python pipeline/opportunity_radar.py --domain district
           python pipeline/opportunity_radar.py --check
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - name: Probe official geography and service evidence
+        if: ${{ inputs.mode == 'probe' }}
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: python pipeline/radar_geography_probe.py --out artifacts/radar-geography-probe.json
+      - name: Audit transport (public sample key only, no secrets)
+        if: ${{ inputs.mode == 'transport-audit' }}
+        run: python pipeline/seoul_transport_audit.py --out artifacts/transport-audit.json
+      - name: Upload validated collection bundle
+        if: ${{ success() && inputs.mode == 'collect' }}
+        uses: actions/upload-artifact@v4
         with:
-          name: opportunity-radar-${{ steps.mode.outputs.mode }}
+          name: opportunity-radar-collection
           path: |
-            research/opportunity-radar-v2
             data/opportunity-radar
             docs/data/opportunity-radar.json
             docs/data/opportunity-radar-status.json
             docs/data/opportunity-radar-details
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 14
-      - name: Commit sanitized result if the branch is unchanged
-        if: success()
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for p in research/opportunity-radar-v2 data/opportunity-radar docs/data/opportunity-radar.json docs/data/opportunity-radar-status.json docs/data/opportunity-radar-details docs/data/opportunity-radar-v2; do
-            if [ -e "$p" ]; then git add -A "$p"; fi
-          done
-          git diff --cached --quiet && exit 0
-          git commit -m 'data: Opportunity Radar ${{ steps.mode.outputs.mode }} from official Seoul sources'
-          # Generated files only; rebase onto newer branch commits instead of discarding the evidence.
-          git pull --rebase origin "${{ github.ref_name }}"
-          if [ '${{ steps.mode.outputs.mode }}' = 'collect' ]; then python pipeline/opportunity_radar.py --check; fi
-          git push origin HEAD:${{ github.ref_name }}
+      - name: Upload evidence file
+        if: ${{ success() && inputs.mode != 'collect' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-${{ inputs.mode }}
+          path: artifacts
+          if-no-files-found: error
+          retention-days: 14

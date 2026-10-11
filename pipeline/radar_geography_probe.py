@@ -21,6 +21,7 @@ import urllib.request
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from public_api_client import Client, SourceError, NoRedirect, assert_sanitized
+from opportunity_radar import API_ENDPOINT, TRANSPORT_NOTICE
 
 ROOT = Path(__file__).resolve().parents[1]
 PERIODS = ['20252', '20253', '20254', '20261', '20262']
@@ -80,7 +81,7 @@ class Seoul:
         path = '/'.join([urllib.parse.quote(self.key, safe=''), 'json', service, str(start), str(end), *map(str, args)])
         for attempt in range(2):
             try:
-                with self.opener.open(urllib.request.Request('http://openapi.seoul.go.kr:8088/' + path + '/',
+                with self.opener.open(urllib.request.Request(API_ENDPOINT + path + '/',
                                                              headers={'User-Agent': 'SideEconomyLab/radar-v2-probe'}), timeout=40) as r:
                     payload = json.loads(r.read(6_000_001))
                 assert_sanitized(payload, (self.key,))
@@ -185,6 +186,7 @@ def main():
     out = {'schema_version': 1, 'retrieved_at': datetime.now(timezone.utc).isoformat(), 'periods': PERIODS,
            'pages': {k: fetch_page(u) for k, u in PAGES.items()}}
     client = Seoul(args.budget)
+    print(TRANSPORT_NOTICE)
     tokens = sorted({t for p in out['pages'].values() for t in p.get('service_tokens', [])})
     services = list(dict.fromkeys(CANDIDATE_SERVICES + [t for t in tokens if re.search(r'Signgu|Adstrd', t)]))
     out['service_probes'] = [probe_service(client, s) for s in services]

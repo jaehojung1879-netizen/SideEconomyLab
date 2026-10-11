@@ -28,6 +28,10 @@ def call_seoul_api(api_key: str, service: str, start: int, end: int):
             )
             with urllib.request.urlopen(req, timeout=30) as response:
                 payload = json.loads(response.read().decode("utf-8"))
+                if base.startswith("http://"):
+                    # Audited 2026-10-11: verified HTTPS is unavailable for this endpoint. Never silent.
+                    print("WARNING: plaintext HTTP used; openapi.seoul.go.kr offers no verified HTTPS "
+                          "(docs/seoul-open-data-api.md). The URL is not printed.", file=sys.stderr)
                 return payload
         except urllib.error.HTTPError as exc:
             last_error = f"HTTP {exc.code}"

@@ -95,7 +95,7 @@ node tests/radar-models.cjs                           # 브라우저 계산 = �
 python pipeline/radar_preservation.py                 # 기존 증거 파일 바이트 보존 확인
 ```
 
-- 수집: **Opportunity Radar official collection** 워크플로(`mode=collect`). 자치구 API는 분기 인자를 무시하고 전체 이력을 돌려주므로(조사: 인자 유무와 무관하게 같은 건수) 전체 이력을 한 번 끝까지 페이지 검사하고 비교 5개 분기만 보존합니다. 페이지 건수·해시, 분기별 행·지역·업종 수, 코드↔이름 불변 여부를 스냅샷에 기록합니다.
+- 수집: **Opportunity Radar official collection** 워크플로를 수동으로 실행합니다(`mode=collect`). 권한은 `contents: read`뿐이고 저장소에 쓰지 않습니다. 모든 검사를 통과한 묶음만 artifact로 올라가며, 사람이 검토한 뒤 PR로 커밋합니다. 검사에 실패하면 artifact가 없고 이전 묶음이 그대로 남습니다. 같은 워크플로의 `probe`(공식 지리·서비스 근거 재조사)와 `transport-audit`(키 없는 전송 감사) 모드는 증거 파일만 artifact로 만듭니다. 자치구 API는 분기 인자를 무시하고 전체 이력을 돌려주므로(조사: 인자 유무와 무관하게 같은 건수) 전체 이력을 한 번 끝까지 페이지 검사하고 비교 5개 분기만 보존합니다. **전송 한계:** 공식 엔드포인트는 검증된 HTTPS를 제공하지 않아 인증키가 평문 HTTP 경로로 이동합니다([감사 기록과 완화·남은 위험](seoul-open-data-api.md)). 페이지 건수·해시, 분기별 행·지역·업종 수, 코드↔이름 불변 여부를 스냅샷에 기록합니다.
 - 실패 시: 이전에 검증한 묶음을 그대로 두고 상태 파일만 `BLOCKED`(사유 코드)로 바꿉니다. 첫 실수집 시도는 분기 인자 무시 때문에 행 예산을 넘었고 **아무것도 게시하지 않고 실패**했습니다([실행](https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/38020401407)).
 - 브라우저는 작은 요약(열 배열 형식)만 먼저 받고, 지역을 고르면 그 지역의 상세 파일 하나를 해시 검증 후 불러옵니다. 원천 API·원자료 스냅샷·13.8MB 판단 자료는 첫 화면에서 받지 않습니다.
 

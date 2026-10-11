@@ -1,19 +1,25 @@
 """API doubles are synthetic and isolated in temporary directories, never live artifacts."""
 import copy
+import contextlib
 from datetime import datetime, timezone
 import gzip
 import io
 import json
+import os
 from pathlib import Path
 import shutil
+import ssl
 import sys
 import tempfile
 import unittest
+import urllib.error
+import urllib.parse
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'pipeline'))
 import opportunity_radar as R
-from public_api_client import SourceError
+import seoul_open_data_smoke as SMOKE
+from public_api_client import SourceError, NoRedirect
 
 PERIODS = ['20252', '20253', '20254', '20261', '20262']
 VERIFIED_TEMPORAL = {'verified': True, 'summary': 'synthetic', 'boundary_basis': 'synthetic', 'code_basis': 'synthetic', 'industry_basis': 'synthetic',
@@ -285,6 +291,91 @@ class RadarTests(unittest.TestCase):
             status = json.loads((root / R.STATUS).read_bytes())
             self.assertEqual(status['status'], 'BLOCKED'); self.assertEqual(status['reason'], 'SEOUL_API_ERROR-290'); self.assertTrue(status['previous_snapshot_preserved'])
             R.check(root)
+
+
+class TransportTests(unittest.TestCase):
+    """Seoul Open API has no verified HTTPS (audited 2026-10-11). Plaintext must be explicit, pinned and never leak the key."""
+    KEY = 'SYN+THETIC/KEY=0123456789abcdef'  # synthetic; special characters exercise URL quoting
+
+    def forms(self):
+        return {self.KEY, urllib.parse.quote(self.KEY, safe=''), urllib.parse.quote(self.KEY)}
+
+    def assert_no_key(self, text):
+        for form in self.forms():
+            self.assertNotIn(form, text)
+
+    def test_audit_evidence_is_recorded_and_says_no_verified_https(self):
+        audit = json.loads((R.ROOT / 'research/opportunity-radar-v2/transport-audit.json').read_bytes())
+        self.assertEqual(audit['key_used'], 'public sample key only'); self.assertFalse(audit['verified_https_available'])
+        self.assertTrue(audit['control_runner_can_verify_tls'], 'the runner could verify TLS elsewhere, so the failure is the endpoint')
+        by = {r['case']: r for r in audit['results']}
+        self.assertEqual(by['https_8088_verified']['detail'], 'WRONG_VERSION_NUMBER'); self.assertEqual(by['http_8088_plain']['api_code'], 'INFO-000')
+        self.assertEqual(R.API_ENDPOINT, 'http://openapi.seoul.go.kr:8088/')
+
+    def test_only_the_audited_endpoint_is_used_never_https_never_another_host(self):
+        urls = []
+        class Opener:
+            def open(self, req, timeout): urls.append(req.full_url); return io.BytesIO(json.dumps({'RESULT': {'CODE': 'INFO-200'}}).encode())
+        client = R.SeoulHistoryClient(key=self.KEY, opener=Opener(), budget=5)
+        client.call('sales', 1, 1, '20262', '3001492'); client.call('stores', 1, 1, '20262', '3001492'); client.call('sales', 1, 1, '20262', service='VwsmSignguSelngW')
+        self.assertEqual(len(urls), 3)
+        self.assertTrue(all(u.startswith('http://openapi.seoul.go.kr:8088/') for u in urls)); self.assertFalse(any(u.startswith('https') for u in urls))
+
+    def test_transport_failure_does_not_fall_back_to_another_scheme_or_host(self):
+        urls = []
+        class Opener:
+            def open(self, req, timeout): urls.append(req.full_url); raise ssl.SSLError('simulated TLS failure ' + req.full_url)
+        client = R.SeoulHistoryClient(key=self.KEY, opener=Opener(), budget=5)
+        with self.assertRaisesRegex(SourceError, '^SEOUL_TRANSPORT_OR_PARSE_FAILED$'): client.call('sales', 1, 1, '20262', '3001492')
+        self.assertTrue(urls and all(u.startswith(R.API_ENDPOINT) for u in urls), 'retries stay on the one audited endpoint')
+
+    def test_redirects_are_rejected_not_followed(self):
+        with self.assertRaisesRegex(SourceError, '^REDIRECT_REJECTED$'): NoRedirect().redirect_request(None, None, 301, 'moved', {}, 'https://example.com/')
+
+    def test_credential_never_reaches_errors_or_output(self):
+        for exc in (lambda url: urllib.error.URLError('connection failed ' + url),
+                    lambda url: urllib.error.HTTPError(url, 403, 'Forbidden ' + url, {}, None),
+                    lambda url: ssl.SSLError('bad ' + url), lambda url: ValueError('parse ' + url)):
+            class Opener:
+                def open(self, req, timeout): raise exc(req.full_url)
+            out, err = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                client = R.SeoulHistoryClient(key=self.KEY, opener=Opener(), budget=5)
+                with self.assertRaises(SourceError) as caught: client.call('sales', 1, 1, '20262', '3001492')
+            self.assert_no_key(str(caught.exception)); self.assert_no_key(repr(caught.exception)); self.assert_no_key(out.getvalue() + err.getvalue())
+            self.assertRegex(str(caught.exception), r'^(HTTP_403|SEOUL_TRANSPORT_OR_PARSE_FAILED)$')
+        # A response that echoes the credential is rejected before anything is stored.
+        class Echo:
+            def open(self, req, timeout): return io.BytesIO(json.dumps({'RESULT': {'CODE': 'INFO-000', 'MESSAGE': 'echo ' + self.key}}).encode())
+        echo = Echo(); echo.key = self.KEY
+        with self.assertRaisesRegex(SourceError, 'CREDENTIAL_LEAK_REJECTED'): R.SeoulHistoryClient(key=self.KEY, opener=echo, budget=2).call('sales', 1, 1, '20262', '3001492')
+
+    def test_plaintext_transport_is_announced_never_silent(self):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), patch.dict(os.environ, {'GITHUB_ACTIONS': ''}): R.transport_notice()
+        self.assertIn('plaintext HTTP', out.getvalue()); self.assertIn('docs/seoul-open-data-api.md', out.getvalue())
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), patch.dict(os.environ, {'GITHUB_ACTIONS': 'true'}): R.transport_notice()
+        self.assertTrue(out.getvalue().startswith('::warning title=Seoul Open API transport')); self.assert_no_key(out.getvalue())
+        # collect_domain announces it before the first request when it builds its own client.
+        out = io.StringIO()
+        with tempfile.TemporaryDirectory() as folder, contextlib.redirect_stdout(out), patch.dict(os.environ, {'SEOUL': self.KEY, 'GITHUB_ACTIONS': ''}):
+            root = Path(folder); (root / 'config').mkdir(); (root / R.CONFIG).write_bytes((R.ROOT / R.CONFIG).read_bytes())
+            with patch.object(R, 'fetch_domain_history', side_effect=SourceError('STOP_AFTER_NOTICE')):
+                with self.assertRaisesRegex(SourceError, 'STOP_AFTER_NOTICE'): R.collect_domain('district', root)
+        self.assertIn('RADAR_TRANSPORT_NOTICE', out.getvalue()); self.assert_no_key(out.getvalue())
+
+    def test_existing_smoke_script_fallback_to_http_is_loud_and_keyless(self):
+        calls = []
+        def urlopen(req, timeout):
+            calls.append(req.full_url)
+            if req.full_url.startswith('https://'): raise urllib.error.URLError(ssl.SSLError('WRONG_VERSION_NUMBER'))
+            return io.BytesIO(json.dumps({'SVC': {'RESULT': {'CODE': 'INFO-000'}, 'row': [{'A': 1}]}}).encode())
+        err = io.StringIO()
+        with patch.object(SMOKE.urllib.request, 'urlopen', urlopen), contextlib.redirect_stderr(err):
+            SMOKE.call_seoul_api(self.KEY, 'SVC', 1, 1)
+        self.assertTrue(calls[0].startswith('https://') and calls[1].startswith('http://'))
+        self.assertIn('plaintext HTTP', err.getvalue()); self.assert_no_key(err.getvalue())
 
 
 if __name__ == '__main__': unittest.main()

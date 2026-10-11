@@ -13,6 +13,7 @@ version, certificate subject/issuer/validity, whether the hostname matched).
 import argparse
 import http.client
 import json
+import os
 import socket
 import ssl
 import sys
@@ -103,6 +104,7 @@ def main():
               'verified_https_available': bool(ok), 'verified_https_endpoints': [f"{r['host']}:{r['port']}" for r in ok]}
     text = json.dumps(report, ensure_ascii=False, indent=1)
     if args.out:
+        os.makedirs(os.path.dirname(args.out) or '.', exist_ok=True)
         with open(args.out, 'w', encoding='utf-8') as f:
             f.write(text + '\n')
     print(text)

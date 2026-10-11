@@ -28,6 +28,13 @@ CONFIG = 'config/opportunity-radar-v2.json'
 INDEX = 'docs/data/opportunity-radar.json'
 STATUS = 'docs/data/opportunity-radar-status.json'
 DETAILS = 'docs/data/opportunity-radar-details'
+# Transport (audited 2026-10-11, research/opportunity-radar-v2/transport-audit.json): the official endpoint has no
+# verified HTTPS (8088 answers TLS with plain HTTP; 443/80 time out). The key is part of the URL path, so it crosses
+# the network unencrypted. This is the ONLY endpoint the client will use: no redirects followed, no scheme or host
+# substitution, never logged. If the provider enables HTTPS later, change API_ENDPOINT and re-run the audit.
+API_ENDPOINT = 'http://openapi.seoul.go.kr:8088/'
+TRANSPORT_NOTICE = ('Seoul Open API offers no verified HTTPS (audited 2026-10-11); this request path uses plaintext HTTP and the '
+                    'credential is in the URL path. It is never logged. Mitigations and limits: docs/seoul-open-data-api.md')
 OFFICIAL_HOSTS = ('data.seoul.go.kr', 'golmok.seoul.go.kr', 'www.data.go.kr', 'www.code.go.kr')
 IDENTITY = ('STDR_YYQU_CD', 'TRDAR_CD', 'TRDAR_CD_NM', 'SVC_INDUTY_CD', 'SVC_INDUTY_CD_NM')
 MEASURES = {'sales': ('THSMON_SELNG_AMT', 'THSMON_SELNG_CO'),
@@ -118,6 +125,14 @@ def normalize(row, kind, period, area):
 
 # ---------------------------------------------------------------- transport
 
+def transport_notice():
+    """Make the plaintext transport visible (never silent). No URL, no credential."""
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        print('::warning title=Seoul Open API transport (plaintext HTTP)::' + TRANSPORT_NOTICE)
+    else:
+        print('RADAR_TRANSPORT_NOTICE ' + TRANSPORT_NOTICE)
+
+
 class SeoulHistoryClient:
     def __init__(self, key=None, opener=None, budget=80):
         self.key = os.environ.get('SEOUL', '').strip() if key is None else key.strip()
@@ -145,7 +160,7 @@ class SeoulHistoryClient:
                 raise SourceError('REQUEST_BUDGET_EXCEEDED')
             self.calls += 1
             try:
-                with self.opener.open(urllib.request.Request('http://openapi.seoul.go.kr:8088/' + path + '/', headers={'User-Agent': 'SideEconomyLab/radar-v2'}), timeout=40) as resp:
+                with self.opener.open(urllib.request.Request(API_ENDPOINT + path + '/', headers={'User-Agent': 'SideEconomyLab/radar-v2'}), timeout=40) as resp:
                     body = resp.read(4_000_001)
                 if len(body) > 4_000_000:
                     raise SourceError('RESPONSE_BUDGET_EXCEEDED')
@@ -673,7 +688,9 @@ def collect_domain(domain_id, root=ROOT, client=None, now=None):
     root = Path(root); config = load_config(root); spec = config['domains'][domain_id]
     if spec['snapshot_schema'] != 2: raise SourceError('DOMAIN_NOT_COLLECTABLE')
     now = now or datetime.now(timezone.utc)
-    if not client: client = SeoulHistoryClient(budget=spec['request_budget'])
+    if not client:
+        client = SeoulHistoryClient(budget=spec['request_budget'])
+        transport_notice()
     newest = now.year * 4 + (now.month - 1) // 3 - 1
     services = {k: {'id': v['id'], 'service': v['service']} for k, v in spec['services'].items()}
     if spec.get('request_mode') == 'full_history':

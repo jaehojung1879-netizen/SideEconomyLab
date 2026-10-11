@@ -14,7 +14,8 @@ RADAR_SCOPE = ('docs/data/opportunity-radar', 'data/opportunity-radar/', 'docs/a
                'docs/opportunity-radar-v2.md', 'docs/index.html', 'docs/data/seoul-source-catalog.json', 'pipeline/opportunity_radar.py',
                'pipeline/radar_', 'pipeline/README.md', 'config/opportunity-radar', 'tests/test_opportunity_radar.py', 'tests/radar-',
                'research/opportunity-radar-v2/', 'research/screenshots/opportunity-radar-v2/', 'research/seoul-opportunity-completion-v2.md',
-               '.github/workflows/opportunity-radar-', 'README.md')
+               '.github/workflows/opportunity-radar-', '.github/workflows/seoul-open-data-smoke.yml', 'pipeline/seoul_transport_audit.py',
+               'pipeline/seoul_open_data_smoke.py', 'docs/opportunity-radar-v1.md', 'docs/seoul-open-data-api.md', 'README.md')
 PORTFOLIO = 'docs/data/candidate-validation-portfolio.json'
 KEY = ('docs/data/candidate-registry.json', 'docs/data/business-workbench.json',
        'docs/data/decision-evidence.json', 'docs/data/seoul-opportunity-map.json', 'docs/data/kakao-poi-layer.json',

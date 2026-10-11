@@ -54,7 +54,7 @@ const industryName = new Map(index.industries);
       assert.ok(!headline.includes('서울 전체 중앙값'), 'no ambiguous Seoul-wide median');
       const ctx = district.context;
       assert.ok(headline.includes('조합별 1년 변화율의 중앙값') && headline.includes('서울 전체 소비·점포의 증가율이 아닙니다'));
-      assert.ok(headline.includes(`소비 ${F.signed(ctx.median_sales_yoy_pct)}%(${ctx.comparable_sales.toLocaleString('ko-KR')}개 조합)`) && headline.includes(`점포 ${F.signed(ctx.median_stores_yoy_pct)}%(${ctx.comparable_stores.toLocaleString('ko-KR')}개 조합)`));
+      assert.ok(headline.includes(`소비 ${F.signed(ctx.median_sales_yoy_pct, 2)}%(${ctx.comparable_sales.toLocaleString('ko-KR')}개 조합)`) && headline.includes(`점포 ${F.signed(ctx.median_stores_yoy_pct, 2)}%(${ctx.comparable_stores.toLocaleString('ko-KR')}개 조합)`));
     }
     await page.screenshot({path: output + '/desktop-overview.png'});
     fs.writeFileSync(output + '/initial-load.json', JSON.stringify(await page.evaluate(() => ({navigation: performance.getEntriesByType('navigation').map(e => ({domContentLoaded_ms: e.domContentLoadedEventEnd, load_ms: e.loadEventEnd})), public_json: performance.getEntriesByType('resource').filter(e => e.name.includes('/data/')).map(e => ({file: new URL(e.name).pathname.split('/').at(-1), encoded_bytes: e.encodedBodySize, transfer_bytes: e.transferSize}))})), null, 2));
