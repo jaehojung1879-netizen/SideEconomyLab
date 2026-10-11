@@ -30,12 +30,32 @@ const industryName = new Map(index.industries);
     assert.equal(await page.locator('#radar-industry').inputValue(), defaultInd);
     const ranked = rows.filter(e => e.domain === 'district' && e.industry_id === defaultInd);
     assert.equal(await page.locator('.radar-rank li').count(), ranked.length);
+    // District-level comparison counts DISTRICTS (not "곳"), with counts that match the committed data.
+    const dirCount = (list, key) => [list.filter(e => e[key + '_yoy_status'] === 'OK' && e[key + '_yoy_pct'] > 0).length, list.filter(e => e[key + '_yoy_status'] === 'OK' && e[key + '_yoy_pct'] < 0).length];
+    const cards = await page.locator('.radar-cards').first().innerText();
+    const [su, sd] = dirCount(ranked, 'sales'), [tu, td] = dirCount(ranked, 'stores');
+    assert.ok(cards.includes(`${su}개 자치구 증가 · ${sd}개 자치구 감소`) && cards.includes(`${tu}개 자치구 증가 · ${td}개 자치구 감소`), 'district counts are districts');
+    assert.ok(!/\d곳/.test(cards) && !cards.includes('개 업종 증가'), 'no ambiguous 곳 / industry wording in a district comparison');
+    assert.ok(cards.includes('자치구별 변화율의 중앙값'), 'median is described as a median of district change rates');
+    const dirNote = await page.locator('.radar-dir-note').innerText();
+    assert.ok(dirNote.includes('방향') && dirNote.includes('좋고 나쁨을 뜻하지 않습니다') && dirNote.includes('합계의 증가율이 아닙니다'));
+    // Up/down colours are a neutral direction pair: never red/green (which read as bad/good).
+    const colours = await page.evaluate(() => { const rgb = el => getComputedStyle(el).color.match(/\d+/g).map(Number); const up = document.querySelector('.radar-rank b[data-tone=up]'), down = document.querySelector('.radar-rank b[data-tone=down]'); return {up: up && rgb(up), down: down && rgb(down), upText: up?.textContent, downText: down?.textContent}; });
+    for (const [name, c] of [['up', colours.up], ['down', colours.down]]) { assert.ok(c, name + ' present'); const [r, g, b] = c; assert.ok(!(r > g + 40 && r > b + 40) && !(g > r + 20 && g > b + 20), `${name} colour is not red/green: ${c}`); }
+    assert.ok(colours.upText.startsWith('▲') && colours.downText.startsWith('▼'), 'direction also carried by arrows, not colour alone');
     for (const e of ranked) {
       const name = district.areas.find(a => a[0] === e.area_id)[1];
       const text = await page.locator('.radar-rank li', {hasText: name}).first().innerText();
       if (e.sales_yoy_status === 'OK') assert.ok(text.includes(F.signed(e.sales_yoy_pct) + '%'), `ranking pct ${name}`);
     }
-    if (districtVerified) assert.ok((await page.locator('#radar-headline').innerText()).includes('추가 조사 후보'));
+    if (districtVerified) {
+      const headline = await page.locator('#radar-headline').innerText();
+      assert.ok(headline.includes('추가 조사 후보'));
+      assert.ok(!headline.includes('서울 전체 중앙값'), 'no ambiguous Seoul-wide median');
+      const ctx = district.context;
+      assert.ok(headline.includes('조합별 1년 변화율의 중앙값') && headline.includes('서울 전체 소비·점포의 증가율이 아닙니다'));
+      assert.ok(headline.includes(`소비 ${F.signed(ctx.median_sales_yoy_pct)}%(${ctx.comparable_sales.toLocaleString('ko-KR')}개 조합)`) && headline.includes(`점포 ${F.signed(ctx.median_stores_yoy_pct)}%(${ctx.comparable_stores.toLocaleString('ko-KR')}개 조합)`));
+    }
     await page.screenshot({path: output + '/desktop-overview.png'});
     fs.writeFileSync(output + '/initial-load.json', JSON.stringify(await page.evaluate(() => ({navigation: performance.getEntriesByType('navigation').map(e => ({domContentLoaded_ms: e.domContentLoadedEventEnd, load_ms: e.loadEventEnd})), public_json: performance.getEntriesByType('resource').filter(e => e.name.includes('/data/')).map(e => ({file: new URL(e.name).pathname.split('/').at(-1), encoded_bytes: e.encodedBodySize, transfer_bytes: e.transferSize}))})), null, 2));
 
@@ -93,6 +113,10 @@ const industryName = new Map(index.industries);
       await page.selectOption('#radar-compare', 'yoy');
       // Area → industry ranking and back.
       await page.locator('[data-radar-up]').click(); assert.ok((await marketText()).includes('업종별 변화'));
+      // Within-district comparison counts INDUSTRIES.
+      const inArea = rows.filter(x => x.domain === e.domain && x.area_id === e.area_id), areaCards = await page.locator('.radar-cards').first().innerText();
+      const [au, ad] = dirCount(inArea, 'sales');
+      assert.ok(areaCards.includes(`${au}개 업종 증가 · ${ad}개 업종 감소`) && !areaCards.includes('개 자치구 증가') && areaCards.includes('업종별 변화율의 중앙값'), 'industry counts are industries');
     }
 
     // Blocked commercial-area domain: observations visible, comparison and trend line disabled.

@@ -43,7 +43,9 @@
   const domainOf = id => data.domainMap.get(id);
   const areaName = (domain, area) => (domainOf(domain)?.areas.find(a => a[0] === area) || [, area])[1];
   const parseArea = v => { const [domain, area] = String(v || '').split(':'); return {domain: domain || 'district', area: area && area !== '*' ? area : ''}; };
-  const pctText = c => c.status === 'OK' ? F.signed(c.pct) + '%' : c.status === 'BLOCKED' ? '비교 보류' : '변화율 미확인';
+  // Direction only: arrow + sign + colour. Never a judgement of good or bad for a business.
+  const arrow = c => c.status !== 'OK' ? '' : c.pct > 0 ? '▲ ' : c.pct < 0 ? '▼ ' : '– ';
+  const pctText = c => c.status === 'OK' ? arrow(c) + F.signed(c.pct) + '%' : c.status === 'BLOCKED' ? '비교 보류' : '변화율 미확인';
   const tone = c => c.status !== 'OK' ? 'unknown' : c.pct > 0 ? 'up' : c.pct < 0 ? 'down' : 'flat';
   const cmp = () => filters.compare === 'qoq' ? data.comparisons.qoq : data.comparisons.yoy;
   const cmpIndex = () => filters.compare === 'qoq' ? [1, 2] : [0, 2];
@@ -76,7 +78,7 @@
   function headline() {
     const d = domainOf('district'), c = data.coverage;
     $('radar-headline').innerHTML = d && d.gates.temporal.status === 'VERIFIED'
-      ? `${F.quarter(data.periods[0])} → ${F.quarter(data.periods.at(-1))}, 서울 ${d.areas.length}개 자치구의 공식 추정 소비와 점포 변화를 비교합니다. 비교 가능한 조합 ${c.comparable.toLocaleString('ko-KR')}개 중 <strong>${c.findings.toLocaleString('ko-KR')}건</strong>을 추가 조사 후보로 표시했습니다. 서울 전체 중앙값은 소비 ${F.signed(d.context.median_sales_yoy_pct)}%, 점포 ${F.signed(d.context.median_stores_yoy_pct)}%입니다.`
+      ? `${F.quarter(data.periods[0])} → ${F.quarter(data.periods.at(-1))}, 서울 ${d.areas.length}개 자치구의 공식 추정 소비와 점포 변화를 비교합니다. 비교 가능한 자치구×업종 조합 ${c.comparable.toLocaleString('ko-KR')}개 중 <strong>${c.findings.toLocaleString('ko-KR')}건</strong>을 추가 조사 후보로 표시했습니다. <span class="radar-stat">참고: 조합별 1년 변화율의 중앙값은 소비 ${F.signed(d.context.median_sales_yoy_pct)}%(${d.context.comparable_sales.toLocaleString('ko-KR')}개 조합), 점포 ${F.signed(d.context.median_stores_yoy_pct)}%(${d.context.comparable_stores.toLocaleString('ko-KR')}개 조합)이며, 서울 전체 소비·점포의 증가율이 아닙니다.</span>`
       : '관측 자료는 확보했지만 같은 지리 기준을 공식 근거로 확인하지 못해 변화 비교를 보류합니다.';
   }
 
@@ -85,8 +87,8 @@
     const {domain, area} = parseArea(filters.area), d = domainOf(domain), ind = filters.industry;
     if (!d) { $('radar-market').innerHTML = '<p>지역을 선택하세요.</p>'; return; }
     if (area && ind) return marketDetail(d, area, ind);
-    if (area) return rankingTable(d, `${esc(areaName(domain, area))} · 업종별 변화`, data.list.filter(e => e.domain === domain && e.area_id === area), e => data.industryName.get(e.industry_id), e => ({area: filters.area, industry: e.industry_id}), '같은 지역 안의 업종을 변화율로 비교합니다. 업종마다 규모가 달라 원 단위 금액은 비교하지 않습니다.');
-    if (ind) return rankingTable(d, `${esc(data.industryName.get(ind))} · 자치구별 변화`, data.list.filter(e => e.domain === domain && e.industry_id === ind), e => areaName(domain, e.area_id), e => ({area: domain + ':' + e.area_id, industry: ind}), '같은 업종을 자치구끼리 비교합니다. 겹치지 않는 공식 자치구 집계입니다.');
+    if (area) return rankingTable(d, `${esc(areaName(domain, area))} · 업종별 변화`, data.list.filter(e => e.domain === domain && e.area_id === area), e => data.industryName.get(e.industry_id), e => ({area: filters.area, industry: e.industry_id}), '같은 지역 안의 업종을 변화율로 비교합니다. 업종마다 규모가 달라 원 단위 금액은 비교하지 않습니다.', '업종');
+    if (ind) return rankingTable(d, `${esc(data.industryName.get(ind))} · 자치구별 변화`, data.list.filter(e => e.domain === domain && e.industry_id === ind), e => areaName(domain, e.area_id), e => ({area: domain + ':' + e.area_id, industry: ind}), '같은 업종을 자치구끼리 비교합니다. 겹치지 않는 공식 자치구 집계입니다.', '자치구');
     $('radar-market').innerHTML = '<p>업종이나 지역을 선택하세요.</p>';
   }
   function gateNote(d) {
@@ -116,7 +118,7 @@
       <p class="radar-handoff-note">이 통계는 업종 전체의 공식 추정치입니다. 사업 매출 전망에 자동으로 넣지 않습니다.</p><button class="radar-action" id="radar-handoff">현재 사업 가설로 사업성 검토</button>`;
     bindMarket(); loadDetail(d.id, area, ind);
   }
-  function rankingTable(d, title, rows, label, target, note) {
+  function rankingTable(d, title, rows, label, target, note, unit) {
     const c = filters.compare === 'qoq' ? 'qoq' : 'yoy', [base, cur] = cmp();
     const ok = rows.filter(e => e['sales_' + c].status === 'OK');
     const sorted = [...rows].sort((a, b) => (b.material - a.material) || ((b['sales_' + c].pct ?? -Infinity) - (a['sales_' + c].pct ?? -Infinity)) || a.area_id.localeCompare(b.area_id) || a.industry_id.localeCompare(b.industry_id));
@@ -125,7 +127,8 @@
     const st = rows.filter(e => e['stores_' + c].status === 'OK'), sUp = st.filter(e => e['stores_' + c].pct > 0).length, sDown = st.filter(e => e['stores_' + c].pct < 0).length;
     const med = arr => { const v = arr.filter(Number.isFinite).sort((a, b) => a - b); return v.length ? (v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2) : null; };
     $('radar-market').innerHTML = `<div class="radar-market-head"><div><span>${esc(d.label)} · ${F.quarter(base)} → ${F.quarter(cur)}</span><h3>${title}</h3></div></div>
-      <div class="radar-cards"><article class="radar-card"><h4>추정 소비</h4><strong>${up}곳 증가 · ${down}곳 감소</strong><p>중앙값 ${F.signed(med(ok.map(e => e['sales_' + c].pct)))}%</p><small>변화율 계산 가능 ${ok.length}/${rows.length}</small></article><article class="radar-card"><h4>점포 수</h4><strong>${sUp}곳 증가 · ${sDown}곳 감소</strong><p>중앙값 ${F.signed(med(st.map(e => e['stores_' + c].pct)))}%</p><small>변화율 계산 가능 ${st.length}/${rows.length}</small></article></div>
+      <div class="radar-cards"><article class="radar-card"><h4>추정 소비 · ${unit}별 변화 방향</h4><strong>${up}개 ${unit} 증가 · ${down}개 ${unit} 감소</strong><p>${unit}별 변화율의 중앙값 ${F.signed(med(ok.map(e => e['sales_' + c].pct)))}%</p><small>소비 변화율을 계산할 수 있는 ${unit} ${ok.length}개 (전체 ${rows.length}개 중)</small></article><article class="radar-card"><h4>점포 수 · ${unit}별 변화 방향</h4><strong>${sUp}개 ${unit} 증가 · ${sDown}개 ${unit} 감소</strong><p>${unit}별 변화율의 중앙값 ${F.signed(med(st.map(e => e['stores_' + c].pct)))}%</p><small>점포 변화율을 계산할 수 있는 ${unit} ${st.length}개 (전체 ${rows.length}개 중)</small></article></div>
+      <p class="radar-dir-note">▲ 증가 · ▼ 감소 · 색은 변화의 <b>방향</b>만 나타내며 사업에 좋고 나쁨을 뜻하지 않습니다. 중앙값은 ${unit}별 변화율의 가운데 값이며 합계의 증가율이 아닙니다.</p>
       ${gateNote(d)}<p class="radar-note">${esc(note)} 막대는 추정 소비 변화율(±${max.toFixed(0)}% 축, 100% 초과는 잘림)입니다. 기준 규모가 작은 항목은 아래로 정렬합니다.</p>
       <ol class="radar-rank">${sorted.map(e => { const s = e['sales_' + c], t = e['stores_' + c], w = s.status === 'OK' ? Math.min(Math.abs(s.pct), max) / max * 50 : 0; return `<li><button data-radar-pick="${esc(JSON.stringify(target(e)))}"><span class="radar-rank-name">${esc(label(e))}${e.material ? '' : '<small>기준 규모 작음</small>'}${e.extreme ? '<small>급변 · 원자료 확인</small>' : ''}</span><span class="radar-bar" aria-hidden="true"><i data-tone="${tone(s)}" style="${s.pct < 0 ? `right:50%;width:${w}%` : `left:50%;width:${w}%`}"></i></span><span class="radar-rank-val"><b data-tone="${tone(s)}">${pctText(s)}</b><small>점포 ${pctText(t)}</small></span></button></li>`; }).join('')}</ol>`;
     bindMarket();
