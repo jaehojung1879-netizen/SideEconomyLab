@@ -43,8 +43,12 @@ GitHub Actions run [38022005175](https://github.com/jaehojung1879-netizen/SideEc
 - Python 66개(기존 + radar 16개) 통과: 관문 독립, 성장 규칙, 4개 패턴·밴드, 규모·급변, 개폐업 흐름, 식별 변경·오래됨, 스키마·단위·계약·허위 자료 거부, 전체 이력 수집·페이지·중복, 불변 스냅샷·실패 보존.
 - `radar-models.cjs`: 브라우저 계산이 파이프라인 값 **9,988건**과 일치(반올림 규칙 포함), 억원/만원 표기, 지수 계산.
 - 브라우저 `radar-browser.cjs`(실제 번들): 순위·카드 수치 일치, 차트 점·툴팁·원값 표 일치(지수 − 100 = 전년 동분기 변화율), 정렬이 단일 지표임, 기간 전환, 상권 관문 차단 시 추세선 없음, 사업성 검토 이동 시 지도 선택·후보 유지·저장 0건, 1440/1024/390px 넘침 없음, 모바일 전환·복귀, 수집 실패·오래된 자료·상세 해시 불일치·네트워크 실패·변조 자료 거부, 쓰기 요청 0건.
-- 로컬 통과: 사업 구성·의사결정·검증 현황 브라우저 검사, 의사결정 모델, 경제성·개인 저장 13개 그룹, 부동산 맥락, GIS 의존성, 판단 증거, 후보 검증 포트폴리오 검사. **기존 GIS 브라우저 검사(`gis-browser.cjs`)는 이 샌드박스에서 외부 지도 타일·CDN 접근이 막혀 변경 전 트리에서도 시간 초과**가 나므로 로컬에서 확인하지 못했고 GitHub Actions 결과로만 확인합니다.
+- 로컬 통과: 사업 구성·의사결정·검증 현황 브라우저 검사, 의사결정 모델, 경제성·개인 저장 13개 그룹, 부동산 맥락, GIS 의존성, 판단 증거, 후보 검증 포트폴리오 검사. **기존 GIS 브라우저 검사(`gis-browser.cjs`)는 이 샌드박스에서 외부 지도 타일·CDN 접근이 막혀 변경 전 트리에서도 시간 초과**가 나 로컬에서는 확인하지 못했습니다. 대신 GitHub Actions에서 확인했습니다(아래).
 - 보존 증거: [`opportunity-radar-v2/preservation.json`](opportunity-radar-v2/preservation.json). 후보·경제·판단 증거·GIS 데이터·지도 코드·v1 스냅샷이 기준 커밋과 바이트 동일. 후보 검증 포트폴리오는 `integrity_baseline["docs/index.html"]` 해시 한 줄만 재결합했으며(v1과 같은 표현 계층 예외) 후보 점수·게이트·승격·예산은 동일함을 스크립트가 증명합니다.
+
+## GitHub Actions (PR [#17](https://github.com/jaehojung1879-netizen/SideEconomyLab/pull/17), 커밋 `37f4894`)
+
+5개 검사 모두 성공: [Verify static GIS](https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/38096781628)(기존 GIS 브라우저 검사 포함), [Verify opportunity radar](https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/38096781626)(재현·단위·모델·보존·브라우저), [Verify decision intelligence](https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/38096781673), [Verify business workbench](https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/38096781615), [Verify candidate validation portfolio](https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/38096781634). 열린 리뷰 코멘트 없음, 병합 상태 `clean`.
 
 ## 화면 증거
 
