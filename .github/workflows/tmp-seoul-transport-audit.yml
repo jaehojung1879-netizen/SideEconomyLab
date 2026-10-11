@@ -1,0 +1,23 @@
+name: TEMP Seoul transport audit
+# Temporary: runs the credential-free transport audit once on this branch, then is deleted.
+on:
+  push:
+    branches: [claude/opportunity-radar-v2-trends-37xua1]
+    paths: ['.github/workflows/tmp-seoul-transport-audit.yml', 'pipeline/seoul_transport_audit.py']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit (public sample key only; no repository secrets are referenced)
+        run: python pipeline/seoul_transport_audit.py --out transport-audit.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: seoul-transport-audit
+          path: transport-audit.json
