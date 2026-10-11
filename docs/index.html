@@ -21,18 +21,15 @@
   </div>
   <nav class="header-actions"><button id="wb-toggle" disabled aria-expanded="false" aria-controls="workbench">사업 구성·경제성</button><button data-dialog="method-dialog">데이터·방법</button><button data-dialog="transaction-dialog">전체 후보·검증</button></nav>
 </header>
-<section class="radar-overview" aria-label="시장 변화 요약">
-  <div class="radar-intro"><span>서울 공개데이터 · 연구 전용</span><h2>어디에서 무엇이 변하고 있나요?</h2><p id="radar-headline" role="status">공식 출처와 비교 가능한 근거를 확인하고 있습니다.</p></div>
-  <dl id="radar-summary"><div><dt>분석 범위</dt><dd>—</dd></div><div><dt>최근 관측 출처</dt><dd>—</dd></div><div><dt>검증 가능한 변화</dt><dd>—</dd></div><div><dt>기존 사업 가설</dt><dd>—</dd></div></dl>
+<section class="radar-overview" aria-label="시장 변화 조건">
+  <div class="radar-intro"><span>서울 공식 추정통계 · 연구 전용 · 매출 전망 아님</span><h2>어디에서 소비와 점포가 변하고 있나요?</h2><p id="radar-headline" role="status">공식 출처와 비교 가능 여부를 확인하고 있습니다.</p></div>
+  <div class="radar-controls">
+    <label>지역<select id="radar-area"><option value="">자료 로딩 중</option></select></label>
+    <label>업종<select id="radar-industry"><option value="">자료 로딩 중</option></select></label>
+    <label>비교 기간<select id="radar-compare"><option value="yoy">전년 같은 분기 대비</option><option value="qoq">직전 분기 대비 · 계절 영향 포함</option></select></label>
+  </div>
 </section>
-<section class="radar-toolbar" aria-label="기회 탐색 조건">
-  <label>출처 기준 지역<select id="radar-area"><option value="">전체 수집 지역</option></select></label>
-  <label>업종<select id="radar-industry"><option value="">전체 업종</option></select></label>
-  <label>관측 분기<select id="radar-period"><option value="">최근 분기</option></select></label>
-  <label>연구 신호<select id="radar-type"><option value="">모든 변화</option><option value="spending">소비와 점포 변화</option><option value="churn">개업·폐업 흐름</option><option value="activity" disabled>인구·활동 변화 · 검증 대기</option></select></label>
-  <details class="radar-more"><summary>근거·정렬</summary><label>근거 상태<select id="radar-evidence"><option value="">모든 상태</option><option value="eligible">비교 검증 통과</option><option value="pending">추가 확인 필요</option></select></label><label>탐색 순서<select id="radar-sort"><option value="recent">최근 관측</option><option value="completeness">근거 완결성</option><option value="spending">검증된 소비 증가율</option><option value="stores">검증된 점포 순증감</option></select></label></details>
-</section>
-<div class="radar-mobile-switch" role="group" aria-label="기회 탐색 보기"><button data-radar-view="map" aria-pressed="true">지도</button><button data-radar-view="list" aria-pressed="false">변화·근거 목록</button></div>
+<div class="radar-mobile-switch" role="group" aria-label="기회 탐색 보기"><button data-radar-view="market" aria-pressed="true">시장 변화</button><button data-radar-view="findings" aria-pressed="false">조사할 발견</button></div>
 <main class="workspace">
   <aside class="navigator" id="navigator" aria-label="입지 탐색">
     <div class="mobile-panel-title"><strong>입지 탐색</strong><button data-sheet="close" aria-label="패널 닫기">×</button></div>
@@ -58,20 +55,20 @@
     <div id="top-list" class="top-list" aria-live="polite"></div>
     <button id="load-more" class="load-more" hidden>입지 더 보기</button>
   </aside>
+  <section class="radar-market" id="radar-market" aria-label="선택 시장의 변화" aria-live="polite" tabindex="-1"><p class="radar-loading">시장 변화를 불러오고 있습니다.</p></section>
   <section class="map-wrap" aria-label="서울 입지 지도">
     <div id="map"></div>
-    <div class="radar-map-note"><strong>기존 수요 분석</strong><span>상권 중심점 · 상위 12곳부터 탐색</span><p>새 매출·점포 통계는 지리 기준 확인 전까지 이 지도에 연결하지 않습니다.</p><button id="radar-map-region">이 지도에서 지역 분석</button></div>
     <div class="map-top"><span id="map-badge">지도 준비 중</span><button id="di-map-create" title="버튼을 누른 뒤 지도 위치를 클릭하거나 지도를 우클릭">개인 사이트 만들기</button><button id="seoul-view">서울 전체</button></div>
     <div class="map-legend" id="map-legend"><span><i style="background:#ef476f"></i>95+</span><span><i style="background:#ff9f1c"></i>90+</span><span><i style="background:#ffd166"></i>80+</span><span><i style="background:#3a86ff"></i>80 미만</span><span><i style="background:#7c4dff"></i>주변 POI</span><span><i style="background:#0b8f72"></i>실제 후보지</span></div>
     <div id="data-status" class="data-status" role="status">데이터 로딩 중</div>
   </section>
-  <aside class="radar-panel" aria-label="변화와 확인할 근거">
-    <div class="radar-panel-heading"><h2>변화와 확인할 근거</h2><span id="radar-result-count"></span></div>
+  <aside class="radar-panel" aria-label="조사할 발견">
+    <div class="radar-panel-heading"><h2>조사할 발견</h2><span id="radar-result-count"></span></div>
+    <div class="radar-panel-tools"><label>범위<select id="radar-scope"><option value="all">서울 전체 발견</option><option value="selection">선택한 지역·업종만</option></select></label><label>변화 유형<select id="radar-pattern"><option value="">모든 발견</option></select></label><label>정렬<select id="radar-sort"><option value="size">기준 소비 규모 큰 시장부터</option><option value="sales">소비 변화율 큰 순</option><option value="stores">점포 변화율 큰 순</option><option value="area">지역 이름 순</option></select></label></div>
     <div id="radar-source-state" role="status"></div>
     <div id="radar-list" aria-live="polite" tabindex="-1"></div>
-    <button id="radar-more" hidden>근거 더 보기</button>
-    <section id="radar-detail" aria-live="polite" tabindex="-1"><h3>선택 지역의 핵심 변화</h3><p>변화 목록이나 지도에서 지역을 선택하세요.</p></section>
-    <footer class="radar-footer"><a href="./opportunity-radar-v1.md">출처·계산·지리 기준</a><a href="./data/seoul-source-catalog.json">공식 데이터 목록</a><a href="./research.html">기존 연구 기록</a></footer>
+    <button id="radar-more" hidden>발견 더 보기</button>
+    <footer class="radar-footer"><a href="./opportunity-radar-v2.md">출처·계산·지리 기준</a><a href="./data/seoul-source-catalog.json">공식 데이터 목록</a><a href="./opportunity-radar-v1.md">v1 기록</a></footer>
   </aside>
   <aside class="intelligence" id="intelligence" aria-label="선택 상권 분석">
     <div class="panel-heading"><h2>선택 상권 분석</h2><button data-sheet="close" class="mobile-close" aria-label="분석 닫기">×</button></div>
@@ -113,5 +110,5 @@
 <noscript>지도 탐색에는 JavaScript가 필요합니다. <a href="./research.html">연구 기록 보기</a></noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
-<script src="./assets/map-adapter.js"></script><script src="./assets/real-estate.js"></script><script src="./assets/economics.js"></script><script src="./assets/business-workspace.js"></script><script src="./assets/workbench.js"></script><script src="./assets/decision-intelligence.js"></script><script src="./assets/decision-panel.js"></script><script src="./assets/opportunity-radar.js"></script><script src="./assets/gis.js"></script>
+<script src="./assets/map-adapter.js"></script><script src="./assets/real-estate.js"></script><script src="./assets/economics.js"></script><script src="./assets/business-workspace.js"></script><script src="./assets/workbench.js"></script><script src="./assets/decision-intelligence.js"></script><script src="./assets/decision-panel.js"></script><script src="./assets/radar-format.js"></script><script src="./assets/opportunity-radar.js"></script><script src="./assets/gis.js"></script>
 </body></html>

@@ -52,7 +52,7 @@ python pipeline/opportunity_radar.py --check
 python -m unittest discover -s tests -p test_opportunity_radar.py -v
 ```
 
-새 수집은 GitHub Actions **Seoul Open Data API smoke**의 `radar_history=true`로 실행합니다. 기존 smoke 경로는 유지됩니다. 수집 결과는 artifact만 만들고 원격 main에 쓰지 않습니다. 전체 검증 후 정적 묶음을 검토·커밋합니다. 서버 로그에는 키/응답 메시지/인증 URL을 출력하지 않습니다. 기존 HTTP :8088 공식 엔드포인트를 사용하므로 제공자의 암호화 전송 지원 확인은 남아 있습니다.
+새 수집은 GitHub Actions **Seoul Open Data API smoke**의 `radar_history=true`로 실행합니다. 기존 smoke 경로는 유지됩니다. *(v2에서 대체됨: 수집은 전용 수동 워크플로 **Opportunity Radar official collection**이 맡고 smoke 워크플로에서 `radar_history`를 제거했습니다. [v2 문서](opportunity-radar-v2.md) 참고.)* 수집 결과는 artifact만 만들고 원격 main에 쓰지 않습니다. 전체 검증 후 정적 묶음을 검토·커밋합니다. 서버 로그에는 키/응답 메시지/인증 URL을 출력하지 않습니다. 기존 HTTP :8088 공식 엔드포인트를 사용하므로 제공자의 암호화 전송 지원 확인은 남아 있습니다.
 
 필수 스키마·숫자·기간·키·범위·페이지·점포 항등식을 검사합니다. 불변 스냅샷과 정확한 결정적 파생, 세부 파일 해시를 검사하고 실패 시 이전 묶음을 복원합니다. 별도 최근 수집 상태는 실패를 표시해 오래된 성공을 새 성공으로 위장하지 않습니다. 서버는 raw를 처리하고 브라우저에는 111,773바이트 요약과 선택한 작은 상세 파일만 전달합니다. 지도 조작·후보 변경은 원천 API나 raw 스냅샷 다운로드를 일으키지 않습니다. 약 13.8MB 기존 판단 자료는 **사업성 검토를 열 때** 지연 로딩합니다.
 

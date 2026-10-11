@@ -1,0 +1,63 @@
+name: Opportunity Radar official collection
+# Manual only. Reads the existing SEOUL repository secret, validates fail-closed, and uploads the
+# validated bundle as an ARTIFACT. It never pushes: a person reviews the artifact and commits it
+# through a pull request. If any validation fails nothing is produced and the previous bundle stays.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'collect = validated district history; probe = official geography/service evidence; transport-audit = credential-free HTTPS check'
+        type: choice
+        options: [collect, probe, transport-audit]
+        default: collect
+permissions:
+  contents: read
+concurrency:
+  group: radar-collect
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect, publish into the workspace only if every check passes, then re-derive
+        if: ${{ inputs.mode == 'collect' }}
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: |
+          python pipeline/opportunity_radar.py --domain district
+          python pipeline/opportunity_radar.py --check
+      - name: Probe official geography and service evidence
+        if: ${{ inputs.mode == 'probe' }}
+        env:
+          SEOUL: ${{ secrets.SEOUL }}
+        run: python pipeline/radar_geography_probe.py --out artifacts/radar-geography-probe.json
+      - name: Audit transport (public sample key only, no secrets)
+        if: ${{ inputs.mode == 'transport-audit' }}
+        run: python pipeline/seoul_transport_audit.py --out artifacts/transport-audit.json
+      - name: Upload validated collection bundle
+        if: ${{ success() && inputs.mode == 'collect' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-collection
+          path: |
+            data/opportunity-radar
+            docs/data/opportunity-radar.json
+            docs/data/opportunity-radar-status.json
+            docs/data/opportunity-radar-details
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload evidence file
+        if: ${{ success() && inputs.mode != 'collect' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-${{ inputs.mode }}
+          path: artifacts
+          if-no-files-found: error
+          retention-days: 14

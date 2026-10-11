@@ -1,134 +1,262 @@
-/* Korean-first research navigation; public summaries only, detail on selection. */
+/* Opportunity Radar v2: official source-geography market changes; summary first, detail on selection. */
 (() => {
-  const $=id=>document.getElementById(id), esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const num=v=>v===null||v===undefined||!Number.isFinite(v)?'미확인':v.toLocaleString('ko-KR');
-  const period=p=>/^20\d{2}[1-4]$/.test(p)?`${p.slice(0,4)}년 ${p[4]}분기`:'관측 분기 미확인';
-  const issues={GEOGRAPHY_REVISION_UNKNOWN:'지리 기준 확인 필요',SOURCE_IDENTITY_CHANGED:'지역·업종 정의 확인 필요',STALE_OBSERVATION:'오래된 관측',MISSING_OBSERVATIONS:'일부 관측 누락'};
-  let data=null,sourceState=null,selected=null,detail=null,limit=6,sequence=0;
-  const cache=new Map(), filters={area:'',industry:'',period:'',type:'',evidence:'',sort:'recent'};
-  const fresh=p=>{if(!/^20\d{2}[1-4]$/.test(p))return false;const end=new Date(Date.UTC(+p.slice(0,4),+p[4]*3,0));const age=(Date.now()-end.getTime())/86400000;return age>=0&&age<=180;};
-  const sourceUrl=u=>{try{const url=new URL(u);return url.protocol==='https:'&&['data.seoul.go.kr','golmok.seoul.go.kr','www.data.go.kr'].includes(url.hostname)?url.href:'';}catch{return '';}};
-  function prepare(index){
-    if(index?.schema_version!==1||!Array.isArray(index.entities)||!Array.isArray(index.signals)||!Array.isArray(index.sources)||!Array.isArray(index.periods)||!index.coverage)throw Error('형식 확인 필요');
-    if(!['AVAILABLE','NOT_COLLECTED'].includes(index.status))throw Error('출처 확인 필요');
-    if(index.status==='NOT_COLLECTED'&&(index.entities.length||index.signals.length))throw Error('출처 없는 관측');
-    if(index.status==='AVAILABLE'&&(!/^20\d{2}-\d{2}-\d{2}-[a-f0-9]{12}$/.test(index.snapshot_id)||index.sources.length!==2))throw Error('출처 확인 필요');
-    const ids=new Set();
-    for(const e of index.entities){
-      if(!/^\d{7}-CS\d{6}$/.test(e.id)||ids.has(e.id)||!Array.isArray(e.issues)||!Array.isArray(e.signal_ids)||!e.latest||e.period!==index.periods.at(-1)||e.detail_url!==`./data/opportunity-radar-details/${e.id}.json`||!/^([a-f0-9]{64})$/.test(e.detail_hash))throw Error('지역 근거 형식 오류');
-      ids.add(e.id);
-      // Null remains unknown; strings, negative counts and NaN never become zero.
-      for(const k of ['sales','stores','opened','closed'])if(e.latest[k]!==null&&(!Number.isFinite(e.latest[k])||e.latest[k]<0))throw Error('관측값 형식 오류');
-      if(e.map_area_id!==null)throw Error('공식 지도 대응 미검증');
-    }
-    for(const s of index.signals){
-      const e=index.entities.find(e=>e.id===s.entity_id);
-      if(!e||e.issues.length||!['spending','churn'].includes(s.type)||!e.signal_ids.includes(s.id)||index.geography?.comparability_verified!==true||!index.geography.version||!index.geography.geometry_version||!index.geography.crs||!sourceUrl(index.geography.evidence_url)||s.evidence_status!=='DERIVED_FROM_MODELED_STATISTICS'||s.evidence_completeness!==1||!s.interpretation||!s.alternative||!s.next_action)throw Error('연구 신호 검증 실패');
-    }
-    return index;
+  const F = window.RadarFormat;
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const sourceUrl = u => { try { const url = new URL(u); return url.protocol === 'https:' && ['data.seoul.go.kr', 'golmok.seoul.go.kr', 'www.data.go.kr', 'www.code.go.kr'].includes(url.hostname) ? url.href : ''; } catch { return ''; } };
+  const STATUS_TEXT = {ZERO_BASELINE: '기준 분기 값이 0이라 변화율을 계산하지 않습니다.', MISSING_OBSERVATION: '비교 분기 중 관측이 없어 변화율을 계산하지 않습니다.',
+    GEOGRAPHY_TEMPORAL_GATE: '분기마다 같은 지역 경계인지 공식 근거로 확인되지 않아 비교를 보류합니다.', STALE_OBSERVATION: '관측이 오래되어 최근 변화로 비교하지 않습니다.',
+    SOURCE_IDENTITY_CHANGED: '분기마다 지역·업종 이름이나 코드가 달라 비교를 보류합니다.'};
+  const FLOW_TEXT = {expansion: '최근 4개 분기 모두 개업이 폐업보다 많음', contraction: '최근 4개 분기 모두 폐업이 개업보다 많음', mixed: '최근 4개 분기 순증감 방향이 섞임', UNKNOWN: '개폐업 관측 누락', BLOCKED: '비교 보류'};
+  let data = null, sourceState = null, limit = 8, sequence = 0, detail = null;
+  const cache = new Map(), byKey = new Map();
+  const filters = {area: '', industry: '', compare: 'yoy', pattern: '', sort: 'size', scope: 'all'};
+
+  function decode(index) {
+    const cols = index.entity_columns;
+    return index.entities.map(row => {
+      const e = Object.fromEntries(cols.map((c, i) => [c, row[i]]));
+      for (const k of ['sales', 'stores']) for (const [c, i0] of [['yoy', 0], ['qoq', 1]]) {
+        const raw = e[`${k}_${c}_status`], status = ['OK', 'BLOCKED'].includes(raw) ? raw : 'UNKNOWN';
+        e[`${k}_${c}`] = {status, reason: status === 'BLOCKED' ? e.blocked : status === 'UNKNOWN' ? raw : null, pct: e[`${k}_${c}_pct`],
+          abs: status !== 'BLOCKED' && F.finite(e[k][i0]) && F.finite(e[k][2]) ? e[k][2] - e[k][i0] : null};
+      }
+      return e;
+    });
   }
-  function signals(){return (data?.signals||[]).filter(s=>fresh(data.entities.find(e=>e.id===s.entity_id)?.period));}
-  function mode(value,{push=false}={}){
-    const next=['radar','region','evaluate'].includes(value)?value:'radar';
-    if(next!=='evaluate'&&document.body.dataset.workbench==='true')$('wb-toggle').click();
-    document.body.dataset.workspace=next;document.body.dataset.sheet='';
-    document.querySelector('.brand h1').textContent={radar:'기회 탐색',region:'지역 분석',evaluate:'사업성 검토'}[next];
-    document.querySelectorAll('[data-workspace-nav]').forEach(a=>a.setAttribute('aria-current',a.dataset.workspaceNav===next?'page':'false'));
-    if(push&&location.hash!==`#${next}`)location.hash=next;
-    window.dispatchEvent(new CustomEvent('sideeconomy:workspace-mode',{detail:next}));
+  function prepare(index) {
+    if (index?.schema_version !== 2 || index.status !== 'AVAILABLE' || !Array.isArray(index.domains) || !Array.isArray(index.entities) || !Array.isArray(index.entity_columns) || !Array.isArray(index.periods) || index.periods.length !== 5) throw Error('형식 확인 필요');
+    const domains = new Map(index.domains.map(d => [d.id, d]));
+    const entities = decode(index);
+    for (const e of entities) {
+      const d = domains.get(e.domain);
+      if (!d || !/^CS\d{6}$/.test(e.industry_id) || !/^\d{5,10}$/.test(e.area_id)) throw Error('지역 근거 형식 오류');
+      // Independent gates: temporal gate controls change values, GIS gate controls map joins.
+      if (d.gates.temporal.status !== 'VERIFIED' && ['sales_yoy', 'stores_yoy', 'sales_qoq', 'stores_qoq'].some(k => e[k].status !== 'BLOCKED')) throw Error('비교 검증 없는 변화');
+      if (e.finding && (e.sales_yoy.status !== 'OK' && !['expansion', 'contraction'].includes(e.flow))) throw Error('근거 없는 발견');
+      if (e.map_area_id !== null && d.gates.gis.status !== 'VERIFIED') throw Error('공식 지도 대응 미검증');
+      for (const k of ['sales', 'stores']) for (const v of e[k]) if (v !== null && (!Number.isFinite(v) || v < 0)) throw Error('관측값 형식 오류');
+    }
+    for (const d of index.domains) for (const s of d.sources) if (!sourceUrl(s.url)) throw Error('출처 확인 필요');
+    return {...index, domainMap: domains, list: entities, industryName: new Map(index.industries)};
+  }
+  const domainOf = id => data.domainMap.get(id);
+  const areaName = (domain, area) => (domainOf(domain)?.areas.find(a => a[0] === area) || [, area])[1];
+  const parseArea = v => { const [domain, area] = String(v || '').split(':'); return {domain: domain || 'district', area: area && area !== '*' ? area : ''}; };
+  // Direction only: arrow + sign + colour. Never a judgement of good or bad for a business.
+  const arrow = c => c.status !== 'OK' ? '' : c.pct > 0 ? '▲ ' : c.pct < 0 ? '▼ ' : '– ';
+  const pctText = c => c.status === 'OK' ? arrow(c) + F.signed(c.pct) + '%' : c.status === 'BLOCKED' ? '비교 보류' : '변화율 미확인';
+  const tone = c => c.status !== 'OK' ? 'unknown' : c.pct > 0 ? 'up' : c.pct < 0 ? 'down' : 'flat';
+  const cmp = () => filters.compare === 'qoq' ? data.comparisons.qoq : data.comparisons.yoy;
+  const cmpIndex = () => filters.compare === 'qoq' ? [1, 2] : [0, 2];
+
+  function mode(value, {push = false} = {}) {
+    const next = ['radar', 'region', 'evaluate'].includes(value) ? value : 'radar';
+    if (next !== 'evaluate' && document.body.dataset.workbench === 'true') $('wb-toggle').click();
+    document.body.dataset.workspace = next; document.body.dataset.sheet = '';
+    document.querySelector('.brand h1').textContent = {radar: '기회 탐색', region: '지역 분석', evaluate: '사업성 검토'}[next];
+    document.querySelectorAll('[data-workspace-nav]').forEach(a => a.setAttribute('aria-current', a.dataset.workspaceNav === next ? 'page' : 'false'));
+    if (push && location.hash !== `#${next}`) location.hash = next;
+    window.dispatchEvent(new CustomEvent('sideeconomy:workspace-mode', {detail: next}));
     window.SideEconomyGIS?.refresh();
-    if(next==='evaluate'&&matchMedia('(max-width:800px)').matches)document.body.dataset.sheet='decision';
+    if (next === 'evaluate' && matchMedia('(max-width:800px)').matches) document.body.dataset.sheet = 'decision';
   }
-  function view(value){document.body.dataset.radarView=value;document.querySelectorAll('button[data-radar-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.radarView===value)));}
-  function options(id,values,label){$(id).innerHTML=`<option value="">${label}</option>`+[...values].map(([k,v])=>`<option value="${esc(k)}">${esc(v)}</option>`).join('');}
-  function summary(){
-    const c=data?.coverage||{}, candidates=window.SideEconomyGIS?.candidates()||[], freshSources=data?.sources.filter(s=>fresh(s.periods?.at(-1))).length||0;
-    $('radar-summary').innerHTML=`<div><dt>분석 범위</dt><dd>${num(c.source_areas??0)}<small>출처 지역 · 전체 서울 아님</small></dd></div><div><dt>최근 관측 출처</dt><dd>${freshSources}<small>180일 이내 관측</small></dd></div><div><dt>검증 가능한 변화</dt><dd>${signals().length}<small>비교 조건 통과</small></dd></div><div><dt>기존 사업 가설</dt><dd>${candidates.length||'—'}<small>현장 검증과 별도</small></dd></div>`;
-    $('radar-headline').textContent=signals().length?`비교 조건을 통과한 변화 ${signals().length}건이 있습니다. 원인과 고객 문제를 함께 확인하세요.`:data?.status==='AVAILABLE'?'관측 자료는 확보했지만, 동일 지리 기준을 확인하기 전에는 시장 변화로 판단하지 않습니다.':'새 시장 변화를 판단할 검증된 자료가 아직 없습니다. 기존 지역 연구를 계속 살펴볼 수 있습니다.';
+  function view(value) {
+    document.body.dataset.radarView = value;
+    document.querySelectorAll('button[data-radar-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.radarView === value)));
   }
-  function render(){
-    summary();
-    const all=signals(), active=all.filter(s=>(!filters.type||s.type===filters.type)&&(!filters.period||data.entities.find(e=>e.id===s.entity_id)?.period===filters.period));
-    let rows=(data?.entities||[]).filter(e=>(!filters.area||e.area_id===filters.area)&&(!filters.industry||e.industry_id===filters.industry)&&(!filters.evidence||(filters.evidence==='eligible'?active.some(s=>s.entity_id===e.id):e.issues.length>0)));
-    if(filters.type)rows=rows.filter(e=>active.some(s=>s.entity_id===e.id));
-    if(['spending','stores'].includes(filters.sort)){
-      rows=filters.industry?rows.filter(e=>active.some(s=>s.entity_id===e.id&&s.type===(filters.sort==='spending'?'spending':'churn'))):[];
-      const val=e=>active.find(s=>s.entity_id===e.id&&s.type===(filters.sort==='spending'?'spending':'churn'))?.[filters.sort==='spending'?'sales_change_pct':'store_change_count']??-Infinity;
-      rows.sort((a,b)=>val(b)-val(a)||a.id.localeCompare(b.id));
-    }else rows.sort((a,b)=>filters.sort==='completeness'?b.evidence_completeness-a.evidence_completeness||a.id.localeCompare(b.id):b.period.localeCompare(a.period)||a.id.localeCompare(b.id));
-    if(selected&&!rows.some(e=>e.id===selected.id)){selected=null;detail=null;sequence++;$('radar-detail').innerHTML='<h3>선택 지역 없음</h3><p>조건에 맞는 관측 목록에서 지역을 선택하세요.</p>';}
-    document.body.dataset.radarSelected=String(Boolean(selected));
-    $('radar-result-count').textContent=`${rows.length}개 지역·업종`;
-    let message='';
-    if(!data)message='<div class="radar-empty"><strong>자료를 불러오지 못했습니다.</strong><p>네트워크 또는 자료 형식을 확인해야 합니다. 기존 지도와 연구는 계속 사용할 수 있습니다.</p><button data-radar-retry>다시 불러오기</button></div>';
-    else if(!all.length)message=`<div class="radar-empty"><strong>검증 가능한 시장 변화가 아직 없습니다.</strong><p>${data.entities.length?'매출·점포 관측값은 확보했습니다. 분기별 지리 기준이 같은지 확인해야 변화 비교를 열 수 있습니다. 아래 자료는 변화 신호가 아닌 개별 관측입니다.':'매출·점포의 검증된 수집 결과가 준비되지 않았습니다. 임의의 기회나 수치를 표시하지 않습니다.'}</p><button data-radar-region>기존 지역 분석 이어가기</button></div>`;
-    if(sourceState?.status==='BLOCKED')message+=`<p class="radar-notice">최근 수집에 실패했습니다. 이전 검증 자료를 보존했습니다. ${sourceState.attempted_at?`시도일 ${esc(sourceState.attempted_at.slice(0,10))}`:''}<br>출처·검증 상태는 상세 안내에서 확인하세요.</p>`;
-    if(data?.status==='AVAILABLE'&&!fresh(data.periods.at(-1)))message+='<p class="radar-notice">오래된 관측입니다. 최신 동향으로 해석하지 마세요. 새 신호는 비활성 상태입니다.</p>';
-    if(['spending','stores'].includes(filters.sort)&&!filters.industry)message+='<p class="radar-notice">수치로 정렬하려면 같은 업종을 선택하세요. 업종·기간이 다른 신호를 하나의 순위로 비교하지 않습니다.</p>';
-    $('radar-source-state').innerHTML=message;
-    $('radar-list').innerHTML=rows.slice(0,limit).map(e=>{
-      const s=active.find(s=>s.entity_id===e.id), current=!filters.period||filters.period===e.period;
-      return `<button class="radar-item" data-radar-entity="${e.id}" aria-pressed="${selected?.id===e.id}"><strong>${esc(e.area_name)} · ${esc(e.industry_name)}</strong><p>${esc(s?.interpretation||'출처의 관측값을 확인할 수 있습니다. 변화 비교는 추가 검증이 필요합니다.')}</p><small class="radar-metric">${s?.type==='spending'?`추정 소비 ${num(s.sales_change_pct)}% · 점포 ${num(s.store_change_pct)}%`:s?.type==='churn'?`최근 분기 개업 ${num(s.current?.opened)}개 · 폐업 ${num(s.current?.closed)}개`:current?`추정 소비 ${num(e.latest.sales)}원 · 점포 ${num(e.latest.stores)}개`:'선택 분기의 관측값은 상세에서 확인하세요.'}</small><small>${s?`${period(s.periods[0])} → ${period(s.periods[1])}`:period(filters.period||e.period)} · 출처 기준 지역</small><span class="radar-evidence">${s?'공식 추정통계에서 계산':esc(e.issues.map(k=>issues[k]||'확인 필요').join(' · ')||'관측 자료')}</span><small>${esc(s?.next_action||'다음 확인: 동일 지리 기준과 업종 정의 검증')}</small></button>`;
-    }).join('')||(data?'<p class="empty-state">조건에 맞는 근거가 없습니다. 지역·업종·근거 조건을 조정하세요.</p>':'');
-    $('radar-more').hidden=rows.length<=limit;
-    document.querySelectorAll('[data-radar-entity]').forEach(b=>b.onclick=()=>select(data.entities.find(e=>e.id===b.dataset.radarEntity)));
-    document.querySelectorAll('[data-radar-region]').forEach(b=>b.onclick=()=>mode('region',{push:true}));
-    document.querySelectorAll('[data-radar-retry]').forEach(b=>b.onclick=init);
+
+  function controls() {
+    const {domain} = parseArea(filters.area);
+    $('radar-area').innerHTML = data.domains.map(d => `<optgroup label="${esc(d.label)} · ${d.gates.temporal.status === 'VERIFIED' ? '변화 비교 가능' : '비교 보류'}">${d.id === 'district' ? `<option value="district:*">서울 ${d.areas.length}개 자치구 비교</option>` : ''}${d.areas.map(([id, name]) => `<option value="${esc(d.id + ':' + id)}">${esc(name)}</option>`).join('')}</optgroup>`).join('');
+    const inDomain = new Set(data.list.filter(e => e.domain === domain).map(e => e.industry_id));
+    $('radar-industry').innerHTML = `<option value="">이 지역의 업종 비교</option>` + data.industries.filter(([id]) => inDomain.has(id)).sort((a, b) => a[1].localeCompare(b[1], 'ko')).map(([id, name]) => `<option value="${id}">${esc(name)}</option>`).join('');
+    $('radar-pattern').innerHTML = '<option value="">모든 발견</option>' + Object.entries(data.patterns).filter(([k]) => k !== 'mixed_or_flat').map(([k, p]) => `<option value="${k}">${esc(p.label)}</option>`).join('') + '<option value="flow">개폐업 방향 지속</option><option value="extreme">급변 · 원자료 먼저 확인</option>';
+    $('radar-area').value = filters.area; $('radar-industry').value = filters.industry; $('radar-compare').value = filters.compare; $('radar-pattern').value = filters.pattern; $('radar-sort').value = filters.sort; $('radar-scope').value = filters.scope;
   }
-  async function select(entity){
-    selected=entity;detail=null;const token=++sequence;render();
-    $('radar-detail').innerHTML=`<h3>${esc(entity.area_name)} · ${esc(entity.industry_name)}</h3><p>선택 근거를 불러오고 있습니다.</p>`;
-    try{
-      let d=cache.get(entity.id);
-      if(!d){const r=await fetch(entity.detail_url);if(!r.ok)throw Error('network');const bytes=await r.arrayBuffer();const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');if(hash!==entity.detail_hash)throw Error('mixed snapshot');d=JSON.parse(new TextDecoder().decode(bytes));if(d.snapshot_id!==data.snapshot_id||d.entity.id!==entity.id)throw Error('identity');cache.set(entity.id,d);}
-      if(token!==sequence)return;detail=d;renderDetail();
-      // Let the compact mobile layout settle before scrolling past its sticky switch.
-      await new Promise(resolve=>requestAnimationFrame(resolve));if(token!==sequence)return;
-      const panel=$('radar-detail');
-      if(matchMedia('(max-width:800px)').matches)window.scrollTo(0,Math.max(0,panel.getBoundingClientRect().top+scrollY-70));
-      else panel.scrollIntoView({block:'start'});
-      panel.focus({preventScroll:true});
-    }catch{if(token===sequence)$('radar-detail').innerHTML='<h3>상세 근거를 불러오지 못했습니다.</h3><p>자료가 갱신됐거나 네트워크 연결에 실패했습니다. 요약을 다시 불러온 후 선택하세요.</p><button id="radar-retry-detail">다시 확인</button>';const retry=$('radar-retry-detail');if(retry)retry.onclick=()=>select(entity);}
+
+  function headline() {
+    const d = domainOf('district'), c = data.coverage;
+    $('radar-headline').innerHTML = d && d.gates.temporal.status === 'VERIFIED'
+      ? `${F.quarter(data.periods[0])} → ${F.quarter(data.periods.at(-1))}, 서울 ${d.areas.length}개 자치구의 공식 추정 소비와 점포 변화를 비교합니다. 비교 가능한 자치구×업종 조합 ${c.comparable.toLocaleString('ko-KR')}개 중 <strong>${c.findings.toLocaleString('ko-KR')}건</strong>을 추가 조사 후보로 표시했습니다. <span class="radar-stat">참고: 조합별 1년 변화율의 중앙값은 소비 ${F.signed(d.context.median_sales_yoy_pct, 2)}%(${d.context.comparable_sales.toLocaleString('ko-KR')}개 조합), 점포 ${F.signed(d.context.median_stores_yoy_pct, 2)}%(${d.context.comparable_stores.toLocaleString('ko-KR')}개 조합)이며, 서울 전체 소비·점포의 증가율이 아닙니다.</span>`
+      : '관측 자료는 확보했지만 같은 지리 기준을 공식 근거로 확인하지 못해 변화 비교를 보류합니다.';
   }
-  function chart(history,field,label,unit){
-    if(history.length<3||history.some(h=>h[field]===null||!Number.isFinite(h[field])))return '<p>해당 지표는 아직 검증 가능한 데이터가 없습니다.</p>';
-    const scale=field==='sales'?100000000:1;unit=field==='sales'?'억원':unit;const values=history.map(h=>h[field]/scale), max=Math.max(...values), ceiling=max||1;
-    const x=i=>46+i*256/(history.length-1),y=v=>112-v/ceiling*88;
-    return `<svg class="radar-chart" viewBox="0 0 330 150" role="img" aria-label="${esc(label)} · ${esc(unit)} · ${history.map(h=>period(h.period)).join(', ')}"><line x1="46" y1="24" x2="46" y2="112"/><line x1="46" y1="112" x2="302" y2="112"/><text x="4" y="22">${esc(unit)}</text><text x="4" y="37">${num(Math.round(max*100)/100)}</text><text x="24" y="115">0</text><path d="${values.map((v,i)=>(i?'L':'M')+x(i)+','+y(v)).join(' ')}"/>${values.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3"><title>${period(history[i].period)}: ${num(v)} ${unit}</title></circle><text x="${x(i)}" y="136" text-anchor="middle">${history[i].period.slice(2,4)}.${history[i].period[4]}분기</text>`).join('')}</svg>`;
+
+  // ---------- market view
+  function market() {
+    const {domain, area} = parseArea(filters.area), d = domainOf(domain), ind = filters.industry;
+    if (!d) { $('radar-market').innerHTML = '<p>지역을 선택하세요.</p>'; return; }
+    if (area && ind) return marketDetail(d, area, ind);
+    if (area) return rankingTable(d, `${esc(areaName(domain, area))} · 업종별 변화`, data.list.filter(e => e.domain === domain && e.area_id === area), e => data.industryName.get(e.industry_id), e => ({area: filters.area, industry: e.industry_id}), '같은 지역 안의 업종을 변화율로 비교합니다. 업종마다 규모가 달라 원 단위 금액은 비교하지 않습니다.', '업종');
+    if (ind) return rankingTable(d, `${esc(data.industryName.get(ind))} · 자치구별 변화`, data.list.filter(e => e.domain === domain && e.industry_id === ind), e => areaName(domain, e.area_id), e => ({area: domain + ':' + e.area_id, industry: ind}), '같은 업종을 자치구끼리 비교합니다. 겹치지 않는 공식 자치구 집계입니다.', '자치구');
+    $('radar-market').innerHTML = '<p>업종이나 지역을 선택하세요.</p>';
   }
-  function renderDetail(){
-    if(!selected||!detail)return;
-    const h=detail.history.find(h=>h.period===(filters.period||selected.period)), ss=signals().filter(s=>s.entity_id===selected.id&&(!filters.period||filters.period===selected.period)), compatible=detail.comparable&&fresh(selected.period);
-    const label=window.SideEconomyGIS?.selected()?.area?.trdar_name;
-    const nextAction=ss[0]?.next_action||'공식 분기별 경계와 대응표로 비교 가능한 지역인지 확인하세요.';
-    const candidates=window.SideEconomyGIS?.candidates()||[], current=window.SideEconomyGIS?.selected()?.candidate_id, candidate=candidates.find(c=>c.id===current);
-    $('radar-detail').innerHTML=`<button id="radar-back-list" class="radar-action">← 근거 목록으로</button><h3>${esc(selected.area_name)} · ${esc(selected.industry_name)}</h3><p><strong>${esc(ss[0]?.interpretation||'관측 자료 확보 · 변화 비교는 확인 필요')}</strong></p><p>${period(h?.period)} · 공식 추정통계 · 개별 점포 실측 매출이 아닌 업종 전체 추정치</p>${!compatible?'<p class="radar-notice">지리 기준·지도 대응 확인 필요 · 변화 비교 보류</p>':''}<dl><div><dt>추정 소비 · 분기 합계</dt><dd>${num(h?.sales)}원</dd></div><div><dt>영업 점포</dt><dd>${num(h?.stores)}개</dd></div><div><dt>분기 개업</dt><dd>${num(h?.opened)}개</dd></div><div><dt>분기 폐업</dt><dd>${num(h?.closed)}개</dd></div></dl><p class="radar-next"><strong>다음 검증</strong><br>${esc(nextAction)}</p><button class="radar-action" id="radar-handoff">기존 지도 선택 지역의 사업성 검토</button><p>지도 선택과 사업 가설을 유지합니다. 새 통계는 매출 전망에 입력하지 않습니다.</p><details ${ss.length?'open':''}><summary>소비 추이 · 점포·경쟁 변화</summary>${compatible?chart(detail.history,'sales','추정 소비 추이','원'):'<p>해당 지표는 아직 검증 가능한 데이터가 없습니다. 동일 지리 기준을 확인하기 전에는 분기 간 변화선을 그리지 않습니다.</p>'}${compatible?chart(detail.history,'stores','영업 점포 추이','개'):''}<p>점포 수는 직접 경쟁점·무인기기·빈 호실 수가 아닙니다.</p></details><details><summary>인구·활동 변화</summary><p>해당 지표는 아직 검증 가능한 데이터가 없습니다. 250m 격자와 기존 상권의 공식 대응 및 시간 단위를 먼저 확인해야 합니다.</p></details><details><summary>관련 사업 가설</summary><p>${candidate?`선택한 사업 가설: ${esc(candidate.label)}. `:''}이 업종 통계가 해당 사업의 고객 문제나 매출을 직접 입증하지는 않습니다. 현장 증거가 확보되면 연구 가설로 기록하세요.</p></details><details><summary>위험·불확실성</summary><ul><li>${esc(ss[0]?.alternative||'카드 기반 보정 추정치입니다. 물가·보정 방식·특정 점포 매출 집중이 해석을 바꿀 수 있습니다.')}</li><li>${detail.geography.comparability_verified?'지리 비교 조건은 확인했지만 기존 지도 대응·실제 사이트 조건은 별도 확인이 필요합니다.':'분기별 경계 버전·기존 지도 대응·실제 사이트 조건은 미확인입니다.'}</li><li>새 통계 지역과 현재 지도 선택${label?' ('+esc(label)+')':''}은 별개입니다. 이름이나 가까운 중심점으로 연결하지 않습니다.</li></ul></details><details><summary>다음 검증 행동 · 근거 구별</summary><ol><li>${esc(ss[0]?.next_action||'공식 분기별 경계와 대응표로 비교 가능한 지역인지 확인하세요.')}</li><li>고객의 실제 지출·불편을 확인한 뒤 사이트 견적과 운영 시간을 조사하세요.</li></ol><p>시장 변화 → 사업 가설 → 사이트 조건 → 기획 가정 → 현장 근거를 구별합니다. 지도 선택과 사업 가설을 유지하며, 새 통계를 매출 전망에 입력하지 않습니다.</p></details><details><summary>출처·데이터 기준일·계산 방법</summary><p>수집일 ${esc(data.retrieved_at?.slice(0,10)||'미확인')} · 공표일 미확인<br>관측 ${data.periods.map(period).join(' / ')}<br>지역 코드 ${esc(selected.area_id)} · 업종 코드 ${esc(selected.industry_id)}<br>경계 버전 ${esc(detail.geography.version||'미확인')} · 좌표계 ${esc(detail.geography.crs||'미확인')}<br>근거 완결성 ${num(Math.round(selected.evidence_completeness*100))}% · 누락은 0으로 대체하지 않음</p>${detail.sources.map(s=>`<p><a href="${esc(sourceUrl(s.url))}" target="_blank" rel="noopener">${esc(s.name)}</a><br>${esc(s.license)}</p>`).join('')}<p>소비·점포 증가율 = (비교값 ÷ 전년 동분기 기준값 − 1) × 100. 기준값 0은 증가율 미계산. 개폐업은 최근 3개 연속 분기 방향을 구분합니다. 계절성·원인·수익은 추론하지 않습니다.</p><p><a href="./opportunity-radar-v1.md">비교 조건과 재현 방법</a></p><table class="radar-table"><caption>출처별 개별 관측 · 지리 기준 확인 전 추세 해석 보류</caption><thead><tr><th>분기</th><th>추정 소비(원)</th><th>점포(개)</th></tr></thead><tbody>${detail.history.map(h=>`<tr><td>${period(h.period)}</td><td>${num(h.sales)}</td><td>${num(h.stores)}</td></tr>`).join('')}</tbody></table>${sourceState?.reason?`<p>최근 수집 상태 코드: <code>${esc(sourceState.reason)}</code></p>`:''}</details>`;
-    $('radar-handoff').onclick=()=>mode('evaluate',{push:true});$('radar-back-list').onclick=()=>{const id=selected.id;selected=null;detail=null;sequence++;$('radar-detail').innerHTML='<h3>선택 지역 없음</h3><p>관측 목록에서 확인할 지역·업종을 선택하세요.</p>';render();document.querySelector('.radar-panel').scrollTop=0;document.querySelector(`[data-radar-entity="${id}"]`)?.focus();};
+  function gateNote(d) {
+    const t = d.gates.temporal, g = d.gates.gis;
+    return `<details class="radar-gate"><summary><span class="radar-badge" data-ok="${t.status === 'VERIFIED'}">${t.status === 'VERIFIED' ? '분기 비교 가능' : '분기 비교 보류'}</span><span class="radar-badge" data-ok="${g.status === 'VERIFIED'}">${g.status === 'VERIFIED' ? '지도 연결 검증' : '지도 연결 안 함'}</span><span>${esc(d.label)} 기준 · 왜?</span></summary><p><strong>분기 비교:</strong> ${esc(t.summary)}</p><p><strong>지도:</strong> ${esc(g.summary)}</p>${t.limitation ? `<p class="radar-limit">${esc(t.limitation)}</p>` : ''}<ul>${(t.evidence || []).map(e => `<li><a href="${esc(sourceUrl(e.url))}" target="_blank" rel="noopener">${esc(e.claim)}</a> <small>(${esc(e.observed)} 확인)</small></li>`).join('')}</ul></details>`;
   }
-  async function init(){
-    data=null;selected=null;detail=null;sequence++;cache.clear();
-    try{
-      const [r,s]=await Promise.all([fetch('./data/opportunity-radar.json'),fetch('./data/opportunity-radar-status.json').catch(()=>null)]);
-      if(!r.ok)throw Error('network');data=prepare(await r.json());sourceState=s?.ok?await s.json():null;
-      options('radar-area',new Map(data.entities.map(e=>[e.area_id,e.area_name])),'전체 수집 지역');
-      options('radar-industry',[...new Map(data.entities.map(e=>[e.industry_id,e.industry_name]))].sort((a,b)=>a[1].localeCompare(b[1],'ko')),'전체 업종');
-      options('radar-period',data.periods.map(p=>[p,period(p)]),'최근 분기');
-      for(const [id,key] of [['radar-area','area'],['radar-industry','industry'],['radar-period','period'],['radar-type','type'],['radar-evidence','evidence'],['radar-sort','sort']])$(id).value=filters[key];
-    }catch{data=null;}
+  function summary(e, i0, i1) {
+    const [base, cur] = cmp(), c = filters.compare === 'qoq' ? 'qoq' : 'yoy', s = e['sales_' + c], t = e['stores_' + c];
+    const ms = [F.money(e.sales[i0]), F.money(e.sales[i1])], abs = s.abs === null || s.abs === undefined ? null : F.money(s.abs);
+    return `<div class="radar-cards">
+      <article class="radar-card" data-tone="${tone(s)}"><h4>추정 소비 · 분기 합계</h4><strong>${pctText(s)}</strong><p>${ms[0].text} → ${ms[1].text}</p><small>${abs ? `차이 ${s.abs > 0 ? '+' : ''}${abs.text}` : esc(STATUS_TEXT[s.reason] || '')}</small><small>${F.quarter(base)} → ${F.quarter(cur)} · 명목 금액(물가 미보정)</small></article>
+      <article class="radar-card" data-tone="${tone(t)}"><h4>점포 수 · 유사업종 포함</h4><strong>${pctText(t)}</strong><p>${F.count(e.stores[i0])} → ${F.count(e.stores[i1])}</p><small>${t.abs !== null && t.abs !== undefined ? `차이 ${t.abs > 0 ? '+' : ''}${t.abs.toLocaleString('ko-KR')}개` : esc(STATUS_TEXT[t.reason] || '')}</small><small>최근 분기 개업 ${F.count(e.opened)} · 폐업 ${F.count(e.closed)} · ${esc(FLOW_TEXT[e.flow] || '')}${Number.isFinite(e.net_openings_4q) ? ` (4개 분기 순 ${F.signed(e.net_openings_4q, 0)}개)` : ''}</small></article>
+    </div>`;
+  }
+  function marketDetail(d, area, ind) {
+    const e = byKey.get(`${d.id}:${area}:${ind}`), [i0, i1] = cmpIndex();
+    const title = `${esc(areaName(d.id, area))} · ${esc(data.industryName.get(ind))}`;
+    if (!e) { $('radar-market').innerHTML = `<h3>${title}</h3>${gateNote(d)}<p class="radar-empty">이 지역에는 해당 업종의 공식 관측이 없습니다. 없는 값은 0으로 바꾸지 않습니다.</p>`; return; }
+    const p = e.pattern && data.patterns[e.pattern];
+    $('radar-market').innerHTML = `<div class="radar-market-head"><div><span>${esc(d.label)}</span><h3>${title}</h3></div><button class="radar-action" data-radar-up="area">← ${esc(areaName(d.id, area))} 전체 업종</button></div>
+      ${summary(e, i0, i1)}
+      ${p && filters.compare === 'yoy' ? `<p class="radar-pattern" data-pattern="${e.pattern}"><strong>${esc(p.label)}</strong> ${esc(p.meaning)}${e.material ? '' : ' <em>기준 규모가 작아 발견 목록에서는 제외했습니다.</em>'}</p>` : filters.compare === 'qoq' ? '<p class="radar-pattern">직전 분기 비교는 계절 영향이 포함됩니다. 발견 분류는 전년 같은 분기 기준으로만 합니다.</p>' : ''}
+      ${e.extreme ? `<p class="radar-notice"><strong>급변 · 원자료 먼저 확인</strong> ${esc(data.rules.extreme.note)} 아래 분기별 원값에서 변화가 한 분기에 몰렸는지 보세요.</p>` : ''}
+      ${gateNote(d)}
+      <section class="radar-chart-wrap" id="radar-chart" aria-live="polite"><p>분기별 추이를 불러오고 있습니다.</p></section>
+      ${p && filters.compare === 'yoy' ? `<div class="radar-why"><p><strong>왜 볼 만한가</strong> ${esc(p.why)}</p><p><strong>다른 설명</strong> ${esc(p.alternatives)}</p><p class="radar-next"><strong>다음 확인</strong> ${esc(p.next)}</p></div>` : ''}
+      <p class="radar-handoff-note">이 통계는 업종 전체의 공식 추정치입니다. 사업 매출 전망에 자동으로 넣지 않습니다.</p><button class="radar-action" id="radar-handoff">현재 사업 가설로 사업성 검토</button>`;
+    bindMarket(); loadDetail(d.id, area, ind);
+  }
+  function rankingTable(d, title, rows, label, target, note, unit) {
+    const c = filters.compare === 'qoq' ? 'qoq' : 'yoy', [base, cur] = cmp();
+    const ok = rows.filter(e => e['sales_' + c].status === 'OK');
+    const sorted = [...rows].sort((a, b) => (b.material - a.material) || ((b['sales_' + c].pct ?? -Infinity) - (a['sales_' + c].pct ?? -Infinity)) || a.area_id.localeCompare(b.area_id) || a.industry_id.localeCompare(b.industry_id));
+    const max = Math.max(5, ...ok.map(e => Math.abs(e['sales_' + c].pct)).filter(Number.isFinite).map(v => Math.min(v, 100)));
+    const up = ok.filter(e => e['sales_' + c].pct > 0).length, down = ok.filter(e => e['sales_' + c].pct < 0).length;
+    const st = rows.filter(e => e['stores_' + c].status === 'OK'), sUp = st.filter(e => e['stores_' + c].pct > 0).length, sDown = st.filter(e => e['stores_' + c].pct < 0).length;
+    const med = arr => { const v = arr.filter(Number.isFinite).sort((a, b) => a - b); return v.length ? (v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2) : null; };
+    $('radar-market').innerHTML = `<div class="radar-market-head"><div><span>${esc(d.label)} · ${F.quarter(base)} → ${F.quarter(cur)}</span><h3>${title}</h3></div></div>
+      <div class="radar-cards"><article class="radar-card"><h4>추정 소비 · ${unit}별 변화 방향</h4><strong>${up}개 ${unit} 증가 · ${down}개 ${unit} 감소</strong><p>${unit}별 변화율의 중앙값 ${F.signed(med(ok.map(e => e['sales_' + c].pct)))}%</p><small>소비 변화율을 계산할 수 있는 ${unit} ${ok.length}개 (전체 ${rows.length}개 중)</small></article><article class="radar-card"><h4>점포 수 · ${unit}별 변화 방향</h4><strong>${sUp}개 ${unit} 증가 · ${sDown}개 ${unit} 감소</strong><p>${unit}별 변화율의 중앙값 ${F.signed(med(st.map(e => e['stores_' + c].pct)))}%</p><small>점포 변화율을 계산할 수 있는 ${unit} ${st.length}개 (전체 ${rows.length}개 중)</small></article></div>
+      <p class="radar-dir-note">▲ 증가 · ▼ 감소 · 색은 변화의 <b>방향</b>만 나타내며 사업에 좋고 나쁨을 뜻하지 않습니다. 중앙값은 ${unit}별 변화율의 가운데 값이며 합계의 증가율이 아닙니다.</p>
+      ${gateNote(d)}<p class="radar-note">${esc(note)} 막대는 추정 소비 변화율(±${max.toFixed(0)}% 축, 100% 초과는 잘림)입니다. 기준 규모가 작은 항목은 아래로 정렬합니다.</p>
+      <ol class="radar-rank">${sorted.map(e => { const s = e['sales_' + c], t = e['stores_' + c], w = s.status === 'OK' ? Math.min(Math.abs(s.pct), max) / max * 50 : 0; return `<li><button data-radar-pick="${esc(JSON.stringify(target(e)))}"><span class="radar-rank-name">${esc(label(e))}${e.material ? '' : '<small>기준 규모 작음</small>'}${e.extreme ? '<small>급변 · 원자료 확인</small>' : ''}</span><span class="radar-bar" aria-hidden="true"><i data-tone="${tone(s)}" style="${s.pct < 0 ? `right:50%;width:${w}%` : `left:50%;width:${w}%`}"></i></span><span class="radar-rank-val"><b data-tone="${tone(s)}">${pctText(s)}</b><small>점포 ${pctText(t)}</small></span></button></li>`; }).join('')}</ol>`;
+    bindMarket();
+  }
+  function bindMarket() {
+    document.querySelectorAll('[data-radar-pick]').forEach(b => b.onclick = () => { Object.assign(filters, JSON.parse(b.dataset.radarPick)); controls(); render(); focusMarket(); });
+    document.querySelectorAll('[data-radar-up]').forEach(b => b.onclick = () => { filters.industry = ''; controls(); render(); focusMarket(); });
+    const h = $('radar-handoff'); if (h) h.onclick = () => mode('evaluate', {push: true});
+  }
+  function focusMarket() {
+    const m = $('radar-market');
+    if (matchMedia('(max-width:800px)').matches) { view('market'); window.scrollTo(0, Math.max(0, m.getBoundingClientRect().top + scrollY - 60)); }
+    m.focus({preventScroll: true});
+  }
+
+  async function loadDetail(domain, area, ind) {
+    const token = ++sequence, key = `${domain}-${area}`;
+    try {
+      let d = cache.get(key);
+      if (!d) {
+        const r = await fetch(`./data/opportunity-radar-details/${key}.json`); if (!r.ok) throw Error('network');
+        const bytes = await r.arrayBuffer();
+        const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))).map(v => v.toString(16).padStart(2, '0')).join('');
+        if (hash !== data.detail_hashes[key]) throw Error('mixed snapshot');
+        d = JSON.parse(new TextDecoder().decode(bytes));
+        if (d.domain !== domain || d.area_id !== area || d.snapshot_id !== domainOf(domain).snapshot_id) throw Error('identity');
+        cache.set(key, d);
+      }
+      if (token !== sequence) return;
+      detail = d; chart(d, ind);
+    } catch {
+      if (token === sequence && $('radar-chart')) $('radar-chart').innerHTML = '<p>분기별 원자료를 불러오지 못했습니다. 자료가 갱신됐거나 연결이 실패했습니다.</p><button class="radar-action" id="radar-retry-detail">다시 확인</button>', $('radar-retry-detail').onclick = () => loadDetail(domain, area, ind);
+    }
+  }
+  function chart(d, ind) {
+    const item = d.industries[ind], box = $('radar-chart'); if (!box || !item) return;
+    const h = item.history, periods = d.periods, gate = d.gates.temporal.status === 'VERIFIED' && item.identity_consistent;
+    const table = `<details class="radar-raw"><summary>원값 보기 · 반올림 없음</summary><table class="radar-table"><caption>${esc(d.area_name)} · ${esc(item.name)} · 공식 추정통계</caption><thead><tr><th>분기</th><th>추정 소비(원)</th><th>건수</th><th>점포</th><th>개업</th><th>폐업</th></tr></thead><tbody>${h.map(x => `<tr><td>${F.quarter(x.period)}</td><td>${F.finite(x.sales) ? x.sales.toLocaleString('ko-KR') : '미확인'}</td><td>${F.finite(x.transactions) ? x.transactions.toLocaleString('ko-KR') : '미확인'}</td><td>${F.finite(x.stores) ? x.stores.toLocaleString('ko-KR') : '미확인'}</td><td>${F.finite(x.opened) ? x.opened : '미확인'}</td><td>${F.finite(x.closed) ? x.closed : '미확인'}</td></tr>`).join('')}</tbody></table></details>`;
+    if (!gate) { box.innerHTML = `<h4>분기별 관측</h4><p>같은 지리 기준이 확인되지 않아 추세선을 그리지 않습니다. 아래 표는 각 분기의 개별 관측입니다.</p>${table}`; return; }
+    const sales = h.map(x => x.sales), stores = h.map(x => x.stores);
+    const width = Math.round(Math.min(760, Math.max(300, box.clientWidth - 28))), narrow = width < 480;
+    const model = F.chartModel(periods, [{key: 'sales', label: '추정 소비', index: F.indexSeries(sales), raw: sales}, {key: 'stores', label: '점포 수', index: F.indexSeries(stores), raw: stores}], {width, height: narrow ? 220 : 250, pad: {l: 38, r: narrow ? 26 : 34, t: 26, b: 30}});
+    if (!model) { box.innerHTML = `<h4>분기별 관측</h4><p>기준 분기 값이 없거나 0이어서 지수 추이를 그리지 않습니다.</p>${table}`; return; }
+    const fmt = (k, v) => k === 'sales' ? F.money(v).text : F.count(v);
+    const svg = `<svg class="radar-chart" viewBox="0 0 ${model.width} ${model.height}" role="img" aria-label="${esc(item.name)} 추정 소비와 점포 수 지수, ${F.quarter(periods[0])}=100">
+      ${model.ticks.map(t => `<line class="grid${t === 100 ? ' base' : ''}" x1="${model.pad.l}" x2="${model.width - model.pad.r}" y1="${model.y(t)}" y2="${model.y(t)}"/><text x="${model.pad.l - 6}" y="${model.y(t) + 4}" text-anchor="end">${t}</text>`).join('')}
+      ${periods.map((p, i) => `<text x="${model.x(i)}" y="${model.height - 10}" text-anchor="middle">${F.shortQuarter(p)}</text>`).join('')}
+      ${model.lines.map(l => { const pts = l.points.filter(Boolean); const path = l.points.map((pt, i) => pt ? `${i && l.points[i - 1] ? 'L' : 'M'}${pt.x.toFixed(1)},${pt.y.toFixed(1)}` : '').join(''); return `<path class="line-${l.key}" d="${path}"/>${pts.map(pt => `<circle class="dot-${l.key}" cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="4" tabindex="0" data-radar-point="${l.key}:${pt.i}"><title>${F.quarter(periods[pt.i])} ${l.label}: 지수 ${pt.v} · ${fmt(l.key, pt.raw)}${l.key === 'sales' ? ` (${pt.raw.toLocaleString('ko-KR')}원)` : ''}</title></circle>`).join('')}<text class="end-${l.key}" x="${(pts.at(-1)?.x ?? 0) - 4}" y="${(pts.at(-1)?.y ?? 0) - 9}" text-anchor="end">${l.label} ${pts.at(-1)?.v ?? ''}</text>`; }).join('')}
+    </svg>`;
+    const flows = h.map(x => [x.opened, x.closed]), fmax = Math.max(1, ...flows.flat().filter(F.finite));
+    const flow = `<div class="radar-flow" aria-label="분기별 개업·폐업">${h.map(x => `<div><p><span class="o" style="height:${F.finite(x.opened) ? Math.max(2, x.opened / fmax * 44) : 0}px" title="개업 ${F.finite(x.opened) ? x.opened : '미확인'}"></span><span class="c" style="height:${F.finite(x.closed) ? Math.max(2, x.closed / fmax * 44) : 0}px" title="폐업 ${F.finite(x.closed) ? x.closed : '미확인'}"></span></p><small>${F.shortQuarter(x.period)}<br>+${F.finite(x.opened) ? x.opened : '?'} / −${F.finite(x.closed) ? x.closed : '?'}</small></div>`).join('')}</div>`;
+    box.innerHTML = `<h4>분기별 추이 · ${F.quarter(periods[0])} = 100</h4><p class="radar-legend"><span class="k-sales">추정 소비 지수</span><span class="k-stores">점포 수 지수</span> 두 지표의 단위가 달라 기준 분기를 100으로 맞췄습니다. 점을 누르거나 가리키면 원래 값이 보입니다.</p>${svg}<p id="radar-point-detail" class="radar-point" role="status">${F.quarter(periods.at(-1))}: 추정 소비 ${fmt('sales', sales.at(-1))} · 점포 ${fmt('stores', stores.at(-1))}</p><h4>분기별 <span class="k-open">개업</span> · <span class="k-close">폐업</span> 점포 수</h4>${flow}${table}`;
+    box.querySelectorAll('[data-radar-point]').forEach(c => { const show = () => { const [k, i] = c.dataset.radarPoint.split(':'); $('radar-point-detail').textContent = `${F.quarter(periods[i])}: ${k === 'sales' ? '추정 소비 ' + fmt('sales', sales[i]) + ` (${F.finite(sales[i]) ? sales[i].toLocaleString('ko-KR') : '미확인'}원) · 지수 ${model.lines[0].index[i] ?? '미확인'}` : '점포 ' + fmt('stores', stores[i]) + ` · 지수 ${model.lines[1].index[i] ?? '미확인'}`}`; }; c.onmouseenter = show; c.onfocus = show; c.onclick = show; });
+  }
+
+  // ---------- findings
+  function findings() {
+    const {domain, area} = parseArea(filters.area), sel = filters.scope === 'selection';
+    let rows = data.list.filter(e => e.finding && (!sel || ((!area || (e.domain === domain && e.area_id === area)) && (!filters.industry || e.industry_id === filters.industry))));
+    if (filters.pattern === 'flow') rows = rows.filter(e => ['expansion', 'contraction'].includes(e.flow));
+    else if (filters.pattern === 'extreme') rows = rows.filter(e => e.extreme);
+    else if (filters.pattern) rows = rows.filter(e => e.pattern === filters.pattern);
+    // size: larger baseline estimates first (less noisy, more decision-relevant); not an opportunity ranking.
+    const key = {size: e => -(e.sales[0] ?? 0), sales: e => -Math.abs(e.sales_yoy.pct ?? 0), stores: e => -Math.abs(e.stores_yoy.pct ?? 0), area: () => 0}[filters.sort];
+    // Extreme jumps are listed after ordinary findings: check the source before treating them as market change.
+    rows.sort((a, b) => (a.extreme - b.extreme) || key(a) - key(b) || areaName(a.domain, a.area_id).localeCompare(areaName(b.domain, b.area_id), 'ko') || a.industry_id.localeCompare(b.industry_id));
+    $('radar-result-count').textContent = `${rows.length.toLocaleString('ko-KR')}건`;
+    let state = '';
+    if (sourceState?.status === 'BLOCKED') state += `<p class="radar-notice">최근 수집 시도(${esc((sourceState.attempted_at || '').slice(0, 10))})가 실패했습니다. 이전에 검증한 자료를 그대로 보여줍니다. 사유 코드 <code>${esc(sourceState.reason)}</code></p>`;
+    for (const d of data.domains) if (!d.fresh) state += `<p class="radar-notice">${esc(d.label)} 관측이 오래되었습니다. 최근 변화로 해석하지 마세요.</p>`;
+    if (filters.compare === 'qoq') state += '<p class="radar-notice">발견 목록은 계절 영향을 줄이기 위해 전년 같은 분기 비교만 사용합니다.</p>';
+    if (filters.sort === 'size') state += '<p class="radar-note">기준 분기 소비가 큰 시장부터 보여줍니다. 규모가 클수록 추정이 안정적이라는 읽기 순서이며 기회 순위가 아닙니다.</p>';
+    if (!rows.length) state += '<p class="empty-state">조건에 맞는 발견이 없습니다. 지역·업종·변화 유형을 바꿔 보세요.</p>';
+    $('radar-source-state').innerHTML = state;
+    const [base, cur] = data.comparisons.yoy;
+    $('radar-list').innerHTML = rows.slice(0, limit).map(e => {
+      const p = data.patterns[e.pattern] || null, flowOnly = !p || e.pattern === 'mixed_or_flat';
+      const why = flowOnly ? data.patterns.mixed_or_flat : p;
+      const what = flowOnly ? FLOW_TEXT[e.flow] : p.label;
+      return `<button class="radar-item" data-radar-finding="${esc(JSON.stringify({area: e.domain + ':' + e.area_id, industry: e.industry_id}))}" data-pattern="${esc(e.pattern || e.flow)}">
+        <span class="radar-item-tag">${esc(what)}</span>${e.extreme ? '<span class="radar-item-tag radar-extreme">급변 · 원자료 먼저 확인</span>' : ''}<strong>${esc(areaName(e.domain, e.area_id))} · ${esc(data.industryName.get(e.industry_id))}</strong>
+        <span class="radar-metric"><b data-tone="${tone(e.sales_yoy)}">소비 ${pctText(e.sales_yoy)}</b><b data-tone="${tone(e.stores_yoy)}">점포 ${pctText(e.stores_yoy)}</b>${Number.isFinite(e.net_openings_4q) ? `<b>4분기 순개업 ${F.signed(e.net_openings_4q, 0)}</b>` : ''}</span>
+        <small>${F.money(e.sales[0]).text} → ${F.money(e.sales[2]).text} · 점포 ${F.count(e.stores[0])} → ${F.count(e.stores[2])} · ${F.shortQuarter(base)}→${F.shortQuarter(cur)}</small>
+        <small><em>왜</em> ${esc(flowOnly ? '공급 진입·퇴출이 한 방향으로 이어지고 있습니다.' : why.why)}</small><small><em>다른 설명</em> ${esc(flowOnly ? '이전·업종 전환·등록 시차로도 개폐업이 생깁니다.' : why.alternatives)}</small><small class="radar-item-next"><em>다음 확인</em> ${esc(flowOnly ? '최근 개폐업 점포 몇 곳의 실제 운영 상태와 사유를 확인하세요.' : why.next)}</small></button>`;
+    }).join('');
+    $('radar-more').hidden = rows.length <= limit;
+    document.querySelectorAll('[data-radar-finding]').forEach(b => b.onclick = () => { Object.assign(filters, JSON.parse(b.dataset.radarFinding), {compare: 'yoy'}); controls(); render(); focusMarket(); });
+  }
+
+  function render() {
+    if (!data) {
+      $('radar-market').innerHTML = '<div class="radar-empty"><strong>자료를 불러오지 못했습니다.</strong><p>네트워크 또는 자료 형식을 확인해야 합니다. 임의의 수치를 표시하지 않습니다. 기존 지도와 연구는 계속 사용할 수 있습니다.</p><button data-radar-retry>다시 불러오기</button> <button data-radar-region>기존 지역 분석</button></div>';
+      $('radar-list').innerHTML = ''; $('radar-source-state').innerHTML = ''; $('radar-result-count').textContent = '';
+      document.querySelectorAll('[data-radar-retry]').forEach(b => b.onclick = init);
+      document.querySelectorAll('[data-radar-region]').forEach(b => b.onclick = () => mode('region', {push: true}));
+      return;
+    }
+    headline(); market(); findings();
+  }
+
+  async function init() {
+    data = null; sequence++; cache.clear(); byKey.clear();
+    try {
+      const [r, s] = await Promise.all([fetch('./data/opportunity-radar.json'), fetch('./data/opportunity-radar-status.json').catch(() => null)]);
+      if (!r.ok) throw Error('network');
+      data = prepare(await r.json()); sourceState = s?.ok ? await s.json() : null;
+      for (const e of data.list) byKey.set(`${e.domain}:${e.area_id}:${e.industry_id}`, e);
+      if (!filters.area) {
+        // Neutral default: district view of the industry with the largest observed baseline spending.
+        const totals = new Map();
+        for (const e of data.list) if (e.domain === 'district' && F.finite(e.sales[0])) totals.set(e.industry_id, (totals.get(e.industry_id) || 0) + e.sales[0]);
+        filters.area = 'district:*'; filters.industry = [...totals].sort((a, b) => b[1] - a[1])[0]?.[0] || '';
+      }
+      controls();
+    } catch { data = null; }
     render();
   }
-  for(const [id,key] of [['radar-area','area'],['radar-industry','industry'],['radar-period','period'],['radar-type','type'],['radar-evidence','evidence'],['radar-sort','sort']])$(id).onchange=()=>{filters[key]=$(id).value;limit=6;render();renderDetail();};
-  $('radar-more').onclick=()=>{limit+=6;render();};$('radar-map-region').onclick=()=>mode('region',{push:true});
-  document.querySelectorAll('[data-workspace-nav]').forEach(a=>a.onclick=()=>mode(a.dataset.workspaceNav));
-  document.querySelectorAll('button[data-radar-view]').forEach(b=>b.onclick=()=>view(b.dataset.radarView));
-  window.addEventListener('hashchange',()=>mode(location.hash.slice(1)));
-  window.addEventListener('sideeconomy:gis-ready',()=>summary());
-  window.addEventListener('sideeconomy:area-selected',e=>{
-    summary();if(document.body.dataset.workspace!=='radar')return;
-    if(selected){renderDetail();return;}
-    // Source geography stays separate; map selection never pulls an ID/name join.
-    if(!selected){$('radar-detail').innerHTML=`<h3>${esc(e.detail.area?.trdar_name||'선택 지역 없음')}</h3><p>${e.detail.area?'기존 지도에서 선택한 상권입니다. 새 매출·점포 통계와의 공식 지리 대응은 아직 확인되지 않았습니다.':'지도나 출처 기준 관측 목록에서 지역을 선택하세요.'}</p><button class="radar-action" id="radar-map-handoff">선택 지역의 기존 연구 확인</button>`;$('radar-map-handoff').onclick=()=>mode('region',{push:true});}
-  });
-  window.OpportunityRadar={mapRows:rows=>document.body.dataset.workspace==='radar'?rows.slice(0,12):rows,mode,prepare};
-  mode(location.hash.slice(1));view('map');init();
+
+  $('radar-area').onchange = () => { filters.area = $('radar-area').value; const {domain} = parseArea(filters.area); if (filters.industry && !data.list.some(e => e.domain === domain && e.industry_id === filters.industry)) filters.industry = ''; if (filters.area === 'district:*' && !filters.industry) filters.industry = data.list.find(e => e.domain === 'district')?.industry_id || ''; limit = 8; controls(); render(); };
+  $('radar-industry').onchange = () => { filters.industry = $('radar-industry').value; if (!filters.industry && filters.area === 'district:*') { filters.industry = ''; } limit = 8; render(); };
+  $('radar-compare').onchange = () => { filters.compare = $('radar-compare').value; render(); };
+  $('radar-pattern').onchange = () => { filters.pattern = $('radar-pattern').value; limit = 8; findings(); };
+  $('radar-sort').onchange = () => { filters.sort = $('radar-sort').value; findings(); };
+  $('radar-scope').onchange = () => { filters.scope = $('radar-scope').value; limit = 8; findings(); };
+  $('radar-more').onclick = () => { limit += 8; findings(); };
+  document.querySelectorAll('[data-workspace-nav]').forEach(a => a.onclick = () => mode(a.dataset.workspaceNav));
+  document.querySelectorAll('button[data-radar-view]').forEach(b => b.onclick = () => view(b.dataset.radarView));
+  window.addEventListener('hashchange', () => mode(location.hash.slice(1)));
+  window.OpportunityRadar = {mapRows: rows => document.body.dataset.workspace === 'radar' ? rows.slice(0, 12) : rows, mode, prepare, state: () => ({filters: {...filters}, detail})};
+  mode(location.hash.slice(1)); view('market'); init();
 })();

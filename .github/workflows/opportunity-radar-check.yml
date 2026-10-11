@@ -16,6 +16,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -38,6 +40,10 @@ jobs:
           node tests/workbench-models.cjs
           node tests/real-estate-context.cjs
           node --check docs/assets/opportunity-radar.js
+          node --check docs/assets/radar-format.js
+          node tests/radar-models.cjs
+          git fetch --no-tags origin main:refs/remotes/origin/main || true
+          python pipeline/radar_preservation.py
       - name: Verify core journeys and responsive layout
         env:
           NODE_PATH: /tmp/radar-test/node_modules

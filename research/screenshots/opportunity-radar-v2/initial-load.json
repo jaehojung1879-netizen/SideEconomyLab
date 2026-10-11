@@ -1,0 +1,65 @@
+{
+  "navigation": [
+    {
+      "domContentLoaded_ms": 138.5,
+      "load_ms": 138.60000000009313
+    }
+  ],
+  "public_json": [
+    {
+      "file": "business-workbench.json",
+      "encoded_bytes": 63797,
+      "transfer_bytes": 64097
+    },
+    {
+      "file": "candidate-registry.json",
+      "encoded_bytes": 10748,
+      "transfer_bytes": 11048
+    },
+    {
+      "file": "opportunity-radar.json",
+      "encoded_bytes": 522991,
+      "transfer_bytes": 523291
+    },
+    {
+      "file": "opportunity-radar-status.json",
+      "encoded_bytes": 112,
+      "transfer_bytes": 412
+    },
+    {
+      "file": "map-runtime.json",
+      "encoded_bytes": 164,
+      "transfer_bytes": 464
+    },
+    {
+      "file": "seoul-opportunity-map.json",
+      "encoded_bytes": 792746,
+      "transfer_bytes": 793046
+    },
+    {
+      "file": "kakao-poi-layer.json",
+      "encoded_bytes": 1808663,
+      "transfer_bytes": 1808963
+    },
+    {
+      "file": "site-observations.json",
+      "encoded_bytes": 32,
+      "transfer_bytes": 332
+    },
+    {
+      "file": "candidate-registry.json",
+      "encoded_bytes": 10748,
+      "transfer_bytes": 11048
+    },
+    {
+      "file": "opportunity-intelligence.json",
+      "encoded_bytes": 439738,
+      "transfer_bytes": 440038
+    },
+    {
+      "file": "real-estate-context.json",
+      "encoded_bytes": 712467,
+      "transfer_bytes": 712767
+    }
+  ]
+}

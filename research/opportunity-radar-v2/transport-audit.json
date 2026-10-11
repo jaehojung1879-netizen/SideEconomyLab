@@ -1,0 +1,72 @@
+{
+ "provenance": {
+  "github_actions_run": "https://github.com/jaehojung1879-netizen/SideEconomyLab/actions/runs/38106459789",
+  "commit": "5f6219d190a759743c0e7587980d3a8ac5ba9e72",
+  "runner": "GitHub-hosted ubuntu-latest",
+  "observed": "2026-10-11",
+  "note": "Transcribed from the job log of pipeline/seoul_transport_audit.py. Public sample key only; no repository secret was referenced."
+ },
+ "schema_version": 2,
+ "key_used": "public sample key only",
+ "control_runner_can_verify_tls": true,
+ "results": [
+  {
+   "case": "control_https_data_seoul_go_kr",
+   "scheme": "https",
+   "host": "data.seoul.go.kr",
+   "port": 443,
+   "tcp": "OPEN",
+   "tls_version": "TLSv1.3",
+   "cipher": "TLS_AES_256_GCM_SHA384",
+   "verified": true,
+   "cert_subject": "commonName=*.seoul.go.kr",
+   "cert_issuer": "countryName=BE, organizationName=GlobalSign nv-sa, commonName=GlobalSign GCC R6 AlphaSSL CA 2025",
+   "cert_not_before": "Nov 17 05:47:29 2025 GMT",
+   "cert_not_after": "Dec 19 05:47:28 2026 GMT",
+   "cert_san": [
+    "*.seoul.go.kr",
+    "seoul.go.kr"
+   ],
+   "status": 200,
+   "location": null,
+   "content_type": "text/html;charset=UTF-8"
+  },
+  {
+   "case": "https_8088_verified",
+   "scheme": "https",
+   "host": "openapi.seoul.go.kr",
+   "port": 8088,
+   "tcp": "OPEN",
+   "error": "TLS_ERROR",
+   "detail": "WRONG_VERSION_NUMBER"
+  },
+  {
+   "case": "https_443_verified",
+   "scheme": "https",
+   "host": "openapi.seoul.go.kr",
+   "port": 443,
+   "tcp": "TIMEOUT"
+  },
+  {
+   "case": "http_8088_plain",
+   "scheme": "http",
+   "host": "openapi.seoul.go.kr",
+   "port": 8088,
+   "tcp": "OPEN",
+   "status": 200,
+   "location": null,
+   "content_type": "application/json;charset=UTF-8",
+   "api_code": "INFO-000",
+   "api_rows": 1
+  },
+  {
+   "case": "http_80_plain",
+   "scheme": "http",
+   "host": "openapi.seoul.go.kr",
+   "port": 80,
+   "tcp": "TIMEOUT"
+  }
+ ],
+ "verified_https_available": false,
+ "verified_https_endpoints": []
+}
