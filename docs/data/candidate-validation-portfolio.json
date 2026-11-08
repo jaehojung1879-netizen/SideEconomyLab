@@ -1872,8 +1872,8 @@
   ],
   "integrity_baseline": {
     "docs/data/seoul-opportunity-map.json": "282a282312df284794bc5e060aeec7c6294bd1f22021483424659d179bb52d28",
-    "docs/data/kakao-poi-layer.json": "70309dfa6f282422b4f2f1ca752c01ccfbaf50c84d3deb1d99f990003106bb70",
-    "docs/data/opportunity-intelligence.json": "664016cf7f053c21f1d67d498e7d5e218c9cd94b2f581e6a5eafe25d1d5bf5fc",
+    "docs/data/kakao-poi-layer.json": "9287218ae1a7556117860d5e990702aff945bf5be2c01169a74c36ecc74692b2",
+    "docs/data/opportunity-intelligence.json": "725f35a468631d40c3220a1731e1313137a3952051e05438613f1e9fcda9721e",
     "docs/data/real-estate-context.json": "eafdd7aeaabe45a086a665f2c06d5031587289d766a0b0191b20383ef877e024",
     "docs/data/candidate-registry.json": "213e965a5e13138e4a78c87fc97ed7393f9449aac0943c084891f1c298243c21",
     "docs/assets/gis.js": "ccce84606d1b0048edfe7e4359e0aad29faf08d0df323a816a3888be3199dad6",
