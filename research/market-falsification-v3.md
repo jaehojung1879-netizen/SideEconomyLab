@@ -38,3 +38,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Recommerce / repeat-payment falsification
 [New study](recommerce-research-v1.md): 14 observations; no matched trades; 3 assumption-only downside scenarios. No approval or canonical promotion.
+
+## Owner-directed parallel facility tracks
+[Dual-track study](facility-dual-track-v1.md): no custom hardware, synthetic-only narrow SaaS, five assumed commitment exposures and explicit hold gates. No canonical candidate promotion or spend.

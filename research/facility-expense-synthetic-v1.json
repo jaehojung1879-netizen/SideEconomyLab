@@ -1,0 +1,72 @@
+{
+  "synthetic": true,
+  "rows": [
+    {
+      "site": "DEMO_A",
+      "vendor": "DEMO_VENDOR",
+      "invoice": "INV001",
+      "sku": "DEMO_FILTER_A",
+      "unit": "EA",
+      "amount": 40000,
+      "quantity": 2,
+      "approved_unit_price": 20000,
+      "comparable": true
+    },
+    {
+      "site": "DEMO_B",
+      "vendor": "DEMO_VENDOR",
+      "invoice": "INV001",
+      "sku": "DEMO_FILTER_A",
+      "unit": "EA",
+      "amount": 40000,
+      "quantity": 2,
+      "approved_unit_price": 20000,
+      "comparable": true
+    },
+    {
+      "site": "DEMO_B",
+      "vendor": "DEMO_VENDOR",
+      "invoice": "INV002",
+      "sku": "DEMO_FILTER_A",
+      "unit": "EA",
+      "amount": 60000,
+      "quantity": 2,
+      "approved_unit_price": 20000,
+      "comparable": true
+    },
+    {
+      "site": "DEMO_C",
+      "vendor": "DEMO_VENDOR",
+      "invoice": "INV003",
+      "sku": "DEMO_FILTER_A",
+      "unit": "EA",
+      "amount": 80000,
+      "quantity": 2,
+      "approved_unit_price": 20000,
+      "comparable": false
+    }
+  ],
+  "expected": [
+    {
+      "site": "DEMO_B",
+      "invoice": "INV001",
+      "flags": [
+        "DUPLICATE_KEY_REVIEW"
+      ]
+    },
+    {
+      "site": "DEMO_B",
+      "invoice": "INV002",
+      "flags": [
+        "ABOVE_APPROVED_PRICE_REVIEW"
+      ]
+    },
+    {
+      "site": "DEMO_C",
+      "invoice": "INV003",
+      "flags": [
+        "PRICE_COMPARISON_BLOCKED"
+      ]
+    }
+  ]
+}

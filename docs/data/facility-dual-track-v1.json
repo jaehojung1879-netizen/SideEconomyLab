@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "paid_own_transactions": 0,
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "observations": [
+    {
+      "id": "D01",
+      "url": "https://mts-multi.co.kr/unmanned-vending/",
+      "name": "MTS",
+      "observation": "스프링/푸시 등 상품 배출 형태 및 렌탈 검토. 가격·계약 확정 없음.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D02",
+      "url": "https://dongnevending.com/",
+      "name": "동네자판기",
+      "observation": "생활용품 판매 가능 및 임대·렌탈 상담, 재고·매출 확인. 철물 SKU 호환 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D03",
+      "url": "https://smart-vending.co.kr/vending/standard/rental",
+      "name": "SMART VENDING",
+      "observation": "설치, 결제, 계약 기간, 원격 관리 및 출장 책임 구분. 확정 견적 없음.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D04",
+      "url": "https://bauspezi-oppenheim.de/neu-24-7-baumarkt-automat-in-undenheim/",
+      "name": "bauSpezi",
+      "observation": "철물점의 24시간 자판기 실제 운영 안내. 매출·손익 미공개.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D05",
+      "url": "https://www.toolstation.com/toolstation-go",
+      "name": "Toolstation GO",
+      "observation": "영업시간 중 준비한 주문을 24시간 보관함 수령. 심야 즉시 신규 주문과 다름.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D06",
+      "url": "https://fastenal.eu/fastvend/",
+      "name": "Fastenal",
+      "observation": "서비스 계약을 전제로 기기 무상 제공 주장. 유료 서비스 조건 및 국내 적용 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D07",
+      "url": "https://www.balonaem.com/introduce.php",
+      "name": "바로냄",
+      "observation": "견적, 공정, 발주, 정산, 공급자/고객 포털. 범용 인테리어 SaaS 차별화 어려움.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D08",
+      "url": "https://fintate.com/intro/saas",
+      "name": "핀테이트",
+      "observation": "임대차 및 임대료 관리, 알림, 정산, 리포트.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D09",
+      "url": "https://www.leysys.com/products/facility/",
+      "name": "Leysys",
+      "observation": "시설 점검, 작업, 설비 이력 및 비용 관리.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D10",
+      "url": "https://www.cloudsup.or.kr/solution/all/view/4356",
+      "name": "HADA",
+      "observation": "QR 기반 현장 점검 및 업무·이슈 관리.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D11",
+      "url": "https://www.getmaintainx.com//pricing",
+      "name": "MaintainX",
+      "observation": "작업지시, 유지보수, 다점포 관리.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "D12",
+      "url": "https://upkeep.com/",
+      "name": "UpKeep",
+      "observation": "유지보수 핵심 상품 사용자당 월 24달러부터 표시. 실제 국내 요금 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    }
+  ],
+  "hardware": {
+    "parent": "OC-020",
+    "decision": "NO_CUSTOM_HARDWARE",
+    "variants": [
+      "기존 철물점 가격표·재고 안내 및 영업시간 내 픽업 예약",
+      "영업시간 중 준비 후 기존 보관함 수령",
+      "기존 제휴 매장 내 즉시구매 진열/기성 자판기",
+      "시설관리 B2B 소모품 지급함"
+    ],
+    "sku_scope": [
+      "규격표기된 나사·앙카 소포장",
+      "가구 보호패드",
+      "케이블타이",
+      "육각렌치",
+      "부착용 고리"
+    ],
+    "excluded": [
+      "전기·가스 안전부품",
+      "위험물",
+      "유통기한·누액 위험 큰 제품",
+      "규격 확인 어려운 상품"
+    ],
+    "gate": "기존 CV-020 HOLD 유지. 별도 사전등록 및 승인 전 외부 연락/비용 금지. 제안 기준: 철물점 3곳의 14일 익명 미충족 요청 기록, 실제 동일 SKU 가격/원가 20개, 기존 기기 3개 동일 조건 견적, 30일 해지 가능 조건. 예약 수령과 즉시 구매 수요는 분리. 기기 없는 관찰은 실제 거래로 간주하지 않음. 이후 독립 파일럿에서 실제 유료 거래와 운영시간 측정 후 판단.",
+    "scenarios": [
+      {
+        "id": "V0",
+        "name": "무기기 사전 검증",
+        "inputs": {
+          "setup": 50000,
+          "monthly": 0,
+          "min_months": 0,
+          "inventory": 0,
+          "exit_cost": 0,
+          "refundable_deposit": 0,
+          "documented_recovery": 0
+        },
+        "expected": {
+          "upfront_cash_krw": 50000,
+          "committed_outlay_krw": 50000,
+          "loss_bound_krw": 50000
+        }
+      },
+      {
+        "id": "V1",
+        "name": "1개월 해지 가능 렌탈(가정)",
+        "inputs": {
+          "setup": 150000,
+          "monthly": 300000,
+          "min_months": 1,
+          "inventory": 300000,
+          "exit_cost": 100000,
+          "refundable_deposit": 0,
+          "documented_recovery": 0
+        },
+        "expected": {
+          "upfront_cash_krw": 450000,
+          "committed_outlay_krw": 850000,
+          "loss_bound_krw": 850000
+        }
+      },
+      {
+        "id": "V2",
+        "name": "36개월 중도해지 불가 렌탈(가정)",
+        "inputs": {
+          "setup": 150000,
+          "monthly": 300000,
+          "min_months": 36,
+          "inventory": 300000,
+          "exit_cost": 100000,
+          "refundable_deposit": 0,
+          "documented_recovery": 0
+        },
+        "expected": {
+          "upfront_cash_krw": 450000,
+          "committed_outlay_krw": 11350000,
+          "loss_bound_krw": 11350000
+        }
+      },
+      {
+        "id": "V3",
+        "name": "기존 기기 구매(가정)",
+        "inputs": {
+          "setup": 5000000,
+          "monthly": 0,
+          "min_months": 0,
+          "inventory": 500000,
+          "exit_cost": 200000,
+          "refundable_deposit": 0,
+          "documented_recovery": 0
+        },
+        "expected": {
+          "upfront_cash_krw": 5500000,
+          "committed_outlay_krw": 5700000,
+          "loss_bound_krw": 5700000
+        }
+      },
+      {
+        "id": "V4",
+        "name": "자체 하드웨어 개발(가정)",
+        "inputs": {
+          "setup": 20000000,
+          "monthly": 0,
+          "min_months": 0,
+          "inventory": 500000,
+          "exit_cost": 200000,
+          "refundable_deposit": 0,
+          "documented_recovery": 0
+        },
+        "expected": {
+          "upfront_cash_krw": 20500000,
+          "committed_outlay_krw": 20700000,
+          "loss_bound_krw": 20700000
+        }
+      }
+    ]
+  },
+  "saas": {
+    "parent": "DF-008 / DF-005",
+    "decision": "SYNTHETIC_PROTOTYPE_ONLY",
+    "customer": "5~30개 비금융 점포 운영사 본사 또는 소형 시설관리 업체",
+    "product": "월간 시설 유지보수 지출 예외 리포트",
+    "alternatives": "엑셀 피벗/기존 회계·CMMS·시설관리 SaaS·일회성 스크립트",
+    "scope": "동일 규격/단위/세금 기준 비용 명세에서 중복 송장 키와 비교 가능 승인단가 초과 후보만 탐지. 실제 과다청구/부정 판정 아님. 개인 정보, 은행 자료, 법정 점검, 긴급 대응 제외.",
+    "gate": "독립 업체 3곳의 동일 반복업무와 익명 입력양식, 2곳의 유료 의향. 사전등록 후 실제 2개월 결제 및 운영시간 검증 제안. 기존 소프트웨어 또는 피벗으로 동일 가치 제공 시 개발 중단.",
+    "assumption": {
+      "price": 99000,
+      "var_cost": 15000,
+      "fixed_cash": 100000,
+      "fixed_hours": 4,
+      "unit_hours": 0.5,
+      "hour_value": 40000,
+      "hour_cap": 20,
+      "target": 1000000,
+      "capital": 0,
+      "recovery_months": 24
+    },
+    "expected": {
+      "cash_units": 14,
+      "economic_units": 20,
+      "max_units": 32,
+      "cash_time_feasible": true,
+      "economic_time_feasible": true,
+      "status": "ASSUMPTION_ONLY"
+    }
+  },
+  "constraints": [
+    "모든 비용은 견적 아닌 가상 입력. 기기 개발비는 시장 추정치가 아님.",
+    "보증금은 전액 반환 가정에서 현금 묶임만 표시. 손실 가능 보증금은 setup에 포함. 회수금은 계약으로 확정된 순회수액만 입력.",
+    "개발시간 매몰비용 별도; 세금, 금융비, 손해배상, 운영중 비용은 계약 확인 필요.",
+    "기존 검증 원장 및 승인 변경 없음. 겸업·이해상충 확인 전 실제 영업/고객 접촉 금지."
+  ]
+}
