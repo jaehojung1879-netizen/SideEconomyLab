@@ -44,3 +44,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Hardware24 focused research
 [Location, SKU, machine offers and stock policy](hardware24-v1.md); 20 SKU hypotheses, 7 directory/area observations, no current host quote, paid demand, verified fit or purchase. Preserve OC-020 HOLD and synthetic-only SaaS.
+
+## Cross-model hurdle comparison
+[Parallel hurdles](parallel-hurdles-v1.md) adds independent public-company, incumbent and public-lending evidence, residential event-frequency stress test and B2B spend requirement. All candidate approvals unchanged; no purchases.
