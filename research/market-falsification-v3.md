@@ -29,3 +29,6 @@ Run 46018464879 / job 140571741193: exact 20260930 CSV downloaded and retained i
 
 ### Observed header and narrowly scoped fix
 Run 46020228872 logged UTF-8-sig raw bytes 1,310,324; SHA-256 `16d341e70f123eeeed81ce635f9972a40e0a651091ee6f035700236395f12275`; actual ordered header `업종`, `시도`, `시군구`, ` 당월 `, ` 전월 `, ` 전년동월 `. Official catalog variableMeasured is unpadded. Accept only the exact observed six-column ordered variant in addition to prior metadata match; retain raw header and mapping in audit output. Other whitespace variants remain blocked. Real row-level validation and coverage are not claimed until corrected run. No geography comparison authorized.
+
+## Actual NTS data parsed and inspected
+Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded and raw hash independently matched. See [NTS local profile](nts-local-profile-v1.md). No coverage or time comparison promotion; static current-count research slice only.
