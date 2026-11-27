@@ -23,3 +23,6 @@ Run 46018116574, job 140570398143: current actual response had alternateName end
 
 ## Live CSV progress
 Run 46018464879 / job 140571741193: exact 20260930 CSV downloaded and retained in artifact 15206603105 (archive 190153 bytes); audit rejected the actual header. The public metadata lists six columns but actual header is not yet inspected. Header-only diagnostic now prints bounded field names, encoding, length and SHA-256; no mapping or acceptance is changed. Next: inspect actual bytes/header, explicitly document any normalization and re-run. No comparison or publication.
+
+## Existing Seoul data decision slice
+[Sector report](sidejob-sector-slice-v1.md) and [structured output](../docs/data/sidejob-sector-slice-v1.json): 17 purposively selected sectors, complete 25-district totals only, missing sales explicit. Reproduction test added. This is a separate source-derived research view, not fresh collection or proof of any business opportunity.

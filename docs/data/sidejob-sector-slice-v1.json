@@ -1,0 +1,407 @@
+{
+  "version": 1,
+  "source_ref": "adabef5453808ba482f0cb0862eeae0200c64028",
+  "source_blob": "891bfdc30bb149594166061761224ff5506acc66",
+  "snapshot_id": "2026-10-10-9288cbd4d5f2",
+  "periods": [
+    "20252",
+    "20262"
+  ],
+  "geography": "district",
+  "district_count": 25,
+  "forecast_eligible": false,
+  "notes": "Purposive sector subset for research; complete 25-district totals only with valid same-period comparisons. Sales are nominal estimated card-based spending, not earnings. Extreme flags retained. No maps, national estimates or candidate promotion.",
+  "sectors": [
+    {
+      "industry_id": "CS100010",
+      "name": "커피-음료",
+      "sales": {
+        "coverage": 25,
+        "baseline": 753618501247,
+        "current": 778836924798
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 27843,
+        "current": 27351
+      },
+      "extreme_areas": 0,
+      "findings": 15,
+      "gangdong": {
+        "sales_yoy_pct": -1.33,
+        "stores_yoy_pct": -0.21,
+        "stores": 944,
+        "opened": 42,
+        "closed": 28
+      }
+    },
+    {
+      "industry_id": "CS100009",
+      "name": "호프-간이주점",
+      "sales": {
+        "coverage": 25,
+        "baseline": 788647006661,
+        "current": 733176187670
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 16437,
+        "current": 15255
+      },
+      "extreme_areas": 0,
+      "findings": 23,
+      "gangdong": {
+        "sales_yoy_pct": 4.66,
+        "stores_yoy_pct": -7.28,
+        "stores": 548,
+        "opened": 8,
+        "closed": 20
+      }
+    },
+    {
+      "industry_id": "CS200001",
+      "name": "일반교습학원",
+      "sales": {
+        "coverage": 25,
+        "baseline": 917719180960,
+        "current": 931346069649
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 26328,
+        "current": 25716
+      },
+      "extreme_areas": 0,
+      "findings": 16,
+      "gangdong": {
+        "sales_yoy_pct": 11.25,
+        "stores_yoy_pct": -1.21,
+        "stores": 1465,
+        "opened": 27,
+        "closed": 23
+      }
+    },
+    {
+      "industry_id": "CS200002",
+      "name": "외국어학원",
+      "sales": {
+        "coverage": 25,
+        "baseline": 85754866422,
+        "current": 74138465831
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 2465,
+        "current": 2836
+      },
+      "extreme_areas": 2,
+      "findings": 21,
+      "gangdong": {
+        "sales_yoy_pct": 9.17,
+        "stores_yoy_pct": 25.47,
+        "stores": 133,
+        "opened": 14,
+        "closed": 5
+      }
+    },
+    {
+      "industry_id": "CS200024",
+      "name": "스포츠클럽",
+      "sales": {
+        "coverage": 25,
+        "baseline": 90567805681,
+        "current": 101605888702
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 5006,
+        "current": 5330
+      },
+      "extreme_areas": 1,
+      "findings": 15,
+      "gangdong": {
+        "sales_yoy_pct": -1.43,
+        "stores_yoy_pct": 1.88,
+        "stores": 217,
+        "opened": 0,
+        "closed": 8
+      }
+    },
+    {
+      "industry_id": "CS200031",
+      "name": "세탁소",
+      "sales": {
+        "coverage": 25,
+        "baseline": 53353711223,
+        "current": 50033645958
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 6074,
+        "current": 6107
+      },
+      "extreme_areas": 0,
+      "findings": 3,
+      "gangdong": {
+        "sales_yoy_pct": -4.5,
+        "stores_yoy_pct": -1.42,
+        "stores": 278,
+        "opened": 5,
+        "closed": 7
+      }
+    },
+    {
+      "industry_id": "CS300001",
+      "name": "슈퍼마켓",
+      "sales": {
+        "coverage": 25,
+        "baseline": 1149123534308,
+        "current": 1127712054238
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 12451,
+        "current": 13391
+      },
+      "extreme_areas": 0,
+      "findings": 20,
+      "gangdong": {
+        "sales_yoy_pct": -2.42,
+        "stores_yoy_pct": 6.35,
+        "stores": 519,
+        "opened": 26,
+        "closed": 11
+      }
+    },
+    {
+      "industry_id": "CS300002",
+      "name": "편의점",
+      "sales": {
+        "coverage": 25,
+        "baseline": 1067633981692,
+        "current": 1059316903598
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 9274,
+        "current": 8879
+      },
+      "extreme_areas": 0,
+      "findings": 7,
+      "gangdong": {
+        "sales_yoy_pct": -0.55,
+        "stores_yoy_pct": -3.08,
+        "stores": 346,
+        "opened": 9,
+        "closed": 5
+      }
+    },
+    {
+      "industry_id": "CS300021",
+      "name": "문구",
+      "sales": {
+        "coverage": 25,
+        "baseline": 260841925309,
+        "current": 293419699681
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 4518,
+        "current": 4397
+      },
+      "extreme_areas": 0,
+      "findings": 18,
+      "gangdong": {
+        "sales_yoy_pct": 43.64,
+        "stores_yoy_pct": -6.52,
+        "stores": 129,
+        "opened": 2,
+        "closed": 4
+      }
+    },
+    {
+      "industry_id": "CS300033",
+      "name": "철물점",
+      "sales": {
+        "coverage": 25,
+        "baseline": 45671236596,
+        "current": 49191746365
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 2183,
+        "current": 2305
+      },
+      "extreme_areas": 0,
+      "findings": 17,
+      "gangdong": {
+        "sales_yoy_pct": 58.4,
+        "stores_yoy_pct": 14.55,
+        "stores": 126,
+        "opened": 10,
+        "closed": 0
+      }
+    },
+    {
+      "industry_id": "CS300035",
+      "name": "인테리어",
+      "sales": {
+        "coverage": 25,
+        "baseline": 58339234766,
+        "current": 73480124749
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 4296,
+        "current": 4286
+      },
+      "extreme_areas": 4,
+      "findings": 12,
+      "gangdong": {
+        "sales_yoy_pct": -15.52,
+        "stores_yoy_pct": 0,
+        "stores": 204,
+        "opened": 6,
+        "closed": 2
+      }
+    },
+    {
+      "industry_id": "CS200025",
+      "name": "자동차수리",
+      "sales": {
+        "coverage": 25,
+        "baseline": 285272992302,
+        "current": 292371214807
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 4577,
+        "current": 4536
+      },
+      "extreme_areas": 0,
+      "findings": 12,
+      "gangdong": {
+        "sales_yoy_pct": 11.16,
+        "stores_yoy_pct": -2.47,
+        "stores": 237,
+        "opened": 1,
+        "closed": 3
+      }
+    },
+    {
+      "industry_id": "CS200043",
+      "name": "건축물청소",
+      "sales": {
+        "coverage": 0,
+        "baseline": null,
+        "current": null
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 5829,
+        "current": 5478
+      },
+      "extreme_areas": 0,
+      "findings": 0,
+      "gangdong": {
+        "sales_yoy_pct": null,
+        "stores_yoy_pct": -5.56,
+        "stores": 255,
+        "opened": 0,
+        "closed": 2
+      }
+    },
+    {
+      "industry_id": "CS300030",
+      "name": "중고가구",
+      "sales": {
+        "coverage": 0,
+        "baseline": null,
+        "current": null
+      },
+      "stores": {
+        "coverage": 24,
+        "baseline": null,
+        "current": null
+      },
+      "extreme_areas": 1,
+      "findings": 0,
+      "gangdong": {
+        "sales_yoy_pct": null,
+        "stores_yoy_pct": 0,
+        "stores": 3,
+        "opened": 0,
+        "closed": 0
+      }
+    },
+    {
+      "industry_id": "CS300040",
+      "name": "재생용품 판매점",
+      "sales": {
+        "coverage": 0,
+        "baseline": null,
+        "current": null
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 1227,
+        "current": 1162
+      },
+      "extreme_areas": 0,
+      "findings": 0,
+      "gangdong": {
+        "sales_yoy_pct": null,
+        "stores_yoy_pct": -4.55,
+        "stores": 42,
+        "opened": 0,
+        "closed": 0
+      }
+    },
+    {
+      "industry_id": "CS200041",
+      "name": "사진관",
+      "sales": {
+        "coverage": 0,
+        "baseline": null,
+        "current": null
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 6849,
+        "current": 6823
+      },
+      "extreme_areas": 0,
+      "findings": 0,
+      "gangdong": {
+        "sales_yoy_pct": null,
+        "stores_yoy_pct": 0.53,
+        "stores": 189,
+        "opened": 6,
+        "closed": 2
+      }
+    },
+    {
+      "industry_id": "CS200038",
+      "name": "독서실",
+      "sales": {
+        "coverage": 0,
+        "baseline": null,
+        "current": null
+      },
+      "stores": {
+        "coverage": 25,
+        "baseline": 3466,
+        "current": 3526
+      },
+      "extreme_areas": 0,
+      "findings": 0,
+      "gangdong": {
+        "sales_yoy_pct": null,
+        "stores_yoy_pct": 12.69,
+        "stores": 151,
+        "opened": 9,
+        "closed": 2
+      }
+    }
+  ]
+}
