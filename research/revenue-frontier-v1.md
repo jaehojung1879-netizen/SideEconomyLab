@@ -43,3 +43,6 @@ A 6m asking-price news site discloses 12h/week (52h/month using 52 weeks/12) and
 Stop adding feature prototypes and new candidate pages until evidence changes. Keep procurement audit and catalog change review as discovery, Hardware24 as HOLD, prior OC-022 and OC-030 gates unchanged. One feasible desk-only next task: verify official project event source and capture release/first-observed timestamps, then construct a time-consistent comparison to public procurement publication dates for a narrowly defined nonfinancial industry. If release history, identifiers, or outcome labels unavailable, mark SOURCE_BLOCKED; do not publish a prediction score. A seller-side contract opportunity can be late even before opening; buyer decision date must be measured. No direct customer data without approval and employment/COI check.
 
 [Machine-readable source ledger](../docs/data/revenue-frontier-v1.json). No new executable code; existing economics engine already sufficient for these arithmetic hurdles. 
+
+## Follow-up: timing feasibility
+[Procurement timing audit](procurement-timing-v1.md) records three retrospective municipal notice pairs and explicit source limitations. No 30-project gate pass; no additional prototype.

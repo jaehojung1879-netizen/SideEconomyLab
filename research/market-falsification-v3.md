@@ -62,3 +62,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Revenue-side opportunity and research backlog reset
 [Revenue frontier](revenue-frontier-v1.md): 18 observations, 5 disposition gates, 3 assumption-only hurdles. New opening signals, upstream event timing, asset matching and digital assets have credible substitutes or source gaps. No new prototypes, no candidate promotion.
+
+## Procurement timing feasibility
+[Timing audit](procurement-timing-v1.md): three retrospectively matched municipal notices, zero prospective building-to-purchase links, free incumbent baseline. REV-02 remains SOURCE_BLOCKED; no generic alerts build.
