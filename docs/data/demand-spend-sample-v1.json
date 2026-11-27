@@ -4,12 +4,7 @@
   "sampling": "NONREPRESENTATIVE_SEARCH_SAMPLE",
   "eligible_for_market_total": false,
   "eligible_for_forecast": false,
-  "notes": [
-    "K-apt list query dates conflict with returned 2026 rows. Treat visible records as list observations only; no filter coverage inference.",
-    "Municipal detail fetch failed; snippets retained with weaker status. Initial and revised values are not interchangeable.",
-    "Contract amount is not paid revenue, monthly price, profit or entrant demand. Dates are not renewal forecasts. No buyer/supplier private contact data retained.",
-    "Marketplace posted prices are asking prices; 0 displayed reviews does not establish 0 sales. Packages differ in scope."
-  ],
+  "notes": "K-apt list query dates conflict with returned 2026 rows. Treat visible records as list observations only; no filter coverage inference.,Municipal detail fetch failed; snippets retained with weaker status. Initial and revised values are not interchangeable.,Contract amount is not paid revenue, monthly price, profit or entrant demand. Dates are not renewal forecasts. No buyer/supplier private contact data retained.,Marketplace posted prices are asking prices; 0 displayed reviews does not establish 0 sales. Packages differ in scope. Municipal links use the official origin only; original path and encoded query pairs are retained separately as public navigation metadata, not verified live detail links. All four remain snippets.",
   "contracts": [
     {
       "id": "KAPT-20260406155932446",
@@ -182,10 +177,48 @@
       "amount_krw": 12854000,
       "vat": "UNKNOWN",
       "quality": "SEARCH_SNIPPET",
-      "url": "https://m.geumcheon.go.kr/portal/tcmSummaryListView.do?ctrtLdgrMngNo=202600210014&key=434&pageIndex=50&pageUnit=10&searchCltNm=&searchCtrtKndCd=&searchCtrtTrgtNm=&searchGofNm=",
+      "url": "https://m.geumcheon.go.kr/",
       "observed_on": "2026-11-27",
       "paid_verified": false,
-      "renewal_prediction": null
+      "renewal_prediction": null,
+      "source_navigation": {
+        "path": "https://m.geumcheon.go.kr/portal/tcmSummaryListView.do",
+        "query_parameters_encoded": [
+          {
+            "name": "ctrtLdgrMngNo",
+            "value": "202600210014"
+          },
+          {
+            "name": "key",
+            "value": "434"
+          },
+          {
+            "name": "pageIndex",
+            "value": "50"
+          },
+          {
+            "name": "pageUnit",
+            "value": "10"
+          },
+          {
+            "name": "searchCltNm",
+            "value": ""
+          },
+          {
+            "name": "searchCtrtKndCd",
+            "value": ""
+          },
+          {
+            "name": "searchCtrtTrgtNm",
+            "value": ""
+          },
+          {
+            "name": "searchGofNm",
+            "value": ""
+          }
+        ],
+        "link_status": "OFFICIAL_ORIGIN_ONLY_DETAIL_RECHECK_REQUIRED"
+      }
     },
     {
       "id": "GEUM-202600210016",
@@ -198,10 +231,48 @@
       "amount_krw": 8684140,
       "vat": "UNKNOWN",
       "quality": "SEARCH_SNIPPET",
-      "url": "https://geumcheon.go.kr/portal/tcmSummaryListView.do?ctrtLdgrMngNo=202600210016&key=434&pageIndex=48&pageUnit=10&searchCltNm=&searchCtrtKndCd=&searchCtrtTrgtNm=&searchGofNm=",
+      "url": "https://geumcheon.go.kr/",
       "observed_on": "2026-11-27",
       "paid_verified": false,
-      "renewal_prediction": null
+      "renewal_prediction": null,
+      "source_navigation": {
+        "path": "https://geumcheon.go.kr/portal/tcmSummaryListView.do",
+        "query_parameters_encoded": [
+          {
+            "name": "ctrtLdgrMngNo",
+            "value": "202600210016"
+          },
+          {
+            "name": "key",
+            "value": "434"
+          },
+          {
+            "name": "pageIndex",
+            "value": "48"
+          },
+          {
+            "name": "pageUnit",
+            "value": "10"
+          },
+          {
+            "name": "searchCltNm",
+            "value": ""
+          },
+          {
+            "name": "searchCtrtKndCd",
+            "value": ""
+          },
+          {
+            "name": "searchCtrtTrgtNm",
+            "value": ""
+          },
+          {
+            "name": "searchGofNm",
+            "value": ""
+          }
+        ],
+        "link_status": "OFFICIAL_ORIGIN_ONLY_DETAIL_RECHECK_REQUIRED"
+      }
     },
     {
       "id": "GEUM-202600210024",
@@ -214,10 +285,40 @@
       "amount_krw": 9487220,
       "vat": "UNKNOWN",
       "quality": "SEARCH_SNIPPET",
-      "url": "https://m.geumcheon.go.kr/portal/tcmSummaryList.do?key=434&pageIndex=49&searchCltNm=&searchCtrtKndCd=&searchCtrtTrgtNm=&searchGofNm=",
+      "url": "https://m.geumcheon.go.kr/",
       "observed_on": "2026-11-27",
       "paid_verified": false,
-      "renewal_prediction": null
+      "renewal_prediction": null,
+      "source_navigation": {
+        "path": "https://m.geumcheon.go.kr/portal/tcmSummaryList.do",
+        "query_parameters_encoded": [
+          {
+            "name": "key",
+            "value": "434"
+          },
+          {
+            "name": "pageIndex",
+            "value": "49"
+          },
+          {
+            "name": "searchCltNm",
+            "value": ""
+          },
+          {
+            "name": "searchCtrtKndCd",
+            "value": ""
+          },
+          {
+            "name": "searchCtrtTrgtNm",
+            "value": ""
+          },
+          {
+            "name": "searchGofNm",
+            "value": ""
+          }
+        ],
+        "link_status": "OFFICIAL_ORIGIN_ONLY_DETAIL_RECHECK_REQUIRED"
+      }
     },
     {
       "id": "DDM-202600211501",
@@ -230,10 +331,40 @@
       "amount_krw": 6024810,
       "vat": "UNKNOWN",
       "quality": "SEARCH_SNIPPET_INITIAL_AMOUNT",
-      "url": "https://www.ddm.go.kr/www/ehojoCntrctSttusWebView.do?ctrt_acct_book_mng_no=202600211501&ehojoCntrctSttusSe=%EC%9A%A9%EC%97%AD&key=179&pageIndex=1&pageUnit=10&searchCnd=all",
+      "url": "https://www.ddm.go.kr/",
       "observed_on": "2026-11-27",
       "paid_verified": false,
-      "renewal_prediction": null
+      "renewal_prediction": null,
+      "source_navigation": {
+        "path": "https://www.ddm.go.kr/www/ehojoCntrctSttusWebView.do",
+        "query_parameters_encoded": [
+          {
+            "name": "ctrt_acct_book_mng_no",
+            "value": "202600211501"
+          },
+          {
+            "name": "ehojoCntrctSttusSe",
+            "value": "%EC%9A%A9%EC%97%AD"
+          },
+          {
+            "name": "key",
+            "value": "179"
+          },
+          {
+            "name": "pageIndex",
+            "value": "1"
+          },
+          {
+            "name": "pageUnit",
+            "value": "10"
+          },
+          {
+            "name": "searchCnd",
+            "value": "all"
+          }
+        ],
+        "link_status": "OFFICIAL_ORIGIN_ONLY_DETAIL_RECHECK_REQUIRED"
+      }
     }
   ],
   "offers": [
