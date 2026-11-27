@@ -27,3 +27,17 @@ class OwnerCapacityTest(unittest.TestCase):
             self.assertFalse(r["paid_verified"])
         for r in data["offers"]:
             self.assertIsNone(r["transaction_price"])
+
+    def test_public_navigation_metadata(self):
+        data = json.loads((Path(__file__).resolve().parents[1]/"docs/data/demand-spend-sample-v1.json").read_text(encoding="utf-8"))
+        self.assertIsInstance(data["notes"], list)
+        self.assertEqual(len(data["contracts"]), 14)
+        rows = [r for r in data["contracts"] if "source_navigation" in r]
+        self.assertEqual(len(rows), 4)
+        for row in rows:
+            self.assertNotIn("?", row["url"])
+            nav = row["source_navigation"]
+            self.assertEqual(nav["link_status"], "OFFICIAL_ORIGIN_ONLY_DETAIL_RECHECK_REQUIRED")
+            self.assertTrue(nav["path"].startswith(row["url"]))
+            self.assertIn("key", {p["name"] for p in nav["query_parameters_encoded"]})
+            self.assertFalse(row["paid_verified"])

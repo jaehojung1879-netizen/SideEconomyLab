@@ -4,7 +4,13 @@
   "sampling": "NONREPRESENTATIVE_SEARCH_SAMPLE",
   "eligible_for_market_total": false,
   "eligible_for_forecast": false,
-  "notes": "K-apt list query dates conflict with returned 2026 rows. Treat visible records as list observations only; no filter coverage inference.,Municipal detail fetch failed; snippets retained with weaker status. Initial and revised values are not interchangeable.,Contract amount is not paid revenue, monthly price, profit or entrant demand. Dates are not renewal forecasts. No buyer/supplier private contact data retained.,Marketplace posted prices are asking prices; 0 displayed reviews does not establish 0 sales. Packages differ in scope. Municipal links use the official origin only; original path and encoded query pairs are retained separately as public navigation metadata, not verified live detail links. All four remain snippets.",
+  "notes": [
+    "K-apt list query dates conflict with returned 2026 rows. Treat visible records as list observations only; no filter coverage inference.",
+    "Municipal detail fetch failed; snippets retained with weaker status. Initial and revised values are not interchangeable.",
+    "Contract amount is not paid revenue, monthly price, profit or entrant demand. Dates are not renewal forecasts. No buyer/supplier private contact data retained.",
+    "Marketplace posted prices are asking prices; 0 displayed reviews does not establish 0 sales. Packages differ in scope.",
+    "Municipal links use the official origin only; original path and encoded query pairs are retained separately as public navigation metadata, not verified live detail links. All four remain snippets."
+  ],
   "contracts": [
     {
       "id": "KAPT-20260406155932446",
