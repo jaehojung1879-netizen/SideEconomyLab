@@ -71,3 +71,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Desk-to-field boundary
 [Decision packet](desk-to-field-decision-v1.md) adds physical business alternatives, external payment records, reconciles OC-030 screening margin with owner economics, and retains existing selected field queue and zero paid evidence. No commercial promotion or new prototype.
+
+## Global digital distribution
+[Global distribution](global-distribution-v1.md): 22 source observations, platform fee and finite referral cohort stress tests, exact catalog-app substitutes. No generic build or commercial approval; Paydream overseas terms unresolved.

@@ -44,3 +44,6 @@ Before commercial contact: confirm employment/COI, external nonfinancial custome
 3. Do not expand field budget to AI or catalog merely because prototypes exist. Existing total proposed ceilings 250k/18h over 21 days, first week 200k/10h, capex zero; review remaining budget before any new selection. No approval inferred. At limits record HOLD/FAIL; avoid repeated web research without new decision-changing data.
 ## Stop / reopen
 No new feature development while field evidence missing. Desk work only if a new source produces a specific new candidate falsifier or verified transaction scope, or user requests distinct exploration. Record actual buyer evidence privately with authorization and anonymous aggregates in canonical ledger. Existing scoring/registry unchanged. [Machine-readable packet](../docs/data/desk-to-field-decision-v1.json).
+
+## Follow-up: overseas channels
+[Global distribution audit](global-distribution-v1.md) separates downloadable products, platform apps and finite affiliate cohorts. Existing selected queue unchanged.
