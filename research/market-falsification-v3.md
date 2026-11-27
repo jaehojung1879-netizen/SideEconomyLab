@@ -20,3 +20,6 @@ No customer contact, no paid verification, no estimates of market total, no inve
 
 ### Diagnostic result and correction
 Run 46018116574, job 140570398143: current actual response had alternateName ending 20260930, matching URL, CSV and matching creator. The literal JavaScript regex had doubled backslashes (four in the regex) and rejected valid digits. Replaced with explicit digit classes, calendar validation, and a deterministic self-test in the PR workflow. Catalog identity constraints and downstream download controls remain unchanged. The corrected live download outcome is not yet known.
+
+## Live CSV progress
+Run 46018464879 / job 140571741193: exact 20260930 CSV downloaded and retained in artifact 15206603105 (archive 190153 bytes); audit rejected the actual header. The public metadata lists six columns but actual header is not yet inspected. Header-only diagnostic now prints bounded field names, encoding, length and SHA-256; no mapping or acceptance is changed. Next: inspect actual bytes/header, explicitly document any normalization and re-run. No comparison or publication.

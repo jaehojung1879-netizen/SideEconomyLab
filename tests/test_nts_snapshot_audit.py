@@ -3,7 +3,7 @@ import io
 import json
 import unittest
 from pathlib import Path
-from pipeline.nts_snapshot_audit import audit, FIELDS
+from pipeline.nts_snapshot_audit import audit, FIELDS, inspect_header
 
 def fixture(rows, encoding="utf-8-sig"):
     buffer = io.StringIO()
@@ -52,3 +52,14 @@ class NTSAuditTest(unittest.TestCase):
             self.assertIn(e["name"], html)
         for s in data["sources"]:
             self.assertIn(s["url"], html)
+
+    def test_header_diagnostic_no_remap(self):
+        raw = fixture([["카페","서울","강동구",100,0,90]])
+        self.assertTrue(inspect_header(raw)["header_exact_match"])
+        changed = raw.replace("당월".encode(), " 당월".encode(), 1)
+        d = inspect_header(changed)
+        self.assertFalse(d["header_exact_match"])
+        self.assertEqual(d["header_count"], 6)
+        self.assertEqual(len(d["sha256"]), 64)
+        with self.assertRaises(ValueError):
+            audit(changed, "2026-09")

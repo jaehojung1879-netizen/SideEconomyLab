@@ -20,17 +20,23 @@ def count(value):
         raise ValueError("Unexpected unsuppressed small cell; confirm source definition")
     return n
 
+def decode_csv(raw):
+    for encoding in ("utf-8-sig", "cp949"):
+        try:
+            return raw.decode(encoding), encoding
+        except UnicodeDecodeError:
+            continue
+    raise ValueError("Unknown encoding")
+
+def inspect_header(raw):
+    decoded, encoding = decode_csv(raw)
+    header = next(csv.reader(io.StringIO(decoded)), [])
+    return {"encoding": encoding, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "header": [s[:100] for s in header[:20]], "header_count": len(header), "header_exact_match": len(header) == len(FIELDS) and set(header) == set(FIELDS)}
+
 def audit(raw, period):
     if not re.fullmatch(r"[0-9]{4}-(?:0[1-9]|1[0-2])", period):
         raise ValueError("Expected YYYY-MM; verify against source file")
-    for encoding in ("utf-8-sig", "cp949"):
-        try:
-            decoded = raw.decode(encoding)
-            break
-        except UnicodeDecodeError:
-            continue
-    else:
-        raise ValueError("Unknown encoding")
+    decoded, encoding = decode_csv(raw)
     reader = csv.DictReader(io.StringIO(decoded))
     if not reader.fieldnames or len(reader.fieldnames) != len(FIELDS) or set(reader.fieldnames) != set(FIELDS):
         raise ValueError("Header mismatch; do not silently remap")
@@ -59,10 +65,17 @@ def audit(raw, period):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("csv", type=Path)
-    p.add_argument("--period", required=True)
-    p.add_argument("--out", type=Path, required=True)
+    p.add_argument("--inspect-header", action="store_true")
+    p.add_argument("--period")
+    p.add_argument("--out", type=Path)
     a = p.parse_args()
-    result = audit(a.csv.read_bytes(), a.period)
+    raw = a.csv.read_bytes()
+    if a.inspect_header:
+        print(json.dumps(inspect_header(raw), ensure_ascii=False))
+        return
+    if a.period is None or a.out is None:
+        p.error("--period and --out are required for audit")
+    result = audit(raw, a.period)
     # Exclusive output: never replace a previously retained observation.
     with a.out.open("x", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
