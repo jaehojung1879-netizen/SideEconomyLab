@@ -75,3 +75,7 @@ Authenticated Actions collection verified sales (OA-15572) and stores (OA-15577)
 ## Opportunity Radar v2 — verified market trends
 
 기회 탐색이 **지역·업종·비교 기간**을 고르면 공식 추정 소비와 점포 수의 변화를 보여주도록 바뀌었습니다. 서울 25개 자치구의 공식 집계(OA-22176 / OA-22173, 2025 Q2 → 2026 Q2)로 전년 동분기 변화율, 분기 개폐업, 소비·점포 괴리 패턴(4종)을 계산하고 조사할 발견 목록으로 보여줍니다. **분기 비교 가능 여부**와 **기존 1,650 상권 지도 연결 가능 여부**는 독립된 두 관문입니다. 자치구는 전자만 통과해 출처 기준 화면으로만 표시하고, 상권 표본 2곳은 둘 다 닫혀 있습니다. 시장 변화는 미충족 수요·수익성의 증거가 아니며 매출 전망에 자동 입력하지 않습니다. [방법·근거·한계](docs/opportunity-radar-v2.md) · [완료 기록](research/seoul-opportunity-completion-v2.md)
+
+## Demand-first research v1 (proposed)
+
+[Research board](docs/demand-first.html) · [method and next gates](research/demand-first-v1.md) · [registry and public sources](docs/data/demand-first-research-v1.json). Separate hypothesis exploration; no change to the canonical validation frontier, no forecast or authorization.
