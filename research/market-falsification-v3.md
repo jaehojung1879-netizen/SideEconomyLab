@@ -41,3 +41,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Owner-directed parallel facility tracks
 [Dual-track study](facility-dual-track-v1.md): no custom hardware, synthetic-only narrow SaaS, five assumed commitment exposures and explicit hold gates. No canonical candidate promotion or spend.
+
+## Hardware24 focused research
+[Location, SKU, machine offers and stock policy](hardware24-v1.md); 20 SKU hypotheses, 7 directory/area observations, no current host quote, paid demand, verified fit or purchase. Preserve OC-020 HOLD and synthetic-only SaaS.
