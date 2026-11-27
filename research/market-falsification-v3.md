@@ -56,3 +56,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Procurement audit falsification
 [Same-SKU observations and synthetic eligibility baseline](procurement-audit-v1.md). Existing ERP/Excel and price search are serious substitutes. No executable quote, actual savings or generic SaaS approval.
+
+## Broadened outsourced-work frontier
+[Outsourcing frontier v1](outsourcing-frontier-v1.md): public packages and low-price substitutes; catalog master change review is discovery only, no generic SaaS build or new paid evidence.

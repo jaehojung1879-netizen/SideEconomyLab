@@ -1,0 +1,100 @@
+{
+  "synthetic": true,
+  "old": [
+    {
+      "id": "P01",
+      "width_mm": 20,
+      "pack": 10,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "P02",
+      "width_mm": 30,
+      "pack": 20,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "P03",
+      "width_mm": 40,
+      "pack": 10,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "P04",
+      "width_mm": 50,
+      "pack": 5,
+      "status": "ACTIVE"
+    }
+  ],
+  "new": [
+    {
+      "id": "P01",
+      "width_mm": 20,
+      "pack": 10,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "P02",
+      "width_mm": 30,
+      "pack": 10,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "P03",
+      "width_mm": 40,
+      "pack": 10,
+      "status": "DISCONTINUED"
+    },
+    {
+      "id": "P05",
+      "width_mm": null,
+      "pack": 10,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "P06",
+      "width_mm": 60,
+      "pack": 4,
+      "status": "ACTIVE"
+    },
+    {
+      "id": "P06",
+      "width_mm": 60,
+      "pack": 8,
+      "status": "ACTIVE"
+    }
+  ],
+  "expected": [
+    {
+      "id": "P02",
+      "flags": [
+        "PACK_CHANGED"
+      ]
+    },
+    {
+      "id": "P03",
+      "flags": [
+        "STATUS_CHANGED"
+      ]
+    },
+    {
+      "id": "P04",
+      "flags": [
+        "MISSING_FROM_NEW_NOT_DISCONTINUED"
+      ]
+    },
+    {
+      "id": "P05",
+      "flags": [
+        "MISSING_SPEC",
+        "NEW_ID_REVIEW"
+      ]
+    },
+    {
+      "id": "P06",
+      "flags": [
+        "DUPLICATE_ID_BLOCKED"
+      ]
+    }
+  ]
+}

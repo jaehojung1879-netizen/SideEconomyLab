@@ -1,0 +1,346 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "paid_own_transactions": 0,
+  "sources": [
+    {
+      "id": "A01",
+      "url": "https://kmong.com/gig/420616",
+      "kind": "OPENED_CACHE",
+      "fact": "상품등록 1/10/100건 5000/40000/370000원, 100건 3일, 수정 1회, 이미지와 상세페이지 고객 제공. 열린 캐시 리뷰 456건(검색 458), 판매자 전체 거래 485건, 반복 의뢰 후기. 평일 작업, 평균 응답 30분. 실제 거래가격/업무시간 불명.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A02",
+      "url": "https://kmong.com/gig/639729",
+      "kind": "OPENED_CACHE",
+      "fact": "자동 상품등록 1000/5000/10000건 100만/150만/200만원, 수정 0회, API 활용 설명. 상품 리뷰 0, 판매자 전체 30건. A01과 서비스 범위·품질·원본 구조 다름. 제3자 콘텐츠 복제/계정 공유를 우리 서비스에 포함하지 않음.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A03",
+      "url": "https://kmong.com/gig/815430",
+      "kind": "INDEX_ONLY",
+      "fact": "10000건 3일, 엑셀 정리 및 검수 리포트 포함 주장. 상세 접근 실패, 가격·유료거래 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A04",
+      "url": "https://www.sabangnet.co.kr/service-intro/sabangnet-ai",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "상품명·상세이미지로 상품정보고시 생성 기능. 상세 본문 재접근 불완전.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A05",
+      "url": "https://kmong.com/gig/825351",
+      "kind": "INDEX_ONLY",
+      "fact": "제품번호·제원 검색 카탈로그 250만원/10영업일, 최대 2000개 XLSX 관리 옵션 설명. 상세 재접근 실패, 판매 미확인; 웹 개발과 데이터 정비 가격 동일시 금지.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A06",
+      "url": "https://kmong.com/gig/812864",
+      "kind": "INDEX_ONLY",
+      "fact": "수출업체 공급사/상품 DB, 수량별 가격·MOQ·리드타임·인증서 관리 엑셀. 가격 미확인, 상세 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A07",
+      "url": "https://kmong.com/portfolio/view/335426",
+      "kind": "INDEX_ONLY",
+      "fact": "다중마켓 정산 포트폴리오에 연결된 엑셀 상품 19000원/9000원 표시. 실제 판매·성과 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A08",
+      "url": "https://kmong.com/portfolio/view/325729",
+      "kind": "INDEX_ONLY",
+      "fact": "2채널 Power Query 정산 검수 포트폴리오 및 연결 상품 49000원 표시. 판매자 자체 사례; 실제 고객 절감·정산 데이터 독립 확인 없음.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A09",
+      "url": "https://kmong.com/gig/798424",
+      "kind": "OPENED_CACHE",
+      "fact": "30일 맞춤 입찰 알림 39000/69000/129000원, 리뷰 0, 전문가 전체 거래 1223건(이 서비스 거래 아님). 응답 30분 표기. 입찰 자격·제안서·가격 추천 제외.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A10",
+      "url": "https://naver.worksmobile.com/pricing/clovanote/",
+      "kind": "OFFICIAL_OPENED",
+      "fact": "Lite 기업당 월 20000원(연간 계약 18000원), 월 변환 1000분/AI요약25회, VAT 별도.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A11",
+      "url": "https://kmong.com/gig/575784",
+      "kind": "INDEX_ONLY",
+      "fact": "매뉴얼 제작·편집 후기에서 고객 제공 번역문 반영과 원본 PDF 품질 유지 언급. 가격/실제 매출 미확인. 안전 매뉴얼 등 전문 영역 제외.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A12",
+      "url": "https://kr.misumi-ec.com/guide/category/first/ecatalog.html",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "형번·CAD·부품표 제공. 큰 공급업체 자체 카탈로그 및 검색 서비스와 경쟁.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A13",
+      "url": "https://kr.misumi-ec.com/vona2/detail/110310710729/",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "사양 동일하나 형번 변경 및 구형번 재고소진 후 단종 예정 안내. 변경 관리 문제의 사례, 모든 SKU 자동 대응 근거 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "A14",
+      "url": "https://www.informatica.com/ko/products/master-data-management/product-information-management.html",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "PIM 제품정보 관리 및 채널 전달 기능. 중소기업 가격/적합성 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    }
+  ],
+  "candidates": [
+    {
+      "id": "OUT-01",
+      "name": "상품등록 대행",
+      "status": "NO_GENERIC_BUILD",
+      "reason": "상품등록 자동화와 가격경쟁, 계정·수정·평일 대응",
+      "refs": [
+        "A01",
+        "A02",
+        "A03",
+        "A04"
+      ],
+      "actual_repeat_demand": null,
+      "actual_owner_hours": null,
+      "paid_own_verified": false
+    },
+    {
+      "id": "OUT-02",
+      "name": "제조·유통 상품 마스터 정비 및 변경 검수",
+      "status": "DISCOVERY",
+      "reason": "고객 승인 원본의 제품코드/규격/포장수량/단종 변경 검수, CSV 납품. PIM/엑셀 대조.",
+      "refs": [
+        "A05",
+        "A06",
+        "A12",
+        "A13",
+        "A14"
+      ],
+      "actual_repeat_demand": null,
+      "actual_owner_hours": null,
+      "paid_own_verified": false
+    },
+    {
+      "id": "OUT-03",
+      "name": "판매채널 정산 데이터 정리",
+      "status": "NO_GENERIC_BUILD",
+      "reason": "저가 엑셀과 Power Query, 개인정보 및 정산 책임",
+      "refs": [
+        "A07",
+        "A08"
+      ],
+      "actual_repeat_demand": null,
+      "actual_owner_hours": null,
+      "paid_own_verified": false
+    },
+    {
+      "id": "OUT-04",
+      "name": "입찰 정보 알림",
+      "status": "HOLD",
+      "reason": "기존 알림 및 실시간 장애·누락 대응, 실제 지불 미확인",
+      "refs": [
+        "A09"
+      ],
+      "actual_repeat_demand": null,
+      "actual_owner_hours": null,
+      "paid_own_verified": false
+    },
+    {
+      "id": "OUT-05",
+      "name": "회의록·녹취 초벌",
+      "status": "NO_GENERIC_BUILD",
+      "reason": "저가 직접 사용, 음성 개인정보, 법정 녹취 제외",
+      "refs": [
+        "A10"
+      ],
+      "actual_repeat_demand": null,
+      "actual_owner_hours": null,
+      "paid_own_verified": false
+    },
+    {
+      "id": "OUT-06",
+      "name": "비안전 제품자료 편집·번역문 반영",
+      "status": "DISCOVERY",
+      "reason": "고객 승인 문구와 원본만 사용, 복잡한 편집·수정시간·저작권 위험, 안전/인증/법정 문서 제외",
+      "refs": [
+        "A11"
+      ],
+      "actual_repeat_demand": null,
+      "actual_owner_hours": null,
+      "paid_own_verified": false
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "R2",
+      "name": "100건 등록 공개 표시가격 활용 가정 / 2h",
+      "rows": 100,
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 370000,
+        "var_cost": 67000,
+        "unit_hours": 2
+      },
+      "expected": {
+        "cash_units": 4,
+        "economic_units": 6,
+        "max_units": 8,
+        "cash_time_feasible": true,
+        "economic_time_feasible": true,
+        "status": "ASSUMPTION_ONLY"
+      },
+      "max_economic_profit": 1524000
+    },
+    {
+      "id": "R3",
+      "name": "100건 등록 공개 표시가격 활용 가정 / 3h",
+      "rows": 100,
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 370000,
+        "var_cost": 67000,
+        "unit_hours": 3
+      },
+      "expected": {
+        "cash_units": 4,
+        "economic_units": 7,
+        "max_units": 5,
+        "cash_time_feasible": true,
+        "economic_time_feasible": false,
+        "status": "ASSUMPTION_ONLY"
+      },
+      "max_economic_profit": 655000
+    },
+    {
+      "id": "R5",
+      "name": "100건 등록 공개 표시가격 활용 가정 / 5h",
+      "rows": 100,
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 370000,
+        "var_cost": 67000,
+        "unit_hours": 5
+      },
+      "expected": {
+        "cash_units": 4,
+        "economic_units": 13,
+        "max_units": 3,
+        "cash_time_feasible": false,
+        "economic_time_feasible": false,
+        "status": "ASSUMPTION_ONLY"
+      },
+      "max_economic_profit": 49000
+    },
+    {
+      "id": "Q1",
+      "name": "100건 데이터 검수 가상 가격 / 1h",
+      "rows": 100,
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 250000,
+        "var_cost": 35000,
+        "unit_hours": 1
+      },
+      "expected": {
+        "cash_units": 6,
+        "economic_units": 8,
+        "max_units": 16,
+        "cash_time_feasible": true,
+        "economic_time_feasible": true,
+        "status": "ASSUMPTION_ONLY"
+      },
+      "max_economic_profit": 2540000
+    },
+    {
+      "id": "Q2",
+      "name": "100건 데이터 검수 가상 가격 / 2h",
+      "rows": 100,
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 250000,
+        "var_cost": 35000,
+        "unit_hours": 2
+      },
+      "expected": {
+        "cash_units": 6,
+        "economic_units": 10,
+        "max_units": 8,
+        "cash_time_feasible": true,
+        "economic_time_feasible": false,
+        "status": "ASSUMPTION_ONLY"
+      },
+      "max_economic_profit": 820000
+    }
+  ],
+  "proposal": {
+    "scope": "고객이 사용권을 가진 승인 원본의 SKU 마스터와 이전/새 공급사 파일에서 정확한 코드 일치·누락·규격 변경·단종 표기를 검토용으로 납품. 추정 사양·제품 적합성 보증·판매 계정 접속 금지.",
+    "baseline": "같은 파일·같은 기준으로 Excel/Power Query 및 수동 검수와 비교. 실제 작업자 시간, 고객 자료 준비와 수정 시간, 중요 오류, 누락 검출, 최종 승인 기준 기록.",
+    "gate": "외부 접촉 전 겸업/이해상충 확인과 승인. 독립 기업 3곳에서 반복 데이터 정비 사례와 익명/사용권 확인 입력 확보, 실제 유료 발주 2건 별도 승인 후 검증. 월정액은 서로 다른 기간의 실제 반복 결제 전 개발 금지. 제안 중단 조건: 기존 엑셀/ERP/PIM과 비슷한 비용·시간·오류 또는 평일 긴급지원 필요, 월 20h 한도에서 목표 달성 불가.",
+    "budget": "No commercial spend or field work approved; synthetic fixture only."
+  },
+  "notes": [
+    "Displayed prices are historical snapshots and package-specific asking prices, not realizable revenue. Seller-wide trades and reviews are not paid unit counts; A02 reviews not conflated with other gigs.",
+    "100-item QA pricing and all costs/times are assumptions; 10% platform/payment cost plus 30k (registration) or 10k (QA) other variable cost; not actual fees. Fixed monthly time includes only assumed sales/admin; build, CAC, tax not established.",
+    "No new SaaS, no external scraping/automated uploads, no customer materials. Existing procurement and hardware gates unchanged."
+  ]
+}
