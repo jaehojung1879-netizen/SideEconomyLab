@@ -65,3 +65,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Procurement timing feasibility
 [Timing audit](procurement-timing-v1.md): three retrospectively matched municipal notices, zero prospective building-to-purchase links, free incumbent baseline. REV-02 remains SOURCE_BLOCKED; no generic alerts build.
+
+## AI-created demand frontier
+[AI-demand research](ai-demand-frontier-v1.md): domestic hourly offer and official procurement budget, overseas independent testing offers, free tools, GEO competition, tool repair substitutes. Independent non-high-impact acceptance test DISCOVERY only; no real tests, paid evidence or canonical promotion.

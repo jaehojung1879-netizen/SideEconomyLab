@@ -46,3 +46,6 @@ Stop adding feature prototypes and new candidate pages until evidence changes. K
 
 ## Follow-up: timing feasibility
 [Procurement timing audit](procurement-timing-v1.md) records three retrospective municipal notice pairs and explicit source limitations. No 30-project gate pass; no additional prototype.
+
+## AI-created demand follow-up
+[AI-demand frontier](ai-demand-frontier-v1.md): distinguishes labor-rate work from independently priced validation, retains low-capital discovery, does not authorize a pilot. GEO generic build rejected.
