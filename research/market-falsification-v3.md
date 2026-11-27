@@ -47,3 +47,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Cross-model hurdle comparison
 [Parallel hurdles](parallel-hurdles-v1.md) adds independent public-company, incumbent and public-lending evidence, residential event-frequency stress test and B2B spend requirement. All candidate approvals unchanged; no purchases.
+
+## Korean managed procurement
+[Sector and working-capital research](korean-managed-procurement-v1.md); generic ordering already commoditized, no candidate promotion. Scope preserves canonical registry.
