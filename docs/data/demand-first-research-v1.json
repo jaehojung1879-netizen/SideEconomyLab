@@ -146,6 +146,14 @@
       "observed_on": "2026-11-27",
       "level": "PUBLIC_PAGE_ONLY",
       "observation": "소형 SaaS 거래 사례 분석; 거래선택 편향과 실사 필요."
+    },
+    {
+      "id": "CV030",
+      "name": "기존 CV-030 검증계획",
+      "url": "https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/adabef5453808ba482f0cb0862eeae0200c64028/research/candidate-validation-portfolio-v1.md",
+      "observed_on": "2026-11-27",
+      "level": "REPOSITORY_PLAN_ONLY",
+      "observation": "행사 외주 공급사 검증 계획; 현재 실제 견적·거래 없음."
     }
   ],
   "entries": [
@@ -389,7 +397,7 @@
       "test": "기존 CV-030 동일 사양 순견적 3건",
       "kill": "기존 CV-030 실패 규칙 그대로 적용",
       "source_ids": [
-        "STATION"
+        "CV030"
       ],
       "status": "EXISTING_GATE",
       "confidence": "C0_HYPOTHESIS",

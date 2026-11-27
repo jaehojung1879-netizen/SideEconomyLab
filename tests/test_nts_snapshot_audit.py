@@ -43,3 +43,12 @@ class NTSAuditTest(unittest.TestCase):
             self.assertFalse(e["approved"])
             self.assertIsNone(e["forecast"])
             self.assertEqual(e["paid_transactions"],0)
+    def test_board_matches_registry(self):
+        root = Path(__file__).resolve().parents[1]
+        data = json.loads((root/"docs/data/demand-first-research-v1.json").read_text(encoding="utf-8"))
+        html = (root/"docs/demand-first.html").read_text(encoding="utf-8")
+        for e in data["entries"]:
+            self.assertEqual(html.count("<small>"+e["id"]+" ·"), 1)
+            self.assertIn(e["name"], html)
+        for s in data["sources"]:
+            self.assertIn(s["url"], html)
