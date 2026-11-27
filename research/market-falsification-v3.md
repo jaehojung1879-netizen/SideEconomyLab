@@ -35,3 +35,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Buyer-route desk research
 [Purchase/supply observations and four falsifiable tasks](buyer-route-v1.md). No field work or candidate promotions; existing gates retained.
+
+## Recommerce / repeat-payment falsification
+[New study](recommerce-research-v1.md): 14 observations; no matched trades; 3 assumption-only downside scenarios. No approval or canonical promotion.
