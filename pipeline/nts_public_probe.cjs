@@ -14,11 +14,23 @@ if (!dir) throw Error('artifact directory required');
   try {
     const response = await fetch(catalog, {redirect:'error', signal:AbortSignal.timeout(25000)});
     if (!response.ok) throw Error('catalog HTTP '+response.status);
-    const meta = JSON.parse(await response.text());
+    const body = await response.text();
+    if (Buffer.byteLength(body) > 1000000) throw Error('catalog body too large');
+    const meta = JSON.parse(body);
+    if (!meta || typeof meta !== 'object' || Array.isArray(meta)) throw Error('catalog not an object');
+    // Preserve the public response before testing identity, so mismatch is inspectable.
+    await fs.writeFile(path.join(dir,'catalog.json'), JSON.stringify(meta,null,2));
+    status.catalog_diagnostic = {
+      keys:Object.keys(meta).sort().slice(0,80),
+      alternateName:typeof meta.alternateName==='string'?meta.alternateName.slice(0,180):null,
+      name:typeof meta.name==='string'?meta.name.slice(0,180):null,
+      url_matches:meta.url===portal,
+      encodingFormat:typeof meta.encodingFormat==='string'?meta.encodingFormat.slice(0,40):null,
+      creator_matches:meta.creator?.name==='국세청'
+    };
     const title = meta.alternateName;
     const match = typeof title === 'string' && title.match(/^국세청_사업자현황_100대 생활업종_(20\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01]))$/);
     if (!match || meta.url !== portal || meta.encodingFormat !== 'CSV' || meta.creator?.name !== '국세청') throw Error('catalog identity mismatch');
-    await fs.writeFile(path.join(dir,'catalog.json'), JSON.stringify(meta,null,2));
     status.catalog_period = match[1];
     status.stage = 'portal';
     browser = await chromium.launch({headless:true});

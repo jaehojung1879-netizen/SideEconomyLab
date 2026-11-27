@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "observations": [
+    {
+      "id": "MF-01",
+      "candidate": "DF-008",
+      "kind": "MARKETPLACE_REVIEW_AND_OFFER",
+      "url": "https://kmong.com/gig/735257",
+      "quality": "OPENED_CACHED_PAGE",
+      "fact": "리뷰 5개 표시. 제조 작업지시·생산현황·납품예정·발주서 연동을 의뢰했다는 구매자 진술. 같은 표시 계정의 리뷰 중복 가능.",
+      "inference": "범용 ERP가 부담스러운 제조업 업무의 구체적 pain 후보. 실제 가격·매출·빈도 미확인.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-02",
+      "candidate": "DF-008",
+      "kind": "MARKETPLACE_REVIEW_AND_OFFER",
+      "url": "https://kmong.com/gig/543928",
+      "quality": "OPENED_CACHED_PAGE",
+      "fact": "리뷰 77개, 전문가 전체 거래 129건 표시. 상품 호가 7천/2만/10만원, 수정 제한 없음, 연락 08~20시, 평균 응답 10분 이내 표시.",
+      "prices_krw": [
+        7000,
+        20000,
+        100000
+      ],
+      "inference": "유료 수요의 간접 흔적이 있으나 판매자의 거래 총계는 상품별 거래 수가 아님. 가격과 리뷰를 곱해 매출 추정 금지. 평일 응답 요구에 취약.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-03",
+      "candidate": "DF-008",
+      "kind": "COMPETITOR_PRICE",
+      "url": "https://classup.io/",
+      "quality": "CONFLICTING_WEB_VINTAGES",
+      "fact": "열린 캐시에는 50명 무료, 200명 월 2.9만원, 500명 월 8.9만원. 최신 검색 발췌에는 100명까지 무료로 상이. 출결·수납·보고·AI 브리핑 제공.",
+      "inference": "무료 핵심 기능 존재는 일관되나 현재 정확한 가격·학생 한도는 미확인. 범용 학원 ERP 신규 구축 보류.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-04",
+      "candidate": "DF-008",
+      "kind": "COMPETITOR_PRICE",
+      "url": "https://edpen.kr/",
+      "quality": "SEARCH_SNIPPET_ONLY",
+      "fact": "20명 무료 및 월 2.9만/7.9만/14.9만원 플랜 표시. 출결·수납·학생 관리.",
+      "prices_krw": [
+        0,
+        29000,
+        79000,
+        149000
+      ],
+      "inference": "공급자 호가; 다점포 본사 별도 월마감 pain 여부 미확인.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-05",
+      "candidate": "DF-008",
+      "kind": "COMPETITOR_PRICE",
+      "url": "https://www.on-hi.com/pricing/",
+      "quality": "SEARCH_SNIPPET_ONLY",
+      "fact": "관리 프로그램 이용료 무료, 직접 받은 현금·계좌이체 수납에 수수료 없음이라는 표시.",
+      "prices_krw": [
+        0
+      ],
+      "inference": "다른 결제·알림 비용 포함 총비용 미확인.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-06",
+      "candidate": "DF-005",
+      "kind": "COMPETITOR_PRICE",
+      "url": "https://fintate.com/intro/saas",
+      "quality": "SEARCH_SNIPPET_ONLY",
+      "fact": "기업형 계약서당 월 110원부터(VAT 포함), 임대차/공실/수납/정산/알림 기능 표시.",
+      "prices_krw": [
+        110
+      ],
+      "inference": "최소 약정, 총비용, 임차인 관점 기능은 미확인. 단순 만기 알림을 고가 판매할 근거 없음.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-07",
+      "candidate": "DF-007",
+      "kind": "CONTRACT_DISCLOSURE",
+      "url": "https://www.k-apt.go.kr/bid/privateContractDetail.do?pcNum=20250428082029047",
+      "quality": "OPENED_CACHED_PAGE",
+      "fact": "정수기 렌탈 2025-04-08~2030-03-31, 1,030,910원 VAT 별도, 2025-04-28 등록.",
+      "amount_krw": 1030910,
+      "contract_id": "20250428082029047",
+      "start": "2025-04-08",
+      "end": "2030-03-31",
+      "published": "2025-04-28",
+      "direction": "BUYER_EXPENSE",
+      "inference": "장기 반복 수요의 계약 증거. 계약금액의 월정액 여부, 실제 지급·단위·갱신 의향 불명. 매출 전망 금지.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-08",
+      "candidate": "DF-007",
+      "kind": "TENDER_REQUIREMENT",
+      "url": "https://www.k-apt.go.kr/bid/bidDetail.do?bidNum=20260129170230201",
+      "quality": "OPENED_CACHED_PAGE",
+      "fact": "승강기 모니터 39대, 3년, 정보통신공사업 등록, 자본금 3억원 이상, 1000세대 이상 5개 단지 실적, 계약보증 20%, 하도급 금지. 공고 유찰 표시.",
+      "direction": "SUPPLIER_PAYS_HOST",
+      "inference": "이 공고의 개인 직접 입찰은 조건상 제외. 유찰은 접근 가능한 기회와 다름. 광고주 매출과 호스트 지급을 구별.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-09",
+      "candidate": "DF-007",
+      "kind": "TENDER_REQUIREMENT",
+      "url": "https://www.k-apt.go.kr/bid/bidDetail.do?bidNum=20261001110608669",
+      "quality": "SEARCH_SNIPPET_ONLY",
+      "fact": "승강기 미디어보드 최고가 선정, 시설 임대료×계약연수, 권리 양도·하도급 금지.",
+      "direction": "SUPPLIER_PAYS_HOST",
+      "inference": "공고금액은 공급자가 받는 매출과 반대 방향일 수 있음. 직접 입찰 검토 제외.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-10",
+      "candidate": "DF-009",
+      "kind": "AUCTION_REQUIREMENT",
+      "url": "https://auction.minmins.kr/item/2026-0900-051666/",
+      "quality": "THIRD_PARTY_SEARCH_SNIPPET",
+      "fact": "학교 식기세척기 불용품 공매, 낙찰자 일괄 수거 및 재활용 불가 시 폐기 부담이라는 공고 인용.",
+      "inference": "물류·폐기비를 모르면 낮은 낙찰가도 손실 가능. 공식 원문 재확인 및 낙찰가 없음.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "MF-11",
+      "candidate": "DF-007",
+      "kind": "COMPETITOR_FEATURE",
+      "url": "https://apps.apple.com/kr/app/%EC%95%84%ED%8C%8C%ED%8A%B8%EB%84%88-%EC%95%84%ED%8C%8C%ED%8A%B8-%EC%83%9D%ED%99%9C-%ED%95%84%EC%88%98%EC%95%B1/id1243505765",
+      "quality": "SEARCH_SNIPPET_ONLY",
+      "fact": "아파트 방송·공지, 시설 예약/결제/정산 제공.",
+      "inference": "기존 방송 서비스 계약을 보고 범용 아파트 앱으로 진입할 근거 없음.",
+      "observed_on": "2026-11-27",
+      "paid_verified": false,
+      "forecast_eligible": false
+    }
+  ],
+  "api_catalog": [
+    {
+      "id": "15057758",
+      "name": "K-apt 수의계약",
+      "purpose": "계약 명세·기간·금액·식별자 확인",
+      "url": "https://www.data.go.kr/data/15057758/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    },
+    {
+      "id": "15059177",
+      "name": "K-apt 입찰결과",
+      "purpose": "선정 결과·계약 금액, 유찰/취소 확인",
+      "url": "https://www.data.go.kr/data/15059177/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    },
+    {
+      "id": "15058166",
+      "name": "K-apt 입찰공고",
+      "purpose": "공고 조건·등록시점·재공고 식별",
+      "url": "https://www.data.go.kr/data/15058166/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    },
+    {
+      "id": "15058453",
+      "name": "K-apt 단지 기본",
+      "purpose": "단지 코드 및 세대수·관리 특성",
+      "url": "https://www.data.go.kr/data/15058453/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    },
+    {
+      "id": "15157252",
+      "name": "온비드 입찰결과 목록",
+      "purpose": "cltrTypeCd/prptDivCd/opbdDtStart/opbdDtEnd; cltrMngNo와 pbctCdtnNo 보존",
+      "url": "https://www.data.go.kr/data/15157252/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    },
+    {
+      "id": "15157254",
+      "name": "온비드 입찰결과 상세",
+      "purpose": "cltrMngNo, pbctCdtnNo; 낙찰 0010, 유찰 0011, 취소 0012",
+      "url": "https://www.data.go.kr/data/15157254/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    },
+    {
+      "id": "15157245",
+      "name": "온비드 동산 상세",
+      "purpose": "cltrMngNo, 제조사/모델/수량/보관/감정 정보",
+      "url": "https://www.data.go.kr/data/15157245/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    },
+    {
+      "id": "15157218",
+      "name": "온비드 공고 상세",
+      "purpose": "반출·인수·폐기·보증금 등 원문 조건",
+      "url": "https://www.data.go.kr/data/15157218/openapi.do",
+      "access": "METADATA_ONLY_AUTH_REQUIRED",
+      "raw_rows": null
+    }
+  ],
+  "eligible_for_forecast": false,
+  "commercial_approval": false
+}
