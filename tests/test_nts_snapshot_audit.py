@@ -63,3 +63,14 @@ class NTSAuditTest(unittest.TestCase):
         self.assertEqual(len(d["sha256"]), 64)
         with self.assertRaises(ValueError):
             audit(changed, "2026-09")
+
+    def test_observed_official_header_variant(self):
+        raw = fixture([["카페","서울","강동구",100,0,90]])
+        for name in ("당월", "전월", "전년동월"):
+            raw = raw.replace(name.encode(), (" "+name+" ").encode(), 1)
+        result = audit(raw, "2026-09")
+        self.assertEqual(result["header_mapping"], "OBSERVED_20260930_EXACT_SPACE_VARIANT")
+        self.assertEqual(result["rows"][0]["current"], 100)
+        self.assertEqual(result["comparison_eligible"], 0)
+        with self.assertRaises(ValueError):
+            audit(raw.replace(" 전월 ".encode(), "전월".encode(), 1), "2026-09")

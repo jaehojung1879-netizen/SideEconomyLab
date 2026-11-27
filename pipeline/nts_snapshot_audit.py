@@ -8,6 +8,8 @@ import re
 from pathlib import Path
 
 FIELDS = ["업종", "시도", "시군구", "당월", "전월", "전년동월"]
+# Observed in official 20260930 artifact (run 46020228872); no generic whitespace normalization.
+OBSERVED_HEADER = ["업종", "시도", "시군구", " 당월 ", " 전월 ", " 전년동월 "]
 SOURCE = "https://www.data.go.kr/data/15061118/fileData.do"
 
 def count(value):
@@ -38,7 +40,13 @@ def audit(raw, period):
         raise ValueError("Expected YYYY-MM; verify against source file")
     decoded, encoding = decode_csv(raw)
     reader = csv.DictReader(io.StringIO(decoded))
-    if not reader.fieldnames or len(reader.fieldnames) != len(FIELDS) or set(reader.fieldnames) != set(FIELDS):
+    raw_header = reader.fieldnames
+    if raw_header == OBSERVED_HEADER:
+        reader.fieldnames = FIELDS.copy()
+        header_mapping = "OBSERVED_20260930_EXACT_SPACE_VARIANT"
+    elif raw_header and len(raw_header) == len(FIELDS) and set(raw_header) == set(FIELDS):
+        header_mapping = "EXACT_METADATA_FIELDS"
+    else:
         raise ValueError("Header mismatch; do not silently remap")
     keys = set()
     rows = []
@@ -58,7 +66,7 @@ def audit(raw, period):
     if not rows:
         raise ValueError("Empty snapshot")
     return dict(source=SOURCE, period_claimed=period, sha256=hashlib.sha256(raw).hexdigest(),
-                encoding=encoding, row_count=len(rows), industry_count=len({r["industry"] for r in rows}),
+                encoding=encoding, raw_header=raw_header, header_mapping=header_mapping, row_count=len(rows), industry_count=len({r["industry"] for r in rows}),
                 coverage_verified=False, comparison_eligible=0,
                 status="PARSED_NOT_PUBLISHED", rows=rows)
 
