@@ -15,3 +15,6 @@ The new `pipeline/owner_capacity.py` computes necessary monthly integer billable
 
 ## Public data intake
 NTS latest catalog still 20260930 (2026-11-18). Older detailed metadata is May 2026 with 24,473 rows and suppression; it cannot validate the September raw file. Direct container HTTPS attempt failed DNS. An unscheduled PR-only Actions probe has been added; its actual result must be verified separately (a successful workflow can record BLOCKED): open official catalog and download page; verify period and unique public download control; accept only CSV named for the catalog period; retain raw/audit as run artifact only. No auth bypass or guessed download route. If portal page, filename, parser or control differs, fail closed. Does not grant coverage/geography eligibility. No scheduled collection or repository data publication.
+
+## Public-link safety correction
+Native CI rejected four municipal public navigation URLs because their numeric menu selector matches the repository credential-query guard. Preserve original path and encoded query parameter name/value pairs separately in the ledger; public clickable links point only to the official origin and are explicitly marked as not verified direct-detail links. Do not weaken the credential scanner. Original contract values and evidence levels unchanged.
