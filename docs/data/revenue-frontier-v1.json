@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "observed_on": "2026-11-28",
+  "status": "RESEARCH_ONLY",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "own_paid_transactions": 0,
+  "sources": [
+    {
+      "id": "G01",
+      "url": "https://salessecret.co.kr/",
+      "kind": "OPENED_CACHE",
+      "fact": "신규 인허가 지도, 업종/기간 필터, 영업상태/엑셀, 월 18900원, 첫달 100원 프로모션. 자체 예시 전환율은 실적 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G02",
+      "url": "https://ncsp.kr/",
+      "kind": "INDEX_ONLY",
+      "fact": "건축허가/착공 영업정보 및 팀 관리. 상세 재접근 실패, 가격 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G03",
+      "url": "https://leadberry.taeonts.kr/service",
+      "kind": "INDEX_ONLY",
+      "fact": "공공데이터 신규/변화 신호, ICP 추천, 입찰공고. 상세 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G04",
+      "url": "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?cpbizYn=&dtlBizMntNo=24RP01A",
+      "kind": "OFFICIAL_OPENED",
+      "fact": "HS6 단순 해외기업 정보 무료, 취급기업 상세 10개사 20만원, 교신의사 바이어 1개사 15만원. 공공 지원 조건이며 민간 시장가격이나 확정 계약 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G05",
+      "url": "https://sales-agent.kr/",
+      "kind": "INDEX_ONLY",
+      "fact": "Starter 월 30만원, Professional 월 50만원; 리드 검색은 데이터 제공사 제휴 후 요금제 포함 예정이라고 명시. 실제 고객·매출 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G06",
+      "url": "https://offer.io.kr/pricing",
+      "kind": "OPENED_CACHE",
+      "fact": "4주 초기 세팅, 최소 1개월 계약, 3개월 이상 권장, 미팅 수 보장하지 않음. 영업 전과정 대행은 평일 개입 위험.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G07",
+      "url": "https://kicox.or.kr/kfactory/business/axSupplySearch.do",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "산업단지공단 제조 매칭. 거래단가/MOQ 합의 등 계약에는 관여하지 않는다고 명시.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G08",
+      "url": "https://development.capa.ai/",
+      "kind": "VENDOR_INDEX",
+      "fact": "CAPA 제조 파트너 탐색/견적. 고객사 1만여 자체 표시. 활성 고객 또는 거래액 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G09",
+      "url": "https://www.logisall.com/kr/sub/business/new/logisticsSolution.asp",
+      "kind": "VENDOR_INDEX",
+      "fact": "유휴 창고 매칭 및 계약 통합 서비스.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G10",
+      "url": "https://seoulppurihub.kr/pages/business/equipment.do",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "고가 공동 장비와 예약 시스템 제공.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G11",
+      "url": "https://www.keti.re.kr/platform/business_co/business_co04_03.php",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "약 560종 연구장비 공동 활용 및 장비별 사용료.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G12",
+      "url": "https://www.data.go.kr/catalog/15136267/openapi.json",
+      "kind": "OFFICIAL_METADATA",
+      "fact": "건축HUB 건축인허가 REST, 월간 갱신, 2026-07-10 메타 수정. 원본행/공개시각 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G13",
+      "url": "https://data.seoul.go.kr/dataList/OA-22404/S/1/datasetView.do",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "서울 건축인허가 기본개요, 착공예정/실제착공/허가/사용승인일. 원천 행 및 이력 수집 미실행.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G14",
+      "url": "https://data.seoul.go.kr/dataList/OA-16094/S/1/datasetView.do",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "일반음식점 인허가, 검색 결과 갱신일 2026-11-15. 11-28 현재 13일 경과라는 표시 차이일 뿐 개별 행 공개 지연은 측정 못함.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G15",
+      "url": "https://www.law.go.kr/lsLawLinkInfo.do?chrClsCd=010202&lsJoLnkSeq=1000608516",
+      "kind": "OFFICIAL_LAW_INDEX",
+      "fact": "식품위생법 시행규칙 제42조 영업신고는 영업 필요 시설을 갖춘 후 제출. 적용 예외 및 최신 조문 별도 확인. 신규 음식점 신고가 인테리어 선행 신호라고 가정하지 않음.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G16",
+      "url": "https://sidexit.com/market/content",
+      "kind": "LIST_INDEX_ONLY",
+      "fact": "인터넷신문 희망가 600만원, 주 12h 운영 표시, 연 광고수익 4천만원대 주장, 월매출/운영 잔여액 미입력. 상세 접근 실패. 광고 매출은 이익 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G17",
+      "url": "https://eummarket.com/market?mode=noowner",
+      "kind": "LIST_INDEX_ONLY",
+      "fact": "AI 행동훈련 SaaS 희망가 1500만원, 연매출 5000만원, 순익 비공개. 상세 접근 실패. 기존 연구 통상 자본상한 1000만원 초과.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "G18",
+      "url": "https://blog.acquire.com/acquire-com-biannual-acquisition-multiples-report-jan-2026/",
+      "kind": "MARKETPLACE_REPORTED_CLOSED",
+      "fact": "Acquire.com 자체 익명 확인 거래 2024/2025 SaaS 매각가격/연이익 중앙값 3.9배. 플랫폼 표본; 한국 소액 매물의 적정 가격 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "L1",
+      "name": "신규개업 정보 저가 구독",
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 18900,
+        "var_cost": 3000,
+        "unit_hours": 0.25
+      },
+      "needed": 214,
+      "capacity": 64,
+      "max_economic_profit": 117600
+    },
+    {
+      "id": "L2",
+      "name": "산업별 고가치 정보 (가상)",
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 79000,
+        "var_cost": 10000,
+        "unit_hours": 0.5
+      },
+      "needed": 26,
+      "capacity": 32,
+      "max_economic_profit": 1308000
+    },
+    {
+      "id": "L3",
+      "name": "검증 거래처 연결 (가격 가상)",
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 150000,
+        "var_cost": 20000,
+        "unit_hours": 2
+      },
+      "needed": 26,
+      "capacity": 8,
+      "max_economic_profit": 140000
+    }
+  ],
+  "decisions": [
+    {
+      "id": "REV-01",
+      "name": "범용 인허가/영업지도",
+      "state": "NO_GENERIC_BUILD",
+      "refs": [
+        "G01",
+        "G02",
+        "G03",
+        "G14",
+        "G15"
+      ],
+      "reason": "월 18900원 경쟁, 업종별 신고시점과 구매발주시점 다름. 영업신고는 일부 시공 이후.",
+      "reopen": "한 산업의 구매 이벤트를 실제 발주 이전에 포착하는 시점 증거 및 고객이 기존 서비스보다 유용하다고 검증."
+    },
+    {
+      "id": "REV-02",
+      "name": "산업별 구매시점 정보",
+      "state": "SOURCE_BLOCKED_DISCOVERY",
+      "refs": [
+        "G02",
+        "G12",
+        "G13",
+        "G15"
+      ],
+      "reason": "건축/착공 정보도 경쟁. 공식 기록일은 공개일이 아님; 과거 공개시각 및 실제 발주 라벨 없음.",
+      "reopen": "원문 사용조건 확인, 30개 이상 비개인 공개 프로젝트를 대상으로 최초 수집일 기록. 공개일→실제 구매공고/요청까지 시간차, 기존 검색/지도 대비 유효 기회 정밀도/누락/작업시간 측정. 미래 공개자료로 소급 예측 금지."
+    },
+    {
+      "id": "REV-03",
+      "name": "수출 바이어·제조 매칭",
+      "state": "HOLD",
+      "refs": [
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08"
+      ],
+      "reason": "공공 무료/유료 지원 및 민간 대행, 전문성·책임·평일 협의. 단순 업체 목록 경쟁력 부족.",
+      "reopen": "공공 지원과 기존 플랫폼에 없는 특정 반복 업무 및 독립 고객 유료 검증; 대량 연락처 수집·자동 발송 제외."
+    },
+    {
+      "id": "REV-04",
+      "name": "유휴 창고·장비 중개",
+      "state": "HOLD",
+      "refs": [
+        "G09",
+        "G10",
+        "G11"
+      ],
+      "reason": "기존 상용/공공 예약·매칭. 사고·보험·계약·운송 위험.",
+      "reopen": "특정 장비 예약 불가 수요와 공급사 직접 계약/운영/보험 책임 확보. 부동산 중개 관련 규제 검토."
+    },
+    {
+      "id": "REV-05",
+      "name": "수익형 디지털 자산 인수",
+      "state": "HOLD_NO_ACQUISITION",
+      "refs": [
+        "G16",
+        "G17",
+        "G18"
+      ],
+      "reason": "희망가·판매자 주장만 존재. 600만원 매물은 운영 12h/주(~52h/월), 1500만원 매물은 자본 상한 초과.",
+      "reopen": "12개월 실제 결제/비용, 유입 및 고객 집중/이탈, 이전 가능 권리, 4주 작업로그, 장애 대응 및 가격 24개월 회수 검증. AI 개선 미검증이면 가치 0으로 가정."
+    }
+  ],
+  "notes": [
+    "All price observations are offers except G18 marketplace-reported closed multiple; no verified individual paid transaction. Cross-scope prices not direct comparable.",
+    "No lead list, personal info, outreach, signed customer, raw API data, purchase, bid, or deployment. Dates are public metadata, not release timestamps.",
+    "Economic bounds assume full capacity sold, no acquisition/build cost, no tax. Capacity is not predicted demand. Target 1m/month, owner 20h/month, labor 40k/hour; research assumptions not new commercial approval.",
+    "No new algorithm or UI: evidence and queue only. Existing candidate statuses and field ledger unchanged."
+  ]
+}

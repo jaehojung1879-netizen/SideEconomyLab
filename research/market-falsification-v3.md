@@ -59,3 +59,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Broadened outsourced-work frontier
 [Outsourcing frontier v1](outsourcing-frontier-v1.md): public packages and low-price substitutes; catalog master change review is discovery only, no generic SaaS build or new paid evidence.
+
+## Revenue-side opportunity and research backlog reset
+[Revenue frontier](revenue-frontier-v1.md): 18 observations, 5 disposition gates, 3 assumption-only hurdles. New opening signals, upstream event timing, asset matching and digital assets have credible substitutes or source gaps. No new prototypes, no candidate promotion.
