@@ -17,3 +17,6 @@ Run 46017719956 / job 140569025964 ended workflow success with **BLOCKED at cata
 
 ## Explicit evidence boundaries
 No customer contact, no paid verification, no estimates of market total, no investor/owner authorization. Existing validation gates remain unchanged. Research action priority: source access and field-policy clarification before further product building.
+
+### Diagnostic result and correction
+Run 46018116574, job 140570398143: current actual response had alternateName ending 20260930, matching URL, CSV and matching creator. The literal JavaScript regex had doubled backslashes (four in the regex) and rejected valid digits. Replaced with explicit digit classes, calendar validation, and a deterministic self-test in the PR workflow. Catalog identity constraints and downstream download controls remain unchanged. The corrected live download outcome is not yet known.

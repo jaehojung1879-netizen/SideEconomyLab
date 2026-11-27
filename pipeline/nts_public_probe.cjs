@@ -2,10 +2,25 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
-const {chromium} = require('playwright');
+const assert = require('node:assert/strict');
 const catalog = 'https://www.data.go.kr/catalog/15061118/fileData.json';
 const portal = 'https://www.data.go.kr/data/15061118/fileData.do';
+function catalogMatch(title) {
+  const m = typeof title === 'string' && title.match(/^국세청_사업자현황_100대 생활업종_(20[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12][0-9]|3[01]))$/);
+  if (!m) return null;
+  const y=Number(m[1].slice(0,4)), month=Number(m[1].slice(4,6)), day=Number(m[1].slice(6,8));
+  const date=new Date(Date.UTC(y,month-1,day));
+  return date.getUTCFullYear()===y && date.getUTCMonth()===month-1 && date.getUTCDate()===day ? m : null;
+}
 const dir = process.argv[2];
+if (dir==='--self-test') {
+  assert.equal(catalogMatch('국세청_사업자현황_100대 생활업종_20260930')[1],'20260930');
+  assert.equal(catalogMatch('국세청_사업자현황_100대 생활업종_20240229')[1],'20240229');
+  for (const invalid of ['국세청_사업자현황_100대 생활업종_20260229','국세청_사업자현황_100대 생활업종_20261301','국세청_사업자현황_100대 생활업종_20260931','국세청_사업자현황_100대 생활업종','다른자료_20260930',null]) assert.equal(catalogMatch(invalid),null);
+  console.log('NTS_CATALOG_IDENTITY_SELF_TEST_PASS');
+  process.exit(0);
+}
+const {chromium} = require('playwright');
 if (!dir) throw Error('artifact directory required');
 (async () => {
   await fs.mkdir(dir, {recursive:true});
@@ -29,7 +44,7 @@ if (!dir) throw Error('artifact directory required');
       creator_matches:meta.creator?.name==='국세청'
     };
     const title = meta.alternateName;
-    const match = typeof title === 'string' && title.match(/^국세청_사업자현황_100대 생활업종_(20\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01]))$/);
+    const match = catalogMatch(title);
     if (!match || meta.url !== portal || meta.encodingFormat !== 'CSV' || meta.creator?.name !== '국세청') throw Error('catalog identity mismatch');
     status.catalog_period = match[1];
     status.stage = 'portal';
