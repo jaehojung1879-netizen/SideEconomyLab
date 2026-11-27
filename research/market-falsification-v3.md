@@ -32,3 +32,6 @@ Run 46020228872 logged UTF-8-sig raw bytes 1,310,324; SHA-256 `16d341e70f123eeee
 
 ## Actual NTS data parsed and inspected
 Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded and raw hash independently matched. See [NTS local profile](nts-local-profile-v1.md). No coverage or time comparison promotion; static current-count research slice only.
+
+## Buyer-route desk research
+[Purchase/supply observations and four falsifiable tasks](buyer-route-v1.md). No field work or candidate promotions; existing gates retained.

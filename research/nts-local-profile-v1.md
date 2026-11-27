@@ -33,3 +33,5 @@ These are public registered active business counts, not physical shops or reacha
 
 ## Reproduction
 Retrieve original artifact while retained, extract snapshot.csv, from repo root run `python -m pipeline.nts_local_profile snapshot.csv`. This checks exact hash, size, counts and all 85 selected cells against the committed profile. Raw archive is not committed here; current Actions retention is finite. Standalone [research view](../docs/nts-local-profile.html) and [JSON](../docs/data/nts-local-profile-v1.json) are additive. No main deployment or existing GIS edits.
+
+Native probe now independently replays the fixed local profile against the downloaded raw file only if SHA-256 equals the retained historical snapshot. Different snapshots are not silently compared. Result to be verified in Actions.

@@ -78,6 +78,13 @@ if (!dir) throw Error('artifact directory required');
     status.status = 'PARSED_NOT_PUBLISHED';
     status.row_count = audit.row_count;
     status.sha256 = audit.sha256;
+    // Reproduce fixed historical local slice only if the downloaded raw identity matches.
+    const expected = JSON.parse(await fs.readFile('docs/data/nts-local-profile-v1.json','utf8'));
+    if (audit.sha256 === expected.sha256) {
+      status.local_profile_status = 'CHECKING';
+      execFileSync('python',['-m','pipeline.nts_local_profile',raw],{stdio:'inherit',timeout:30000});
+      status.local_profile_status = 'REPRODUCED';
+    } else { status.local_profile_status = 'DIFFERENT_SNAPSHOT_NOT_COMPARED'; }
   } catch(e) { status.reason = String(e.message).slice(0,400); }
   finally { if(browser) await browser.close(); await fs.writeFile(path.join(dir,'status.json'),JSON.stringify(status,null,2)); console.log(JSON.stringify(status)); }
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "sources": [
+    {
+      "id": "B01",
+      "kind": "CONTRACT_LIST_SNIPPET",
+      "url": "https://www.ice.go.kr/contract/ir/selectCntrInfoList.do?mi=11307&schCntrInstNm=%EC%9D%B8%EC%B2%9C%ED%95%A8%EB%B0%95%EC%B4%88%EB%93%B1%ED%95%99%EA%B5%90&schFsclY=ALL",
+      "name": "인천함박초등학교 복사용지 구입",
+      "fact": "2026-08-06 500,000원, 2026-09-29 1,200,000원, 서로 다른 공급자. 동일 기관의 두 공개 계약 행; 상세 페이지 접근 시간 초과. 수량/규격/실지급/민간 학원 구매 불명.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B02",
+      "kind": "SUPPLIER_OFFER_SNIPPET",
+      "url": "https://www.onberic.co.kr/product/list.html?cate_no=51",
+      "name": "온베릭커머스",
+      "fact": "사업자 도매 및 고객 직송 제공 주장. 실제 공급가 회원 로그인, 최소주문·배송비 상품별 확인. 순견적 미확보.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B03",
+      "kind": "RETAIL_OFFER_SNIPPET",
+      "url": "https://shinsegaemall.ssg.com/disp/brandShop.ssg?brandId=3000065053",
+      "name": "우리카피 A4 80g 2500매",
+      "fact": "32,540원 + 배송 3,000원 표시. 실제 결제·재고·VAT 및 SKU 동일성 미확인.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B04",
+      "kind": "RETAIL_OFFER_SNIPPET",
+      "url": "https://daedoi.com/product/%EB%B3%B5%EC%82%AC%EC%9A%A9%EC%A7%80a4-1box/4702/category/484/display/1/",
+      "name": "대도지물 A4 80g 2500매",
+      "fact": "36,300원 + 한 박스 주문 배송비 5,000원 표시. 브랜드/SKU 불일치 가능; B03과 직접 차익 비교 금지.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B05",
+      "kind": "COMPETITOR_OPENED_PAGE",
+      "url": "https://balonaem.com/introduce.php",
+      "name": "바로냄",
+      "fact": "Basic 40,000원/월, Pro 50,000원/월 표시. 견적·자재·발주·정산, 맞춤 온보딩 및 공급자 포털 제공. 실제 가입자·VAT 미확인.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B06",
+      "kind": "COMPETITOR_SNIPPET",
+      "url": "https://pro.in-bak.com/",
+      "name": "인박 Pro",
+      "fact": "웹 월 49,000원, 앱 월 59,000원 표시. 실측, 단가, 정산 및 AI 기능. 실제 체결가 미확인.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B07",
+      "kind": "COMPETITOR_SNIPPET",
+      "url": "https://partsclub.kr/",
+      "name": "PartsClub",
+      "fact": "정비소 견적 요청의 AI 부품 식별, ERP 재고·가격 연동 및 공급사 장터 제공 주장. 실제 계약·가격·가입 규모 미확인.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B08",
+      "kind": "SUPPLIER_OFFER_SNIPPET",
+      "url": "https://jungsungpnc.co.kr/guide01-payment",
+      "name": "정성피엔씨",
+      "fact": "A4급 3T 포맥스 손잡이 판넬 16,000원 표시; 60×40cm 이상 판넬 택배 제한 안내. 정확한 규격/후가공/세금/배송 견적 미확인.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B09",
+      "kind": "SUPPLIER_OFFER_SNIPPET",
+      "url": "https://adtime24.com/services-outdoor/",
+      "name": "애드타임",
+      "fact": "디자인·출력·설치·철거 일괄 제공, 시안 확정된 일부 출력물 당일 배송 주장. 시간대별 납기 및 계약가 미확인.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "id": "B10",
+      "kind": "OFFICIAL_API_METADATA",
+      "url": "https://www.data.go.kr/data/15057758/openapi.do",
+      "name": "K-apt 수의계약",
+      "fact": "공사·용역·물품 등 계약 조회 API 존재. 실제 endpoint 및 승인 범위 미확인. 인증 원자료 미수집.",
+      "observed_on": "2026-11-28",
+      "paid_verified": false,
+      "forecast_eligible": false
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "PX-01",
+      "parent": "DF-004",
+      "title": "학원 A4 복사용지·소모품 직송",
+      "payer": "개별 학원·공부방 운영자",
+      "evidence": [
+        "B01",
+        "B02",
+        "B03",
+        "B04"
+      ],
+      "decision": "QUOTE_BEFORE_BUILD",
+      "deliverable": "동일 제조사·SKU의 3개 품목 구매명세와 공급사 직송 견적 비교표",
+      "gate": "기존 CV-022 유지: 실제 구매 바스켓 5개 및 공급 견적 3개. 판매가·VAT·배송·반품·수수료·결제기간 일치. 현금/시간 한도 미달이면 중단.",
+      "risk": "학교 계약은 학원 수요가 아님. 일반 온라인몰·도매상과 직접 경쟁."
+    },
+    {
+      "id": "PX-02",
+      "parent": "DF-008",
+      "title": "인테리어 현장 정산 예외 리포트",
+      "payer": "소형 인테리어 업체",
+      "evidence": [
+        "B05",
+        "B06"
+      ],
+      "decision": "NO_GENERIC_BUILD",
+      "deliverable": "기존 시스템 내보내기 파일에서 누락·중복·미수금 예외만 확인하는 월마감 샘플(합성 데이터)",
+      "gate": "서로 독립적인 업체 3곳의 동일한 미해결 업무와 익명 양식, 유료 의사 2곳 확인 전 개발 금지. 기존 기능으로 해결되면 폐기.",
+      "risk": "4~5만원 통합 SaaS의 가격과 기능, 맞춤 지원을 이겨야 함."
+    },
+    {
+      "id": "PX-03",
+      "parent": "DF-004",
+      "title": "자동차 정비소 비안전 핵심 외 소모품 조달",
+      "payer": "소형 정비소",
+      "evidence": [
+        "B07"
+      ],
+      "decision": "HOLD_UNTIL_DISTINCT_BASKET",
+      "deliverable": "부품 적합성 판단·안전 책임 없는 소모품만 3개 SKU 분리",
+      "gate": "CV-022에 준하는 구매명세·공급 견적 및 재고/직송/반품 조건. 긴급 납품 또는 차량 안전 관련 책임 필요 시 중단.",
+      "risk": "부품 플랫폼 및 기존 유통망, 평일 즉시 납품. 신규 업종은 별도 가설이며 CV-022를 통과한 것이 아님."
+    },
+    {
+      "id": "PX-04",
+      "parent": "DF-012",
+      "title": "규격화된 안내물·출력물 공급사 이행",
+      "payer": "소형 사업장 운영자",
+      "evidence": [
+        "B08",
+        "B09"
+      ],
+      "decision": "QUOTE_BEFORE_BUILD",
+      "deliverable": "완성 디자인 파일, 동일 크기·재질·후가공·배송 조건의 비교견적 3건",
+      "gate": "공급사 직접배송 및 파손/재출력 책임 서면 확인. 직접 판매보다 명확한 지불 이유와 시간 제약 충족. 행사 패키지는 기존 CV-030 별도 유지.",
+      "risk": "직접 온라인 발주가 가능하며 설치·긴급 납품 요구가 노동시간을 잠식."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S01",
+      "name": "복사용지 박스 단위 중개",
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 35000,
+        "var_cost": 32000,
+        "unit_hours": 0.1
+      },
+      "expected": {
+        "cash_units": 367,
+        "economic_units": null,
+        "max_units": 160,
+        "cash_time_feasible": false,
+        "economic_time_feasible": false,
+        "status": "ASSUMPTION_ONLY"
+      }
+    },
+    {
+      "id": "S02",
+      "name": "인테리어 월정액 49,000원",
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 49000,
+        "var_cost": 9000,
+        "unit_hours": 0.5
+      },
+      "expected": {
+        "cash_units": 28,
+        "economic_units": 63,
+        "max_units": 32,
+        "cash_time_feasible": true,
+        "economic_time_feasible": false,
+        "status": "ASSUMPTION_ONLY"
+      }
+    },
+    {
+      "id": "S03",
+      "name": "반복 예외 리포트 10만원",
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 100000,
+        "var_cost": 20000,
+        "unit_hours": 0.5
+      },
+      "expected": {
+        "cash_units": 14,
+        "economic_units": 21,
+        "max_units": 32,
+        "cash_time_feasible": true,
+        "economic_time_feasible": true,
+        "status": "ASSUMPTION_ONLY"
+      }
+    },
+    {
+      "id": "S04",
+      "name": "출력물 중개 5만원",
+      "inputs": {
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "hour_value": 40000,
+        "hour_cap": 20,
+        "target": 1000000,
+        "capital": 0,
+        "recovery_months": 24,
+        "price": 50000,
+        "var_cost": 40000,
+        "unit_hours": 0.25
+      },
+      "expected": {
+        "cash_units": 110,
+        "economic_units": null,
+        "max_units": 64,
+        "cash_time_feasible": false,
+        "economic_time_feasible": false,
+        "status": "ASSUMPTION_ONLY"
+      }
+    }
+  ],
+  "paid_own_transactions": 0,
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "notes": [
+    "Prices are offers or disclosed contract amounts, not own transaction prices. Two school rows are nonrepresentative evidence of repeat purchasing only.",
+    "Scenario inputs are hypothetical; not linked to supplier quotes. No taxes, financing, CAC or churn unless included in costs; initial capital assumed zero only for illustration. Do not interpret passing arithmetic as viability.",
+    "Do not contact businesses or spend money before employment-policy and conflict checks. No employer contacts or confidential data. Existing CV-022 and CV-030 remain binding."
+  ]
+}
