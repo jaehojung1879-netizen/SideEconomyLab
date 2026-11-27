@@ -50,3 +50,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Korean managed procurement
 [Sector and working-capital research](korean-managed-procurement-v1.md); generic ordering already commoditized, no candidate promotion. Scope preserves canonical registry.
+
+## Public repeat purchase planning and substitution evidence
+[Evidence v2](managed-procurement-evidence-v2.md): 3 annual plans, 16 planned destinations, 5 school contract-list observations, 9 contextual sources. No private spend or price-match promotion.

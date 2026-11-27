@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "observed_on": "2026-11-28",
+  "status": "RESEARCH_ONLY",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "paid_own_transactions": 0,
+  "school_contracts": [
+    {
+      "buyer": "계양중학교",
+      "date": "2026-10-28",
+      "product": "점보롤",
+      "amount": 195000,
+      "supplier": "(사)한국근로장애인진흥회",
+      "explicit_priority": false,
+      "url": "https://www.ice.go.kr/contract/ir/selectCntrInfoList.do?mi=11307&schCntrInstNm=%EA%B3%84%EC%96%91%EC%A4%91%ED%95%99%EA%B5%90&schFsclY=ALL",
+      "kind": "OFFICIAL_LIST_SNIPPET",
+      "quantity": null,
+      "paid_verified": false,
+      "private_demand_eligible": false
+    },
+    {
+      "buyer": "인천중학교",
+      "date": "2026-11-05",
+      "product": "점보롤",
+      "amount": 195000,
+      "supplier": "(사)한국근로장애인진흥회",
+      "explicit_priority": false,
+      "url": "https://www.ice.go.kr/contract/ir/selectCntrInfoList.do?mi=11307&schCntrInstNm=%EC%9D%B8%EC%B2%9C%EC%A4%91%ED%95%99%EA%B5%90&schFsclY=ALL",
+      "kind": "OFFICIAL_LIST_SNIPPET",
+      "quantity": null,
+      "paid_verified": false,
+      "private_demand_eligible": false
+    },
+    {
+      "buyer": "인천경명초등학교",
+      "date": "2026-11-10",
+      "product": "점보롤",
+      "amount": 780000,
+      "supplier": "(사)한국근로장애인진흥회",
+      "explicit_priority": true,
+      "url": "https://www.ice.go.kr/contract/ir/selectCntrInfoList.do?mi=11307&schCntrInstNm=%EC%9D%B8%EC%B2%9C%EA%B2%BD%EB%AA%85%EC%B4%88%EB%93%B1%ED%95%99%EA%B5%90&schFsclY=ALL",
+      "kind": "OFFICIAL_LIST_SNIPPET",
+      "quantity": null,
+      "paid_verified": false,
+      "private_demand_eligible": false
+    },
+    {
+      "buyer": "인천석정초등학교",
+      "date": "2026-07-22",
+      "product": "점보롤",
+      "amount": 780000,
+      "supplier": "한국교직원공제회 S2B",
+      "explicit_priority": false,
+      "url": "https://www.ice.go.kr/contract/ir/selectCntrInfoList.do?mi=11307&schCntrInstNm=%EC%9D%B8%EC%B2%9C%EC%84%9D%EC%A0%95%EC%B4%88%EB%93%B1%ED%95%99%EA%B5%90&schFsclY=ALL",
+      "kind": "OFFICIAL_LIST_SNIPPET",
+      "quantity": null,
+      "paid_verified": false,
+      "private_demand_eligible": false
+    },
+    {
+      "buyer": "인천귤현초등학교",
+      "date": "2026-10-23",
+      "product": "핸드타올·점보롤",
+      "amount": 870000,
+      "supplier": "그린페이퍼",
+      "explicit_priority": false,
+      "url": "https://www.ice.go.kr/contract/ir/selectCntrInfoList.do?mi=11307&schCntrInstNm=%EC%9D%B8%EC%B2%9C%EA%B7%A4%ED%98%84%EC%B4%88%EB%93%B1%ED%95%99%EA%B5%90&schFsclY=ALL",
+      "kind": "OFFICIAL_LIST_SNIPPET",
+      "quantity": null,
+      "paid_verified": false,
+      "private_demand_eligible": false
+    }
+  ],
+  "port_plans": [
+    {
+      "year": 2024,
+      "notice": "2024-4",
+      "notice_date": "2024-05-14",
+      "from": "2024-06-01",
+      "to": "2025-05-31",
+      "jumbo": 1210,
+      "towel": 720,
+      "budget_ex_vat": 85189650,
+      "url": "https://www.bpfmc.or.kr/bid-body.do?board_id=4&seq_id=1465",
+      "reissue": "https://www.bpfmc.or.kr/bid-body.do?board_id=4&seq_id=1466",
+      "kind": "OFFICIAL_OPENED",
+      "paid_verified": false,
+      "actual_quantity": null,
+      "award_amount": null,
+      "lead_days": 14
+    },
+    {
+      "year": 2025,
+      "notice": "2025-5",
+      "notice_date": "2025-06-13",
+      "from": "2025-07-01",
+      "to": "2026-06-30",
+      "jumbo": 1321,
+      "towel": 720,
+      "budget_ex_vat": 85829045,
+      "url": "https://www.bpfmc.or.kr/bid-body.do?board_id=4&seq_id=6999",
+      "reissue": "https://www.bpfmc.or.kr/bid-body.do?board_id=4&seq_id=7013",
+      "kind": "OFFICIAL_OPENED",
+      "paid_verified": false,
+      "actual_quantity": null,
+      "award_amount": null,
+      "lead_days": 14
+    },
+    {
+      "year": 2026,
+      "notice": "2026-4",
+      "notice_date": "2026-06-05",
+      "from": "2026-07-01",
+      "to": "2027-06-30",
+      "jumbo": 1319,
+      "towel": 829,
+      "budget_ex_vat": 88873000,
+      "url": "https://www.bpfmc.or.kr/bid-body.do?board_id=4&seq_id=7421",
+      "reissue": "https://www.bpfmc.or.kr/bid-body.do?board_id=4&seq_id=7425",
+      "kind": "OFFICIAL_INDEXED_TEXT",
+      "paid_verified": false,
+      "actual_quantity": null,
+      "award_amount": null,
+      "lead_days": 14
+    }
+  ],
+  "port_2024_location_estimates": [
+    {
+      "name": "우암주차장",
+      "jumbo": 20,
+      "towel": 0
+    },
+    {
+      "name": "감만운영건물",
+      "jumbo": 24,
+      "towel": 0
+    },
+    {
+      "name": "5물양장 계류선박",
+      "jumbo": 21,
+      "towel": 0
+    },
+    {
+      "name": "동삼주차장",
+      "jumbo": 12,
+      "towel": 0
+    },
+    {
+      "name": "감만시민부두",
+      "jumbo": 22,
+      "towel": 0
+    },
+    {
+      "name": "철도청원선",
+      "jumbo": 12,
+      "towel": 0
+    },
+    {
+      "name": "플랫폼",
+      "jumbo": 12,
+      "towel": 12
+    },
+    {
+      "name": "5물양장주차장",
+      "jumbo": 6,
+      "towel": 0
+    },
+    {
+      "name": "국제터미널 미화원대기실",
+      "jumbo": 570,
+      "towel": 380
+    },
+    {
+      "name": "크루즈터미널",
+      "jumbo": 6,
+      "towel": 3
+    },
+    {
+      "name": "야영장",
+      "jumbo": 42,
+      "towel": 17
+    },
+    {
+      "name": "BPEX",
+      "jumbo": 120,
+      "towel": 90
+    },
+    {
+      "name": "연안터미널",
+      "jumbo": 54,
+      "towel": 64
+    },
+    {
+      "name": "BPA 사옥",
+      "jumbo": 80,
+      "towel": null
+    },
+    {
+      "name": "선용품센터",
+      "jumbo": 120,
+      "towel": 144
+    },
+    {
+      "name": "BPA 감천사업소",
+      "jumbo": 86,
+      "towel": 5
+    }
+  ],
+  "evidence": [
+    {
+      "url": "https://www.goods.go.kr/sm/index.do?menuNo=5101000",
+      "kind": "OFFICIAL_POLICY",
+      "fact": "2026 중증장애인생산품 구매목표 1.1%; 학교 계약 중 명시된 우선구매 및 공급업체 특성 고려. 다른 계약의 적용 근거 추정 금지.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://yuhan-kimberly.co.kr/newsroom/newsview/3985",
+      "kind": "VENDOR_INDEXED_TEXT",
+      "fact": "소모품 예산 최적화 워크북·비용절감 계산기 무료 제공. 원문 재접근 실패.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://www.yna.co.kr/view/AKR20260907052000030",
+      "kind": "MEDIA_COMPANY_SURVEY",
+      "fact": "유한킴벌리 2026년 5월 구매·예산 담당자 186명 설문, 78% 카테고리별 월간 비용 정확히 파악 못한다고 응답. 표본 대표성/독립성/지불의사 미확인.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://www.bossard.com/kr-ko/services/smart-factory/inventory-management/supplier-consolidation/",
+      "kind": "VENDOR_OPENED",
+      "fact": "공급사 통합, IoT 재고 센서, ERP 발주안, 통합배송 및 현장 납품. 소기업 계약가격 및 접근 가능성 미확인.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://www.dtpack.co.kr/",
+      "kind": "VENDOR_INDEXED_TEXT",
+      "fact": "근거리 직납, 타지역 화물/택배, 정기거래, 에어캡 2T 50cm 5500원부터. 공급견적 미확보.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://www.wonjuntape.com/Consultation/Consultation.html?tab=oem",
+      "kind": "VENDOR_INDEXED_TEXT",
+      "fact": "제조사 직접 박스/팔레트 단위 57/65mic 테이프 공급; 현재 견적·최소주문 미확인.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://daesungpojang.creatorlink.net/%EC%A0%9C%ED%92%88%EC%86%8C%EA%B0%9C",
+      "kind": "VENDOR_INDEXED_TEXT",
+      "fact": "정기 거래처 정기납품·재고관리 제공 주장. 이미 직접 공급사 재고관리가 존재.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://www.onfull.kr/Front/Page/UserPage.asp?gMnu1=218&gMnu2=21818",
+      "kind": "VENDOR_INDEXED_TEXT",
+      "fact": "3PL 소형 박스 800원, 테이프 무료 표기. 보관·출고·배송 총비용 별도이며 동일 SKU 가격 비교 불가.",
+      "own_paid_verified": false
+    },
+    {
+      "url": "https://patharabase.com/",
+      "kind": "VENDOR_INDEXED_TEXT",
+      "fact": "풀필먼트 피킹·패킹·송장 600원, 박스 200~2500원; 자체 부자재 반입 시 부자재비 제외. 실제 계약 미확인.",
+      "own_paid_verified": false
+    }
+  ],
+  "notes": [
+    "School rows are purposively selected official list observations, not a representative sample or repeat purchases by same school. Explicit priority label recorded only where shown.",
+    "Port notices are estimated quantities and budgets, not final purchases. Reissues not separate demand. 2024 and 2025 notices opened, 2026 indexed full text, no award or paid invoice. Gap June 2025: no inference on continuous supply.",
+    "2024 line-item jumbo sum 1207 vs approximate headline 1210; towels known subtotal 715 vs approximate headline 720, one dash stored null, not zero. No combined SKU unit price or fill of missing values. Counts refer delivery destinations, not necessarily independent businesses.",
+    "2024/25 qualification: 3 years operation, Busan office, testing certificate, 2025 environmental certification, no consortium; not an actionable lead.",
+    "No private buyer invoices or matched supplier quote. No direct sales or customer contact. Existing gates unchanged."
+  ]
+}
