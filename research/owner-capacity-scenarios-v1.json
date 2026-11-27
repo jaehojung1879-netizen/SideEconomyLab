@@ -1,0 +1,62 @@
+[
+  {
+    "name": "건별 자동화",
+    "inputs": {
+      "price": 120000,
+      "var_cost": 20000,
+      "fixed_cash": 50000,
+      "fixed_hours": 4,
+      "unit_hours": 4,
+      "hour_value": 40000,
+      "hour_cap": 20,
+      "target": 1000000,
+      "capital": 0,
+      "recovery_months": 24
+    },
+    "expected": {
+      "cash_units": 11,
+      "economic_units": null,
+      "max_units": 4
+    }
+  },
+  {
+    "name": "표준 구독",
+    "inputs": {
+      "price": 100000,
+      "var_cost": 20000,
+      "fixed_cash": 100000,
+      "fixed_hours": 5,
+      "unit_hours": 0.5,
+      "hour_value": 40000,
+      "hour_cap": 20,
+      "target": 1000000,
+      "capital": 3000000,
+      "recovery_months": 24
+    },
+    "expected": {
+      "cash_units": 16,
+      "economic_units": 24,
+      "max_units": 30
+    }
+  },
+  {
+    "name": "위탁 중개",
+    "inputs": {
+      "price": 150000,
+      "var_cost": 75000,
+      "fixed_cash": 100000,
+      "fixed_hours": 4,
+      "unit_hours": 1.5,
+      "hour_value": 40000,
+      "hour_cap": 20,
+      "target": 1000000,
+      "capital": 500000,
+      "recovery_months": 24
+    },
+    "expected": {
+      "cash_units": 15,
+      "economic_units": 86,
+      "max_units": 10
+    }
+  }
+]

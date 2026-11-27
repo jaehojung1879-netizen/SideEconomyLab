@@ -1,0 +1,36 @@
+name: Probe NTS public CSV (research only)
+on:
+  pull_request:
+    paths: ['pipeline/nts_public_probe.cjs', '.github/workflows/nts-public-probe.yml']
+permissions:
+  contents: read
+concurrency:
+  group: nts-public-probe-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned browser
+        run: |
+          npm install --prefix /tmp/nts-test playwright@1.58.2
+          /tmp/nts-test/node_modules/.bin/playwright install --with-deps chromium
+      - name: Attempt one public download and record actual outcome
+        env:
+          NODE_PATH: /tmp/nts-test/node_modules
+        run: node pipeline/nts_public_probe.cjs /tmp/nts-probe
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nts-public-probe
+          path: /tmp/nts-probe
+          if-no-files-found: error
+          retention-days: 7

@@ -1,0 +1,429 @@
+{
+  "version": 1,
+  "observed_on": "2026-11-27",
+  "status": "RESEARCH_ONLY",
+  "sources": [
+    {
+      "id": "NTS",
+      "name": "국세청 100대 생활업종",
+      "url": "https://www.data.go.kr/catalog/15061118/fileData.json",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "2026-09 기준 메타데이터, 11-18 공개. 업종·시도·시군구·당월·전월·전년동월; 실제 CSV 미확보."
+    },
+    {
+      "id": "NTS-LIMIT",
+      "name": "국세청 파일 정의",
+      "url": "https://www.data.go.kr/data/15061118/fileData.do",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "검색된 2026-05 상세: 3 미만 셀은 0, 잠정치, 화성시 분구 등 경계 변화. 최신 파일 재확인 필요."
+    },
+    {
+      "id": "SEOUL-SALES",
+      "name": "서울 행정동 추정매출",
+      "url": "https://data.seoul.go.kr/dataList/OA-22175/S/1/datasetView.do",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "행정동별 추정매출, 연간 ZIP 제공; 원자료 미수집."
+    },
+    {
+      "id": "SEOUL-STORES",
+      "name": "서울 행정동 점포",
+      "url": "https://data.seoul.go.kr/dataList/OA-22172/A/1/datasetView.do",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "2021년 이후 자료 제공; 경계·분류 일치 확인 필요."
+    },
+    {
+      "id": "SEMAS",
+      "name": "소진공 상가정보",
+      "url": "https://www.data.go.kr/data/15012005/openapi.do",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "업소 식별자·분류·좌표. 인증 및 실제 응답 미검증."
+    },
+    {
+      "id": "PPS",
+      "name": "나라장터 계약",
+      "url": "https://www.data.go.kr/data/15129427/openapi.do",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "체결 계약 및 변경/삭제 이력. 실제 거래 원장 미수집; 공공수요만 대표."
+    },
+    {
+      "id": "SCI",
+      "name": "창업 의사결정 재현연구",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1002/smj.3580",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "문제 이론과 반증 가능한 가설을 활용하는 창업 연구. 본 후보 성공률의 증거 아님."
+    },
+    {
+      "id": "FINTATE",
+      "name": "핀테이트",
+      "url": "https://fintate.com/intro/saas",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "임대인 중심 계약·수납·공실·정산·알림 관리 상품 존재."
+    },
+    {
+      "id": "BIDQ",
+      "name": "비드큐",
+      "url": "https://www.bidq.co.kr/",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "맞춤 입찰 및 분석 서비스 존재."
+    },
+    {
+      "id": "BIDDATA",
+      "name": "비드데이터",
+      "url": "https://biddata.kr/",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "공고·개찰·낙찰 분석 서비스 존재."
+    },
+    {
+      "id": "MRO",
+      "name": "서브원",
+      "url": "https://www.serveone.co.kr/kr/support/new-introduction-guide.do",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "통합 구매·승인·비용 리포트·유휴자산 관리 서비스 존재."
+    },
+    {
+      "id": "IMK",
+      "name": "아이마켓코리아",
+      "url": "https://imarketkorea.com/aboutcompany/aboutus/",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "B2B MRO 구매대행 기업."
+    },
+    {
+      "id": "KMONG",
+      "name": "크몽 자동화 판매 사례",
+      "url": "https://kmong.com/gig/845647",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "반복 집계 및 보고서 자동화 상품 판매 제안; 실제 결제 여부 미확인."
+    },
+    {
+      "id": "FRAMERY",
+      "name": "Framery Subscribed",
+      "url": "https://framery.com/en/framery-subscribed/",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "기업용 부스 구독/유지관리 모델; 한국 공급 조건 미확인."
+    },
+    {
+      "id": "STATION",
+      "name": "STATION WORK",
+      "url": "https://www.stationwork.jp/help/base-type",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "예약형 업무 공간 유형 존재; 한국 단일 운영자 경제성 미확인."
+    },
+    {
+      "id": "RADICAL",
+      "name": "Radical Storage",
+      "url": "https://radicalstorage.com/partners",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "지역 사업자를 활용한 짐보관 네트워크."
+    },
+    {
+      "id": "RADICAL-SEOUL",
+      "name": "Radical Storage 서울",
+      "url": "https://radicalstorage.com/luggage-storage/seoul",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "서울 공급 존재, 공개 소매가 5,100원부터; 호스트 정산/거래량 미확인."
+    },
+    {
+      "id": "ACQUIRE",
+      "name": "Acquire.com 거래 보고서",
+      "url": "https://blog.acquire.com/acquire-com-biannual-acquisition-multiples-report-jan-2026/",
+      "observed_on": "2026-11-27",
+      "level": "PUBLIC_PAGE_ONLY",
+      "observation": "소형 SaaS 거래 사례 분석; 거래선택 편향과 실사 필요."
+    },
+    {
+      "id": "CV030",
+      "name": "기존 CV-030 검증계획",
+      "url": "https://github.com/jaehojung1879-netizen/SideEconomyLab/blob/adabef5453808ba482f0cb0862eeae0200c64028/research/candidate-validation-portfolio-v1.md",
+      "observed_on": "2026-11-27",
+      "level": "REPOSITORY_PLAN_ONLY",
+      "observation": "행사 외주 공급사 검증 계획; 현재 실제 견적·거래 없음."
+    }
+  ],
+  "entries": [
+    {
+      "id": "DF-001",
+      "parent": "OC-001",
+      "name": "역·오피스 시간제 부스",
+      "lane": "LOCATION",
+      "payer": "이동 중 개인 통화가 필요한 직장인",
+      "revenue": "시간제 예약",
+      "substitute": "무료 회의실·카페·STATION WORK",
+      "hypothesis": "호스트 무고정임대 조건과 실제 통화 실패 사례",
+      "test": "호스트 3곳·이용자 10명; 상업용 완전견적",
+      "kill": "무료 대체가 충분하거나 운영자 출동 필수",
+      "source_ids": [
+        "STATION",
+        "FRAMERY"
+      ],
+      "status": "HOLD",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-002",
+      "parent": "OC-001",
+      "name": "기업용 부스 공급사 제휴",
+      "lane": "TRANSACTION",
+      "payer": "중소 공유오피스 운영자·기업 총무",
+      "revenue": "공급사 판매/렌탈 소개료 또는 관리료",
+      "substitute": "Framery·기존 가구업체",
+      "hypothesis": "고객 직접 계약보다 절약되는 설치/관리 업무",
+      "test": "공급사 3곳에 서면 AS·소개 조건; 고객 5곳의 구매 경로",
+      "kill": "공급사 직접계약 우위 또는 긴급 AS 책임",
+      "source_ids": [
+        "FRAMERY"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-003",
+      "parent": "OC-001",
+      "name": "온라인 면접·시험 예약 공간",
+      "lane": "LOCATION",
+      "payer": "학원·취업준비생",
+      "revenue": "기관 단체 예약 또는 시간제",
+      "substitute": "스터디룸·학교·집",
+      "hypothesis": "시험 규격·조용한 환경에 대한 지불 이유",
+      "test": "기존 공간 3곳·이용자 10명의 실제 예약 실패 확인",
+      "kill": "기관 규격 불충족 또는 예약 빈도 부족",
+      "source_ids": [
+        "STATION"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-004",
+      "parent": "OC-022",
+      "name": "비규제 반복 소모품 조달",
+      "lane": "TRANSACTION",
+      "payer": "소형 다점포 학원 운영자",
+      "revenue": "직송 마진 또는 월 통합조달료",
+      "substitute": "쿠팡·서브원·기존 문구 유통",
+      "hypothesis": "합배송보다 발주·증빙 통합이 유료 가치인지",
+      "test": "기존 CV-022: 15명·실바스켓 5·공급견적 3",
+      "kill": "기존 CV-022 실패 규칙 그대로 적용",
+      "source_ids": [
+        "MRO",
+        "IMK"
+      ],
+      "status": "EXISTING_GATE",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-005",
+      "parent": null,
+      "name": "임차인 관점 계약 만기 관리",
+      "lane": "DIGITAL",
+      "payer": "5~30개 비금융 점포의 운영 책임자",
+      "revenue": "기업별 월정액",
+      "substitute": "엑셀·캘린더·핀테이트",
+      "hypothesis": "본사 임차 계약의 갱신 의사결정 누락/업무량",
+      "test": "공개 모집 10곳; 익명화된 기존 관리 예시 3개; 유료 가격 제안 2곳",
+      "kill": "기존 엑셀 충분 또는 법률 자문/중개 요구",
+      "source_ids": [
+        "FINTATE"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-006",
+      "parent": null,
+      "name": "점포 출점 후보 비교 리포트",
+      "lane": "HYBRID",
+      "payer": "소형 프랜차이즈 본사 운영팀",
+      "revenue": "건별 리포트",
+      "substitute": "공공 상권서비스·중개사·내부 엑셀",
+      "hypothesis": "비교 후보 2~3곳의 검토 시간이 실제 비용인지",
+      "test": "공개 가상 매물로 리포트 1건; 본사 8곳에 기존 비교 작업 확인",
+      "kill": "지불 의사 없음 또는 고용주와 이해상충",
+      "source_ids": [
+        "SEOUL-SALES",
+        "SEOUL-STORES",
+        "SEMAS"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-007",
+      "parent": null,
+      "name": "특정 용역 계약 갱신 레이더",
+      "lane": "DIGITAL",
+      "payer": "비금융 시설관리 소형 공급사",
+      "revenue": "월정액 리드 분석",
+      "substitute": "비드큐·비드데이터·나라장터",
+      "hypothesis": "기존 공고 알림보다 계약 갱신 추적이 유용한지",
+      "test": "단일 용역 50건 변경 포함 계약 표본·기존 서비스 비교·업체 8곳",
+      "kill": "공개 공고 검색과 동일하거나 예측 시점 누수",
+      "source_ids": [
+        "PPS",
+        "BIDQ",
+        "BIDDATA"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-008",
+      "parent": null,
+      "name": "다점포 월간 정산 자동화",
+      "lane": "DIGITAL",
+      "payer": "소형 학원·비금융 서비스업 본사",
+      "revenue": "정형화된 구축비와 월 유지비",
+      "substitute": "크몽 개발자·엑셀·회계 서비스",
+      "hypothesis": "한 가지 반복 양식이 여러 고객에게 동일한지",
+      "test": "공개/합성 데이터 데모 1개; 10곳 중 익명 양식 3개",
+      "kill": "고객마다 신규 개발 또는 당일 장애 대응 필요",
+      "source_ids": [
+        "KMONG"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-009",
+      "parent": null,
+      "name": "폐업 장비 위탁 판매",
+      "lane": "HYBRID",
+      "payer": "소형 점포 폐업자·장비 구매자",
+      "revenue": "검수·거래 성사 수수료",
+      "substitute": "중고 거래 플랫폼·전문 매입 업체",
+      "hypothesis": "재고 없이 안전한 거래와 물류 연결이 가능한지",
+      "test": "특정 장비 20개 호가와 실거래 증거 5건·물류견적 3개",
+      "kill": "실거래 증거 없음 또는 매입/보증 책임 과다",
+      "source_ids": [
+        "NTS",
+        "MRO"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-010",
+      "parent": "OC-008",
+      "name": "대형 짐·단체 여행객 보관 제휴",
+      "lane": "TRANSACTION",
+      "payer": "기존 보관점에서 거절된 여행객·숙박업소",
+      "revenue": "호스트와 수익 배분",
+      "substitute": "Radical Storage·역사 락커",
+      "hypothesis": "일반 가방 아닌 실제 거절 수요",
+      "test": "호스트 5곳·대체재 3곳·배상조건",
+      "kill": "호스트 노동/보험비가 기여 초과",
+      "source_ids": [
+        "RADICAL",
+        "RADICAL-SEOUL"
+      ],
+      "status": "HOLD",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-011",
+      "parent": null,
+      "name": "기존 소형 디지털 상품 인수",
+      "lane": "ACQUISITION",
+      "payer": "기존 유료 사용자",
+      "revenue": "기존 구독·라이선스 수익",
+      "substitute": "신규 개발·Acquire.com",
+      "hypothesis": "고객 유지와 운영 이전이 실사 가능한지",
+      "test": "공개 매물 10개, 매출 검증 가능 3개; 구매 없이 검토",
+      "kill": "실매출·저작권·운영 이전 미확인 또는 기존 투자한도 초과",
+      "source_ids": [
+        "ACQUIRE"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-012",
+      "parent": "OC-030",
+      "name": "공급사 이행형 기업 행사 패키지",
+      "lane": "TRANSACTION",
+      "payer": "소형 기업 행사 담당",
+      "revenue": "외주 패키지 차액",
+      "substitute": "행사 대행·장비 렌탈사",
+      "hypothesis": "운송 및 현장대응 없는 공급자 계약",
+      "test": "기존 CV-030 동일 사양 순견적 3건",
+      "kill": "기존 CV-030 실패 규칙 그대로 적용",
+      "source_ids": [
+        "CV030"
+      ],
+      "status": "EXISTING_GATE",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    },
+    {
+      "id": "DF-013",
+      "parent": null,
+      "name": "표준화된 산업용 업무 양식 라이선스",
+      "lane": "DIGITAL",
+      "payer": "소형 비금융 사업장 운영 담당",
+      "revenue": "양식 판매·업데이트 구독",
+      "substitute": "무료 템플릿·생성 AI·크몽",
+      "hypothesis": "버전 관리·실제 산출물 검증에 지불하는지",
+      "test": "한 업종 공개 양식 분석; 합성 샘플 및 10명 가격 인터뷰",
+      "kill": "무료 AI 대체 가능 또는 개별 지원 선형 증가",
+      "source_ids": [
+        "KMONG"
+      ],
+      "status": "DISCOVERY",
+      "confidence": "C0_HYPOTHESIS",
+      "paid_transactions": 0,
+      "forecast": null,
+      "approved": false
+    }
+  ]
+}
