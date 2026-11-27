@@ -47,3 +47,6 @@ No new feature development while field evidence missing. Desk work only if a new
 
 ## Follow-up: overseas channels
 [Global distribution audit](global-distribution-v1.md) separates downloadable products, platform apps and finite affiliate cohorts. Existing selected queue unchanged.
+
+## Follow-up: distribution
+[Distribution evidence](distribution-evidence-v1.md) inventories existing TOPDA asset and defines aggregate export requirement; no site modification, spending or sales.

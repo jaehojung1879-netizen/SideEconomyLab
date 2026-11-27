@@ -74,3 +74,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Global digital distribution
 [Global distribution](global-distribution-v1.md): 22 source observations, platform fee and finite referral cohort stress tests, exact catalog-app substitutes. No generic build or commercial approval; Paydream overseas terms unresolved.
+
+## Distribution evidence
+[Read-only TOPDA and channel audit](distribution-evidence-v1.md): actual traffic and paid conversion unavailable; scenario hurdles not forecasts. Existing field gates unchanged.
