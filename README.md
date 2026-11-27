@@ -79,3 +79,5 @@ Authenticated Actions collection verified sales (OA-15572) and stores (OA-15577)
 ## Demand-first research v1 (proposed)
 
 [Research board](docs/demand-first.html) · [method and next gates](research/demand-first-v1.md) · [registry and public sources](docs/data/demand-first-research-v1.json). Separate hypothesis exploration; no change to the canonical validation frontier, no forecast or authorization.
+
+[Public contract and offer observations / owner capacity](docs/spend-evidence.html) · [research](research/demand-first-spend-v2.md). Nonrepresentative observations and assumption-only arithmetic; no approvals.
