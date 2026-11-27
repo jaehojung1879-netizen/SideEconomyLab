@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "observed_on": "2026-11-28",
+  "status": "DESK_RESEARCH_DECISION_BOUNDARY",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "own_paid_transactions": 0,
+  "registered_field_rows": 0,
+  "baseline": {
+    "main": "adabef5453808ba482f0cb0862eeae0200c64028",
+    "pr18": "730c95065765200f36451bd17b9c15cb34d8d360",
+    "prior_pr19": "8a6305baa3fa76930baa62c65e1abde3934f0c08",
+    "prior_native_checks": "6/6 success"
+  },
+  "sources": [
+    {
+      "id": "P01",
+      "url": "https://gongdae.kr/",
+      "kind": "INDEX_ONLY",
+      "fact": "0810함마 및 38함마드릴 일 22000원; 동일 규격 다른 모델 가능, 배송 상담. 본문 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P02",
+      "url": "https://www.gkrental.kr/dehumidifier-rental",
+      "kind": "INDEX_ONLY",
+      "fact": "150L/일 WPD-150 표시 10일 500000원, 1개월 650000원; 운송비 별도. 본문 403.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P03",
+      "url": "https://www.ulsan.go.kr/contract/contract_info/open_condition/all?idx=202600210115&mode=view",
+      "kind": "OFFICIAL_OPENED_CACHED",
+      "fact": "남부소방서 2026 제습기 임차, 계약 824400원, 2025-12-31~2026-12-31; 캐시상 2026-01-19 71340원 및 02-13 68700원 부분금, 총 140040원. 대수/규격 불명; 현재 지급잔액 아님.",
+      "contract_krw": 824400,
+      "reported_paid_krw": 140040,
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P04",
+      "url": "https://www.uiwang.go.kr/UWKOROPEN0314/view?ctrtAcctBookMngNo=202500220912&ctrtGovCd=&curPage=37&custNm=&seachCtrtAmtEnd=&seachCtrtAmtSt=&srchEndDay=&srchStartDay=&srchText=&useAt=",
+      "kind": "OFFICIAL_INDEXED_TEXT",
+      "fact": "의왕시 2025 도서관의 날 AI 포토부스 임차, 계약/지급총액 2200000원, 준공 2025-04-12, 검수 2025-04-16. 상세 재접근 timeout, 행사 사양 불명.",
+      "contract_krw": 2200000,
+      "reported_paid_krw": 2200000,
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P05",
+      "url": "https://jeongseon.go.kr/portal/admininfo/contractinfo/payment/pay_service?ctrtAcctBookMngNo=202600225695",
+      "kind": "OFFICIAL_INDEXED_TEXT",
+      "fact": "가리왕산 케이블카 포토부스 임차, 2026-01-01~12-31, 계약 5280000원, 2026-11-06 지급총액 4400000원, 잔액 880000원. 상세 재접근 cache miss; 대수/장비/부대서비스 미확인.",
+      "contract_krw": 5280000,
+      "reported_paid_krw": 4400000,
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P06",
+      "url": "https://www.geumcheon.go.kr/portal/tcmSummaryListView.do?ctrtLdgrMngNo=202500311693",
+      "kind": "OFFICIAL_INDEXED_TEXT",
+      "fact": "시흥행궁전시관 포토부스 구매 2025-11-27 계약 7260000원, 완납금 7260000원. 검색 원문에는 메뉴 key=434 포함; 보안 스캐너 충돌을 피하려고 공개 메뉴값 제외, 위 링크 단독 접근은 미검증. 계약 사양·대수 미확인. P05와 별개 구매이므로 수익률 산출 금지.",
+      "contract_krw": 7260000,
+      "reported_paid_krw": 7260000,
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P07",
+      "url": "https://www.herephoto.com/event-photobooth",
+      "kind": "INDEX_ONLY",
+      "fact": "포토부스 렌탈 40만원부터, 설치·철수, 디자인/서류 안내. 정확한 묶음 및 순파트너 공급가 미확인, 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P08",
+      "url": "https://www.modlounge.co.kr/photobooth",
+      "kind": "INDEX_ONLY",
+      "fact": "설치 약 40분/철수 20분, 행사 시작 전 도착, 무인 운영 상담. 실제 행사 대응과 순공급 조건 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P09",
+      "url": "https://kplanz.com/ko/rental-baby",
+      "kind": "INDEX_ONLY",
+      "fact": "리안 프라임라이트 3일 45000원/보증금150000원, 배송/회수비 별도. 안전책임, 청소, 파손/회수. 카시트 등 안전필수 제품 제외.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P10",
+      "url": "https://lucaswash.com/index",
+      "kind": "INDEX_ONLY",
+      "fact": "셀프 반려동물 목욕기와 24h 무인매장 제공, 실제 원가/매출 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P11",
+      "url": "https://care.blkorea.co.kr/",
+      "kind": "INDEXED_FAQ",
+      "fact": "커피머신 정기케어 베이직 월29000, 스탠다드59000, 프리미엄179000원(런칭 첫12개월89500원), 무료 진단, 장비별 조정; A/S 우선배정. 원문 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P12",
+      "url": "https://brwnie.kr/industries/vending-mealkit/",
+      "kind": "INDEX_ONLY",
+      "fact": "자판기/밀키트 매장 4주 주2회 244000원부터 VAT 별도. 기기 단독 설치 견적 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P13",
+      "url": "https://brwnie.kr/pricing/",
+      "kind": "INDEX_ONLY",
+      "fact": "스터디카페 4주 주2회 90분 348000원부터 VAT 별도. 원문 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "P14",
+      "url": "https://brwnie.kr/",
+      "kind": "INDEX_ONLY",
+      "fact": "정기 청소/진열/소모품 보충/기기 점검. JS 페이지 원문 불완전. 긴급 장애/SLA 책임 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    }
+  ],
+  "scenario_inputs": {
+    "hour_cap": 20,
+    "fixed_hours": 4,
+    "fixed_cash": 100000,
+    "hour_value": 40000,
+    "target": 1000000
+  },
+  "event_scenarios": [
+    {
+      "id": "EV1",
+      "contribution": 150000,
+      "hours": 2,
+      "capacity": 8,
+      "max_cash_after_fixed": 1100000,
+      "max_economic_profit": 300000,
+      "required_contribution_at_capacity": 237500
+    },
+    {
+      "id": "EV2",
+      "contribution": 150000,
+      "hours": 1,
+      "capacity": 16,
+      "max_cash_after_fixed": 2300000,
+      "max_economic_profit": 1500000,
+      "required_contribution_at_capacity": 118750
+    },
+    {
+      "id": "EV3",
+      "contribution": 237500,
+      "hours": 2,
+      "capacity": 8,
+      "max_cash_after_fixed": 1800000,
+      "max_economic_profit": 1000000,
+      "required_contribution_at_capacity": 237500
+    },
+    {
+      "id": "EV4",
+      "contribution": 118750,
+      "hours": 1,
+      "capacity": 16,
+      "max_cash_after_fixed": 1800000,
+      "max_economic_profit": 1000000,
+      "required_contribution_at_capacity": 118750
+    }
+  ],
+  "decision": [
+    {
+      "candidate": "OC-022",
+      "status": "EXISTING_SELECTED_GATE_UNCHANGED",
+      "action": "위생/포장/고정 작업장 중 실제 동일규격 바스켓·비가격 pain 먼저. 직송 및 공급사 직접청구 구조를 별도 검토. 기존 15명, 5바스켓, 3견적, 15% gate 보존."
+    },
+    {
+      "candidate": "OC-030",
+      "status": "EXISTING_SELECTED_GATE_UNCHANGED",
+      "action": "3개 동일사양 순파트너 RFQ 우선. 설치·철거·현장·긴급대응 전부 공급사. 기존 건당 15만원/2h gate는 field screen, 100만원 목표 충분조건 아님. 실제 수주/운영 시간이 없으면 ownership 금지."
+    },
+    {
+      "candidate": "NEW-02",
+      "status": "DISCOVERY_WAIT",
+      "action": "비고영향 FAQ 독립 검수. 실제 구매자 3곳/유료의향 2곳 및 기존 무료도구 대비 결과. 추가 비용·시간은 기존 선정 예산 밖이며 별도 승인 전 실행 금지."
+    },
+    {
+      "candidate": "OUT-02",
+      "status": "DISCOVERY_WAIT",
+      "action": "상품마스터 변경 정비. 독립 구매자/공급자 실제 파일과 엑셀 대조, 단종/규격 판단은 원문 근거만."
+    },
+    {
+      "candidate": "DF-008 / procurement-audit",
+      "status": "DISCOVERY_WAIT",
+      "action": "실제 지점별 비용 및 공급사 확정견적 없으므로 추가 기능 동결."
+    },
+    {
+      "candidate": "OC-020",
+      "status": "HOLD",
+      "action": "철물24 기존 단일 SKU/host 조건 먼저. 무인점포 대행비는 실제 자판기 견적 아님. 장비 구매 금지."
+    },
+    {
+      "candidate": "OC-013 / OC-001 / OC-008",
+      "status": "PRIOR_GATES_UNCHANGED",
+      "action": "공간·설비·운영비·회수·host 미확인; 독립임대 및 구매 금지."
+    },
+    {
+      "candidate": "REV-02 / REV-05",
+      "status": "SOURCE_BLOCKED_OR_HOLD",
+      "action": "공개시각/실제 계약 연결 불가; 디지털 매물 실사 불가. 신규 개발/인수 금지."
+    },
+    {
+      "candidate": "physical rental / maintenance",
+      "status": "NO_NEW_CANONICAL_CANDIDATE",
+      "action": "대여·정기관리 기존 경쟁 확인, 직접 운송/수리/청소 부담. 완전 외주와 순기여 입증 전 신규 실행 후보로 승격하지 않음."
+    }
+  ],
+  "existing_budget": {
+    "type": "PROPOSED_VALIDATION_CEILINGS_NOT_MARKET_QUOTES",
+    "selected_candidate_ids": [
+      "OC-022",
+      "OC-030"
+    ],
+    "full_experiment_cash_ceiling_krw": 250000,
+    "full_experiment_owner_hours_ceiling": 18,
+    "first_week_cash_ceiling_krw": 200000,
+    "first_week_owner_hours_ceiling": 10,
+    "capex_commitment_krw": 0,
+    "overlap_rule": "OC-021 질문은 OC-022 인터뷰에만 붙임; 1시간은 선택 예산 밖 잠재 후속 상한이며 첫 주 별도 작업 없음",
+    "staging": "첫 주는 전체 sample 완료가 아니라 모집/부분 인터뷰/공급 견적. 무응답은 가설 통과 아님; 21일 또는 시간상한에서 HOLD 판정."
+  },
+  "notes": [
+    "Public buyer's payments are evidence of external transactions only, not our sales or market representativeness. P03 opened cached; P04–P06 indexed official text, direct re-fetch unconfirmed; separate contracts not matched models or per-unit benchmarks.",
+    "Event scenario assumes zero capital and variable costs already included in contribution, tax and acquisition/build costs unpriced, maximum capacity sold; owner time includes 4h fixed per month. Do not redefine existing preregistration gates.",
+    "No new score, no new UI or executable code. Existing candidate registry, field ledger and approval budget untouched. Any experiment or outreach beyond approved scope requires policy check and separate user approval. Research assumptions do not authorize spending."
+  ]
+}
