@@ -43,7 +43,7 @@ jobs:
           node --check docs/assets/radar-format.js
           node tests/radar-models.cjs
           git fetch --no-tags origin main:refs/remotes/origin/main || true
-          python pipeline/radar_preservation.py
+          python pipeline/radar_preservation.py --scope auto
       - name: Verify core journeys and responsive layout
         env:
           NODE_PATH: /tmp/radar-test/node_modules
