@@ -53,3 +53,6 @@ Run 46020482703 returned PARSED_NOT_PUBLISHED, 24,588 rows; artifact downloaded 
 
 ## Public repeat purchase planning and substitution evidence
 [Evidence v2](managed-procurement-evidence-v2.md): 3 annual plans, 16 planned destinations, 5 school contract-list observations, 9 contextual sources. No private spend or price-match promotion.
+
+## Procurement audit falsification
+[Same-SKU observations and synthetic eligibility baseline](procurement-audit-v1.md). Existing ERP/Excel and price search are serious substitutes. No executable quote, actual savings or generic SaaS approval.

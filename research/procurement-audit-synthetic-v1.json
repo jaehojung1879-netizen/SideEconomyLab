@@ -1,0 +1,138 @@
+{
+  "synthetic": true,
+  "as_of": "2026-11-28",
+  "invoices": [
+    {
+      "id": "I1",
+      "sku": "DEMO-01",
+      "site": "A",
+      "pack": 16,
+      "qty": 4,
+      "amount": 280000,
+      "shipping": 0,
+      "tax": "EX",
+      "region": "SEOUL",
+      "terms": "NET30"
+    },
+    {
+      "id": "I2",
+      "sku": "DEMO-01",
+      "site": "B",
+      "pack": 4,
+      "qty": 16,
+      "amount": 320000,
+      "shipping": 0,
+      "tax": "EX",
+      "region": "SEOUL",
+      "terms": "NET30"
+    },
+    {
+      "id": "I3",
+      "sku": "DEMO-01",
+      "site": "C",
+      "pack": 16,
+      "qty": 2,
+      "amount": 140000,
+      "shipping": null,
+      "tax": "EX",
+      "region": "SEOUL",
+      "terms": "NET30"
+    },
+    {
+      "id": "I4",
+      "sku": "DEMO-01",
+      "site": "D",
+      "pack": 16,
+      "qty": 2,
+      "amount": 140000,
+      "shipping": 0,
+      "tax": "IN",
+      "region": "SEOUL",
+      "terms": "NET30"
+    }
+  ],
+  "quotes": [
+    {
+      "id": "Q1",
+      "sku": "DEMO-01",
+      "pack": 16,
+      "price": 60000,
+      "shipping": 5000,
+      "min_packs": 1,
+      "max_packs": 4,
+      "tax": "EX",
+      "region": "SEOUL",
+      "terms": "NET30",
+      "expires": "2026-12-01",
+      "available": true,
+      "verified": true
+    },
+    {
+      "id": "Q2",
+      "sku": "DEMO-01",
+      "pack": 16,
+      "price": 40000,
+      "shipping": 0,
+      "min_packs": 1,
+      "max_packs": 4,
+      "tax": "EX",
+      "region": "SEOUL",
+      "terms": "NET30",
+      "expires": "2026-12-01",
+      "available": false,
+      "verified": true
+    },
+    {
+      "id": "Q3",
+      "sku": "DEMO-01",
+      "pack": 16,
+      "price": 45000,
+      "shipping": 0,
+      "min_packs": 1,
+      "max_packs": 4,
+      "tax": "EX",
+      "region": "SEOUL",
+      "terms": "NET30",
+      "expires": "2026-11-20",
+      "available": true,
+      "verified": true
+    },
+    {
+      "id": "Q4",
+      "sku": "DEMO-01",
+      "pack": 16,
+      "price": 50000,
+      "shipping": 0,
+      "min_packs": 8,
+      "max_packs": 20,
+      "tax": "EX",
+      "region": "SEOUL",
+      "terms": "NET30",
+      "expires": "2026-12-01",
+      "available": true,
+      "verified": true
+    }
+  ],
+  "expected": [
+    {
+      "id": "I1",
+      "status": "SYNTHETIC_REVIEW",
+      "quote": "Q1",
+      "difference": 35000
+    },
+    {
+      "id": "I2",
+      "status": "SYNTHETIC_REVIEW",
+      "quote": "Q1",
+      "difference": 75000
+    },
+    {
+      "id": "I3",
+      "status": "BLOCKED_MISSING_COST"
+    },
+    {
+      "id": "I4",
+      "status": "BLOCKED_NO_MATCH"
+    }
+  ]
+}
