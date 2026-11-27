@@ -2,10 +2,25 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
-const {chromium} = require('playwright');
+const assert = require('node:assert/strict');
 const catalog = 'https://www.data.go.kr/catalog/15061118/fileData.json';
 const portal = 'https://www.data.go.kr/data/15061118/fileData.do';
+function catalogMatch(title) {
+  const m = typeof title === 'string' && title.match(/^국세청_사업자현황_100대 생활업종_(20[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12][0-9]|3[01]))$/);
+  if (!m) return null;
+  const y=Number(m[1].slice(0,4)), month=Number(m[1].slice(4,6)), day=Number(m[1].slice(6,8));
+  const date=new Date(Date.UTC(y,month-1,day));
+  return date.getUTCFullYear()===y && date.getUTCMonth()===month-1 && date.getUTCDate()===day ? m : null;
+}
 const dir = process.argv[2];
+if (dir==='--self-test') {
+  assert.equal(catalogMatch('국세청_사업자현황_100대 생활업종_20260930')[1],'20260930');
+  assert.equal(catalogMatch('국세청_사업자현황_100대 생활업종_20240229')[1],'20240229');
+  for (const invalid of ['국세청_사업자현황_100대 생활업종_20260229','국세청_사업자현황_100대 생활업종_20261301','국세청_사업자현황_100대 생활업종_20260931','국세청_사업자현황_100대 생활업종','다른자료_20260930',null]) assert.equal(catalogMatch(invalid),null);
+  console.log('NTS_CATALOG_IDENTITY_SELF_TEST_PASS');
+  process.exit(0);
+}
+const {chromium} = require('playwright');
 if (!dir) throw Error('artifact directory required');
 (async () => {
   await fs.mkdir(dir, {recursive:true});
@@ -14,11 +29,23 @@ if (!dir) throw Error('artifact directory required');
   try {
     const response = await fetch(catalog, {redirect:'error', signal:AbortSignal.timeout(25000)});
     if (!response.ok) throw Error('catalog HTTP '+response.status);
-    const meta = JSON.parse(await response.text());
-    const title = meta.alternateName;
-    const match = typeof title === 'string' && title.match(/^국세청_사업자현황_100대 생활업종_(20\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01]))$/);
-    if (!match || meta.url !== portal || meta.encodingFormat !== 'CSV' || meta.creator?.name !== '국세청') throw Error('catalog identity mismatch');
+    const body = await response.text();
+    if (Buffer.byteLength(body) > 1000000) throw Error('catalog body too large');
+    const meta = JSON.parse(body);
+    if (!meta || typeof meta !== 'object' || Array.isArray(meta)) throw Error('catalog not an object');
+    // Preserve the public response before testing identity, so mismatch is inspectable.
     await fs.writeFile(path.join(dir,'catalog.json'), JSON.stringify(meta,null,2));
+    status.catalog_diagnostic = {
+      keys:Object.keys(meta).sort().slice(0,80),
+      alternateName:typeof meta.alternateName==='string'?meta.alternateName.slice(0,180):null,
+      name:typeof meta.name==='string'?meta.name.slice(0,180):null,
+      url_matches:meta.url===portal,
+      encodingFormat:typeof meta.encodingFormat==='string'?meta.encodingFormat.slice(0,40):null,
+      creator_matches:meta.creator?.name==='국세청'
+    };
+    const title = meta.alternateName;
+    const match = catalogMatch(title);
+    if (!match || meta.url !== portal || meta.encodingFormat !== 'CSV' || meta.creator?.name !== '국세청') throw Error('catalog identity mismatch');
     status.catalog_period = match[1];
     status.stage = 'portal';
     browser = await chromium.launch({headless:true});
@@ -40,12 +67,24 @@ if (!dir) throw Error('artifact directory required');
     const raw = path.join(dir,'snapshot.csv');
     await download.saveAs(raw);
     status.filename = filename;
+    status.stage = 'header';
+    const diagnostic = JSON.parse(execFileSync('python',['pipeline/nts_snapshot_audit.py',raw,'--inspect-header'],{encoding:'utf8',timeout:30000}));
+    status.raw_header = diagnostic;
+    await fs.writeFile(path.join(dir,'header.json'),JSON.stringify(diagnostic,null,2));
+    console.log('NTS_RAW_HEADER '+JSON.stringify(diagnostic));
     status.stage = 'audit';
     execFileSync('python',['pipeline/nts_snapshot_audit.py',raw,'--period',match[1].slice(0,4)+'-'+match[1].slice(4,6),'--out',path.join(dir,'audit.json')],{stdio:'inherit',timeout:30000});
     const audit = JSON.parse(await fs.readFile(path.join(dir,'audit.json'),'utf8'));
     status.status = 'PARSED_NOT_PUBLISHED';
     status.row_count = audit.row_count;
     status.sha256 = audit.sha256;
+    // Reproduce fixed historical local slice only if the downloaded raw identity matches.
+    const expected = JSON.parse(await fs.readFile('docs/data/nts-local-profile-v1.json','utf8'));
+    if (audit.sha256 === expected.sha256) {
+      status.local_profile_status = 'CHECKING';
+      execFileSync('python',['-m','pipeline.nts_local_profile',raw],{stdio:'inherit',timeout:30000});
+      status.local_profile_status = 'REPRODUCED';
+    } else { status.local_profile_status = 'DIFFERENT_SNAPSHOT_NOT_COMPARED'; }
   } catch(e) { status.reason = String(e.message).slice(0,400); }
   finally { if(browser) await browser.close(); await fs.writeFile(path.join(dir,'status.json'),JSON.stringify(status,null,2)); console.log(JSON.stringify(status)); }
 })().catch(e=>{console.error(e);process.exitCode=1;});

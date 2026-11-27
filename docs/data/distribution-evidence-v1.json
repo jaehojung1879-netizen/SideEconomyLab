@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "observed_on": "2026-11-28",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "own_paid_transactions": 0,
+  "topda": {
+    "repo": "jaehojung1879-netizen/TOPDA",
+    "head": "fe2d92df13d9d164f5918dfdd71b197b225353bd",
+    "files": 768,
+    "static_html": 407,
+    "sitemap_entries": 115,
+    "sitemap_unique": 115,
+    "ga4_configured_in_source": true,
+    "naver_configured_in_source": true,
+    "events": [
+      "calc_complete",
+      "share_click",
+      "outbound_click",
+      "checklist_check",
+      "apt_page_view",
+      "apt_calculator_click",
+      "calculator_prefill_loaded",
+      "calculator_run",
+      "guide_click"
+    ],
+    "actual_delivery_verified": false,
+    "actual_visits": null,
+    "actual_conversions": null,
+    "actual_revenue": null,
+    "ad_approval_current": null,
+    "source_paths": [
+      "site/assets/analytics.js",
+      "site/sitemap.xml",
+      "site/sitemap-pages.xml",
+      "site/sitemap-calculators.xml",
+      "site/sitemap-guides.xml",
+      "site/sitemap-apt-regions.xml",
+      "ADSENSE_REMEDIATION_REPORT.md"
+    ],
+    "notes": "Repository static files not live coverage. Historical report counts generated output at different snapshot; do not compare directly to tracked HTML. Site homepage web cache 4 months old; live sitemap inaccessible. No changes to TOPDA."
+  },
+  "sources": [
+    {
+      "url": "https://developers.google.com/search/docs/essentials/spam-policies",
+      "fact": "Scaled content created primarily to manipulate ranking rather than help users is spam."
+    },
+    {
+      "url": "https://developers.google.com/webmaster-tools/v1/searchanalytics/query",
+      "fact": "Search Console returns clicks/impressions/position and may omit rows."
+    },
+    {
+      "url": "https://chartmogul.com/reports/saas-go-to-market-report/",
+      "fact": "2025 2500 SaaS companies: among sample low ASP self-serve associated with faster growth, not causal estimate or our CAC."
+    },
+    {
+      "url": "https://blog.acquire.com/bootstrapped-profitable-and-acquired-in-four-days/",
+      "fact": "Founder interview: Helploom reports Reddit threads via high-intent searches most useful after SEO/ads; no numeric CAC or revenue verification. No unsolicited promotion recommended."
+    },
+    {
+      "url": "https://blog.acquire.com/the-genius-sheets-acquisition-story-no-vc-just-profit/",
+      "fact": "Marketplace founder story on nights/weekends financial reporting SaaS, no verified unit economics in search excerpt."
+    }
+  ],
+  "economics": {
+    "target": 1000000,
+    "fixed_cash": 100000,
+    "fixed_hours": 4,
+    "hour_value": 40000,
+    "cap": 20,
+    "scenarios": [
+      {
+        "kind": "ad_only",
+        "rpm": [
+          2000,
+          5000,
+          10000
+        ],
+        "needed_pageviews": [
+          630000,
+          252000,
+          126000
+        ],
+        "notes": "assume fixed 4h and no further hours or costs; illustrative RPM not AdSense actual."
+      },
+      {
+        "kind": "digital",
+        "price": 69000,
+        "cash_variable": 12000,
+        "minutes_per_sale": 10,
+        "needed_sales": 26,
+        "capacity": 96,
+        "conversion_bps": [
+          50,
+          100,
+          200
+        ],
+        "needed_qualified_sessions": [
+          5200,
+          2600,
+          1300
+        ],
+        "notes": "Assumes no development or CAC beyond fixed 4h/100k; full price and rate assumptions, not market estimates."
+      },
+      {
+        "kind": "b2b_partner",
+        "cash_contribution": 150000,
+        "hours": 1,
+        "needed_sales": 12,
+        "capacity": 16,
+        "conversion_bps": [
+          500,
+          1000,
+          2000
+        ],
+        "needed_qualified_leads": [
+          240,
+          120,
+          60
+        ],
+        "notes": "Qualified leads distinct from pageviews or visits, conversion to fulfilled paid jobs. Fixed costs and time same; no acquisition time per lost lead included, optimistic."
+      }
+    ]
+  },
+  "measurement": {
+    "status": "USER_DATA_REQUIRED",
+    "period": "last 90 complete days, previous 90 days separately",
+    "exports": [
+      "Search Console performance: page, query, clicks, impressions, CTR, average position; separate totals, anonymized/omitted rows acknowledged",
+      "GA4 landing page / session source-medium, sessions, engaged sessions, calc_complete and calculator_run separately, outbound_click; no raw user ids or sensitive params",
+      "AdSense aggregate earnings / pageviews if active; payment status and cost aggregate"
+    ],
+    "rule": "Do not sum overlapping event counts into unique users. Measure visits, conversion, cash receipts and owner labor separately. No unobserved monetization forecast. No employer data or financial product affiliate."
+  },
+  "next": "First read aggregate export and find actual high-intent landing pages; compare existing TOPDA traffic with nonfinancial product relevance. If traffic absent, no new product or ads. For OC-022/030 use existing field gates; no additional outreach. Partner acquisition requires consent, transparent affiliation and approved scope."
+}

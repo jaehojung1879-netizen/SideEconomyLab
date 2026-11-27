@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "source": "https://www.data.go.kr/data/15061118/fileData.do",
+  "period": "2026-09",
+  "publication_date": "2026-11-18",
+  "source_run": 46020482703,
+  "artifact_id": 15208465820,
+  "sha256": "16d341e70f123eeeed81ce635f9972a40e0a651091ee6f035700236395f12275",
+  "bytes": 1310324,
+  "profile": {
+    "rows": 24588,
+    "industry_labels": 100,
+    "province_labels": 16,
+    "region_labels": 258,
+    "absent_grid_cells": 1212,
+    "rows_with_any_zero": 1809,
+    "zeros_by_period": {
+      "current": 1682,
+      "previous": 1697,
+      "year_ago": 1805
+    }
+  },
+  "coverage_verified": false,
+  "comparison_eligible": 0,
+  "forecast_eligible": false,
+  "regions": [
+    [
+      "서울특별시",
+      "강동구"
+    ],
+    [
+      "서울특별시",
+      "송파구"
+    ],
+    [
+      "경기도",
+      "하남시"
+    ],
+    [
+      "경기도",
+      "구리시"
+    ],
+    [
+      "경기도",
+      "남양주시"
+    ]
+  ],
+  "matrix": [
+    [
+      "교습학원",
+      672,
+      922,
+      573,
+      306,
+      1081
+    ],
+    [
+      "교습소ㆍ공부방",
+      674,
+      780,
+      485,
+      226,
+      1039
+    ],
+    [
+      "예술학원",
+      336,
+      474,
+      281,
+      124,
+      519
+    ],
+    [
+      "문구점",
+      60,
+      119,
+      60,
+      35,
+      151
+    ],
+    [
+      "철물점",
+      70,
+      78,
+      36,
+      29,
+      99
+    ],
+    [
+      "실내장식가게",
+      818,
+      1320,
+      872,
+      496,
+      2077
+    ],
+    [
+      "커피음료점",
+      642,
+      1001,
+      417,
+      273,
+      911
+    ],
+    [
+      "호프주점",
+      157,
+      198,
+      63,
+      100,
+      155
+    ],
+    [
+      "세탁소",
+      206,
+      299,
+      137,
+      80,
+      283
+    ],
+    [
+      "헬스클럽",
+      149,
+      297,
+      103,
+      57,
+      178
+    ],
+    [
+      "자동차수리점",
+      242,
+      337,
+      355,
+      154,
+      656
+    ],
+    [
+      "사진촬영업",
+      207,
+      380,
+      263,
+      108,
+      321
+    ],
+    [
+      "독서실",
+      58,
+      97,
+      17,
+      20,
+      47
+    ],
+    [
+      "통신판매업",
+      7235,
+      11635,
+      6939,
+      3446,
+      17283
+    ],
+    [
+      "간판광고물업",
+      94,
+      136,
+      148,
+      60,
+      251
+    ],
+    [
+      "가전제품수리점",
+      198,
+      198,
+      178,
+      183,
+      692
+    ],
+    [
+      "주차장운영업",
+      78,
+      101,
+      112,
+      63,
+      121
+    ]
+  ],
+  "notes": [
+    "Counts are disclosed active taxpayer/business counts, not physical shops, customers or demand.",
+    "Absent combinations are not zero. Disclosed zeros may be suppressed; no hidden values inferred.",
+    "258 labels include overlapping legacy/current geography (e.g. 화성시 and four districts) and source-specific labels; no national aggregation or map join.",
+    "No year-on-year or month-on-month rates: boundary and classification comparability not established.",
+    "Purposive 17 industries and five regions, not a ranking. Do not add industry counts as distinct businesses or infer addressable market."
+  ]
+}

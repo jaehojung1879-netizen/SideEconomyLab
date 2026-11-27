@@ -1,0 +1,483 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "parent": "OC-020",
+  "decision": "HOLD_NO_HARDWARE_PURCHASE",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "paid_own_transactions": 0,
+  "sources": [
+    {
+      "id": "S01",
+      "url": "https://news.coupang.com/archives/64216/",
+      "observation": "쿠팡 공식 FAQ: 표시 상품에 한해 새벽 도착; 즉시 구매와 구별",
+      "kind": "OFFICIAL",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S02",
+      "url": "https://www.wwood.co.kr/geuncheo/daiso.html",
+      "observation": "제3자 다이소 철물 179품목 조사 검색 스니펫; 원문 재접근 실패. SKU 가격 직접 비교 금지",
+      "kind": "SNIPPET_ONLY",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S03",
+      "url": "https://www.shinsunginc.kr/shop/plan.html?plan_id=1",
+      "observation": "중고 멀티 냉장 카드단말기 장착 600만원 표시; 오래된 열린 캐시, 재고/설치/VAT 미확인",
+      "kind": "OFFER_CACHED",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S04",
+      "url": "https://haeinvending.com/",
+      "observation": "중고 LVM-482SRL 470만원, 48컬럼, 270kg, 1830×995×875mm 표시; 카드/철물 호환 미확인",
+      "kind": "OFFER_SNIPPET",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S05",
+      "url": "https://web.joongna.com/search/%EB%A1%9C%EB%B2%A4%20%20%EC%9E%90%ED%8C%90%EA%B8%B0",
+      "observation": "로벤 멀티 190만원 검색 목록; 상세 상태·거래·재고 미확인",
+      "kind": "ASK_LIST",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S06",
+      "url": "https://www.hanilvm.com/main",
+      "observation": "HIM-20 슬림 상온 후보 450만원, JW-4000VM 470만원 오래된 캐시; 신품 현재 가격/재고 미확인",
+      "kind": "OFFER_CACHED",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S07",
+      "url": "https://smart-vending.co.kr/",
+      "observation": "상품 실제 포장 배출 시험 및 운송·설치·통신·철거 구분 안내",
+      "kind": "VENDOR",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S08",
+      "url": "https://vendio.kr/ambient-vending-machine",
+      "observation": "상온 생활용품 자판기 상담가, 전기/인터넷, 중량물 운반 추가 비용 가능",
+      "kind": "VENDOR",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S09",
+      "url": "https://www.mpva.go.kr/mpva/selectBbsNttView.do?bbsNo=32&nttNo=270668&pageIndex=21&searchCnd=all&searchKrwd=",
+      "observation": "서창고 음료 자판기 2대 연간 사용료 예정 320만원, VAT/전기 별도. 민간 철물 설치 시세 아님; URL은 공개 메뉴 key 제외한 참고 탐색 경로",
+      "kind": "PUBLIC_NOTICE_SNIPPET",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S10",
+      "url": "https://www.reb.or.kr/reb/cm/cntnts/cntntsView.do?cntntsId=1049&mi=10335&statId=S237220284",
+      "observation": "상업용 임대통계 단위 및 대상; 1㎡ 자판기 공간의 임대료 대체 불가",
+      "kind": "OFFICIAL",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S11",
+      "url": "https://culture.gangdong.go.kr/web/newportal/contents/gdp_005_007_010_002_001",
+      "observation": "고덕비즈밸리 고덕동 345번지 일대 업무·판매 시설",
+      "kind": "OFFICIAL",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    },
+    {
+      "id": "S12",
+      "url": "https://bauspezi-oppenheim.de/neu-24-7-baumarkt-automat-in-undenheim/",
+      "observation": "독일 철물 자판기 운영 사례, 매출 미공개",
+      "kind": "VENDOR",
+      "observed_on": "2026-11-28",
+      "paid_verified": false
+    }
+  ],
+  "sites": [
+    {
+      "id": "L01",
+      "name": "킹철물생활용품",
+      "address": "서울 강동구 상일로 149",
+      "kind": "철물점 제휴 탐색",
+      "hours": "월~토 08–19 (일요일 미확인)",
+      "role": "매장 앞 외부/기존 공간 협의 가능성만 조사",
+      "source": "PUBLIC_BUSINESS_DIRECTORY",
+      "confirmed_host": false
+    },
+    {
+      "id": "L02",
+      "name": "간식창고 상일점",
+      "address": "서울 강동구 고덕로 360",
+      "kind": "기존 무인매장 제휴 탐색",
+      "hours": "24시간 표기",
+      "role": "기기 없이 진열 판매 가능 여부 조사",
+      "source": "PUBLIC_BUSINESS_DIRECTORY",
+      "confirmed_host": false
+    },
+    {
+      "id": "L03",
+      "name": "다이소 상일동역점",
+      "address": "서울 강동구 고덕로 399",
+      "kind": "경쟁 대체재",
+      "hours": "매일 10–22",
+      "role": "가격·품목·영업시간 비교",
+      "source": "PUBLIC_BUSINESS_DIRECTORY",
+      "confirmed_host": false
+    },
+    {
+      "id": "L04",
+      "name": "다이소 고덕점",
+      "address": "서울 강동구 동남로75길 13-7",
+      "kind": "경쟁 대체재",
+      "hours": "매일 10–22",
+      "role": "가격·품목·영업시간 비교",
+      "source": "PUBLIC_BUSINESS_DIRECTORY",
+      "confirmed_host": false
+    },
+    {
+      "id": "L05",
+      "name": "고덕비즈밸리",
+      "address": "서울 강동구 고덕동 345번지 일원",
+      "kind": "업무/시설관리 B2B 연구권역",
+      "hours": "미확인",
+      "role": "교대근무·시설관리 소모품 사용량 확인",
+      "source": "S11",
+      "confirmed_host": false
+    },
+    {
+      "id": "L06",
+      "name": "삼일공구",
+      "address": "서울 강동구 올림픽로 602",
+      "kind": "철물점 제휴 탐색",
+      "hours": "월~토 07–19 (일요일 미확인)",
+      "role": "전문기술자 구매 품목 및 폐점 후 요청 관찰",
+      "source": "PUBLIC_BUSINESS_DIRECTORY",
+      "confirmed_host": false
+    },
+    {
+      "id": "L07",
+      "name": "까까주까 24 무인 아이스크림 과자가게",
+      "address": "서울 강동구 성내동 423-18",
+      "kind": "기존 무인매장 제휴 탐색",
+      "hours": "24시간 표기",
+      "role": "천호·성내 대조 권역",
+      "source": "PUBLIC_BUSINESS_DIRECTORY",
+      "confirmed_host": false
+    }
+  ],
+  "skus": [
+    {
+      "id": "H01",
+      "name": "목재용 나사 M규격별 소포장",
+      "job": "가구 조립",
+      "pack": "box",
+      "assumed_price": 3000,
+      "assumed_cost": 1200,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H02",
+      "name": "기계나사 M4 규격 소포장",
+      "job": "가구/손잡이",
+      "pack": "box",
+      "assumed_price": 3000,
+      "assumed_cost": 1200,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H03",
+      "name": "기계나사 M6 규격 소포장",
+      "job": "가구/손잡이",
+      "pack": "box",
+      "assumed_price": 3500,
+      "assumed_cost": 1400,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H04",
+      "name": "너트·와셔 M4 세트",
+      "job": "가구 조립",
+      "pack": "box",
+      "assumed_price": 3000,
+      "assumed_cost": 1200,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H05",
+      "name": "너트·와셔 M6 세트",
+      "job": "가구 조립",
+      "pack": "box",
+      "assumed_price": 3500,
+      "assumed_cost": 1400,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H06",
+      "name": "플라스틱 앙카 6mm+호환 나사",
+      "job": "벽면 고정",
+      "pack": "box",
+      "assumed_price": 4000,
+      "assumed_cost": 1700,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H07",
+      "name": "가구 경첩 나사 보수 세트",
+      "job": "가구 보수",
+      "pack": "box",
+      "assumed_price": 4000,
+      "assumed_cost": 1600,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H08",
+      "name": "십자 드라이버 PH2",
+      "job": "공구 부족",
+      "pack": "box",
+      "assumed_price": 5000,
+      "assumed_cost": 2500,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H09",
+      "name": "일자 드라이버 소형",
+      "job": "공구 부족",
+      "pack": "box",
+      "assumed_price": 4000,
+      "assumed_cost": 1800,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H10",
+      "name": "육각렌치 세트 1.5~6mm",
+      "job": "가구 조립",
+      "pack": "box",
+      "assumed_price": 6000,
+      "assumed_cost": 3000,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H11",
+      "name": "미니 수동 줄자 3m",
+      "job": "치수 확인",
+      "pack": "box",
+      "assumed_price": 4000,
+      "assumed_cost": 1800,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H12",
+      "name": "케이블타이 150mm",
+      "job": "정리·고정",
+      "pack": "box",
+      "assumed_price": 3000,
+      "assumed_cost": 1000,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H13",
+      "name": "케이블타이 250mm",
+      "job": "정리·고정",
+      "pack": "box",
+      "assumed_price": 4000,
+      "assumed_cost": 1600,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H14",
+      "name": "양면테이프 소형 롤",
+      "job": "부착",
+      "pack": "box",
+      "assumed_price": 4500,
+      "assumed_cost": 2000,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H15",
+      "name": "마스킹테이프 소형 롤",
+      "job": "임시 보호",
+      "pack": "box",
+      "assumed_price": 3500,
+      "assumed_cost": 1500,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H16",
+      "name": "천테이프 소형 롤",
+      "job": "임시 보수",
+      "pack": "box",
+      "assumed_price": 5000,
+      "assumed_cost": 2200,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H17",
+      "name": "가구 바닥 보호패드",
+      "job": "가구 보수",
+      "pack": "box",
+      "assumed_price": 3000,
+      "assumed_cost": 1000,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H18",
+      "name": "접착식 범용 고리",
+      "job": "정리",
+      "pack": "box",
+      "assumed_price": 3000,
+      "assumed_cost": 1200,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H19",
+      "name": "문 충격 방지 패드",
+      "job": "가구 보수",
+      "pack": "box",
+      "assumed_price": 3000,
+      "assumed_cost": 1000,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    },
+    {
+      "id": "H20",
+      "name": "미끄럼 방지 가구 패드",
+      "job": "가구 보수",
+      "pack": "box",
+      "assumed_price": 4000,
+      "assumed_cost": 1600,
+      "actual_demand": null,
+      "actual_quote": null,
+      "status": "TEST_HYPOTHESIS",
+      "note": "규격·표시·안전·포장 치수·실제 공급가 확인 전 판매 금지"
+    }
+  ],
+  "machines": [
+    {
+      "id": "M01",
+      "name": "로벤 멀티 중고 검색 목록",
+      "amount": 1900000,
+      "source": "S05",
+      "kind": "ASK_LIST",
+      "verified_fit": false
+    },
+    {
+      "id": "M02",
+      "name": "롯데 LVM-482SRL 중고",
+      "amount": 4700000,
+      "source": "S04",
+      "kind": "OFFER_SNIPPET",
+      "verified_fit": false
+    },
+    {
+      "id": "M03",
+      "name": "신성 중고 멀티 카드단말기",
+      "amount": 6000000,
+      "source": "S03",
+      "kind": "OFFER_CACHED",
+      "verified_fit": false
+    },
+    {
+      "id": "M04",
+      "name": "HIM-20 슬림 멀티",
+      "amount": 4500000,
+      "source": "S06",
+      "kind": "OLD_CACHED_NEW_OFFER",
+      "verified_fit": false
+    },
+    {
+      "id": "M05",
+      "name": "상온 벤디오",
+      "amount": null,
+      "source": "S08",
+      "kind": "QUOTE_REQUIRED",
+      "verified_fit": false
+    }
+  ],
+  "location_gate": {
+    "observations_required": [
+      "20–22, 22–24, 00–07, daytime control: actual paid sales and unmet requests by SKU; store open/closed; alternative delivery ETA; urgency and price acceptance",
+      "host permissions, electricity, egress, weather, theft, vehicle stop, public access, hours, payment settlement, refund SLA",
+      "same SKU 3 local/online alternative prices and supply quote including VAT/shipping"
+    ],
+    "rule": "No numeric ranking until actual location-time denominators and comparable requests; directory hours are not field verification. Distinguish partner from competitor; no outreach yet."
+  },
+  "inventory_gate": {
+    "rule": "Cold-start equal capped trial quantities only after approval; never infer demand from search volume or count zero sales during stockout. No auto-purchase. Human approval and cash cap. Actual paid data required.",
+    "minimum_in_stock_nights": 14,
+    "review_horizon_nights": 7,
+    "policy": "simple empirical rate + one safety unit; no claim of ML advantage; capped by slot, budget and vendor lead time; observe unfilled requests separately; use held-out comparison to fixed par before changing policy."
+  },
+  "notes": [
+    "No current actionable machine quote or host lease. Public offers may be old/unavailable. Listed prices not all-in costs.",
+    "SKU list and price/cost assumptions are not demand ranks, verified wholesale, or recommended retail prices.",
+    "Avoid exposed sharp items, batteries, chemicals, electrical/gas/pressure parts; do not split packaging if labeling/safety compromised.",
+    "No purchase/lease/pilot/customer contacts authorized; existing candidate gate preserved."
+  ]
+}

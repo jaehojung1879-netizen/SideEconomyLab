@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "parent": "REV-02",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "own_paid_transactions": 0,
+  "building_signal": "SOURCE_BLOCKED",
+  "generic_procurement_alert": "NO_GENERIC_BUILD",
+  "sources": [
+    {
+      "id": "B01",
+      "url": "https://www.data.go.kr/catalog/15136267/openapi.json",
+      "kind": "OFFICIAL_METADATA",
+      "fact": "건축HUB 월간 갱신, 이용허락범위 제한 없음. 행 최초 공개시각 및 실제 API 응답 미확보.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B02",
+      "url": "https://data.seoul.go.kr/dataList/OA-22404/S/1/datasetView.do",
+      "kind": "OFFICIAL_OPENED_CACHED",
+      "fact": "페이지 메타 매일 1회, 2026-08-10 데이터 갱신 표시, 공공누리 1유형, 파일 없음. 캐시와 공통 종료 안내 포함; 실제 서비스 종료 여부나 현재 최신성 단정 금지. 행 단위 최초 공개시점 미확보.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B03",
+      "url": "https://www.data.go.kr/data/15129462/openapi.do?recommendDataYn=Y",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "발주계획 및 예정 발주시기. 계획 없이도 입찰/계약 가능.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B04",
+      "url": "https://www.data.go.kr/data/15129437/openapi.do",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "사전규격정보, 입찰 이전 규격 공개.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B05",
+      "url": "https://www.data.go.kr/data/15129459/openapi.do?recommendDataYn=Y",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "계약과정통합공개, 입찰/사전규격/발주계획/조달요청 ID를 통한 연결; 일부 단계 누락 가능.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B06",
+      "url": "https://www.data.go.kr/data/15129394/openapi.do",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "입찰공고와 변경이력.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B07",
+      "url": "https://presignal.co.kr/",
+      "kind": "INDEX_ONLY",
+      "fact": "2026-10-02 기준 무료, 발주계획→사전규격→입찰→낙찰 연결 및 알림 자체 안내. 본문 재접근 실패; 성능/가격 현재 조건 검증 아님.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B08",
+      "url": "https://aiops.didim.com/scout/ko",
+      "kind": "INDEX_ONLY",
+      "fact": "로그인 없이 발주예정/공고 검색 및 사전규격 본공고 알림 안내; 계정 필요 기능 별도.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B09",
+      "url": "https://bid.infovista.kr/",
+      "kind": "INDEX_ONLY",
+      "fact": "발주계획·사전규격·입찰공고 기반 알림 및 검색 서비스.",
+      "observed_on": "2026-11-28"
+    },
+    {
+      "id": "B10",
+      "url": "https://www.data.go.kr/data/15129468/openapi.do",
+      "kind": "OFFICIAL_INDEX",
+      "fact": "조달요청 서비스, 조달요청번호 등. 실제 API 행 미확보.",
+      "observed_on": "2026-11-28"
+    }
+  ],
+  "pairs": [
+    {
+      "buyer": "부산 기장소방서",
+      "pre_id": "2025-3568",
+      "pre_url": "https://www.busan.go.kr/nbgosi/view?curPage=2&gosiGbn=A&sno=75044",
+      "pre_date": "2025-12-02",
+      "bid_id": "2025-6",
+      "bid_url": "https://www.busan.go.kr/nbgosi/view?conGosiGbn=&curPage=99&gosiGbn=A&sno=75289",
+      "bid_date": "2025-12-15",
+      "deadline": "2025-12-22",
+      "note": "공고번호는 시청 게시번호. 본문 공개기간 5일 표기와 날짜 범위 차이. 원문 날짜 필드만 사용.",
+      "service_year": 2026,
+      "pre_budget_krw": 56625000,
+      "bid_base_krw": 56625000,
+      "match_basis": "same buyer, service year, named service, amount; manual semantic pair not G2B ID join",
+      "date_gap_days": 13,
+      "first_observed_date": "2026-11-28",
+      "historical_publication_timestamp": null,
+      "g2b_link_verified": false,
+      "award_verified": false,
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "buyer": "부산 동래소방서",
+      "pre_id": "2025-3576",
+      "pre_url": "https://www.busan.go.kr/nbgosi/view?curPage=2&gosiGbn=A&sno=75058",
+      "pre_date": "2025-12-02",
+      "bid_id": "2025-3664",
+      "bid_url": "https://www.busan.go.kr/nbgosi/view?curPage=1&gosiGbn=A&sno=75177",
+      "bid_date": "2025-12-09",
+      "deadline": "2025-12-15",
+      "note": "원문 공고일 사용; 사전규격 공개기간 5일 표기와 날짜 범위 차이.",
+      "service_year": 2026,
+      "pre_budget_krw": 56625000,
+      "bid_base_krw": 56625000,
+      "match_basis": "same buyer, service year, named service, amount; manual semantic pair not G2B ID join",
+      "date_gap_days": 7,
+      "first_observed_date": "2026-11-28",
+      "historical_publication_timestamp": null,
+      "g2b_link_verified": false,
+      "award_verified": false,
+      "paid_verified": false,
+      "forecast_eligible": false
+    },
+    {
+      "buyer": "부산 중부소방서",
+      "pre_id": "2025-3630",
+      "pre_url": "https://www.busan.go.kr/nbgosi/view?curPage=1&gosiGbn=A&sno=75132",
+      "pre_date": "2025-12-05",
+      "bid_id": "2025-3730",
+      "bid_url": "https://www.busan.go.kr/nbgosi/view?curPage=1&gosiGbn=A&sno=75273",
+      "bid_date": "2025-12-12",
+      "deadline": "2025-12-19",
+      "note": "사전규격 본문 공개기간 연도 2026, 본공고 공고기간 끝 연도 2024로 불일치. 정정하지 않고 헤더 공고일 및 별도 투찰기간 명시 날짜만 기록. 마감일 확인 필요.",
+      "service_year": 2026,
+      "pre_budget_krw": 56625000,
+      "bid_base_krw": 56625000,
+      "match_basis": "same buyer, service year, named service, amount; manual semantic pair not G2B ID join",
+      "date_gap_days": 7,
+      "first_observed_date": "2026-11-28",
+      "historical_publication_timestamp": null,
+      "g2b_link_verified": false,
+      "award_verified": false,
+      "paid_verified": false,
+      "forecast_eligible": false
+    }
+  ],
+  "statistics": {
+    "n": 3,
+    "median_date_gap": 7,
+    "min_date_gap": 7,
+    "max_date_gap": 13,
+    "prospective_n": 0,
+    "required_prospective_projects": 30
+  },
+  "limits": [
+    "Purposive same-city same-cycle positive cases; no denominator, negative cases, prospective data or competitor comparison. Not a sample of building projects.",
+    "Municipal posting dates are not authenticated original release timestamps, nor G2B timestamps. Date gaps do not show first market knowledge or lead over free competitors.",
+    "Do not aggregate budgets into actual spend. No personal contact information retained.",
+    "No actual API response, building-to-procurement join, paid demand, award, or procurement opportunity claim. 30-project gate remains unmet. No automated capture or external actions."
+  ],
+  "next": "Close desk-only generic alert exploration. Reopen REV-02 only after accessible lawful source, stable project IDs, real prospective first-observed timestamp and independent outcome denominator. Compare calendar/renewal and free alerts before any scoring. Keep prior OC and commercial gates unchanged."
+}

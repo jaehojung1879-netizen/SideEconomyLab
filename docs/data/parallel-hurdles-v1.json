@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "paid_own_transactions": 0,
+  "sources": [
+    {
+      "id": "F01",
+      "url": "https://www.sec.gov/Archives/edgar/data/815556/000081555626000009/fast-20251231.htm",
+      "type": "PRIMARY_FILING",
+      "fact": "Fastenal 2025 10-K: FMI 매출 37.127억 USD (전체 44.7%), FASTStock 10.377억 USD, FASTBin/FASTVend 26.750억 USD, 연말 136638 MEU. FAST5000 목표 월 매출 2000 USD. MEU는 실물 기기 수가 아닌 목표 매출 기반 가중 단위; 목표 매출은 실제 기기당 평균 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "F02",
+      "url": "https://www.wurthindustry.kr/wis-korea/solutions/orsy-vending/orsy-vending.php",
+      "type": "VENDOR_PAGE",
+      "fact": "한국어 공식 ORSY 페이지: 권한별 인출, 공급·보관·재고·보충, 스프링형 최대 48상품, 계량/서랍/잠금함. 케이블타이, 줄자, 테이프 등 인기 품목으로 안내하나 실제 판매량 및 국내 가격 미공개.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "F03",
+      "url": "https://serveone.co.kr/kr/support/new-introduction-guide.do",
+      "type": "VENDOR_SEARCH_SNIPPET",
+      "fact": "1인 사업자부터 MRO 구매 플랫폼 이용 가능하다고 설명. 열린 페이지 접근 실패, 최소 거래 규모·가격 미확인. 소기업이 기존 공급사에서 배제된다는 가설은 근거 부족.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "F04",
+      "url": "https://www.eshare.go.kr/UserPortal/Upv/UprResrcGds/index.do?rsrc_no=CI01I5244446",
+      "type": "PUBLIC_LISTING",
+      "fact": "강동구 암사1동 주민센터 공구세트 무료 대여 등록. 재고 및 운영시간 현장 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "F05",
+      "url": "https://www.eshare.go.kr/UserPortal/Upv/UprResrcGds/index.do?rsrc_no=DD18Q0418164",
+      "type": "PUBLIC_LISTING",
+      "fact": "강동구 암사2동 전동드릴 1박 500원 대여 등록. 재고 및 운영시간 현장 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "F06",
+      "url": "https://work.00data.kr/projects/R26BK01794670",
+      "type": "THIRD_PARTY_NOTICE_SNIPPET",
+      "fact": "서울도시철도엔지니어링 2026 시설물 유지보수용 소모품 구매 공고 표시 25554400원 VAT 포함, 분할납품 불가, 30일 이내. 공고 예산이지 낙찰/지급 또는 작은 사업장 반복 소비 증거 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    }
+  ],
+  "consumer": {
+    "households": 3000,
+    "capture_bps": 2000,
+    "basket": 8000,
+    "goods_cost": 4800,
+    "fee_bps": 500,
+    "host_bps": 1000,
+    "recovery_months": 24,
+    "hour_value": 40000,
+    "days": 30,
+    "scenarios": [
+      {
+        "id": "SHELF",
+        "capital": 200000,
+        "fixed": 30000,
+        "labor_hours": 4
+      },
+      {
+        "id": "MACHINE",
+        "capital": 3500000,
+        "fixed": 100000,
+        "labor_hours": 8
+      }
+    ]
+  },
+  "b2b": {
+    "accounts": 8,
+    "net_margin_bps": 2000,
+    "fixed_cash": 100000,
+    "capital": 300000,
+    "recovery_months": 24,
+    "fixed_hours": 4,
+    "hours_per_account": 1,
+    "hour_value": 40000,
+    "hour_cap": 20,
+    "targets": [
+      0,
+      1000000
+    ]
+  },
+  "saas": {
+    "price": 99000,
+    "var_cost": 15000,
+    "fixed_cash": 100000,
+    "fixed_hours": 4,
+    "unit_hours": 0.5,
+    "hour_value": 40000,
+    "hour_cap": 20,
+    "target": 1000000,
+    "capital": 0,
+    "recovery_months": 24
+  },
+  "gates": [
+    {
+      "id": "H24-B2C",
+      "status": "HOLD",
+      "reason": "소비 빈도와 구매 전환 불명, 무료 공구 대여 대체재. 기기 없는 실험도 사전 승인 필요.",
+      "next": "독립 호스트 2곳 및 영업시간별 익명 요청 기록, SKU 20개 동일 규격 견적, POS 유료 거래와 대조 기간. 실제 마진·지원시간·공간계약 확정 후 손익분기 기준 재등록."
+    },
+    {
+      "id": "H24-B2B",
+      "status": "DISCOVERY",
+      "reason": "반복 구매 구조는 공시로 확인되나 국내 기존 공급사 존재. 소규모 고객 대상 틈새는 미확인.",
+      "next": "독립 비금융 사업장 3곳 익명 월 구매명세 및 현행 공급사 조건, 비긴급 자재 3종 동일 규격 견적, 직송/현장 보관 책임. 자판기 없이 기존 선반+재고표 검증부터."
+    },
+    {
+      "id": "DF-008",
+      "status": "DISCOVERY",
+      "reason": "자본 위험 낮으나 구독 지불 근거 없음.",
+      "next": "독립 업체 3곳의 동일 월간 예외업무, 유료 의향 2곳, 기존 피벗/CMMS 대조. 가상 데모 이상 개발 금지."
+    },
+    {
+      "id": "TOOL-RND",
+      "status": "PARKED",
+      "reason": "줄눈/간판 자동화 장비는 제조·특허·인증 및 AS 위험.",
+      "next": "시공 공정 시간 관측 및 기성 도구 비교, 기존 특허 검토. 실제 개선 여지 입증 전 제작 금지."
+    }
+  ],
+  "notes": [
+    "All economics and catchment inputs are assumptions, not a forecast or local household count.",
+    "Consumer event rate assumes one eligible event creates at most one captured order; capture rate means share of eligible events converted. Orders may also come from business users; residential-only stress test.",
+    "B2B net margin means after goods, delivery, payment and losses, not gross margin. No double-counted delivery if included; acquisition, tax and unquoted support costs excluded.",
+    "No real outreach, host, quote, invoice, purchase, field trial or customer data. Existing canonical gates unchanged."
+  ]
+}

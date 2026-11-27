@@ -1,0 +1,373 @@
+{
+  "version": 1,
+  "status": "RESEARCH_ONLY",
+  "commercial_approval": false,
+  "forecast_eligible": false,
+  "paid_own_transactions": 0,
+  "sources": [
+    {
+      "id": "KR01",
+      "url": "https://wefuncorp.com/blog/wefun-pr2025sales",
+      "type": "COMPANY_RELEASE_OPENED",
+      "fact": "위펀 연결 2025 매출 1586억원, 영업이익 64억원, 자체 발표 활성 고객 1만+, 복수서비스 이용률 28%, 연 해지율 5% 미만. 연결·단독·제품별 수치 혼합 금지; 회사 자체 지표.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR02",
+      "url": "https://www.e-jcr.org/archive/view_article?pid=jcr-30-4-93",
+      "type": "ACADEMIC_SEARCH",
+      "fact": "중소 제조 주문자동화 질적 사례 연구: 반복 소모품 중심 도입, ERP/센서/인력 등 도입 장벽. 대표 표본 또는 한국 시장 수익성 입증 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR03",
+      "url": "https://www.wurthindustry.kr/wis-korea/solutions/storage-management/storage-management/inventory-management.php",
+      "type": "VENDOR_SEARCH",
+      "fact": "맞춤 VMI 및 화스너 재고 관리 제공.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR04",
+      "url": "https://wefuncorp.com/officesupplies",
+      "type": "VENDOR_SEARCH",
+      "fact": "사무용품 보충·배송·반품·설비 비용 무료 주장.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR05",
+      "url": "https://www.cesco.co.kr/solution/service/hygienecare",
+      "type": "VENDOR_SEARCH",
+      "fact": "화장실 위생 소모품 직접 구매관리 또는 전문가 방문관리 선택.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR06",
+      "url": "https://yuhan-kimberly.co.kr/newsroom/newsview/3985",
+      "type": "VENDOR_RELEASE_SEARCH",
+      "fact": "소모품 예산 최적화 워크북·비용절감 계산기 무료 제공, 사용량 절감형 디스펜서. 실제 개별 고객 절감 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR07",
+      "url": "https://www.modumaket.com/shopinfo/company.html",
+      "type": "VENDOR_SEARCH",
+      "fact": "사업장 청소·위생용품 정기납품 상담.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR08",
+      "url": "https://toputong.co.kr/supply/seoul",
+      "type": "VENDOR_SEARCH",
+      "fact": "숙박·사업장 비품/청소용품 정기 공급, 직접 배송 지역 공개.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR09",
+      "url": "https://www.dtpack.co.kr/",
+      "type": "VENDOR_SEARCH",
+      "fact": "포장자재 규격별 단가/직납·화물·택배 정기 거래. 에어캡 5500원부터, 규격·수량·배송비 별도, 도매 마진 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR10",
+      "url": "https://www.orderlist.co.kr/",
+      "type": "VENDOR_OPENED",
+      "fact": "로스터리 납품업체용 주문·재고·거래명세·거래처 관리 무료, 자동 정산 PRO 월 19000원, PRO+ 36000원. 결제 수수료 별도 가능.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR11",
+      "url": "https://baljubom.com/",
+      "type": "VENDOR_OPENED",
+      "fact": "카톡/사진/엑셀 발주 AI 파싱 29000/89000원 월, 판매·재고·정산 9900원 월 VAT 별도 표기. SMS 외부비용.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR12",
+      "url": "https://baljupass.com/",
+      "type": "VENDOR_SEARCH_ONLY",
+      "fact": "가맹점 5개 무료 핵심 발주, 30개 월 9만원(프로모션 5만원). 페이지 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR13",
+      "url": "https://mgrgo.com/",
+      "type": "VENDOR_SEARCH_ONLY",
+      "fact": "병의원 QR 차감·주간 발주안·정산; 재접근 실패. 실제 사용자/가격 미확인.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR14",
+      "url": "https://refer.cmcism.or.kr/center/bidding_view?seq=372",
+      "type": "PUBLIC_NOTICE_SEARCH",
+      "fact": "인천성모병원 5년 구매·물류대행 입찰: 창고 300평 이상, 연매출 300억원 이상 최근 3년, 주5일 배송, 대형병원 실적 등. 공고이며 낙찰/지급 아님.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR15",
+      "url": "https://www.kg-partners.co.kr/store-management/service",
+      "type": "VENDOR_SEARCH_ONLY",
+      "fact": "무인점포 정기청소 및 소모품 보충 요청시 실구매비 별도 청구. 페이지 재접근 실패.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    },
+    {
+      "id": "KR16",
+      "url": "https://www.orderlist.co.kr/",
+      "type": "VENDOR_OPENED",
+      "fact": "거래처별 가격/카카오톡 링크 발주 및 원부자재 소진속도 기반 발주시점 안내. 기존 공급사 활용 SaaS 자체도 경쟁 존재.",
+      "observed_on": "2026-11-28",
+      "own_paid_verified": false
+    }
+  ],
+  "segments": [
+    {
+      "id": "K01",
+      "name": "포장·출고 소모품",
+      "payer": "소형 제조/온라인 셀러 자체 출고장, 지역 포장재 납품사",
+      "sku": "OPP테이프·택배라벨·비식품용 완충재",
+      "proposal": "공급사 기존 거래처의 예상 소진/규격 오류 검토, 직송",
+      "substitute": "부피·운임, 저가 쇼핑몰, 3PL 대체",
+      "evidence": [
+        "KR09",
+        "KR10",
+        "KR11"
+      ],
+      "state": "DISCOVERY",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    },
+    {
+      "id": "K02",
+      "name": "다점포 청소·위생",
+      "payer": "청소업체 또는 5~30개 일반 점포 운영사",
+      "sku": "화장지·핸드타월·일반 청소포(화학제품 제외)",
+      "proposal": "지점당 사용량과 계약규격/단가 차이, 구매예외 월보고",
+      "substitute": "세스코·유한킴벌리·기존 공급사 무료 서비스",
+      "evidence": [
+        "KR05",
+        "KR06",
+        "KR07",
+        "KR15"
+      ],
+      "state": "DISCOVERY",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    },
+    {
+      "id": "K03",
+      "name": "숙박 운영 비품",
+      "payer": "소형 호텔·숙박 관리업체 또는 비품 납품사",
+      "sku": "일반 쓰레기봉투(종량제 제외)·청소포·화장지",
+      "proposal": "객실 이용량 연동 소비, 기존 정기납품과 비교",
+      "substitute": "기존 직납, 현장 긴급 요청, 위생·일회용품 규정",
+      "evidence": [
+        "KR08",
+        "KR07"
+      ],
+      "state": "HOLD",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    },
+    {
+      "id": "K04",
+      "name": "고정 작업장 산업 소모품",
+      "payer": "금속가공·간판제작 소형 업체와 공급사",
+      "sku": "비안전 핵심 체결재·마스킹·포장용 테이프",
+      "proposal": "기존 납품사 SKU 정합성/소진 예외",
+      "substitute": "전문 규격, VMI 경쟁, 납기 책임",
+      "evidence": [
+        "KR02",
+        "KR03"
+      ],
+      "state": "DISCOVERY",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    },
+    {
+      "id": "K05",
+      "name": "사무실 간식·문구",
+      "payer": "소기업 총무",
+      "sku": "문구·사무 비품",
+      "proposal": "일반 정기배송",
+      "substitute": "위펀 무료 설비·배송, 경쟁/낮은 객단가",
+      "evidence": [
+        "KR01",
+        "KR04"
+      ],
+      "state": "NO_GENERIC_BUILD",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    },
+    {
+      "id": "K06",
+      "name": "로스터리·프랜차이즈 발주",
+      "payer": "납품사 또는 본사",
+      "sku": "일반 소모품(식품 제외)",
+      "proposal": "기존 발주·정산 프로그램 대체",
+      "substitute": "무료/저가 전문 SaaS 다수",
+      "evidence": [
+        "KR10",
+        "KR11",
+        "KR12",
+        "KR16"
+      ],
+      "state": "NO_GENERIC_BUILD",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    },
+    {
+      "id": "K07",
+      "name": "병의원 재고",
+      "payer": "의료기관",
+      "sku": "비의료 일반 사무비품 외 제외",
+      "proposal": "의료재료 자동발주",
+      "substitute": "규제·환자안전·납기, 기존 전문 서비스/대형 입찰 기준",
+      "evidence": [
+        "KR13",
+        "KR14"
+      ],
+      "state": "PARKED",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    },
+    {
+      "id": "K08",
+      "name": "무인점포 운영비품",
+      "payer": "기존 무인점포 관리업체",
+      "sku": "휴지·청소포·비규제 일반 비품",
+      "proposal": "방문자 대신 관리사 구매예외 보고",
+      "substitute": "소모품 비용 별도 청구, 청소업체가 이미 보충",
+      "evidence": [
+        "KR15",
+        "KR07"
+      ],
+      "state": "HOLD",
+      "actual_monthly_spend": null,
+      "actual_contribution": null,
+      "actual_support_minutes": null
+    }
+  ],
+  "models": [
+    {
+      "id": "direct20",
+      "name": "직접 재판매 20% 기여",
+      "inputs": {
+        "accounts": 8,
+        "spend": 1000000,
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "minutes_per_account": 60,
+        "hour_value": 40000,
+        "capital": 300000,
+        "recovery_months": 24,
+        "target": 1000000,
+        "hour_cap": 20,
+        "days": 30,
+        "margin_bps": 2000,
+        "fee": 0,
+        "fee_cost": 0,
+        "cash_gap_days": 30,
+        "goods_cash_cost_bps": 8000
+      }
+    },
+    {
+      "id": "direct10",
+      "name": "직접 재판매 10% 기여",
+      "inputs": {
+        "accounts": 8,
+        "spend": 1000000,
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "minutes_per_account": 60,
+        "hour_value": 40000,
+        "capital": 300000,
+        "recovery_months": 24,
+        "target": 1000000,
+        "hour_cap": 20,
+        "days": 30,
+        "margin_bps": 1000,
+        "fee": 0,
+        "fee_cost": 0,
+        "cash_gap_days": 30,
+        "goods_cash_cost_bps": 9000
+      }
+    },
+    {
+      "id": "agent5",
+      "name": "공급사 직접 결제·수수료 5%",
+      "inputs": {
+        "accounts": 8,
+        "spend": 1000000,
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "minutes_per_account": 60,
+        "hour_value": 40000,
+        "capital": 300000,
+        "recovery_months": 24,
+        "target": 1000000,
+        "hour_cap": 20,
+        "days": 30,
+        "margin_bps": 500,
+        "fee": 0,
+        "fee_cost": 0,
+        "cash_gap_days": 0,
+        "goods_cash_cost_bps": 0
+      }
+    },
+    {
+      "id": "hybrid5",
+      "name": "공급사 수수료 5% + 관리료 9.9만",
+      "inputs": {
+        "accounts": 8,
+        "spend": 1000000,
+        "fixed_cash": 100000,
+        "fixed_hours": 4,
+        "minutes_per_account": 60,
+        "hour_value": 40000,
+        "capital": 300000,
+        "recovery_months": 24,
+        "target": 1000000,
+        "hour_cap": 20,
+        "days": 30,
+        "margin_bps": 500,
+        "fee": 99000,
+        "fee_cost": 15000,
+        "cash_gap_days": 0,
+        "goods_cash_cost_bps": 0
+      }
+    }
+  ],
+  "selected_research": [
+    "K01",
+    "K02",
+    "K04"
+  ],
+  "gate": "기존 OC-022 조건을 완화하지 않음. 3개 독립 구매자/공급사 사례의 3개월 익명 명세, 동일 SKU/단위/VAT/배송 조건, 현행 공급사와 대체수단 비교. 2개 독립 유료 의향은 거래 아님. 회사 겸업/이해상충 확인 후 별도 승인·사전등록. 납품사 직접 청구/직송, 재고 소유권 및 반품 책임 명확화. 실제 주간 긴급요청이 있으면 보류.",
+  "notes": [
+    "No direct source customer counts or prices establish demand for our proposed model. All segment economics missing.",
+    "Scenario direct goods cash cost bps assumes all residual cost is paid upfront, conservative example not inventory balance forecast. Cash gap proxy excludes stock deposits, taxes and delays; agency model assumes no pass-through funds or goods financing. Margin = after all transaction variable costs, fee cost separate.",
+    "No actual customer contact, purchase, or public deployment; existing candidate registry byte-identical."
+  ]
+}
